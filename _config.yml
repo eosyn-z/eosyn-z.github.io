@@ -5,4 +5,5 @@ discord_username: eosyn
 twitter_username: eosyn_z
 github_username: eosyn-z
 timezone: EST
-theme: Slate
+
+remote_theme: "jekyll/minima@1e8a445"
