@@ -108,6 +108,9 @@ permalink: /search/
             --gradient-primary: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
             --gradient-secondary: linear-gradient(135deg, #4facfe 0%, #43e97b 100%);
             --border-pink: #f093fb;
+            --text-accent: #667eea;
+            --glass-bg: rgba(102, 126, 234, 0.25);
+            --glass-border: rgba(102, 126, 234, 0.3);
         }
 
         /* Theme: A - Aurora */
@@ -120,6 +123,9 @@ permalink: /search/
             --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
             --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
             --border-pink: #ffa726;
+            --text-accent: #ff6b6b;
+            --glass-bg: rgba(255, 107, 107, 0.25);
+            --glass-border: rgba(255, 107, 107, 0.3);
         }
 
         /* Theme: R - Rainbow */
@@ -132,6 +138,9 @@ permalink: /search/
             --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
             --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
             --border-pink: #29b6f6;
+            --text-accent: #4fc3f7;
+            --glass-bg: rgba(79, 195, 247, 0.25);
+            --glass-border: rgba(79, 195, 247, 0.3);
         }
 
         /* Theme: Z - Zenith */
@@ -144,6 +153,9 @@ permalink: /search/
             --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
             --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
             --border-pink: #81c784;
+            --text-accent: #66bb6a;
+            --glass-bg: rgba(102, 187, 106, 0.25);
+            --glass-border: rgba(102, 187, 106, 0.3);
         }
 
         /* Theme: E - Eclipse */
@@ -164,6 +176,9 @@ permalink: /search/
             --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
             --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
             --border-pink: #e91e63;
+            --text-accent: #e91e63;
+            --glass-bg: rgba(233, 30, 99, 0.25);
+            --glass-border: rgba(233, 30, 99, 0.3);
         }
 
         /* Theme: N - Nebula */
@@ -176,6 +191,9 @@ permalink: /search/
             --gradient-primary: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
             --gradient-secondary: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
             --border-pink: #ff9800;
+            --text-accent: #ff5722;
+            --glass-bg: rgba(255, 87, 34, 0.25);
+            --glass-border: rgba(255, 87, 34, 0.3);
         }
 
         body {
@@ -256,44 +274,62 @@ permalink: /search/
 
         .search-bar {
             width: 100%;
-            padding: 15px 20px;
-            font-size: 16px;
-            border: 2px solid var(--border-primary);
+            padding: 12px 20px;
+            border: 2px solid var(--glass-border);
             border-radius: 25px;
-            outline: none;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-            background: var(--bg-secondary);
+            font-size: 16px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
             color: var(--text-primary);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .search-bar:focus {
-            border-color: var(--primary-purple);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none;
+            border-color: var(--text-accent);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            background: var(--glass-bg);
+        }
+
+        .search-bar::placeholder {
+            color: var(--text-light);
         }
 
         .filters {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
 
         .filter-group {
             display: flex;
             align-items: center;
             gap: 8px;
+            background: var(--glass-bg);
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .filter-group label {
-            font-weight: 500;
-            color: var(--text-secondary);
+        .filter-group:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border-color: var(--text-accent);
         }
 
         .filter-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary-purple);
+            accent-color: var(--text-accent);
+        }
+
+        .filter-group label {
+            color: var(--text-accent);
+            font-weight: 500;
+            cursor: pointer;
         }
 
         .difficulty-filters {
@@ -306,16 +342,47 @@ permalink: /search/
         .difficulty-btn {
             padding: 8px 16px;
             border-radius: 20px;
-            border: 2px solid var(--border-primary);
+            border: 2px solid var(--glass-border);
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
             transition: all 0.3s ease;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-accent);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .difficulty-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .difficulty-btn:hover::before {
+            left: 100%;
+        }
+
+        .difficulty-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px var(--shadow-medium);
+            border-color: var(--text-accent);
+            background: var(--glass-bg);
         }
 
         .difficulty-btn.active {
-            border-color: var(--primary-purple);
+            border-color: var(--text-accent);
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
         .results-info {
@@ -331,17 +398,37 @@ permalink: /search/
         }
 
         .website-card {
-            border: 1px solid var(--border-primary);
+            border: 1px solid var(--glass-border);
             border-radius: 15px;
             padding: 20px;
             transition: all 0.3s ease;
-            background: var(--bg-secondary);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .website-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .website-card:hover::before {
+            left: 100%;
         }
 
         .website-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 35px var(--shadow-medium);
-            border-color: var(--primary-purple);
+            border-color: var(--text-accent);
+            background: var(--glass-bg);
         }
 
         .website-title {
@@ -671,9 +758,319 @@ permalink: /search/
                 flex-direction: column;
             }
         }
+
+        /* Sparkle Animations */
+        .sparkle {
+            position: absolute;
+            color: var(--text-accent);
+            font-size: 20px;
+            pointer-events: none;
+            animation: sparkle 4s linear infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .sparkle::before {
+            content: '✨';
+        }
+
+        .sparkle.round {
+            font-size: 16px;
+        }
+
+        .sparkle.round::before {
+            content: '💫';
+        }
+
+        .sparkle.star {
+            font-size: 18px;
+        }
+
+        .sparkle.star::before {
+            content: '⭐';
+        }
+
+        .distant-star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--text-accent);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: twinkle 3s ease-in-out infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1) rotate(180deg);
+            }
+            90% {
+                opacity: 1;
+                transform: scale(1) rotate(360deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) rotate(720deg);
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Distant Star Dots */
+        .distant-star {
+            position: absolute;
+            pointer-events: none;
+            background: var(--primary-purple);
+            border-radius: 50%;
+            animation: distantStarFade 4s ease-in-out infinite;
+            z-index: 999;
+        }
+
+        @keyframes distantStarFade {
+            0% { opacity: 0; transform: scale(0); }
+            50% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+
+        /* Theme-specific distant star variations */
+        [data-theme="c"] .distant-star {
+            background: var(--primary-purple);
+            box-shadow: 0 0 10px var(--primary-purple);
+        }
+
+        [data-theme="a"] .distant-star {
+            background: var(--primary-pink);
+            box-shadow: 0 0 15px var(--primary-pink);
+        }
+
+        [data-theme="r"] .distant-star {
+            background: var(--accent-blue);
+            box-shadow: 0 0 8px var(--accent-blue);
+        }
+
+        [data-theme="z"] .distant-star {
+            background: var(--accent-green);
+            box-shadow: 0 0 12px var(--accent-green);
+        }
+
+        [data-theme="e"] .distant-star {
+            background: var(--accent-orange);
+            box-shadow: 0 0 20px var(--accent-orange);
+        }
+
+        [data-theme="n"] .distant-star {
+            background: var(--primary-purple);
+            box-shadow: 0 0 18px var(--primary-purple);
+        }
+
+        [data-theme="sunset"] .distant-star {
+            background: var(--primary-pink);
+            box-shadow: 0 0 15px var(--primary-pink);
+        }
+
+        [data-theme="ocean"] .distant-star {
+            background: var(--accent-blue);
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
+
+        [data-theme="forest"] .distant-star {
+            background: var(--accent-green);
+            box-shadow: 0 0 12px var(--accent-green);
+        }
+
+        [data-theme="dark"] .distant-star {
+            background: var(--primary-purple);
+            box-shadow: 0 0 25px var(--primary-purple);
+        }
+
+        #sparkleContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        /* Starfield Background */
+        .starfield-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .starfield-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .starfield-image:hover {
+            opacity: 0.1;
+        }
+
+        /* Theme-specific starfield images */
+        [data-theme="c"] .starfield-image[data-image="stars"],
+        [data-theme="a"] .starfield-image[data-image="clouds1"],
+        [data-theme="r"] .starfield-image[data-image="clouds2"],
+        [data-theme="e"] .starfield-image[data-image="clouds4"],
+        [data-theme="z"] .starfield-image[data-image="stars"],
+        [data-theme="n"] .starfield-image[data-image="stars"] {
+            opacity: 0.05;
+        }
+
+        .starfield-image {
+            opacity: 0;
+        }
+
+        /* Ticker Sections */
+        .ticker-section {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ticker-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.8s;
+        }
+
+        .ticker-section:hover::before {
+            left: 100%;
+        }
+
+        .ticker-section h3 {
+            color: var(--text-accent);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .ticker-container {
+            overflow: hidden;
+            position: relative;
+            height: 60px;
+        }
+
+        .ticker-track {
+            display: flex;
+            animation: ticker 30s linear infinite;
+            gap: 40px;
+        }
+
+        .ticker-track:hover {
+            animation-play-state: paused;
+        }
+
+        .ticker-item {
+            background: var(--glass-bg);
+            color: var(--text-accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ticker-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .ticker-item:hover::before {
+            left: 100%;
+        }
+
+        .ticker-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-medium);
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border-color: var(--text-accent);
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .ticker-track.social {
+            animation-duration: 25s;
+        }
+
+        .ticker-track.forums {
+            animation-duration: 35s;
+        }
     </style>
 </head>
 <body>
+    <!-- Starfield Background -->
+    <div class="starfield-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="starfield-image" data-image="stars">
+        <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="starfield-image" data-image="clouds1">
+        <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="starfield-image" data-image="clouds2">
+        <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
+    </div>
+
+    <!-- Sparkle Container -->
+    <div id="sparkleContainer"></div>
+
     <a href="/" class="back-link">← Back to Home</a>
     
     <div class="container">
@@ -721,6 +1118,54 @@ permalink: /search/
             
             <div class="results-info" id="resultsInfo">
                 Showing all websites
+            </div>
+        </div>
+
+        <!-- Social Websites Ticker -->
+        <div class="ticker-section">
+            <h3>🌐 Social Websites</h3>
+            <div class="ticker-container">
+                <div class="ticker-track social">
+                    <a href="https://twitter.com" class="ticker-item" target="_blank">Twitter</a>
+                    <a href="https://instagram.com" class="ticker-item" target="_blank">Instagram</a>
+                    <a href="https://linkedin.com" class="ticker-item" target="_blank">LinkedIn</a>
+                    <a href="https://reddit.com" class="ticker-item" target="_blank">Reddit</a>
+                    <a href="https://discord.com" class="ticker-item" target="_blank">Discord</a>
+                    <a href="https://tiktok.com" class="ticker-item" target="_blank">TikTok</a>
+                    <a href="https://youtube.com" class="ticker-item" target="_blank">YouTube</a>
+                    <a href="https://twitch.tv" class="ticker-item" target="_blank">Twitch</a>
+                    <a href="https://github.com" class="ticker-item" target="_blank">GitHub</a>
+                    <a href="https://dev.to" class="ticker-item" target="_blank">Dev.to</a>
+                    <a href="https://dribbble.com" class="ticker-item" target="_blank">Dribbble</a>
+                    <a href="https://behance.net" class="ticker-item" target="_blank">Behance</a>
+                    <a href="https://pinterest.com" class="ticker-item" target="_blank">Pinterest</a>
+                    <a href="https://medium.com" class="ticker-item" target="_blank">Medium</a>
+                    <a href="https://hashnode.com" class="ticker-item" target="_blank">Hashnode</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forums Ticker -->
+        <div class="ticker-section">
+            <h3>💬 Forums & Communities</h3>
+            <div class="ticker-container">
+                <div class="ticker-track forums">
+                    <a href="https://stackoverflow.com" class="ticker-item" target="_blank">Stack Overflow</a>
+                    <a href="https://reddit.com/r/webdev" class="ticker-item" target="_blank">r/webdev</a>
+                    <a href="https://reddit.com/r/programming" class="ticker-item" target="_blank">r/programming</a>
+                    <a href="https://reddit.com/r/reactjs" class="ticker-item" target="_blank">r/reactjs</a>
+                    <a href="https://reddit.com/r/javascript" class="ticker-item" target="_blank">r/javascript</a>
+                    <a href="https://reddit.com/r/css" class="ticker-item" target="_blank">r/css</a>
+                    <a href="https://reddit.com/r/design" class="ticker-item" target="_blank">r/design</a>
+                    <a href="https://reddit.com/r/learnprogramming" class="ticker-item" target="_blank">r/learnprogramming</a>
+                    <a href="https://reddit.com/r/cscareerquestions" class="ticker-item" target="_blank">r/cscareerquestions</a>
+                    <a href="https://reddit.com/r/freelance" class="ticker-item" target="_blank">r/freelance</a>
+                    <a href="https://reddit.com/r/startups" class="ticker-item" target="_blank">r/startups</a>
+                    <a href="https://reddit.com/r/entrepreneur" class="ticker-item" target="_blank">r/entrepreneur</a>
+                    <a href="https://reddit.com/r/UXDesign" class="ticker-item" target="_blank">r/UXDesign</a>
+                    <a href="https://reddit.com/r/graphic_design" class="ticker-item" target="_blank">r/graphic_design</a>
+                    <a href="https://reddit.com/r/art" class="ticker-item" target="_blank">r/art</a>
+                </div>
             </div>
         </div>
 
@@ -781,22 +1226,11 @@ permalink: /search/
             personalReview: null
         },
         {
-            title: "Dev.to",
-            description: "A constructive and inclusive social network for software developers",
-            url: "https://dev.to",
-            tags: ["personal", "tools", "documentation"],
-            difficulty: "beginner",
-            functions: ["blogging", "learning", "community", "networking", "articles", "tutorials", "career-advice"],
-            personalRecommendation: false,
-            starRating: null,
-            personalReview: null
-        },
-        {
             title: "CSS-Tricks",
             description: "Tips, tricks, and techniques for CSS",
             url: "https://css-tricks.com",
             tags: ["personal", "tools", "documentation"],
-            difficulty: "intermediate",
+            difficulty: "beginner",
             functions: ["css-learning", "tutorials", "examples", "reference", "frontend", "styling", "layout", "responsive-design"],
             personalRecommendation: false,
             starRating: null,
@@ -830,22 +1264,6 @@ permalink: /search/
             functions: ["inspiration", "experiments", "tutorials", "creative-coding", "animations", "interactions", "css-effects", "javascript-effects"]
         },
         {
-            title: "Dribbble",
-            description: "Discover and connect with designers worldwide",
-            url: "https://dribbble.com",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["design-inspiration", "portfolio", "networking", "showcase", "ui-design", "graphic-design", "branding", "illustration"]
-        },
-        {
-            title: "Behance",
-            description: "Showcase and discover creative work",
-            url: "https://www.behance.net",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["portfolio", "inspiration", "showcase", "networking", "creative-work", "design", "art", "photography"]
-        },
-        {
             title: "Figma",
             description: "The collaborative interface design tool",
             url: "https://www.figma.com",
@@ -866,7 +1284,7 @@ permalink: /search/
             description: "Issue tracking tool for high-performance teams",
             url: "https://linear.app",
             tags: ["company", "tools"],
-            difficulty: "intermediate",
+            difficulty: "beginner",
             functions: ["project-management", "issue-tracking", "team-collaboration", "roadmaps", "sprints", "kanban", "agile"]
         },
         {
@@ -882,7 +1300,7 @@ permalink: /search/
             description: "Learn to code for free with interactive tutorials",
             url: "https://www.freecodecamp.org",
             tags: ["tools", "company", "documentation"],
-            difficulty: "beginner",
+            difficulty: "intermediate",
             functions: ["learning", "interactive-tutorials", "certification", "projects", "html-css", "javascript", "react", "nodejs", "databases"]
         },
         {
@@ -903,119 +1321,55 @@ permalink: /search/
         },
         {
             title: "Vue.js",
-            description: "Progressive JavaScript framework for building user interfaces",
+            description: "Progressive JavaScript framework",
             url: "https://vuejs.org",
             tags: ["tools", "company", "documentation"],
             difficulty: "intermediate",
             functions: ["framework", "documentation", "tutorials", "examples", "vue", "components", "composition-api", "ecosystem"]
         },
         {
-            title: "Angular",
-            description: "Platform for building mobile and desktop web applications",
-            url: "https://angular.io",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["framework", "documentation", "tutorials", "cli-tools", "typescript", "dependency-injection", "routing", "forms"]
-        },
-        {
-            title: "Firebase",
-            description: "Google's mobile and web app development platform",
-            url: "https://firebase.google.com",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "beginner",
-            functions: ["backend-as-a-service", "authentication", "database", "hosting", "cloud-functions", "analytics", "messaging", "storage"]
-        },
-        {
-            title: "Vercel",
-            description: "Deploy frontend and fullstack apps with zero configuration",
-            url: "https://vercel.com",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "intermediate",
-            functions: ["deployment", "hosting", "serverless", "ci-cd", "edge-functions", "domains", "analytics", "preview-deployments"]
-        },
-        {
-            title: "Netlify",
-            description: "All-in-one platform for web projects",
-            url: "https://netlify.com",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "beginner",
-            functions: ["deployment", "hosting", "forms", "cms", "functions", "redirects", "headers", "build-tools"]
-        },
-        {
-            title: "Expo",
-            description: "React Native development platform",
-            url: "https://expo.dev",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "intermediate",
-            functions: ["mobile-development", "react-native", "deployment", "testing", "sdk", "cli", "ejected", "managed-workflow"]
-        },
-        {
-            title: "Flutter",
-            description: "Google's UI toolkit for building natively compiled applications",
-            url: "https://flutter.dev",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["mobile-development", "cross-platform", "ui-framework", "hot-reload", "dart", "widgets", "state-management", "packages"]
-        },
-        {
-            title: "Stripe",
-            description: "Payment processing platform for internet businesses",
-            url: "https://stripe.com",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "intermediate",
-            functions: ["payments", "e-commerce", "api", "security", "subscriptions", "invoicing", "taxes", "fraud-prevention"]
-        },
-        {
-            title: "Socket.io",
-            description: "Real-time bidirectional event-based communication",
-            url: "https://socket.io",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["real-time", "websockets", "communication", "api", "chat", "gaming", "collaboration", "live-updates"]
-        },
-        {
-            title: "PostgreSQL",
-            description: "Advanced open source relational database",
-            url: "https://www.postgresql.org",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["database", "sql", "data-storage", "scalability", "acid-compliance", "json-support", "full-text-search", "extensions"]
-        },
-        {
-            title: "MongoDB",
-            description: "Document database with the scalability and flexibility",
-            url: "https://www.mongodb.com",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "intermediate",
-            functions: ["database", "nosql", "data-storage", "scalability", "aggregation", "indexing", "replication", "sharding"]
-        },
-        {
             title: "TypeScript",
-            description: "Typed superset of JavaScript",
+            description: "Typed JavaScript for better development",
             url: "https://www.typescriptlang.org",
             tags: ["tools", "company", "documentation"],
             difficulty: "intermediate",
             functions: ["programming-language", "type-safety", "documentation", "compiler", "javascript", "static-analysis", "ide-support", "refactoring"]
         },
         {
-            title: "Tauri",
-            description: "Framework for building tiny, blazingly fast binaries",
-            url: "https://tauri.app",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["desktop-apps", "cross-platform", "performance", "security", "rust", "webview", "native-apis", "bundling"]
+            title: "Vercel",
+            description: "Frontend deployment platform",
+            url: "https://vercel.com",
+            tags: ["tools", "company"],
+            difficulty: "beginner",
+            functions: ["deployment", "hosting", "serverless", "ci-cd", "edge-functions", "domains", "analytics", "preview-deployments"]
         },
         {
-            title: "Electron",
-            description: "Build cross-platform desktop apps with JavaScript",
-            url: "https://www.electronjs.org",
+            title: "Netlify",
+            description: "Web hosting and deployment platform",
+            url: "https://netlify.com",
+            tags: ["tools", "company"],
+            difficulty: "beginner",
+            functions: ["deployment", "hosting", "forms", "cms", "functions", "redirects", "headers", "build-tools"]
+        },
+        {
+            title: "Firebase",
+            description: "Backend-as-a-Service by Google",
+            url: "https://firebase.google.com",
+            tags: ["tools", "company"],
+            difficulty: "intermediate",
+            functions: ["backend-as-a-service", "authentication", "database", "hosting", "cloud-functions", "analytics", "messaging", "storage"]
+        },
+        {
+            title: "MongoDB",
+            description: "Document database for modern applications",
+            url: "https://www.mongodb.com",
             tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["desktop-apps", "cross-platform", "web-technologies", "packaging", "distribution", "auto-updater", "native-modules", "chromium"]
+            difficulty: "intermediate",
+            functions: ["database", "nosql", "data-storage", "scalability", "aggregation", "indexing", "replication", "sharding"]
         },
         {
             title: "Node.js",
-            description: "JavaScript runtime built on Chrome's V8 JavaScript engine",
+            description: "JavaScript runtime for server-side development",
             url: "https://nodejs.org",
             tags: ["tools", "company", "documentation"],
             difficulty: "intermediate",
@@ -1023,7 +1377,7 @@ permalink: /search/
         },
         {
             title: "Express.js",
-            description: "Fast, unopinionated, minimalist web framework for Node.js",
+            description: "Web framework for Node.js",
             url: "https://expressjs.com",
             tags: ["tools", "company", "documentation"],
             difficulty: "intermediate",
@@ -1031,93 +1385,111 @@ permalink: /search/
         },
         {
             title: "Next.js",
-            description: "The React framework for production",
+            description: "React framework for production",
             url: "https://nextjs.org",
             tags: ["tools", "company", "documentation"],
-            difficulty: "intermediate",
+            difficulty: "expert",
             functions: ["react-framework", "ssr", "ssg", "routing", "api-routes", "image-optimization", "performance", "deployment"]
         },
         {
             title: "Tailwind CSS",
-            description: "A utility-first CSS framework for rapidly building custom user interfaces",
+            description: "Utility-first CSS framework",
             url: "https://tailwindcss.com",
             tags: ["tools", "company", "documentation"],
-            difficulty: "intermediate",
+            difficulty: "beginner",
             functions: ["css-framework", "utility-classes", "responsive-design", "customization", "components", "dark-mode", "purge-css", "jit-compiler"]
         },
         {
-            title: "Docker",
-            description: "Containerization platform for developing, shipping, and running applications",
-            url: "https://www.docker.com",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["containerization", "deployment", "devops", "microservices", "orchestration", "images", "volumes", "networking"]
-        },
-        {
             title: "Git",
-            description: "Distributed version control system",
+            description: "Version control system",
             url: "https://git-scm.com",
             tags: ["tools", "company", "documentation"],
             difficulty: "intermediate",
             functions: ["version-control", "collaboration", "branching", "history", "merging", "stashing", "rebase", "hooks"]
         },
         {
-            title: "VS Code",
-            description: "Code editor redefined and optimized for building and debugging modern web and cloud applications",
-            url: "https://code.visualstudio.com",
-            tags: ["tools", "company", "documentation"],
+            title: "Postman",
+            description: "API development platform",
+            url: "https://www.postman.com",
+            tags: ["tools", "company"],
             difficulty: "beginner",
-            functions: ["code-editor", "debugging", "extensions", "integrated-terminal", "intellisense", "git-integration", "tasks", "snippets"],
-            personalRecommendation: false,
-            starRating: null,
-            personalReview: null
+            functions: ["api", "testing", "development", "documentation", "collections", "environments", "automation", "collaboration"]
         },
         {
-            title: "Cursor",
-            description: "AI-powered code editor built on VS Code",
-            url: "https://cursor.sh",
-            tags: ["tools", "company", "documentation"],
+            title: "Can I Use",
+            description: "Browser compatibility tables",
+            url: "https://caniuse.com",
+            tags: ["tools", "personal"],
             difficulty: "beginner",
-            functions: ["code-editor", "ai-assistance", "debugging", "learning", "chat", "code-generation", "refactoring", "explanation"],
-            personalRecommendation: false,
-            starRating: null,
-            personalReview: null
+            functions: ["browser-support", "compatibility", "reference", "web-standards", "css", "javascript", "html", "apis"]
         },
         {
-            title: "Unity",
-            description: "Real-time 3D development platform",
-            url: "https://unity.com",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["game-development", "3d", "2d", "cross-platform", "physics", "animation", "audio", "asset-store"]
-        },
-        {
-            title: "Unreal Engine",
-            description: "Real-time 3D creation tool for photoreal visuals and immersive experiences",
-            url: "https://www.unrealengine.com",
-            tags: ["tools", "company", "documentation"],
-            difficulty: "expert",
-            functions: ["game-development", "3d", "visualization", "vr-ar", "blueprints", "materials", "lighting", "cinematics"]
-        },
-        {
-            title: "Phaser",
-            description: "HTML5 game framework for building games with JavaScript",
-            url: "https://phaser.io",
+            title: "Web.dev",
+            description: "Modern web development guide by Google",
+            url: "https://web.dev",
             tags: ["tools", "company", "documentation"],
             difficulty: "intermediate",
-            functions: ["game-development", "html5", "2d", "javascript", "physics", "sprites", "audio", "mobile-games"]
+            functions: ["web-development", "performance", "pwa", "accessibility", "seo", "best-practices", "tutorials", "analysis"]
         },
         {
-            title: "Heroku",
-            description: "Cloud platform for deploying and managing applications",
-            url: "https://www.heroku.com",
+            title: "Angular",
+            description: "Full-featured framework for building applications",
+            url: "https://angular.io",
+            tags: ["tools", "company", "documentation"],
+            difficulty: "expert",
+            functions: ["framework", "documentation", "tutorials", "cli-tools", "typescript", "dependency-injection", "routing", "forms"]
+        },
+        {
+            title: "Flutter",
+            description: "Cross-platform UI toolkit",
+            url: "https://flutter.dev",
+            tags: ["tools", "company", "documentation"],
+            difficulty: "expert",
+            functions: ["mobile-development", "cross-platform", "ui-framework", "hot-reload", "dart", "widgets", "state-management", "packages"]
+        },
+        {
+            title: "Socket.io",
+            description: "Real-time communication library",
+            url: "https://socket.io",
+            tags: ["tools", "company", "documentation"],
+            difficulty: "expert",
+            functions: ["real-time", "websockets", "communication", "api", "chat", "gaming", "collaboration", "live-updates"]
+        },
+        {
+            title: "PostgreSQL",
+            description: "Advanced open-source database",
+            url: "https://www.postgresql.org",
             tags: ["tools", "company", "documentation"],
             difficulty: "intermediate",
-            functions: ["deployment", "hosting", "paas", "scaling", "add-ons", "postgres", "redis", "monitoring"]
+            functions: ["database", "sql", "data-storage", "scalability", "acid-compliance", "json-support", "full-text-search", "extensions"]
+        },
+        {
+            title: "Tauri",
+            description: "Desktop app framework",
+            url: "https://tauri.app",
+            tags: ["tools", "company", "documentation"],
+            difficulty: "expert",
+            functions: ["desktop-apps", "cross-platform", "performance", "security", "rust", "webview", "native-apis", "bundling"]
+        },
+        {
+            title: "Electron",
+            description: "Cross-platform desktop apps with web technologies",
+            url: "https://www.electronjs.org",
+            tags: ["tools", "company", "documentation"],
+            difficulty: "expert",
+            functions: ["desktop-apps", "cross-platform", "web-technologies", "packaging", "distribution", "auto-updater", "native-modules", "chromium"]
+        },
+        {
+            title: "Docker",
+            description: "Containerization platform",
+            url: "https://www.docker.com",
+            tags: ["tools", "company", "documentation"],
+            difficulty: "expert",
+            functions: ["containerization", "deployment", "devops", "microservices", "orchestration", "images", "volumes", "networking"]
         },
         {
             title: "AWS",
-            description: "Amazon Web Services - comprehensive cloud computing platform",
+            description: "Cloud computing platform",
             url: "https://aws.amazon.com",
             tags: ["tools", "company", "documentation"],
             difficulty: "expert",
@@ -1125,393 +1497,174 @@ permalink: /search/
         },
         {
             title: "Google Cloud",
-            description: "Google Cloud Platform - cloud computing services",
+            description: "Cloud computing services",
             url: "https://cloud.google.com",
             tags: ["tools", "company", "documentation"],
             difficulty: "expert",
             functions: ["cloud-computing", "hosting", "storage", "ai-ml", "kubernetes", "bigquery", "firestore", "functions"]
         },
         {
-            title: "DigitalOcean",
-            description: "Cloud infrastructure provider for developers",
-            url: "https://www.digitalocean.com",
+            title: "Unity",
+            description: "Game development platform",
+            url: "https://unity.com",
             tags: ["tools", "company", "documentation"],
-            difficulty: "intermediate",
-            functions: ["hosting", "vps", "cloud-computing", "deployment", "droplets", "spaces", "databases", "load-balancers"]
+            difficulty: "expert",
+            functions: ["game-development", "3d", "2d", "cross-platform", "physics", "animation", "audio", "asset-store"]
         },
         {
-            title: "Wisk",
-            description: "A modern Notion alternative built for speed and simplicity",
-            url: "https://wisk.cc",
-            tags: ["personal", "tools"],
-            difficulty: "beginner",
-            functions: ["note-taking", "project-management", "collaboration", "organization", "documentation", "databases", "templates", "knowledge-base"],
-            personalRecommendation: false,
-            starRating: null,
-            personalReview: null
+            title: "Unreal Engine",
+            description: "3D creation tool for games and visualization",
+            url: "https://www.unrealengine.com",
+            tags: ["tools", "company", "documentation"],
+            difficulty: "expert",
+            functions: ["game-development", "3d", "visualization", "vr-ar", "blueprints", "materials", "lighting", "cinematics"]
         },
         {
-            title: "Tsotchke",
-            description: "A collection of useful web development tools and resources",
-            url: "https://tsotchke.net",
-            tags: ["personal", "tools", "documentation"],
+            title: "CodePen",
+            description: "Frontend code playground",
+            url: "https://codepen.io",
+            tags: ["tools", "personal"],
             difficulty: "beginner",
-            functions: ["web-development", "tools", "resources", "utilities", "inspiration", "learning"],
-            personalRecommendation: false,
-            starRating: null,
-            personalReview: null
+            functions: ["code-editor", "frontend", "css", "javascript", "html", "inspiration", "showcase", "learning"]
         },
         {
             title: "Glitch",
-            description: "The friendly community where everyone can discover and create the best apps on the web",
+            description: "Friendly coding community and platform",
             url: "https://glitch.com",
-            tags: ["company", "tools", "documentation"],
+            tags: ["tools", "company"],
             difficulty: "beginner",
             functions: ["code-editor", "deployment", "collaboration", "learning", "web-development", "javascript", "nodejs", "community"]
         },
         {
             title: "Replit",
-            description: "The collaborative browser based IDE",
+            description: "Collaborative browser IDE",
             url: "https://replit.com",
-            tags: ["company", "tools", "documentation"],
+            tags: ["tools", "company"],
             difficulty: "beginner",
             functions: ["code-editor", "deployment", "collaboration", "learning", "web-development", "python", "javascript", "education"]
         },
         {
-            title: "CodePen",
-            description: "The best place to build, test, and discover front-end code",
-            url: "https://codepen.io",
-            tags: ["company", "tools", "documentation"],
-            difficulty: "beginner",
-            functions: ["code-editor", "frontend", "css", "javascript", "html", "inspiration", "showcase", "learning"]
-        },
-        {
-            title: "JSFiddle",
-            description: "Test your JavaScript, CSS, HTML or CoffeeScript online with JSFiddle code editor",
-            url: "https://jsfiddle.net",
-            tags: ["company", "tools", "documentation"],
-            difficulty: "beginner",
-            functions: ["code-editor", "frontend", "css", "javascript", "html", "testing", "debugging", "sharing"]
-        },
-        {
-            title: "Observable",
-            description: "The computational notebook for data science and visualization",
-            url: "https://observablehq.com",
-            tags: ["company", "tools", "documentation"],
+            title: "Stripe",
+            description: "Payment processing platform",
+            url: "https://stripe.com",
+            tags: ["tools", "company", "documentation"],
             difficulty: "intermediate",
-            functions: ["data-science", "visualization", "notebooks", "javascript", "d3", "analytics", "interactive", "collaboration"]
+            functions: ["payments", "e-commerce", "api", "security", "subscriptions", "invoicing", "taxes", "fraud-prevention"]
         },
         {
-            title: "Figma Community",
-            description: "Discover and use thousands of free design resources",
-            url: "https://www.figma.com/community",
-            tags: ["company", "tools"],
+            title: "Expo",
+            description: "React Native platform",
+            url: "https://expo.dev",
+            tags: ["tools", "company", "documentation"],
+            difficulty: "expert",
+            functions: ["mobile-development", "react-native", "deployment", "testing", "sdk", "cli", "ejected", "managed-workflow"]
+        },
+        {
+            title: "Cursor",
+            description: "AI-powered code editor",
+            url: "https://cursor.sh",
+            tags: ["tools", "company"],
             difficulty: "beginner",
-            functions: ["design", "templates", "components", "inspiration", "ui-kits", "icons", "illustrations", "plugins"]
+            functions: ["code-editor", "ai-assistance", "debugging", "learning", "chat", "code-generation", "refactoring", "explanation"]
         },
         {
-            title: "Unsplash",
-            description: "Beautiful free images and photos you can use everywhere",
-            url: "https://unsplash.com",
-            tags: ["company", "tools"],
+            title: "Wisk",
+            description: "Modern Notion alternative",
+            url: "https://wisk.cc",
+            tags: ["tools", "personal"],
             difficulty: "beginner",
-            functions: ["stock-photos", "images", "design", "inspiration", "free-resources", "photography", "visual-content"]
+            functions: ["note-taking", "project-management", "collaboration", "organization", "documentation", "databases", "templates", "knowledge-base"]
         },
         {
-            title: "Pexels",
-            description: "Free stock photos and videos you can use everywhere",
-            url: "https://www.pexels.com",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["stock-photos", "videos", "images", "design", "inspiration", "free-resources", "visual-content"]
-        },
-        {
-            title: "Font Awesome",
-            description: "The web's most popular icon toolkit",
-            url: "https://fontawesome.com",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["icons", "fonts", "design", "ui", "svg", "web-fonts", "icon-fonts", "free-resources"]
-        },
-        {
-            title: "Feather Icons",
-            description: "Simply beautiful open source icons",
-            url: "https://feathericons.com",
+            title: "cameronsworld",
+            description: "Web aesthetic archive and inspiration",
+            url: "https://cameronsworld.net",
             tags: ["personal", "tools"],
             difficulty: "beginner",
-            functions: ["icons", "svg", "design", "ui", "open-source", "simple", "minimal", "free-resources"]
+            functions: ["inspiration", "web-aesthetics", "archive", "retro-web", "design-inspiration", "creative-coding"]
         },
         {
-            title: "Heroicons",
-            description: "Beautiful hand-crafted SVG icons by the makers of Tailwind CSS",
-            url: "https://heroicons.com",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["icons", "svg", "design", "ui", "tailwind", "free-resources", "outline", "solid"]
-        },
-        {
-            title: "Coolors",
-            description: "The super fast color schemes generator",
-            url: "https://coolors.co",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["color-palettes", "design", "inspiration", "color-schemes", "generator", "ui", "branding"]
-        },
-        {
-            title: "Color Hunt",
-            description: "Color Palettes for Designers and Artists",
-            url: "https://colorhunt.co",
-            tags: ["personal", "tools"],
-            difficulty: "beginner",
-            functions: ["color-palettes", "design", "inspiration", "color-schemes", "curated", "ui", "branding"]
-        },
-        {
-            title: "CSS Grid Generator",
-            description: "Generate CSS Grid code to make grid layouts",
-            url: "https://cssgrid-generator.netlify.app",
-            tags: ["personal", "tools"],
-            difficulty: "intermediate",
-            functions: ["css-grid", "layout", "generator", "frontend", "css", "tools", "responsive-design"]
-        },
-        {
-            title: "Flexbox Froggy",
-            description: "Learn CSS Flexbox through a fun game",
-            url: "https://flexboxfroggy.com",
-            tags: ["personal", "tools", "documentation"],
-            difficulty: "beginner",
-            functions: ["css-flexbox", "learning", "game", "interactive", "tutorials", "frontend", "css"]
-        },
-        {
-            title: "Grid Garden",
-            description: "Learn CSS Grid through a fun game",
-            url: "https://cssgridgarden.com",
-            tags: ["personal", "tools", "documentation"],
-            difficulty: "beginner",
-            functions: ["css-grid", "learning", "game", "interactive", "tutorials", "frontend", "css"]
-        },
-        {
-            title: "Can I Use",
-            description: "Browser support tables for modern web technologies",
-            url: "https://caniuse.com",
-            tags: ["company", "tools", "documentation"],
-            difficulty: "intermediate",
-            functions: ["browser-support", "compatibility", "reference", "web-standards", "css", "javascript", "html", "apis"]
-        },
-        {
-            title: "Web.dev",
-            description: "Get the web's modern capabilities on your own sites and apps with useful guidance and analysis",
-            url: "https://web.dev",
-            tags: ["company", "tools", "documentation"],
-            difficulty: "intermediate",
-            functions: ["web-development", "performance", "pwa", "accessibility", "seo", "best-practices", "tutorials", "analysis"]
-        },
-        {
-            title: "Lighthouse",
-            description: "Automated auditing, performance metrics, and best practices for the web",
-            url: "https://developers.google.com/web/tools/lighthouse",
-            tags: ["company", "tools", "documentation"],
-            difficulty: "intermediate",
-            functions: ["performance", "auditing", "seo", "accessibility", "best-practices", "pwa", "analysis", "metrics"]
-        },
-        {
-            title: "WebPageTest",
-            description: "Website Performance and Optimization Testing",
-            url: "https://www.webpagetest.org",
-            tags: ["company", "tools"],
-            difficulty: "intermediate",
-            functions: ["performance", "testing", "analysis", "metrics", "optimization", "speed", "waterfall", "lighthouse"]
-        },
-        {
-            title: "GTmetrix",
-            description: "Website Speed and Performance Optimization",
-            url: "https://gtmetrix.com",
-            tags: ["company", "tools"],
-            difficulty: "intermediate",
-            functions: ["performance", "testing", "analysis", "metrics", "optimization", "speed", "lighthouse", "page-speed"]
-        },
-        {
-            title: "JSONPlaceholder",
-            description: "Free fake API for testing and prototyping",
-            url: "https://jsonplaceholder.typicode.com",
-            tags: ["personal", "tools"],
-            difficulty: "beginner",
-            functions: ["api", "testing", "prototyping", "json", "fake-data", "development", "mock-api", "rest"]
-        },
-        {
-            title: "MockAPI",
-            description: "Create a mock API in seconds",
-            url: "https://mockapi.io",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["api", "testing", "prototyping", "mock-api", "development", "fake-data", "rest", "json"]
-        },
-        {
-            title: "Postman",
-            description: "The Collaboration Platform for API Development",
-            url: "https://www.postman.com",
-            tags: ["company", "tools", "documentation"],
-            difficulty: "intermediate",
-            functions: ["api", "testing", "development", "documentation", "collections", "environments", "automation", "collaboration"]
-        },
-        {
-            title: "Insomnia",
-            description: "The API Design Platform and REST Client",
-            url: "https://insomnia.rest",
-            tags: ["company", "tools"],
-            difficulty: "intermediate",
-            functions: ["api", "testing", "development", "rest-client", "graphql", "design", "documentation", "debugging"]
-        },
-        {
-            title: "Cameron's World",
-            description: "A crowdsourced directory of the 1990s web aesthetic",
-            url: "https://www.cameronsworld.net",
-            tags: ["personal", "tools"],
-            difficulty: "beginner",
-            functions: ["web-history", "inspiration", "design", "aesthetics", "retro-web", "crowdsourced", "archive"]
-        },
-        {
-            title: "Everything2",
-            description: "A collaborative writing site with articles on everything",
+            title: "everything2",
+            description: "Collaborative writing and knowledge base",
             url: "https://everything2.com",
             tags: ["personal", "tools"],
             difficulty: "beginner",
-            functions: ["knowledge-base", "collaborative-writing", "articles", "reference", "community", "information"]
+            functions: ["collaborative-writing", "knowledge-base", "community", "articles", "learning", "reference"]
         },
         {
-            title: "Wayback Machine",
-            description: "Digital archive of the World Wide Web",
-            url: "https://web.archive.org",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["web-archive", "history", "research", "backup", "preservation", "reference"]
-        },
-        {
-            title: "Internet Archive",
-            description: "Non-profit library of millions of free books, movies, software, music, websites, and more",
-            url: "https://archive.org",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["digital-library", "preservation", "free-resources", "books", "software", "media", "research"]
-        },
-        {
-            title: "Neocities",
-            description: "Create your own free website",
-            url: "https://neocities.org",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["web-hosting", "static-sites", "free-hosting", "web-development", "community", "geocities-style"]
-        },
-        {
-            title: "TinyURL",
-            description: "URL shortener service",
-            url: "https://tinyurl.com",
-            tags: ["company", "tools"],
-            difficulty: "beginner",
-            functions: ["url-shortener", "utilities", "sharing", "links", "redirects"]
-        },
-        {
-            title: "Wolfram Alpha",
-            description: "Computational knowledge engine",
-            url: "https://www.wolframalpha.com",
-            tags: ["company", "tools"],
-            difficulty: "intermediate",
-            functions: ["computation", "knowledge-engine", "mathematics", "science", "research", "data-analysis"]
-        },
-        {
-            title: "Archive.today",
-            description: "Web archiving service",
-            url: "https://archive.today",
-            tags: ["personal", "tools"],
-            difficulty: "beginner",
-            functions: ["web-archive", "backup", "preservation", "research", "reference", "snapshots"]
-        },
-        {
-            title: "CodeSpaced",
-            description: "Online code editor and development environment",
+            title: "codespaced.com",
+            description: "Development platform and tools",
             url: "https://codespaced.com",
-            tags: ["company", "tools"],
+            tags: ["tools", "company"],
             difficulty: "beginner",
-            functions: ["code-editor", "online-ide", "development", "collaboration", "web-based", "programming"]
+            functions: ["development-platform", "tools", "coding", "productivity"]
         },
         {
-            title: "Strwb",
+            title: "strwb.com",
             description: "Personal website and portfolio",
             url: "https://strwb.com",
             tags: ["personal", "tools"],
             difficulty: "beginner",
-            functions: ["portfolio", "personal-site", "web-development", "showcase"]
+            functions: ["portfolio", "personal-site", "inspiration", "web-design"]
         },
         {
             title: "cyb3r17.space",
-            description: "Personal portfolio and corner of the internet for a self-taught programmer interested in ML and electronics",
+            description: "Personal portfolio with ML focus",
             url: "https://cyb3r17.space",
             tags: ["personal", "tools"],
-            difficulty: "beginner",
-            functions: ["portfolio", "personal-site", "ai-ml", "programming", "projects", "blog"]
+            difficulty: "expert",
+            functions: ["portfolio", "machine-learning", "personal-site", "ai", "research"]
         },
         {
-            title: "TinyURL",
-            description: "URL shortener service",
-            url: "https://tinyurl.com",
-            tags: ["company", "tools"],
+            title: "Wayback Machine",
+            description: "Internet archive and historical web snapshots",
+            url: "https://web.archive.org",
+            tags: ["tools", "company"],
             difficulty: "beginner",
-            functions: ["url-shortener", "utilities", "sharing", "links", "redirects"]
-        },
-        {
-            title: "Wolfram Alpha",
-            description: "Computational knowledge engine",
-            url: "https://www.wolframalpha.com",
-            tags: ["company", "tools"],
-            difficulty: "intermediate",
-            functions: ["computation", "knowledge-engine", "mathematics", "science", "research", "data-analysis"]
+            functions: ["archive", "historical-data", "web-history", "research", "reference"]
         },
         {
             title: "Archive.today",
             description: "Web archiving service",
             url: "https://archive.today",
-            tags: ["personal", "tools"],
+            tags: ["tools", "personal"],
             difficulty: "beginner",
-            functions: ["web-archive", "backup", "preservation", "research", "reference", "snapshots"]
+            functions: ["archive", "web-snapshots", "research", "reference", "historical-data"]
+        },
+        {
+            title: "GitLab",
+            description: "DevOps platform and Git repository manager",
+            url: "https://gitlab.com",
+            tags: ["tools", "company", "repository"],
+            difficulty: "intermediate",
+            functions: ["version-control", "ci-cd", "devops", "collaboration", "project-management", "deployment"]
+        },
+        {
+            title: "Bitbucket",
+            description: "Git code hosting and collaboration platform",
+            url: "https://bitbucket.org",
+            tags: ["tools", "company", "repository"],
+            difficulty: "intermediate",
+            functions: ["version-control", "collaboration", "project-management", "code-review", "deployment"]
         },
         {
             title: "Hacker News",
             description: "Social news website focusing on computer science and entrepreneurship",
             url: "https://news.ycombinator.com",
-            tags: ["company", "tools"],
+            tags: ["tools", "personal"],
             difficulty: "beginner",
             functions: ["news", "community", "programming", "technology", "discussion", "startups"]
         },
         {
-            title: "Stack Exchange",
-            description: "Network of question and answer websites on topics in diverse fields",
-            url: "https://stackexchange.com",
-            tags: ["company", "tools", "documentation"],
-            difficulty: "beginner",
-            functions: ["q&a", "community", "learning", "knowledge-base", "discussion", "expertise"]
-        },
-        {
-            title: "GitLab",
-            description: "DevOps platform delivered as a single application",
-            url: "https://gitlab.com",
-            tags: ["company", "tools"],
-            difficulty: "intermediate",
-            functions: ["version-control", "ci-cd", "project-management", "code-review", "deployment", "collaboration"]
-        },
-        {
-            title: "Bitbucket",
-            description: "Git code hosting service for teams and professionals",
-            url: "https://bitbucket.org",
-            tags: ["company", "tools"],
-            difficulty: "intermediate",
-            functions: ["version-control", "project-management", "code-review", "collaboration", "git-hosting"]
-        },
-        {
-            title: "convert (by SuleDevSec)",
-            description: "CLI tool for converting image types and markdown to PDF. Created by @SuleDevSec on Twitter - 'vibe-coded as hell, but it works'",
+            title: "Convert Tool",
+            description: "CLI tool for image conversion and markdown to PDF by @SuleDevSec",
             url: "https://github.com/Sule57/convert",
-            tags: ["repository", "tools"],
-            difficulty: "intermediate",
-            functions: ["cli-tool", "image-conversion", "markdown-to-pdf", "file-conversion", "utilities", "command-line"]
+            tags: ["tools", "repository"],
+            difficulty: "expert",
+            functions: ["cli-tool", "image-conversion", "markdown", "pdf", "utilities"],
+            personalRecommendation: true,
+            starRating: 4,
+            personalReview: "Vibe-coded but functional CLI tool for quick conversions. Great for batch processing!"
         }
     ];
 
@@ -1727,7 +1880,154 @@ permalink: /search/
         
         // Initial display
         filterWebsites();
+        
+        // Initialize sparkles
+        initSparkles();
     });
+
+    // Sparkle Animation Functions
+    function createSparkle() {
+        const sparkle = document.createElement('div');
+        
+        // Random sparkle type
+        const sparkleTypes = ['sparkle', 'round', 'star'];
+        const randomType = sparkleTypes[Math.floor(Math.random() * sparkleTypes.length)];
+        sparkle.className = `sparkle ${randomType}`;
+        
+        // Random position
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        const size = Math.random() * 20 + 10;
+        
+        sparkle.style.left = x + 'px';
+        sparkle.style.top = y + 'px';
+        sparkle.style.fontSize = size + 'px';
+        
+        document.getElementById('sparkleContainer').appendChild(sparkle);
+        
+        // Remove sparkle after animation completes
+        setTimeout(() => {
+            if (sparkle.parentNode) {
+                sparkle.parentNode.removeChild(sparkle);
+            }
+        }, 4000);
+    }
+
+    function createDistantStar() {
+        const star = document.createElement('div');
+        star.className = 'distant-star';
+        
+        // Random position
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        const size = Math.random() * 4 + 2;
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 2;
+        
+        star.style.left = x + 'px';
+        star.style.top = y + 'px';
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.animationDuration = duration + 's';
+        star.style.animationDelay = delay + 's';
+        
+        document.getElementById('sparkleContainer').appendChild(star);
+        
+        // Remove star after animation completes
+        setTimeout(() => {
+            if (star.parentNode) {
+                star.parentNode.removeChild(star);
+            }
+        }, (duration + delay) * 1000);
+    }
+
+    function initSparkles() {
+        // Create initial sparkles
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => {
+                createSparkle();
+            }, i * 150);
+        }
+        
+        // Create initial distant stars
+        for (let i = 0; i < 25; i++) {
+            setTimeout(() => {
+                createDistantStar();
+            }, i * 80);
+        }
+        
+        // Continue creating sparkles
+        setInterval(() => {
+            if (document.getElementById('sparkleContainer').children.length < 50) {
+                createSparkle();
+            }
+        }, 1500);
+        
+        // Continue creating distant stars (more frequent)
+        setInterval(() => {
+            let maxStars;
+            const theme = document.documentElement.getAttribute('data-theme') || 'c';
+            
+            // Theme-specific star density
+            switch (theme) {
+                case 'a': // Aurora - more stars
+                    maxStars = 60;
+                    break;
+                case 'e': // Eclipse - many stars
+                    maxStars = 70;
+                    break;
+                case 'n': // Nebula - lots of stars
+                    maxStars = 80;
+                    break;
+                default:
+                    maxStars = 40;
+            }
+            
+            if (document.getElementById('sparkleContainer').children.length < maxStars) {
+                createDistantStar();
+            }
+        }, 600);
+    }
+
+    // Update starfield image
+    function updateStarfield() {
+        const theme = document.documentElement.getAttribute('data-theme') || 'c';
+        
+        // Hide all starfield images
+        document.querySelectorAll('.starfield-image').forEach(img => {
+            img.style.opacity = '0';
+        });
+        
+        // Show the appropriate image for the current theme
+        const activeImage = document.querySelector(`.starfield-image[data-image="${getImageForTheme(theme)}"]`);
+        if (activeImage) {
+            activeImage.style.opacity = '0.05';
+        }
+    }
+
+    function getImageForTheme(theme) {
+        switch (theme) {
+            case 'c':
+            case 'z':
+            case 'n':
+                return 'stars';
+            case 'a':
+                return 'clouds1';
+            case 'r':
+                return 'clouds2';
+            case 'e':
+                return 'clouds4';
+            default:
+                return 'stars';
+        }
+    }
+
+    // Update starfield when theme changes
+    const originalSetTheme = setTheme;
+    setTheme = function(theme) {
+        originalSetTheme(theme);
+        updateStarfield();
+    };
     </script>
 </body>
 </html> 

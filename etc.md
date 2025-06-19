@@ -327,7 +327,166 @@ body {
     flex-direction: column;
   }
 }
+
+/* Sparkle Animations */
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 20px;
+  color: var(--primary-pink);
+  animation: sparkleFade 4s ease-in-out forwards;
+  z-index: 1000;
+}
+
+.sparkle::before {
+  content: '✨';
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: sparkleTwinkle 2s ease-in-out infinite;
+}
+
+/* Distant Star Dots */
+.distant-star {
+  position: absolute;
+  pointer-events: none;
+  background: var(--primary-purple);
+  border-radius: 50%;
+  animation: distantStarFade 4s ease-in-out infinite;
+  z-index: 999;
+}
+
+@keyframes sparkleFade {
+  0% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+  100% { opacity: 0; transform: scale(0) rotate(360deg); }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+@keyframes distantStarFade {
+  0% { opacity: 0; transform: scale(0); }
+  50% { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+/* Theme-specific distant star variations */
+[data-theme="c"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 10px var(--primary-purple);
+}
+
+[data-theme="a"] .distant-star {
+  background: var(--primary-pink);
+  box-shadow: 0 0 15px var(--primary-pink);
+}
+
+[data-theme="r"] .distant-star {
+  background: var(--accent-blue);
+  box-shadow: 0 0 8px var(--accent-blue);
+}
+
+[data-theme="z"] .distant-star {
+  background: var(--accent-green);
+  box-shadow: 0 0 12px var(--accent-green);
+}
+
+[data-theme="e"] .distant-star {
+  background: var(--accent-orange);
+  box-shadow: 0 0 20px var(--accent-orange);
+}
+
+[data-theme="n"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 18px var(--primary-purple);
+}
+
+[data-theme="sunset"] .distant-star {
+  background: var(--primary-pink);
+  box-shadow: 0 0 15px var(--primary-pink);
+}
+
+[data-theme="ocean"] .distant-star {
+  background: var(--accent-blue);
+  box-shadow: 0 0 10px var(--accent-blue);
+}
+
+[data-theme="forest"] .distant-star {
+  background: var(--accent-green);
+  box-shadow: 0 0 12px var(--accent-green);
+}
+
+[data-theme="dark"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 25px var(--primary-purple);
+}
+
+#sparkleContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Starfield Background */
+.starfield-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.starfield-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.starfield-image:hover {
+  opacity: 0.1;
+}
+
+/* Theme-specific starfield images */
+[data-theme="c"] .starfield-image[data-image="stars"],
+[data-theme="a"] .starfield-image[data-image="clouds1"],
+[data-theme="r"] .starfield-image[data-image="clouds2"],
+[data-theme="e"] .starfield-image[data-image="clouds4"],
+[data-theme="z"] .starfield-image[data-image="stars"],
+[data-theme="n"] .starfield-image[data-image="stars"] {
+  opacity: 0.05;
+}
+
+.starfield-image {
+  opacity: 0;
+}
 </style>
+
+<!-- Starfield Background -->
+<div class="starfield-container">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="starfield-image" data-image="stars">
+  <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="starfield-image" data-image="clouds1">
+  <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="starfield-image" data-image="clouds2">
+  <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
+</div>
+
+<!-- Sparkle Container -->
+<div id="sparkleContainer"></div>
 
 <div class="etc-container">
   <div class="etc-header">
@@ -519,5 +678,162 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById(targetPlayer).classList.add('active');
     });
   });
+  
+  // Initialize sparkles
+  initSparkles();
 });
+
+// Sparkle Animation Functions
+function createSparkle() {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  
+  // Random position
+  const x = Math.random() * window.innerWidth;
+  const y = Math.random() * window.innerHeight;
+  const size = Math.random() * 20 + 10;
+  
+  sparkle.style.left = x + 'px';
+  sparkle.style.top = y + 'px';
+  sparkle.style.fontSize = size + 'px';
+  
+  document.getElementById('sparkleContainer').appendChild(sparkle);
+  
+  // Remove sparkle after animation completes
+  setTimeout(() => {
+    if (sparkle.parentNode) {
+      sparkle.parentNode.removeChild(sparkle);
+    }
+  }, 4000);
+}
+
+function createDistantStar() {
+  const star = document.createElement('div');
+  star.className = 'distant-star';
+  
+  // Random position
+  const x = Math.random() * window.innerWidth;
+  const y = Math.random() * window.innerHeight;
+  const size = Math.random() * 4 + 2;
+  const duration = Math.random() * 3 + 2;
+  const delay = Math.random() * 2;
+  
+  // Theme-specific star properties
+  const theme = document.documentElement.getAttribute('data-theme') || 'default';
+  switch (theme) {
+    case 'sunset':
+      star.style.background = 'var(--primary-pink)';
+      break;
+    case 'ocean':
+      star.style.background = 'var(--accent-blue)';
+      break;
+    case 'forest':
+      star.style.background = 'var(--accent-green)';
+      break;
+    case 'dark':
+      star.style.background = 'var(--primary-purple)';
+      break;
+    default:
+      star.style.background = 'var(--primary-purple)';
+  }
+  
+  star.style.left = x + 'px';
+  star.style.top = y + 'px';
+  star.style.width = size + 'px';
+  star.style.height = size + 'px';
+  star.style.animationDuration = duration + 's';
+  star.style.animationDelay = delay + 's';
+  
+  document.getElementById('sparkleContainer').appendChild(star);
+  
+  // Remove star after animation completes
+  setTimeout(() => {
+    if (star.parentNode) {
+      star.parentNode.removeChild(star);
+    }
+  }, (duration + delay) * 1000);
+}
+
+function initSparkles() {
+  // Create initial sparkles
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
+      createSparkle();
+    }, i * 200);
+  }
+  
+  // Create initial distant stars
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      createDistantStar();
+    }, i * 100);
+  }
+  
+  // Continue creating sparkles
+  setInterval(() => {
+    if (document.getElementById('sparkleContainer').children.length < 40) {
+      createSparkle();
+    }
+  }, 2000);
+  
+  // Continue creating distant stars (more frequent)
+  setInterval(() => {
+    let maxStars;
+    const theme = document.documentElement.getAttribute('data-theme') || 'default';
+    
+    // Theme-specific star density
+    switch (theme) {
+      case 'sunset': // Sunset - more stars
+        maxStars = 50;
+        break;
+      case 'dark': // Dark - many stars
+        maxStars = 60;
+        break;
+      default:
+        maxStars = 30;
+    }
+    
+    if (document.getElementById('sparkleContainer').children.length < maxStars) {
+      createDistantStar();
+    }
+  }, 800);
+}
+
+// Update starfield image
+function updateStarfield() {
+  const theme = document.documentElement.getAttribute('data-theme') || 'default';
+  
+  // Hide all starfield images
+  document.querySelectorAll('.starfield-image').forEach(img => {
+    img.style.opacity = '0';
+  });
+  
+  // Show the appropriate image for the current theme
+  const activeImage = document.querySelector(`.starfield-image[data-image="${getImageForTheme(theme)}"]`);
+  if (activeImage) {
+    activeImage.style.opacity = '0.05';
+  }
+}
+
+function getImageForTheme(theme) {
+  switch (theme) {
+    case 'sunset':
+      return 'clouds1';
+    case 'ocean':
+      return 'clouds2';
+    case 'forest':
+      return 'clouds4';
+    case 'dark':
+      return 'stars';
+    default:
+      return 'stars';
+  }
+}
+
+// Update starfield when theme changes
+const originalSetTheme = setTheme;
+setTheme = function(theme) {
+  originalSetTheme(theme);
+  updateStarfield();
+};
 </script> 

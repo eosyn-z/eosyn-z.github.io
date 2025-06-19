@@ -719,7 +719,7 @@ h1 {
 
   <div class="social-links">
     <a href="https://github.com/eosyn-z">GitHub: eosyn-z</a>
-    <a href="https://discord.com/users/eosyn"> Discord: eosyn</a>
+    <a href="https://discord.gg/PsSsx3NcAp"> Discord: eosyn</a>
   </div>
 </div>
 
@@ -946,25 +946,25 @@ function createDistantStar() {
 
 function initSparkles() {
   // Create initial sparkles
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 50; i++) {
     setTimeout(() => {
       createSparkle();
-    }, i * 250); // Stagger creation
+    }, i * 200); // Stagger creation
   }
   
   // Create initial distant stars
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 80; i++) {
     setTimeout(() => {
       createDistantStar();
-    }, i * 100); // More frequent, smaller delay
+    }, i * 80); // More frequent, smaller delay
   }
   
   // Continue creating sparkles
   setInterval(() => {
-    if (document.getElementById('sparkleContainer').children.length < 40) {
+    if (document.getElementById('sparkleContainer').children.length < 60) {
       createSparkle();
     }
-  }, 1000);
+  }, 800);
   
   // Continue creating distant stars (more frequent)
   setInterval(() => {
@@ -974,32 +974,32 @@ function initSparkles() {
     // Theme-specific star density
     switch(currentTheme) {
       case 'a': // Aurora - more stars
-        maxStars = 50;
+        maxStars = 80;
         break;
       case 'e': // Eclipse - more stars
-        maxStars = 45;
+        maxStars = 90;
         break;
       case 'r': // Rainbow - medium stars
-        maxStars = 40;
+        maxStars = 70;
         break;
       case 'c': // Cosmic - medium stars
-        maxStars = 40;
+        maxStars = 75;
         break;
       case 'n': // Nebula - medium stars
-        maxStars = 40;
+        maxStars = 85;
         break;
       case 'z': // Zenith - fewer stars
-        maxStars = 30;
+        maxStars = 60;
         break;
       default:
-        maxStars = 40;
+        maxStars = 75;
     }
     
     const distantStars = document.querySelectorAll('.distant-star').length;
     if (distantStars < maxStars) {
       createDistantStar();
     }
-  }, 500); // More frequent than sparkles
+  }, 400); // More frequent than sparkles
 }
 </script>
 </body>

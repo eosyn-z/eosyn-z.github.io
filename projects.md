@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Nature
-permalink: /nature/
+title: Personal Projects
+permalink: /projects/
 ---
 
 <style>
@@ -93,26 +93,47 @@ permalink: /nature/
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-white);
-  text-shadow: 2px 2px 4px var(--shadow-heavy);
+  margin: 0;
+  padding: 20px;
+  background: var(--gradient-primary);
+  min-height: 100vh;
+  color: var(--text-primary);
   transition: all 0.3s ease;
 }
 
-.content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px var(--shadow-medium);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.header {
   text-align: center;
-  z-index: 10;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-purple);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 .back-link {
@@ -136,228 +157,136 @@ body {
   box-shadow: 0 8px 20px var(--shadow-medium);
 }
 
-.loading {
-  font-size: 24px;
-  opacity: 0.9;
-  background: var(--shadow-heavy);
-  padding: 20px 30px;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
 }
 
-.page-title {
+.project-card {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-primary);
+  border-radius: 15px;
+  padding: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: var(--shadow-heavy);
-  padding: 12px 20px;
-  border-radius: 25px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover::before {
+  transform: scaleX(1);
+}
+
+.project-card:hover {
+  border-color: var(--primary-purple);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-medium);
+}
+
+.project-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.project-icon {
+  font-size: 1.6rem;
+}
+
+.project-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tech-tag {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.project-links {
+  display: flex;
+  gap: 10px;
+}
+
+.project-link {
+  background: var(--bg-accent);
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-primary);
+}
+
+.project-link:hover {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  transform: translateY(-2px);
+}
+
+.project-link.live {
+  background: var(--accent-green);
+  color: var(--text-white);
+}
+
+.project-link.live:hover {
+  background: #38a169;
+}
+
+.status-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
   font-weight: 600;
 }
 
-/* Theme Switcher */
-.theme-switcher {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  z-index: 1000;
-  transition: all 0.3s ease;
+.status-badge.completed {
+  background: #48bb78;
+  color: white;
 }
 
-.theme-switcher h3 {
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-  font-size: 14px;
-  text-align: center;
+.status-badge.in-progress {
+  background: #ed8936;
+  color: white;
 }
 
-.theme-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.theme-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid var(--border-primary);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.theme-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px var(--shadow-medium);
-}
-
-.theme-btn.active {
-  border-color: var(--primary-purple);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-}
-
-.theme-btn[data-theme="default"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
-.theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
-.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
-.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
-.theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
-
-/* Cookie Consent */
-.cookie-consent {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  z-index: 1001;
-  max-width: 500px;
-  margin: 0 auto;
-  display: none;
-}
-
-.cookie-consent.show {
-  display: block;
-}
-
-.cookie-consent h3 {
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-  font-size: 16px;
-}
-
-.cookie-consent p {
-  margin: 0 0 15px 0;
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.cookie-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.cookie-btn {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.cookie-btn.accept {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-}
-
-.cookie-btn.reject {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 2px solid var(--border-primary);
-}
-
-.cookie-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-medium);
-}
-
-@media (max-width: 768px) {
-  .theme-switcher {
-    top: 10px;
-    right: 10px;
-    padding: 10px;
-  }
-  
-  .theme-buttons {
-    gap: 5px;
-  }
-  
-  .theme-btn {
-    width: 25px;
-    height: 25px;
-  }
-  
-  .cookie-consent {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-  }
-  
-  .cookie-buttons {
-    flex-direction: column;
-  }
-}
-
-.group-switcher {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1002;
-  display: flex;
-  gap: 12px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 12px 20px;
-  box-shadow: 0 8px 24px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  transition: all 0.3s ease;
-}
-
-.group-btn {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 2px solid var(--border-primary);
-  border-radius: 20px;
-  padding: 10px 18px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  outline: none;
-}
-
-.group-btn.active, .group-btn:focus {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-  border-color: var(--primary-purple);
-  box-shadow: 0 4px 16px var(--shadow-medium);
-}
-
-.group-btn:hover {
-  background: var(--gradient-secondary);
-  color: var(--text-white);
-  border-color: var(--accent-blue);
-}
-
-@media (max-width: 768px) {
-  .group-switcher {
-    top: 65px;
-    padding: 8px 6px;
-    gap: 6px;
-  }
-  .group-btn {
-    padding: 7px 10px;
-    font-size: 13px;
-  }
+.status-badge.planned {
+  background: #4299e1;
+  color: white;
 }
 
 /* Sparkle Animations */
@@ -475,9 +404,146 @@ body {
 .starfield-image {
   opacity: 0;
 }
-</style>
 
-<a href="/" class="back-link">← Back to Home</a>
+/* Theme Switcher */
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--bg-primary);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 10px 30px var(--shadow-medium);
+  border: 2px solid var(--border-primary);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.theme-switcher h3 {
+  margin: 0 0 10px 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  text-align: center;
+}
+
+.theme-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.theme-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--border-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+.theme-btn.active {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.theme-btn[data-theme="default"] { background: var(--gradient-primary); }
+.theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
+.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
+.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
+.theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
+
+/* Cookie Consent */
+.cookie-consent {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: var(--bg-primary);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px var(--shadow-medium);
+  border: 2px solid var(--border-primary);
+  z-index: 1001;
+  max-width: 500px;
+  margin: 0 auto;
+  display: none;
+}
+
+.cookie-consent.show {
+  display: block;
+}
+
+.cookie-consent h3 {
+  margin: 0 0 10px 0;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.cookie-consent p {
+  margin: 0 0 15px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.cookie-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cookie-btn.accept {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+}
+
+.cookie-btn.reject {
+  background: var(--bg-accent);
+  color: var(--text-primary);
+}
+
+.cookie-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .project-card {
+    padding: 20px;
+  }
+  
+  .cookie-buttons {
+    flex-direction: column;
+  }
+}
+</style>
 
 <!-- Starfield Background -->
 <div class="starfield-container">
@@ -490,18 +556,131 @@ body {
 <!-- Sparkle Container -->
 <div id="sparkleContainer"></div>
 
-<div class="page-title">Touch grass</div>
+<a href="/" class="back-link">← Back to Home</a>
 
-<!-- Group Switcher -->
-<div class="group-switcher" id="groupSwitcher">
-  <button class="group-btn active" data-group="random">Random</button>
-  <button class="group-btn" data-group="forest">Forest</button>
-  <button class="group-btn" data-group="flowingWater">Flowing Water</button>
-  <button class="group-btn" data-group="ocean">Ocean</button>
-</div>
+<div class="container">
+  <div class="header">
+    <h1>🚀 Personal Projects</h1>
+    <p>A collection of things I've built and am working on</p>
+  </div>
 
-<div class="content">
-  <div class="loading">Loading some cool cinemagraphs I found online... </div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="status-badge completed">Completed</div>
+      <div class="project-title">
+        <span class="project-icon">🌐</span>
+        This Website
+      </div>
+      <p class="project-description">
+        My personal website built with Jekyll, featuring multiple themes, interactive elements, and a magical sparkle system. Includes a search page, project recommendations, and nature backgrounds.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">Jekyll</span>
+        <span class="tech-tag">HTML/CSS</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">GitHub Pages</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/eosyn-z/eosyn-z.github.io" class="project-link" target="_blank">GitHub</a>
+        <a href="/" class="project-link live">Live Site</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="status-badge in-progress">In Progress</div>
+      <div class="project-title">
+        <span class="project-icon">🎮</span>
+        Game Development
+      </div>
+      <p class="project-description">
+        Working on a small indie game project. Learning game development fundamentals and exploring creative coding techniques.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">Unity</span>
+        <span class="tech-tag">C#</span>
+        <span class="tech-tag">Game Design</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Coming Soon</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="status-badge planned">Planned</div>
+      <div class="project-title">
+        <span class="project-icon">🤖</span>
+        AI Assistant
+      </div>
+      <p class="project-description">
+        Planning to build a personal AI assistant that can help with daily tasks, learning, and creative projects.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">OpenAI API</span>
+        <span class="tech-tag">Machine Learning</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Planning</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="status-badge planned">Planned</div>
+      <div class="project-title">
+        <span class="project-icon">📱</span>
+        Mobile App
+      </div>
+      <p class="project-description">
+        A productivity app focused on helping developers and creators stay organized and inspired.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">React Native</span>
+        <span class="tech-tag">TypeScript</span>
+        <span class="tech-tag">Firebase</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Planning</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="status-badge planned">Planned</div>
+      <div class="project-title">
+        <span class="project-icon">🎨</span>
+        Creative Coding
+      </div>
+      <p class="project-description">
+        Exploring generative art and creative coding projects using p5.js and other creative coding libraries.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">p5.js</span>
+        <span class="tech-tag">Creative Coding</span>
+        <span class="tech-tag">Generative Art</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Coming Soon</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="status-badge planned">Planned</div>
+      <div class="project-title">
+        <span class="project-icon">🔧</span>
+        Developer Tools
+      </div>
+      <p class="project-description">
+        Building useful developer tools and utilities to improve workflow and productivity.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">Node.js</span>
+        <span class="tech-tag">CLI Tools</span>
+        <span class="tech-tag">Developer Experience</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Planning</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Theme Switcher -->
@@ -527,34 +706,13 @@ body {
 </div>
 
 <script>
-// Curated lists of nature-themed gifs
-const forestCinemagraphs = [
-  "https://i.pinimg.com/originals/60/d8/44/60d844679e07db517c19fdc5dd7af089.gif",
-  "https://i.pinimg.com/originals/92/cd/fc/92cdfc9bdebc53a747331999b6933734.gif",
-  "https://i.pinimg.com/originals/fc/5f/2c/fc5f2cbfc8b3f89af197a02aaef345c3.gif",
-];
-const flowingWaterCinemagraphs = [
-  "https://livingstills.nl/wp-content/uploads/2020/11/waterfall_mist.gif",
-  "https://64.media.tumblr.com/c74ed91f169aea9552d8d1a38d245cbd/tumblr_ntr9fsF71S1upvbufo1_540.gif",
-  "https://mir-s3-cdn-cf.behance.net/project_modules/source/1aacd211481791.560f867dabbbd.gif",
-];
-const oceanCinemagraphs = [
-  "https://www.theodysseyonline.com/media-library/image.gif?id=10746909&width=800&quality=80",
-];
-const natureGroups = {
-  random: [...forestCinemagraphs, ...flowingWaterCinemagraphs, ...oceanCinemagraphs],
-  forest: forestCinemagraphs,
-  flowingWater: flowingWaterCinemagraphs,
-  ocean: oceanCinemagraphs
-};
-let currentGroup = 'random';
-
 // Cookie management functions
 function setCookie(name, value, days) {
   const expires = new Date();
   expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
   document.cookie = name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/";
 }
+
 function getCookie(name) {
   const nameEQ = name + "=";
   const ca = document.cookie.split(';');
@@ -565,89 +723,57 @@ function getCookie(name) {
   }
   return null;
 }
+
 function deleteCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
 }
+
 // Theme management
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+  
+  // Update active button
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
   document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+  
+  // Save theme preference if cookies are accepted
   if (getCookie('cookiesAccepted') === 'true') {
     setCookie('theme', theme, 365);
   }
 }
+
 function loadTheme() {
   const savedTheme = getCookie('theme');
-  if (savedTheme) setTheme(savedTheme);
+  if (savedTheme) {
+    setTheme(savedTheme);
+  }
 }
+
 // Cookie consent management
 function showCookieConsent() {
   if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
     document.getElementById('cookieConsent').classList.add('show');
   }
 }
+
 function acceptCookies() {
   setCookie('cookiesAccepted', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
+  
+  // Save current theme preference
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
   setCookie('theme', currentTheme, 365);
 }
+
 function rejectCookies() {
   setCookie('cookiesRejected', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
+  
+  // Clear any existing theme cookie
   deleteCookie('theme');
 }
-// Nature background logic
-function getRandomGifFromGroup(group) {
-  const arr = natureGroups[group] || natureGroups['random'];
-  if (!arr.length) return '';
-  const idx = Math.floor(Math.random() * arr.length);
-  return arr[idx];
-}
-function setNatureBackground(group) {
-  const gif = getRandomGifFromGroup(group);
-  document.body.style.backgroundImage = gif ? `url('${gif}')` : '';
-}
-function setActiveGroupBtn(group) {
-  document.querySelectorAll('.group-btn').forEach(btn => {
-    if (btn.getAttribute('data-group') === group) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
-}
-window.addEventListener('load', function() {
-  setNatureBackground(currentGroup);
-  setTimeout(() => {
-    const loadingElement = document.querySelector('.loading');
-    if (loadingElement) loadingElement.style.display = 'none';
-  }, 1000);
-});
-document.addEventListener('DOMContentLoaded', function() {
-  showCookieConsent();
-  loadTheme();
-  
-  // Initialize sparkles
-  initSparkles();
-  
-  document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const theme = this.getAttribute('data-theme');
-      setTheme(theme);
-    });
-  });
-  document.querySelectorAll('.group-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const group = this.getAttribute('data-group');
-      currentGroup = group;
-      setActiveGroupBtn(group);
-      setNatureBackground(group);
-    });
-  });
-});
 
 // Sparkle Animation Functions
 function createSparkle() {
@@ -803,17 +929,23 @@ setTheme = function(theme) {
   updateStarfield();
 };
 
-document.addEventListener('click', function(e) {
-  if (
-    e.target.classList.contains('back-link') ||
-    e.target.closest('.theme-switcher') ||
-    e.target.closest('.cookie-consent') ||
-    e.target.closest('.group-switcher')
-  ) {
-    return;
-  }
-  setNatureBackground('random');
-  setActiveGroupBtn('random');
-  currentGroup = 'random';
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  // Show cookie consent if needed
+  showCookieConsent();
+  
+  // Load saved theme
+  loadTheme();
+  
+  // Theme button click handlers
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const theme = this.getAttribute('data-theme');
+      setTheme(theme);
+    });
+  });
+  
+  // Initialize sparkles
+  initSparkles();
 });
 </script> 

@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Nature
-permalink: /nature/
+title: Art Gallery
+permalink: /art/
 ---
 
 <style>
@@ -93,26 +93,47 @@ permalink: /nature/
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-white);
-  text-shadow: 2px 2px 4px var(--shadow-heavy);
+  margin: 0;
+  padding: 20px;
+  background: var(--gradient-primary);
+  min-height: 100vh;
+  color: var(--text-primary);
   transition: all 0.3s ease;
 }
 
-.content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px var(--shadow-medium);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.header {
   text-align: center;
-  z-index: 10;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-purple);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 .back-link {
@@ -136,228 +157,109 @@ body {
   box-shadow: 0 8px 20px var(--shadow-medium);
 }
 
-.loading {
-  font-size: 24px;
-  opacity: 0.9;
-  background: var(--shadow-heavy);
-  padding: 20px 30px;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
 }
 
-.page-title {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: var(--shadow-heavy);
-  padding: 12px 20px;
-  border-radius: 25px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 16px;
-  font-weight: 600;
-}
-
-/* Theme Switcher */
-.theme-switcher {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
+.art-piece {
+  background: var(--bg-secondary);
   border: 2px solid var(--border-primary);
-  z-index: 1000;
-  transition: all 0.3s ease;
-}
-
-.theme-switcher h3 {
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-  font-size: 14px;
-  text-align: center;
-}
-
-.theme-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.theme-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid var(--border-primary);
-  cursor: pointer;
+  border-radius: 15px;
+  overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
 }
 
-.theme-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px var(--shadow-medium);
-}
-
-.theme-btn.active {
+.art-piece:hover {
   border-color: var(--primary-purple);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-medium);
 }
 
-.theme-btn[data-theme="default"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
-.theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
-.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
-.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
-.theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
-
-/* Cookie Consent */
-.cookie-consent {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  z-index: 1001;
-  max-width: 500px;
-  margin: 0 auto;
-  display: none;
-}
-
-.cookie-consent.show {
-  display: block;
-}
-
-.cookie-consent h3 {
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-  font-size: 16px;
-}
-
-.cookie-consent p {
-  margin: 0 0 15px 0;
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.cookie-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.cookie-btn {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.cookie-btn.accept {
+.art-image {
+  width: 100%;
+  height: 250px;
   background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
   color: var(--text-white);
+  position: relative;
+  overflow: hidden;
 }
 
-.cookie-btn.reject {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 2px solid var(--border-primary);
-}
-
-.cookie-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-medium);
-}
-
-@media (max-width: 768px) {
-  .theme-switcher {
-    top: 10px;
-    right: 10px;
-    padding: 10px;
-  }
-  
-  .theme-buttons {
-    gap: 5px;
-  }
-  
-  .theme-btn {
-    width: 25px;
-    height: 25px;
-  }
-  
-  .cookie-consent {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-  }
-  
-  .cookie-buttons {
-    flex-direction: column;
-  }
-}
-
-.group-switcher {
+.art-image::before {
+  content: '';
   position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1002;
-  display: flex;
-  gap: 12px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 12px 20px;
-  box-shadow: 0 8px 24px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  transition: all 0.3s ease;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  animation: shimmer 3s infinite;
 }
 
-.group-btn {
-  background: var(--bg-secondary);
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.art-content {
+  padding: 20px;
+}
+
+.art-title {
+  font-size: 1.3rem;
+  font-weight: 600;
   color: var(--text-primary);
-  border: 2px solid var(--border-primary);
-  border-radius: 20px;
-  padding: 10px 18px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  outline: none;
+  margin-bottom: 8px;
 }
 
-.group-btn.active, .group-btn:focus {
+.art-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.art-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.art-type {
   background: var(--gradient-primary);
   color: var(--text-white);
-  border-color: var(--primary-purple);
-  box-shadow: 0 4px 16px var(--shadow-medium);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: 500;
 }
 
-.group-btn:hover {
-  background: var(--gradient-secondary);
-  color: var(--text-white);
-  border-color: var(--accent-blue);
+.art-date {
+  color: var(--text-light);
 }
 
-@media (max-width: 768px) {
-  .group-switcher {
-    top: 65px;
-    padding: 8px 6px;
-    gap: 6px;
-  }
-  .group-btn {
-    padding: 7px 10px;
-    font-size: 13px;
-  }
+.placeholder-text {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 40px 0;
+  padding: 40px;
+  background: var(--bg-accent);
+  border-radius: 15px;
+  border: 2px dashed var(--border-primary);
+}
+
+.placeholder-text h3 {
+  color: var(--text-primary);
+  margin-bottom: 10px;
 }
 
 /* Sparkle Animations */
@@ -475,9 +377,146 @@ body {
 .starfield-image {
   opacity: 0;
 }
-</style>
 
-<a href="/" class="back-link">← Back to Home</a>
+/* Theme Switcher */
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--bg-primary);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 10px 30px var(--shadow-medium);
+  border: 2px solid var(--border-primary);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.theme-switcher h3 {
+  margin: 0 0 10px 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  text-align: center;
+}
+
+.theme-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.theme-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--border-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+.theme-btn.active {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.theme-btn[data-theme="default"] { background: var(--gradient-primary); }
+.theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
+.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
+.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
+.theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
+
+/* Cookie Consent */
+.cookie-consent {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: var(--bg-primary);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px var(--shadow-medium);
+  border: 2px solid var(--border-primary);
+  z-index: 1001;
+  max-width: 500px;
+  margin: 0 auto;
+  display: none;
+}
+
+.cookie-consent.show {
+  display: block;
+}
+
+.cookie-consent h3 {
+  margin: 0 0 10px 0;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.cookie-consent p {
+  margin: 0 0 15px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.cookie-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cookie-btn.accept {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+}
+
+.cookie-btn.reject {
+  background: var(--bg-accent);
+  color: var(--text-primary);
+}
+
+.cookie-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .art-piece {
+    margin-bottom: 20px;
+  }
+  
+  .cookie-buttons {
+    flex-direction: column;
+  }
+}
+</style>
 
 <!-- Starfield Background -->
 <div class="starfield-container">
@@ -490,18 +529,92 @@ body {
 <!-- Sparkle Container -->
 <div id="sparkleContainer"></div>
 
-<div class="page-title">Touch grass</div>
+<a href="/" class="back-link">← Back to Home</a>
 
-<!-- Group Switcher -->
-<div class="group-switcher" id="groupSwitcher">
-  <button class="group-btn active" data-group="random">Random</button>
-  <button class="group-btn" data-group="forest">Forest</button>
-  <button class="group-btn" data-group="flowingWater">Flowing Water</button>
-  <button class="group-btn" data-group="ocean">Ocean</button>
-</div>
+<div class="container">
+  <div class="header">
+    <h1>🎨 Art Gallery</h1>
+    <p>A collection of creative works and visual experiments</p>
+  </div>
 
-<div class="content">
-  <div class="loading">Loading some cool cinemagraphs I found online... </div>
+  <div class="placeholder-text">
+    <h3>🖼️ Gallery Coming Soon</h3>
+    <p>This space will showcase digital art, creative coding experiments, and visual projects. Currently in the planning phase - stay tuned for updates!</p>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="art-piece">
+      <div class="art-image">🎨</div>
+      <div class="art-content">
+        <div class="art-title">Digital Painting</div>
+        <p class="art-description">A vibrant digital painting exploring color theory and composition.</p>
+        <div class="art-meta">
+          <span class="art-type">Digital Art</span>
+          <span class="art-date">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="art-piece">
+      <div class="art-image">✨</div>
+      <div class="art-content">
+        <div class="art-title">Generative Art</div>
+        <p class="art-description">Algorithmic art created with code and mathematical patterns.</p>
+        <div class="art-meta">
+          <span class="art-type">Generative</span>
+          <span class="art-date">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="art-piece">
+      <div class="art-image">🎭</div>
+      <div class="art-content">
+        <div class="art-title">Character Design</div>
+        <p class="art-description">Original character designs and concept art.</p>
+        <div class="art-meta">
+          <span class="art-type">Character Art</span>
+          <span class="art-date">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="art-piece">
+      <div class="art-image">🌌</div>
+      <div class="art-content">
+        <div class="art-title">Space Art</div>
+        <p class="art-description">Cosmic landscapes and space-themed illustrations.</p>
+        <div class="art-meta">
+          <span class="art-type">Illustration</span>
+          <span class="art-date">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="art-piece">
+      <div class="art-image">🎪</div>
+      <div class="art-content">
+        <div class="art-title">Abstract Art</div>
+        <p class="art-description">Abstract compositions exploring form, color, and emotion.</p>
+        <div class="art-meta">
+          <span class="art-type">Abstract</span>
+          <span class="art-date">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="art-piece">
+      <div class="art-image">🏮</div>
+      <div class="art-content">
+        <div class="art-title">Pixel Art</div>
+        <p class="art-description">Retro-style pixel art and sprite designs.</p>
+        <div class="art-meta">
+          <span class="art-type">Pixel Art</span>
+          <span class="art-date">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Theme Switcher -->
@@ -527,34 +640,13 @@ body {
 </div>
 
 <script>
-// Curated lists of nature-themed gifs
-const forestCinemagraphs = [
-  "https://i.pinimg.com/originals/60/d8/44/60d844679e07db517c19fdc5dd7af089.gif",
-  "https://i.pinimg.com/originals/92/cd/fc/92cdfc9bdebc53a747331999b6933734.gif",
-  "https://i.pinimg.com/originals/fc/5f/2c/fc5f2cbfc8b3f89af197a02aaef345c3.gif",
-];
-const flowingWaterCinemagraphs = [
-  "https://livingstills.nl/wp-content/uploads/2020/11/waterfall_mist.gif",
-  "https://64.media.tumblr.com/c74ed91f169aea9552d8d1a38d245cbd/tumblr_ntr9fsF71S1upvbufo1_540.gif",
-  "https://mir-s3-cdn-cf.behance.net/project_modules/source/1aacd211481791.560f867dabbbd.gif",
-];
-const oceanCinemagraphs = [
-  "https://www.theodysseyonline.com/media-library/image.gif?id=10746909&width=800&quality=80",
-];
-const natureGroups = {
-  random: [...forestCinemagraphs, ...flowingWaterCinemagraphs, ...oceanCinemagraphs],
-  forest: forestCinemagraphs,
-  flowingWater: flowingWaterCinemagraphs,
-  ocean: oceanCinemagraphs
-};
-let currentGroup = 'random';
-
 // Cookie management functions
 function setCookie(name, value, days) {
   const expires = new Date();
   expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
   document.cookie = name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/";
 }
+
 function getCookie(name) {
   const nameEQ = name + "=";
   const ca = document.cookie.split(';');
@@ -565,89 +657,57 @@ function getCookie(name) {
   }
   return null;
 }
+
 function deleteCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
 }
+
 // Theme management
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+  
+  // Update active button
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
   document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+  
+  // Save theme preference if cookies are accepted
   if (getCookie('cookiesAccepted') === 'true') {
     setCookie('theme', theme, 365);
   }
 }
+
 function loadTheme() {
   const savedTheme = getCookie('theme');
-  if (savedTheme) setTheme(savedTheme);
+  if (savedTheme) {
+    setTheme(savedTheme);
+  }
 }
+
 // Cookie consent management
 function showCookieConsent() {
   if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
     document.getElementById('cookieConsent').classList.add('show');
   }
 }
+
 function acceptCookies() {
   setCookie('cookiesAccepted', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
+  
+  // Save current theme preference
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
   setCookie('theme', currentTheme, 365);
 }
+
 function rejectCookies() {
   setCookie('cookiesRejected', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
+  
+  // Clear any existing theme cookie
   deleteCookie('theme');
 }
-// Nature background logic
-function getRandomGifFromGroup(group) {
-  const arr = natureGroups[group] || natureGroups['random'];
-  if (!arr.length) return '';
-  const idx = Math.floor(Math.random() * arr.length);
-  return arr[idx];
-}
-function setNatureBackground(group) {
-  const gif = getRandomGifFromGroup(group);
-  document.body.style.backgroundImage = gif ? `url('${gif}')` : '';
-}
-function setActiveGroupBtn(group) {
-  document.querySelectorAll('.group-btn').forEach(btn => {
-    if (btn.getAttribute('data-group') === group) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
-}
-window.addEventListener('load', function() {
-  setNatureBackground(currentGroup);
-  setTimeout(() => {
-    const loadingElement = document.querySelector('.loading');
-    if (loadingElement) loadingElement.style.display = 'none';
-  }, 1000);
-});
-document.addEventListener('DOMContentLoaded', function() {
-  showCookieConsent();
-  loadTheme();
-  
-  // Initialize sparkles
-  initSparkles();
-  
-  document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const theme = this.getAttribute('data-theme');
-      setTheme(theme);
-    });
-  });
-  document.querySelectorAll('.group-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const group = this.getAttribute('data-group');
-      currentGroup = group;
-      setActiveGroupBtn(group);
-      setNatureBackground(group);
-    });
-  });
-});
 
 // Sparkle Animation Functions
 function createSparkle() {
@@ -803,17 +863,23 @@ setTheme = function(theme) {
   updateStarfield();
 };
 
-document.addEventListener('click', function(e) {
-  if (
-    e.target.classList.contains('back-link') ||
-    e.target.closest('.theme-switcher') ||
-    e.target.closest('.cookie-consent') ||
-    e.target.closest('.group-switcher')
-  ) {
-    return;
-  }
-  setNatureBackground('random');
-  setActiveGroupBtn('random');
-  currentGroup = 'random';
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  // Show cookie consent if needed
+  showCookieConsent();
+  
+  // Load saved theme
+  loadTheme();
+  
+  // Theme button click handlers
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const theme = this.getAttribute('data-theme');
+      setTheme(theme);
+    });
+  });
+  
+  // Initialize sparkles
+  initSparkles();
 });
 </script> 

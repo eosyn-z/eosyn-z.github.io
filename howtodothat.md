@@ -562,9 +562,168 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--shadow-medium);
 }
+
+/* Sparkle Animations */
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 20px;
+  color: var(--primary-pink);
+  animation: sparkleFade 4s ease-in-out forwards;
+  z-index: 1000;
+}
+
+.sparkle::before {
+  content: '✨';
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: sparkleTwinkle 2s ease-in-out infinite;
+}
+
+/* Distant Star Dots */
+.distant-star {
+  position: absolute;
+  pointer-events: none;
+  background: var(--primary-purple);
+  border-radius: 50%;
+  animation: distantStarFade 4s ease-in-out infinite;
+  z-index: 999;
+}
+
+@keyframes sparkleFade {
+  0% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+  100% { opacity: 0; transform: scale(0) rotate(360deg); }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+@keyframes distantStarFade {
+  0% { opacity: 0; transform: scale(0); }
+  50% { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+/* Theme-specific distant star variations */
+[data-theme="c"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 10px var(--primary-purple);
+}
+
+[data-theme="a"] .distant-star {
+  background: var(--primary-pink);
+  box-shadow: 0 0 15px var(--primary-pink);
+}
+
+[data-theme="r"] .distant-star {
+  background: var(--accent-blue);
+  box-shadow: 0 0 8px var(--accent-blue);
+}
+
+[data-theme="z"] .distant-star {
+  background: var(--accent-green);
+  box-shadow: 0 0 12px var(--accent-green);
+}
+
+[data-theme="e"] .distant-star {
+  background: var(--accent-orange);
+  box-shadow: 0 0 20px var(--accent-orange);
+}
+
+[data-theme="n"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 18px var(--primary-purple);
+}
+
+[data-theme="sunset"] .distant-star {
+  background: var(--primary-pink);
+  box-shadow: 0 0 15px var(--primary-pink);
+}
+
+[data-theme="ocean"] .distant-star {
+  background: var(--accent-blue);
+  box-shadow: 0 0 10px var(--accent-blue);
+}
+
+[data-theme="forest"] .distant-star {
+  background: var(--accent-green);
+  box-shadow: 0 0 12px var(--accent-green);
+}
+
+[data-theme="dark"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 25px var(--primary-purple);
+}
+
+#sparkleContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Starfield Background */
+.starfield-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.starfield-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.starfield-image:hover {
+  opacity: 0.1;
+}
+
+/* Theme-specific starfield images */
+[data-theme="c"] .starfield-image[data-image="stars"],
+[data-theme="a"] .starfield-image[data-image="clouds1"],
+[data-theme="r"] .starfield-image[data-image="clouds2"],
+[data-theme="e"] .starfield-image[data-image="clouds4"],
+[data-theme="z"] .starfield-image[data-image="stars"],
+[data-theme="n"] .starfield-image[data-image="stars"] {
+  opacity: 0.05;
+}
+
+.starfield-image {
+  opacity: 0;
+}
 </style>
 
 <a href="/" class="back-link">← Back to Home</a>
+
+<!-- Starfield Background -->
+<div class="starfield-container">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="starfield-image" data-image="stars">
+  <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="starfield-image" data-image="clouds1">
+  <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="starfield-image" data-image="clouds2">
+  <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
+</div>
+
+<!-- Sparkle Container -->
+<div id="sparkleContainer"></div>
 
 <div class="container">
   <div class="header">
@@ -676,26 +835,26 @@ body {
     </div>
   </div>
 
-  <!-- Question 3: Experience Level -->
+  <!-- Question 3: What You Need to Build -->
   <div class="quiz-section" id="section3">
-    <div class="question">What's your programming experience?</div>
-    <div class="question-description">Be honest - this helps us recommend the right learning path</div>
+    <div class="question">What do you need to build?</div>
+    <div class="question-description">This helps us determine the right difficulty level for you</div>
     <div class="options">
-      <div class="option" data-value="beginner" data-label="Complete Beginner">
-        <div class="option-title">🌱 Complete Beginner</div>
-        <div class="option-description">I've never written code before, but I'm excited to learn!</div>
+      <div class="option" data-value="drag-drop" data-label="Drag & Drop Tools">
+        <div class="option-title">🎨 Drag & Drop Tools</div>
+        <div class="option-description">I want to use visual builders like Figma, Webflow, or no-code platforms</div>
       </div>
-      <div class="option" data-value="some" data-label="Some Experience">
-        <div class="option-title">📚 Some Experience</div>
-        <div class="option-description">I've done some coding tutorials or basic projects</div>
+      <div class="option" data-value="html-css" data-label="HTML/CSS Websites">
+        <div class="option-title">🌐 HTML/CSS Websites</div>
+        <div class="option-description">I want to learn HTML and CSS to build static websites</div>
       </div>
-      <div class="option" data-value="intermediate" data-label="Intermediate">
-        <div class="option-title">🚀 Intermediate</div>
-        <div class="option-description">I can write code and have built a few projects</div>
+      <div class="option" data-value="programming" data-label="Learn Programming Languages">
+        <div class="option-title">💻 Learn Programming Languages</div>
+        <div class="option-description">I want to learn JavaScript, Python, or other programming languages</div>
       </div>
-      <div class="option" data-value="advanced" data-label="Advanced">
-        <div class="option-title">⚡ Advanced</div>
-        <div class="option-description">I'm comfortable with multiple programming languages</div>
+      <div class="option" data-value="build-systems" data-label="Build Complex Systems">
+        <div class="option-title">🏗️ Build Complex Systems</div>
+        <div class="option-description">I want to build full applications, APIs, databases, or complex features</div>
       </div>
     </div>
     <div class="navigation">
@@ -930,7 +1089,7 @@ function restoreSelections() {
 }
 
 function getQuestionKey(section) {
-  const keys = ['projectType', 'features', 'experience', 'learningStyle', 'timeline', 'budget'];
+  const keys = ['projectType', 'features', 'buildType', 'learningStyle', 'timeline', 'budget'];
   return keys[section - 1];
 }
 
@@ -973,10 +1132,20 @@ function generateRecommendation(answers) {
   // Ensure features is always an array
   const features = Array.isArray(answers.features) ? answers.features : [answers.features];
 
+  // Determine difficulty based on what they need to build
+  let difficulty = 'beginner';
+  if (answers.buildType === 'drag-drop' || answers.buildType === 'html-css') {
+    difficulty = 'beginner';
+  } else if (answers.buildType === 'programming') {
+    difficulty = 'intermediate';
+  } else if (answers.buildType === 'build-systems') {
+    difficulty = 'expert';
+  }
+
   // Analyze project type and features
   switch(answers.projectType) {
     case 'webapp':
-      if (answers.experience === 'beginner') {
+      if (difficulty === 'beginner') {
         // Check for specific features to recommend appropriate tools
         if (features.includes('user-auth') || features.includes('data-storage')) {
           techStack = [
@@ -1045,8 +1214,40 @@ function generateRecommendation(answers) {
             <p><strong>🔧 Essential Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('beginner', 3)}</p>
           `;
         }
+      } else if (difficulty === 'intermediate') {
+        // Intermediate recommendations - focus on learning programming languages
+        techStack = [
+          { name: 'JavaScript', type: 'frontend' },
+          { name: 'TypeScript', type: 'frontend' },
+          { name: 'React', type: 'frontend' },
+          { name: 'Node.js', type: 'backend' },
+          { name: 'MongoDB', type: 'database' }
+        ];
+        resources = [
+          getRecommendationsByDifficultyWithDescriptions('intermediate', 4)
+        ];
+        learningPath = [
+          'Master JavaScript fundamentals',
+          'Learn TypeScript for type safety',
+          'Build React components and state management',
+          'Learn Node.js for backend development',
+          'Set up MongoDB database',
+          'Connect frontend and backend',
+          'Deploy your full-stack application'
+        ];
+        recommendation = `
+          <h2>💻 Learn Programming Languages</h2>
+          <p>Focus on <strong>JavaScript/TypeScript</strong> to build a full-stack web application. This path helps you:</p>
+          <ul>
+            <li>Master a programming language used everywhere</li>
+            <li>Build both frontend and backend with the same language</li>
+            <li>Learn modern development practices</li>
+            <li>Create scalable applications</li>
+          </ul>
+          <p><strong>🔧 Recommended Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('intermediate', 3)}</p>
+        `;
       } else {
-        // Advanced webapp recommendations based on features
+        // Expert recommendations - complex systems
         if (features.includes('real-time')) {
           techStack = [
             { name: 'Next.js', type: 'frontend' },
@@ -1056,26 +1257,26 @@ function generateRecommendation(answers) {
             { name: 'Vercel', type: 'deployment' }
           ];
           resources = [
-            getRecommendationsByDifficultyWithDescriptions('intermediate', 2),
-            getRecommendationsByDifficultyWithDescriptions('expert', 2)
+            getRecommendationsByDifficultyWithDescriptions('expert', 3)
           ];
           learningPath = [
-            'Learn TypeScript fundamentals',
-            'Master Next.js (pages, routing, API routes)',
-            'Set up PostgreSQL database',
+            'Master TypeScript and advanced JavaScript',
+            'Learn Next.js architecture and patterns',
+            'Set up PostgreSQL with proper schema design',
             'Implement real-time features with Socket.io',
-            'Deploy with Vercel'
+            'Set up CI/CD pipelines',
+            'Deploy with Vercel and monitor performance'
           ];
           recommendation = `
-            <h2>⚡ Real-time Web Application</h2>
-            <p>Build with <strong>Next.js and Socket.io</strong> for real-time features. This stack offers:</p>
+            <h2>⚡ Complex Real-time System</h2>
+            <p>Build a sophisticated <strong>real-time web application</strong> with advanced features. This system includes:</p>
             <ul>
               <li>Real-time communication between users</li>
-              <li>Server-side rendering for better performance</li>
-              <li>Type safety with TypeScript</li>
-              <li>Easy deployment with Vercel</li>
+              <li>Complex database design and optimization</li>
+              <li>Advanced TypeScript patterns</li>
+              <li>Production-ready deployment setup</li>
             </ul>
-            <p><strong>🔧 Advanced Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
+            <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
           `;
         } else if (features.includes('payments')) {
           techStack = [
@@ -1083,223 +1284,60 @@ function generateRecommendation(answers) {
             { name: 'TypeScript', type: 'frontend' },
             { name: 'Stripe', type: 'backend' },
             { name: 'PostgreSQL', type: 'database' },
-            { name: 'Vercel', type: 'deployment' }
+            { name: 'Docker', type: 'deployment' }
           ];
           resources = [
-            getRecommendationsByDifficultyWithDescriptions('intermediate', 2),
-            getRecommendationsByDifficultyWithDescriptions('expert', 2)
+            getRecommendationsByDifficultyWithDescriptions('expert', 3)
           ];
           learningPath = [
-            'Learn TypeScript fundamentals',
-            'Master Next.js (pages, routing, API routes)',
-            'Set up PostgreSQL database',
-            'Integrate Stripe for payments',
-            'Deploy with Vercel'
+            'Master TypeScript and advanced patterns',
+            'Learn Next.js with server-side rendering',
+            'Design secure payment systems with Stripe',
+            'Set up PostgreSQL with complex relationships',
+            'Containerize with Docker',
+            'Implement security best practices',
+            'Set up monitoring and analytics'
           ];
           recommendation = `
-            <h2>💳 E-commerce Web Application</h2>
-            <p>Build with <strong>Next.js and Stripe</strong> for secure payments. This stack offers:</p>
+            <h2>💳 Enterprise E-commerce System</h2>
+            <p>Build a <strong>production-ready e-commerce platform</strong> with advanced features:</p>
             <ul>
-              <li>Secure payment processing with Stripe</li>
-              <li>Server-side rendering for better performance</li>
-              <li>Type safety with TypeScript</li>
-              <li>Easy deployment with Vercel</li>
+              <li>Secure payment processing and fraud prevention</li>
+              <li>Complex inventory and order management</li>
+              <li>Advanced user authentication and authorization</li>
+              <li>Scalable architecture with microservices</li>
             </ul>
-            <p><strong>🔧 Advanced Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
+            <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
           `;
         } else {
           techStack = [
             { name: 'Next.js', type: 'frontend' },
             { name: 'TypeScript', type: 'frontend' },
             { name: 'PostgreSQL', type: 'database' },
-            { name: 'Vercel', type: 'deployment' }
+            { name: 'Docker', type: 'deployment' },
+            { name: 'AWS/Google Cloud', type: 'infrastructure' }
           ];
           resources = [
-            getRecommendationsByDifficultyWithDescriptions('intermediate', 4)
+            getRecommendationsByDifficultyWithDescriptions('expert', 3)
           ];
           learningPath = [
-            'Learn TypeScript fundamentals',
-            'Master Next.js (pages, routing, API routes)',
-            'Set up PostgreSQL database',
-            'Learn database design principles',
-            'Deploy with Vercel',
-            'Add authentication and user management'
+            'Master advanced TypeScript patterns',
+            'Learn Next.js with complex routing and API design',
+            'Design scalable database architecture',
+            'Set up containerization with Docker',
+            'Learn cloud infrastructure (AWS/Google Cloud)',
+            'Implement CI/CD pipelines',
+            'Set up monitoring, logging, and analytics'
           ];
           recommendation = `
-            <h2>🚀 Modern Web Development</h2>
-            <p>Build with <strong>Next.js and TypeScript</strong> for a production-ready web application. This stack offers:</p>
+            <h2>🏗️ Complex System Architecture</h2>
+            <p>Build a <strong>scalable, production-ready system</strong> with enterprise-level features:</p>
             <ul>
-              <li>Server-side rendering for better performance</li>
-              <li>Type safety with TypeScript</li>
-              <li>Easy deployment with Vercel</li>
-              <li>Great developer experience</li>
+              <li>Microservices architecture</li>
+              <li>Advanced database design and optimization</li>
+              <li>Cloud infrastructure and DevOps practices</li>
+              <li>Security, monitoring, and performance optimization</li>
             </ul>
-            <p><strong>🔧 Recommended Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('intermediate', 3)}</p>
-          `;
-        }
-      }
-      break;
-
-    case 'mobile':
-      if (answers.experience === 'beginner') {
-        techStack = [
-          { name: 'React Native', type: 'frontend' },
-          { name: 'Expo', type: 'deployment' },
-          { name: 'Firebase', type: 'backend' }
-        ];
-        resources = [
-          getRecommendationsByDifficultyWithDescriptions('beginner', 5)
-        ];
-        learningPath = [
-          'Learn JavaScript fundamentals',
-          'Understand React basics (if not already known)',
-          'Set up Expo development environment',
-          'Learn React Native components and navigation',
-          'Build simple mobile UI components',
-          'Integrate Firebase for backend services',
-          'Test on your phone with Expo Go app'
-        ];
-        recommendation = `
-          <h2>📱 Mobile App Made Easy!</h2>
-          <p>Use <strong>React Native with Expo</strong> to build your mobile app. This is the best choice because:</p>
-          <ul>
-            <li>Write once, run on both iOS and Android</li>
-            <li>Expo handles the complex setup for you</li>
-            <li>Hot reloading for fast development</li>
-            <li>Easy to test on your phone</li>
-          </ul>
-          <p><strong>💡 Pro Tip:</strong> For beginners who want something to work quickly, I highly recommend <a href="https://cursor.sh" target="_blank" style="color: var(--primary-purple); font-weight: 600;">Cursor</a> as your code editor. It's built on VS Code but with AI assistance that can help you write code, debug issues, and learn as you go!</p>
-          <p><strong>🔧 Essential Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('beginner', 3)}</p>
-        `;
-      } else {
-        techStack = [
-          { name: 'Flutter', type: 'frontend' },
-          { name: 'Dart', type: 'frontend' },
-          { name: 'Firebase', type: 'backend' }
-        ];
-        resources = [
-          getRecommendationsByDifficultyWithDescriptions('expert', 3)
-        ];
-        learningPath = [
-          'Learn Dart programming language',
-          'Set up Flutter development environment',
-          'Learn Flutter widgets and state management',
-          'Build UI components and navigation',
-          'Integrate Firebase services',
-          'Test on multiple devices',
-          'Publish to app stores'
-        ];
-        recommendation = `
-          <h2>🎯 High-Performance Mobile App</h2>
-          <p>Build with <strong>Flutter</strong> for a native-feeling mobile app. Flutter offers:</p>
-          <ul>
-            <li>Excellent performance and smooth animations</li>
-            <li>Beautiful built-in widgets</li>
-            <li>Single codebase for iOS and Android</li>
-            <li>Great developer tools</li>
-          </ul>
-          <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
-        `;
-      }
-      break;
-
-    case 'desktop':
-      // Better desktop app recommendations based on features and experience
-      if (answers.experience === 'beginner') {
-        if (features.includes('simple')) {
-          techStack = [
-            { name: 'Tauri', type: 'frontend' },
-            { name: 'HTML/CSS/JS', type: 'frontend' },
-            { name: 'Rust', type: 'backend' }
-          ];
-          resources = [
-            getRecommendationsByDifficultyWithDescriptions('expert', 2),
-            getRecommendationsByDifficultyWithDescriptions('beginner', 1)
-          ];
-          learningPath = [
-            'Learn HTML, CSS, and JavaScript basics',
-            'Set up Tauri development environment',
-            'Learn Rust fundamentals',
-            'Build simple desktop UI with web technologies',
-            'Package and distribute your app'
-          ];
-          recommendation = `
-            <h2>💻 Lightweight Desktop App</h2>
-            <p>Use <strong>Tauri</strong> for a modern, lightweight desktop application. Tauri offers:</p>
-            <ul>
-              <li>Much smaller file sizes than Electron</li>
-              <li>Better performance and security</li>
-              <li>Use web technologies you already know</li>
-              <li>Cross-platform deployment</li>
-            </ul>
-            <p><strong>🔧 Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
-          `;
-        } else {
-          techStack = [
-            { name: 'Electron', type: 'frontend' },
-            { name: 'JavaScript', type: 'frontend' },
-            { name: 'Node.js', type: 'backend' }
-          ];
-          resources = [
-            getRecommendationsByDifficultyWithDescriptions('expert', 2),
-            getRecommendationsByDifficultyWithDescriptions('beginner', 1)
-          ];
-          learningPath = [
-            'Learn JavaScript fundamentals',
-            'Understand Node.js basics',
-            'Learn Electron framework',
-            'Build simple desktop UI',
-            'Add native system integration',
-            'Package and distribute your app'
-          ];
-          recommendation = `
-            <h2>💻 Cross-Platform Desktop App</h2>
-            <p>Use <strong>Electron</strong> to build your desktop application. Electron allows you to:</p>
-            <ul>
-              <li>Build for Windows, Mac, and Linux with one codebase</li>
-              <li>Use web technologies (HTML, CSS, JavaScript)</li>
-              <li>Access native system features</li>
-              <li>Distribute easily to users</li>
-            </ul>
-            <p><strong>🔧 Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
-          `;
-        }
-      } else {
-        // Advanced desktop options
-        if (features.includes('media') || features.includes('data-storage')) {
-          techStack = [
-            { name: 'Tauri', type: 'frontend' },
-            { name: 'React', type: 'frontend' },
-            { name: 'Rust', type: 'backend' },
-            { name: 'SQLite', type: 'database' }
-          ];
-          resources = [
-            getRecommendationsByDifficultyWithDescriptions('expert', 3),
-            getRecommendationsByDifficultyWithDescriptions('intermediate', 1)
-          ];
-          learningPath = [
-            'Learn Rust programming language',
-            'Set up Tauri development environment',
-            'Build UI with React',
-            'Implement local data storage with SQLite',
-            'Add media handling capabilities',
-            'Package and distribute your app'
-          ];
-          recommendation = `
-            <h2>🎯 High-Performance Desktop App</h2>
-            <p>Build with <strong>Tauri and React</strong> for a modern, performant desktop application. This stack offers:</p>
-            <ul>
-              <li>Excellent performance with Rust backend</li>
-              <li>Modern UI with React</li>
-              <li>Local data storage with SQLite</li>
-              <li>Smaller file sizes than Electron</li>
-            </ul>
-            <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
-          `;
-        } else {
-          techStack = [
-            { name: 'Electron', type: 'frontend' },
-            { name: 'TypeScript', type: 'frontend' },
             { name: 'Node.js', type: 'backend' }
           ];
           resources = [
@@ -1419,6 +1457,187 @@ function generateRecommendation(answers) {
             <li>Extensive asset store and community</li>
             <li>Cross-platform deployment</li>
             <li>Professional-grade tools and features</li>
+          </ul>
+          <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
+        `;
+      }
+      break;
+
+    case 'mobile':
+      if (difficulty === 'beginner') {
+        techStack = [
+          { name: 'React Native', type: 'frontend' },
+          { name: 'Expo', type: 'deployment' },
+          { name: 'Firebase', type: 'backend' }
+        ];
+        resources = [
+          getRecommendationsByDifficultyWithDescriptions('beginner', 5)
+        ];
+        learningPath = [
+          'Learn JavaScript fundamentals',
+          'Understand React basics (if not already known)',
+          'Set up Expo development environment',
+          'Learn React Native components and navigation',
+          'Build simple mobile UI components',
+          'Integrate Firebase for backend services',
+          'Test on your phone with Expo Go app'
+        ];
+        recommendation = `
+          <h2>📱 Mobile App Made Easy!</h2>
+          <p>Use <strong>React Native with Expo</strong> to build your mobile app. This is the best choice because:</p>
+          <ul>
+            <li>Write once, run on both iOS and Android</li>
+            <li>Expo handles the complex setup for you</li>
+            <li>Hot reloading for fast development</li>
+            <li>Easy to test on your phone</li>
+          </ul>
+          <p><strong>💡 Pro Tip:</strong> For beginners who want something to work quickly, I highly recommend <a href="https://cursor.sh" target="_blank" style="color: var(--primary-purple); font-weight: 600;">Cursor</a> as your code editor. It's built on VS Code but with AI assistance that can help you write code, debug issues, and learn as you go!</p>
+          <p><strong>🔧 Essential Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('beginner', 3)}</p>
+        `;
+      } else if (difficulty === 'intermediate') {
+        techStack = [
+          { name: 'React Native', type: 'frontend' },
+          { name: 'TypeScript', type: 'frontend' },
+          { name: 'Node.js', type: 'backend' },
+          { name: 'MongoDB', type: 'database' }
+        ];
+        resources = [
+          getRecommendationsByDifficultyWithDescriptions('intermediate', 4)
+        ];
+        learningPath = [
+          'Master JavaScript and learn TypeScript',
+          'Build React Native with TypeScript',
+          'Learn Node.js for backend development',
+          'Set up MongoDB database',
+          'Implement authentication and data sync',
+          'Add advanced mobile features',
+          'Deploy to app stores'
+        ];
+        recommendation = `
+          <h2>📱 Advanced Mobile Development</h2>
+          <p>Build a <strong>full-stack mobile application</strong> with custom backend:</p>
+          <ul>
+            <li>Type-safe React Native development</li>
+            <li>Custom backend with Node.js</li>
+            <li>Database design and API development</li>
+            <li>Advanced mobile features and optimization</li>
+          </ul>
+          <p><strong>🔧 Recommended Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('intermediate', 3)}</p>
+        `;
+      } else {
+        techStack = [
+          { name: 'Flutter', type: 'frontend' },
+          { name: 'Dart', type: 'frontend' },
+          { name: 'Firebase', type: 'backend' },
+          { name: 'Google Cloud', type: 'infrastructure' }
+        ];
+        resources = [
+          getRecommendationsByDifficultyWithDescriptions('expert', 3)
+        ];
+        learningPath = [
+          'Master Dart programming language',
+          'Learn Flutter architecture and patterns',
+          'Set up complex state management',
+          'Implement advanced UI/UX features',
+          'Integrate with Firebase and Google Cloud',
+          'Add analytics, crash reporting, and monitoring',
+          'Optimize for performance and battery life'
+        ];
+        recommendation = `
+          <h2>🎯 Enterprise Mobile Platform</h2>
+          <p>Build a <strong>high-performance mobile platform</strong> with advanced features:</p>
+          <ul>
+            <li>Native performance with Flutter</li>
+            <li>Advanced state management and architecture</li>
+            <li>Complex UI/UX with custom animations</li>
+            <li>Enterprise-level backend integration</li>
+          </ul>
+          <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
+        `;
+      }
+      break;
+
+    case 'desktop':
+      if (difficulty === 'beginner') {
+        techStack = [
+          { name: 'Electron', type: 'frontend' },
+          { name: 'HTML/CSS/JS', type: 'frontend' },
+          { name: 'Node.js', type: 'backend' }
+        ];
+        resources = [
+          getRecommendationsByDifficultyWithDescriptions('beginner', 3)
+        ];
+        learningPath = [
+          'Learn HTML, CSS, and JavaScript basics',
+          'Set up Electron development environment',
+          'Build simple desktop UI with web technologies',
+          'Learn Node.js for desktop functionality',
+          'Package and distribute your app'
+        ];
+        recommendation = `
+          <h2>💻 Simple Desktop App</h2>
+          <p>Use <strong>Electron</strong> to build a desktop application with web technologies:</p>
+          <ul>
+            <li>Use familiar HTML, CSS, and JavaScript</li>
+            <li>Cross-platform compatibility</li>
+            <li>Easy to develop and maintain</li>
+            <li>Large ecosystem of libraries</li>
+          </ul>
+          <p><strong>🔧 Essential Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('beginner', 3)}</p>
+        `;
+      } else if (difficulty === 'intermediate') {
+        techStack = [
+          { name: 'Tauri', type: 'frontend' },
+          { name: 'Rust', type: 'backend' },
+          { name: 'TypeScript', type: 'frontend' }
+        ];
+        resources = [
+          getRecommendationsByDifficultyWithDescriptions('intermediate', 3)
+        ];
+        learningPath = [
+          'Learn Rust programming language',
+          'Master TypeScript for frontend',
+          'Set up Tauri development environment',
+          'Build desktop UI with web technologies',
+          'Implement native functionality with Rust',
+          'Optimize for performance and security'
+        ];
+        recommendation = `
+          <h2>💻 Performance-Focused Desktop App</h2>
+          <p>Use <strong>Tauri with Rust</strong> for a lightweight, secure desktop application:</p>
+          <ul>
+            <li>Much smaller file sizes than Electron</li>
+            <li>Better performance and security with Rust</li>
+            <li>Modern web frontend with TypeScript</li>
+            <li>Cross-platform deployment</li>
+          </ul>
+          <p><strong>🔧 Recommended Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('intermediate', 3)}</p>
+        `;
+      } else {
+        techStack = [
+          { name: 'Custom Native', type: 'frontend' },
+          { name: 'C++/Rust', type: 'backend' },
+          { name: 'OpenGL/Vulkan', type: 'graphics' }
+        ];
+        resources = [
+          getRecommendationsByDifficultyWithDescriptions('expert', 3)
+        ];
+        learningPath = [
+          'Master C++ or Rust for system programming',
+          'Learn native UI frameworks (Qt, GTK, or native)',
+          'Implement advanced graphics with OpenGL/Vulkan',
+          'Design complex system architecture',
+          'Optimize for performance and memory usage',
+          'Implement advanced features and integrations'
+        ];
+        recommendation = `
+          <h2>💻 High-Performance Native App</h2>
+          <p>Build a <strong>native desktop application</strong> with maximum performance:</p>
+          <ul>
+            <li>Native performance and system integration</li>
+            <li>Advanced graphics and rendering capabilities</li>
+            <li>Complex system architecture design</li>
+            <li>Deep platform integration and optimization</li>
           </ul>
           <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
         `;
@@ -1673,5 +1892,173 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize quiz
   initializeQuiz();
+  
+  // Initialize sparkles
+  initSparkles();
 });
+
+// Sparkle Animation Functions
+function createSparkle() {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  
+  // Random position
+  const x = Math.random() * window.innerWidth;
+  const y = Math.random() * window.innerHeight;
+  const size = Math.random() * 20 + 10;
+  
+  sparkle.style.left = x + 'px';
+  sparkle.style.top = y + 'px';
+  sparkle.style.fontSize = size + 'px';
+  
+  document.getElementById('sparkleContainer').appendChild(sparkle);
+  
+  // Remove sparkle after animation completes
+  setTimeout(() => {
+    if (sparkle.parentNode) {
+      sparkle.parentNode.removeChild(sparkle);
+    }
+  }, 4000);
+}
+
+function createDistantStar() {
+  const star = document.createElement('div');
+  star.className = 'distant-star';
+  
+  // Random position
+  const x = Math.random() * window.innerWidth;
+  const y = Math.random() * window.innerHeight;
+  const size = Math.random() * 4 + 2;
+  const duration = Math.random() * 3 + 2;
+  const delay = Math.random() * 2;
+  
+  // Theme-specific star properties
+  const theme = document.documentElement.getAttribute('data-theme') || 'c';
+  switch (theme) {
+    case 'c': // Cosmic - medium stars
+      star.style.background = 'var(--primary-purple)';
+      break;
+    case 'a': // Aurora - bright, larger stars
+      star.style.background = 'var(--primary-pink)';
+      break;
+    case 'r': // Rainbow - small, delicate stars
+      star.style.background = 'var(--accent-blue)';
+      break;
+    case 'z': // Zenith - tiny, subtle stars
+      star.style.background = 'var(--accent-green)';
+      break;
+    case 'e': // Eclipse - bright, prominent stars
+      star.style.background = 'var(--accent-orange)';
+      break;
+    case 'n': // Nebula - medium-bright stars
+      star.style.background = 'var(--primary-purple)';
+      break;
+    default:
+      star.style.background = 'var(--primary-purple)';
+  }
+  
+  star.style.left = x + 'px';
+  star.style.top = y + 'px';
+  star.style.width = size + 'px';
+  star.style.height = size + 'px';
+  star.style.animationDuration = duration + 's';
+  star.style.animationDelay = delay + 's';
+  
+  document.getElementById('sparkleContainer').appendChild(star);
+  
+  // Remove star after animation completes
+  setTimeout(() => {
+    if (star.parentNode) {
+      star.parentNode.removeChild(star);
+    }
+  }, (duration + delay) * 1000);
+}
+
+function initSparkles() {
+  // Create initial sparkles
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
+      createSparkle();
+    }, i * 200);
+  }
+  
+  // Create initial distant stars
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      createDistantStar();
+    }, i * 100);
+  }
+  
+  // Continue creating sparkles
+  setInterval(() => {
+    if (document.getElementById('sparkleContainer').children.length < 40) {
+      createSparkle();
+    }
+  }, 2000);
+  
+  // Continue creating distant stars (more frequent)
+  setInterval(() => {
+    let maxStars;
+    const theme = document.documentElement.getAttribute('data-theme') || 'c';
+    
+    // Theme-specific star density
+    switch (theme) {
+      case 'a': // Aurora - more stars
+        maxStars = 50;
+        break;
+      case 'e': // Eclipse - many stars
+        maxStars = 60;
+        break;
+      case 'n': // Nebula - lots of stars
+        maxStars = 70;
+        break;
+      default:
+        maxStars = 30;
+    }
+    
+    if (document.getElementById('sparkleContainer').children.length < maxStars) {
+      createDistantStar();
+    }
+  }, 800);
+}
+
+// Update starfield image
+function updateStarfield() {
+  const theme = document.documentElement.getAttribute('data-theme') || 'c';
+  
+  // Hide all starfield images
+  document.querySelectorAll('.starfield-image').forEach(img => {
+    img.style.opacity = '0';
+  });
+  
+  // Show the appropriate image for the current theme
+  const activeImage = document.querySelector(`.starfield-image[data-image="${getImageForTheme(theme)}"]`);
+  if (activeImage) {
+    activeImage.style.opacity = '0.05';
+  }
+}
+
+function getImageForTheme(theme) {
+  switch (theme) {
+    case 'c':
+    case 'z':
+    case 'n':
+      return 'stars';
+    case 'a':
+      return 'clouds1';
+    case 'r':
+      return 'clouds2';
+    case 'e':
+      return 'clouds4';
+    default:
+      return 'stars';
+  }
+}
+
+// Update starfield when theme changes
+const originalSetTheme = setTheme;
+setTheme = function(theme) {
+  originalSetTheme(theme);
+  updateStarfield();
+};
 </script> 
