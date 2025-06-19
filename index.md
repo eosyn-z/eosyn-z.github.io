@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Welcome
+title: 
 ---
 
 # hi, i’m eosyn 
