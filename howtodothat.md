@@ -634,13 +634,28 @@ function updateSelectionsDisplay() {
   if (Object.keys(answers).length > 0) {
     selectionTags.innerHTML = '';
     Object.entries(answers).forEach(([key, value]) => {
-      const option = document.querySelector(`[data-value="${value}"]`);
-      if (option) {
-        const label = option.getAttribute('data-label');
-        const tag = document.createElement('span');
-        tag.className = 'selection-tag';
-        tag.textContent = label;
-        selectionTags.appendChild(tag);
+      if (Array.isArray(value)) {
+        // Handle array values (like features)
+        value.forEach(val => {
+          const option = document.querySelector(`[data-value="${val}"]`);
+          if (option) {
+            const label = option.getAttribute('data-label');
+            const tag = document.createElement('span');
+            tag.className = 'selection-tag';
+            tag.textContent = label;
+            selectionTags.appendChild(tag);
+          }
+        });
+      } else {
+        // Handle single values
+        const option = document.querySelector(`[data-value="${value}"]`);
+        if (option) {
+          const label = option.getAttribute('data-label');
+          const tag = document.createElement('span');
+          tag.className = 'selection-tag';
+          tag.textContent = label;
+          selectionTags.appendChild(tag);
+        }
       }
     });
     selectionsDisplay.classList.add('show');
@@ -698,6 +713,36 @@ function previousQuestion() {
   if (currentSection > 1) {
     currentSection--;
     showSection(currentSection);
+    restoreSelections();
+  }
+}
+
+function restoreSelections() {
+  // Clear all selections first
+  document.querySelectorAll('.option').forEach(option => {
+    option.classList.remove('selected');
+  });
+  
+  // Restore selections based on stored answers
+  const questionKey = getQuestionKey(currentSection);
+  const answer = answers[questionKey];
+  
+  if (answer) {
+    if (Array.isArray(answer)) {
+      // Restore multiple selections
+      answer.forEach(val => {
+        const option = document.querySelector(`[data-value="${val}"]`);
+        if (option) {
+          option.classList.add('selected');
+        }
+      });
+    } else {
+      // Restore single selection
+      const option = document.querySelector(`[data-value="${answer}"]`);
+      if (option) {
+        option.classList.add('selected');
+      }
+    }
   }
 }
 
@@ -742,74 +787,175 @@ function generateRecommendation(answers) {
   let resources = [];
   let learningPath = [];
 
-  // Analyze project type
+  // Ensure features is always an array
+  const features = Array.isArray(answers.features) ? answers.features : [answers.features];
+
+  // Analyze project type and features
   switch(answers.projectType) {
     case 'webapp':
       if (answers.experience === 'beginner') {
-        techStack = [
-          { name: 'HTML/CSS', type: 'frontend' },
-          { name: 'JavaScript', type: 'frontend' },
-          { name: 'React', type: 'frontend' },
-          { name: 'Firebase', type: 'backend' }
-        ];
-        resources = [
-          '<a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML Tutorial</a>',
-          '<a href="https://www.w3schools.com/css/" target="_blank">W3Schools CSS Tutorial</a>',
-          '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>',
-          '<a href="https://www.freecodecamp.org/" target="_blank">freeCodeCamp</a>',
-          '<a href="https://react.dev/" target="_blank">React Documentation</a>',
-          '<a href="https://firebase.google.com/" target="_blank">Firebase</a>'
-        ];
-        learningPath = [
-          'Learn HTML basics (structure, elements, forms)',
-          'Master CSS (styling, layout, responsive design)',
-          'Learn JavaScript fundamentals (variables, functions, DOM)',
-          'Build simple projects with HTML/CSS/JS',
-          'Learn React basics (components, props, state)',
-          'Set up Firebase for backend services',
-          'Build your first React + Firebase app'
-        ];
-        recommendation = `
-          <h2>🎉 Perfect for Beginners!</h2>
-          <p>You should build a <strong>React web application</strong> with Firebase as your backend. This combination is perfect for beginners because:</p>
-          <ul>
-            <li>React has excellent documentation and community support</li>
-            <li>Firebase handles authentication, database, and hosting automatically</li>
-            <li>You can deploy for free and scale as needed</li>
-            <li>Lots of tutorials and examples available</li>
-          </ul>
-        `;
+        // Check for specific features to recommend appropriate tools
+        if (features.includes('user-auth') || features.includes('data-storage')) {
+          techStack = [
+            { name: 'HTML/CSS', type: 'frontend' },
+            { name: 'JavaScript', type: 'frontend' },
+            { name: 'React', type: 'frontend' },
+            { name: 'Firebase', type: 'backend' }
+          ];
+          resources = [
+            '<a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML Tutorial</a>',
+            '<a href="https://www.w3schools.com/css/" target="_blank">W3Schools CSS Tutorial</a>',
+            '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>',
+            '<a href="https://www.freecodecamp.org/" target="_blank">freeCodeCamp</a>',
+            '<a href="https://react.dev/" target="_blank">React Documentation</a>',
+            '<a href="https://firebase.google.com/" target="_blank">Firebase</a>'
+          ];
+          learningPath = [
+            'Learn HTML basics (structure, elements, forms)',
+            'Master CSS (styling, layout, responsive design)',
+            'Learn JavaScript fundamentals (variables, functions, DOM)',
+            'Build simple projects with HTML/CSS/JS',
+            'Learn React basics (components, props, state)',
+            'Set up Firebase for backend services',
+            'Build your first React + Firebase app'
+          ];
+          recommendation = `
+            <h2>🎉 Perfect for Beginners!</h2>
+            <p>You should build a <strong>React web application</strong> with Firebase as your backend. This combination is perfect for beginners because:</p>
+            <ul>
+              <li>React has excellent documentation and community support</li>
+              <li>Firebase handles authentication, database, and hosting automatically</li>
+              <li>You can deploy for free and scale as needed</li>
+              <li>Lots of tutorials and examples available</li>
+            </ul>
+          `;
+        } else {
+          // Simple content - no backend needed
+          techStack = [
+            { name: 'HTML/CSS', type: 'frontend' },
+            { name: 'JavaScript', type: 'frontend' },
+            { name: 'GitHub Pages', type: 'deployment' }
+          ];
+          resources = [
+            '<a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML Tutorial</a>',
+            '<a href="https://www.w3schools.com/css/" target="_blank">W3Schools CSS Tutorial</a>',
+            '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>',
+            '<a href="https://pages.github.com/" target="_blank">GitHub Pages</a>'
+          ];
+          learningPath = [
+            'Learn HTML basics (structure, elements, forms)',
+            'Master CSS (styling, layout, responsive design)',
+            'Learn JavaScript fundamentals (variables, functions, DOM)',
+            'Build your website locally',
+            'Deploy to GitHub Pages for free hosting'
+          ];
+          recommendation = `
+            <h2>🌐 Simple Website</h2>
+            <p>Start with <strong>HTML, CSS, and JavaScript</strong> for a simple website. This is perfect because:</p>
+            <ul>
+              <li>No complex backend setup required</li>
+              <li>Deploy for free on GitHub Pages</li>
+              <li>Learn fundamental web technologies</li>
+              <li>Easy to maintain and update</li>
+            </ul>
+          `;
+        }
       } else {
-        techStack = [
-          { name: 'Next.js', type: 'frontend' },
-          { name: 'TypeScript', type: 'frontend' },
-          { name: 'PostgreSQL', type: 'database' },
-          { name: 'Vercel', type: 'deployment' }
-        ];
-        resources = [
-          '<a href="https://nextjs.org/" target="_blank">Next.js</a>',
-          '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
-          '<a href="https://vercel.com/" target="_blank">Vercel</a>',
-          '<a href="https://www.postgresql.org/docs/" target="_blank">PostgreSQL Documentation</a>'
-        ];
-        learningPath = [
-          'Learn TypeScript fundamentals',
-          'Master Next.js (pages, routing, API routes)',
-          'Set up PostgreSQL database',
-          'Learn database design principles',
-          'Deploy with Vercel',
-          'Add authentication and user management'
-        ];
-        recommendation = `
-          <h2>🚀 Modern Web Development</h2>
-          <p>Build with <strong>Next.js and TypeScript</strong> for a production-ready web application. This stack offers:</p>
-          <ul>
-            <li>Server-side rendering for better performance</li>
-            <li>Type safety with TypeScript</li>
-            <li>Easy deployment with Vercel</li>
-            <li>Great developer experience</li>
-          </ul>
-        `;
+        // Advanced webapp recommendations based on features
+        if (features.includes('real-time')) {
+          techStack = [
+            { name: 'Next.js', type: 'frontend' },
+            { name: 'TypeScript', type: 'frontend' },
+            { name: 'Socket.io', type: 'backend' },
+            { name: 'PostgreSQL', type: 'database' },
+            { name: 'Vercel', type: 'deployment' }
+          ];
+          resources = [
+            '<a href="https://nextjs.org/" target="_blank">Next.js</a>',
+            '<a href="https://socket.io/" target="_blank">Socket.io</a>',
+            '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
+            '<a href="https://vercel.com/" target="_blank">Vercel</a>'
+          ];
+          learningPath = [
+            'Learn TypeScript fundamentals',
+            'Master Next.js (pages, routing, API routes)',
+            'Set up PostgreSQL database',
+            'Implement real-time features with Socket.io',
+            'Deploy with Vercel'
+          ];
+          recommendation = `
+            <h2>⚡ Real-time Web Application</h2>
+            <p>Build with <strong>Next.js and Socket.io</strong> for real-time features. This stack offers:</p>
+            <ul>
+              <li>Real-time communication between users</li>
+              <li>Server-side rendering for better performance</li>
+              <li>Type safety with TypeScript</li>
+              <li>Easy deployment with Vercel</li>
+            </ul>
+          `;
+        } else if (features.includes('payments')) {
+          techStack = [
+            { name: 'Next.js', type: 'frontend' },
+            { name: 'TypeScript', type: 'frontend' },
+            { name: 'Stripe', type: 'backend' },
+            { name: 'PostgreSQL', type: 'database' },
+            { name: 'Vercel', type: 'deployment' }
+          ];
+          resources = [
+            '<a href="https://nextjs.org/" target="_blank">Next.js</a>',
+            '<a href="https://stripe.com/" target="_blank">Stripe</a>',
+            '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
+            '<a href="https://vercel.com/" target="_blank">Vercel</a>'
+          ];
+          learningPath = [
+            'Learn TypeScript fundamentals',
+            'Master Next.js (pages, routing, API routes)',
+            'Set up PostgreSQL database',
+            'Integrate Stripe for payments',
+            'Deploy with Vercel'
+          ];
+          recommendation = `
+            <h2>💳 E-commerce Web Application</h2>
+            <p>Build with <strong>Next.js and Stripe</strong> for secure payments. This stack offers:</p>
+            <ul>
+              <li>Secure payment processing with Stripe</li>
+              <li>Server-side rendering for better performance</li>
+              <li>Type safety with TypeScript</li>
+              <li>Easy deployment with Vercel</li>
+            </ul>
+          `;
+        } else {
+          techStack = [
+            { name: 'Next.js', type: 'frontend' },
+            { name: 'TypeScript', type: 'frontend' },
+            { name: 'PostgreSQL', type: 'database' },
+            { name: 'Vercel', type: 'deployment' }
+          ];
+          resources = [
+            '<a href="https://nextjs.org/" target="_blank">Next.js</a>',
+            '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
+            '<a href="https://vercel.com/" target="_blank">Vercel</a>',
+            '<a href="https://www.postgresql.org/docs/" target="_blank">PostgreSQL Documentation</a>'
+          ];
+          learningPath = [
+            'Learn TypeScript fundamentals',
+            'Master Next.js (pages, routing, API routes)',
+            'Set up PostgreSQL database',
+            'Learn database design principles',
+            'Deploy with Vercel',
+            'Add authentication and user management'
+          ];
+          recommendation = `
+            <h2>🚀 Modern Web Development</h2>
+            <p>Build with <strong>Next.js and TypeScript</strong> for a production-ready web application. This stack offers:</p>
+            <ul>
+              <li>Server-side rendering for better performance</li>
+              <li>Type safety with TypeScript</li>
+              <li>Easy deployment with Vercel</li>
+              <li>Great developer experience</li>
+            </ul>
+          `;
+        }
       }
       break;
 
@@ -879,34 +1025,130 @@ function generateRecommendation(answers) {
       break;
 
     case 'desktop':
-      techStack = [
-        { name: 'Electron', type: 'frontend' },
-        { name: 'JavaScript', type: 'frontend' },
-        { name: 'Node.js', type: 'backend' }
-      ];
-      resources = [
-        '<a href="https://www.electronjs.org/" target="_blank">Electron</a>',
-        '<a href="https://nodejs.org/" target="_blank">Node.js</a>',
-        '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>'
-      ];
-      learningPath = [
-        'Learn JavaScript fundamentals',
-        'Understand Node.js basics',
-        'Learn Electron framework',
-        'Build simple desktop UI',
-        'Add native system integration',
-        'Package and distribute your app'
-      ];
-      recommendation = `
-        <h2>💻 Cross-Platform Desktop App</h2>
-        <p>Use <strong>Electron</strong> to build your desktop application. Electron allows you to:</p>
-        <ul>
-          <li>Build for Windows, Mac, and Linux with one codebase</li>
-          <li>Use web technologies (HTML, CSS, JavaScript)</li>
-          <li>Access native system features</li>
-          <li>Distribute easily to users</li>
-        </ul>
-      `;
+      // Better desktop app recommendations based on features and experience
+      if (answers.experience === 'beginner') {
+        if (features.includes('simple')) {
+          techStack = [
+            { name: 'Tauri', type: 'frontend' },
+            { name: 'HTML/CSS/JS', type: 'frontend' },
+            { name: 'Rust', type: 'backend' }
+          ];
+          resources = [
+            '<a href="https://tauri.app/" target="_blank">Tauri</a>',
+            '<a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML Tutorial</a>',
+            '<a href="https://www.rust-lang.org/" target="_blank">Rust</a>'
+          ];
+          learningPath = [
+            'Learn HTML, CSS, and JavaScript basics',
+            'Set up Tauri development environment',
+            'Learn Rust fundamentals',
+            'Build simple desktop UI with web technologies',
+            'Package and distribute your app'
+          ];
+          recommendation = `
+            <h2>💻 Lightweight Desktop App</h2>
+            <p>Use <strong>Tauri</strong> for a modern, lightweight desktop application. Tauri offers:</p>
+            <ul>
+              <li>Much smaller file sizes than Electron</li>
+              <li>Better performance and security</li>
+              <li>Use web technologies you already know</li>
+              <li>Cross-platform deployment</li>
+            </ul>
+          `;
+        } else {
+          techStack = [
+            { name: 'Electron', type: 'frontend' },
+            { name: 'JavaScript', type: 'frontend' },
+            { name: 'Node.js', type: 'backend' }
+          ];
+          resources = [
+            '<a href="https://www.electronjs.org/" target="_blank">Electron</a>',
+            '<a href="https://nodejs.org/" target="_blank">Node.js</a>',
+            '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>'
+          ];
+          learningPath = [
+            'Learn JavaScript fundamentals',
+            'Understand Node.js basics',
+            'Learn Electron framework',
+            'Build simple desktop UI',
+            'Add native system integration',
+            'Package and distribute your app'
+          ];
+          recommendation = `
+            <h2>💻 Cross-Platform Desktop App</h2>
+            <p>Use <strong>Electron</strong> to build your desktop application. Electron allows you to:</p>
+            <ul>
+              <li>Build for Windows, Mac, and Linux with one codebase</li>
+              <li>Use web technologies (HTML, CSS, JavaScript)</li>
+              <li>Access native system features</li>
+              <li>Distribute easily to users</li>
+            </ul>
+          `;
+        }
+      } else {
+        // Advanced desktop options
+        if (features.includes('media') || features.includes('data-storage')) {
+          techStack = [
+            { name: 'Tauri', type: 'frontend' },
+            { name: 'React', type: 'frontend' },
+            { name: 'Rust', type: 'backend' },
+            { name: 'SQLite', type: 'database' }
+          ];
+          resources = [
+            '<a href="https://tauri.app/" target="_blank">Tauri</a>',
+            '<a href="https://react.dev/" target="_blank">React</a>',
+            '<a href="https://www.rust-lang.org/" target="_blank">Rust</a>',
+            '<a href="https://www.sqlite.org/" target="_blank">SQLite</a>'
+          ];
+          learningPath = [
+            'Learn Rust programming language',
+            'Set up Tauri development environment',
+            'Build UI with React',
+            'Implement local data storage with SQLite',
+            'Add media handling capabilities',
+            'Package and distribute your app'
+          ];
+          recommendation = `
+            <h2>🎯 High-Performance Desktop App</h2>
+            <p>Build with <strong>Tauri and React</strong> for a modern, performant desktop application. This stack offers:</p>
+            <ul>
+              <li>Excellent performance with Rust backend</li>
+              <li>Modern UI with React</li>
+              <li>Local data storage with SQLite</li>
+              <li>Smaller file sizes than Electron</li>
+            </ul>
+          `;
+        } else {
+          techStack = [
+            { name: 'Electron', type: 'frontend' },
+            { name: 'TypeScript', type: 'frontend' },
+            { name: 'Node.js', type: 'backend' }
+          ];
+          resources = [
+            '<a href="https://www.electronjs.org/" target="_blank">Electron</a>',
+            '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
+            '<a href="https://nodejs.org/" target="_blank">Node.js</a>'
+          ];
+          learningPath = [
+            'Learn TypeScript fundamentals',
+            'Understand Node.js and npm',
+            'Learn Electron framework',
+            'Build desktop UI with TypeScript',
+            'Add native system integration',
+            'Package and distribute your app'
+          ];
+          recommendation = `
+            <h2>💻 Professional Desktop App</h2>
+            <p>Build with <strong>Electron and TypeScript</strong> for a robust desktop application. This combination provides:</p>
+            <ul>
+              <li>Type safety with TypeScript</li>
+              <li>Cross-platform compatibility</li>
+              <li>Access to native system features</li>
+              <li>Large ecosystem of packages</li>
+            </ul>
+          `;
+        }
+      }
       break;
 
     case 'api':

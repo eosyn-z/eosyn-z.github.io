@@ -435,13 +435,12 @@ h1 {
 </div>
 
 <script>
-// Cookie management functions
+// Cookie management
 function setCookie(name, value, days) {
   const expires = new Date();
   expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
   document.cookie = name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/";
 }
-
 function getCookie(name) {
   const nameEQ = name + "=";
   const ca = document.cookie.split(';');
@@ -452,7 +451,6 @@ function getCookie(name) {
   }
   return null;
 }
-
 function deleteCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
 }
@@ -472,11 +470,13 @@ function setTheme(theme) {
     setCookie('theme', theme, 365);
   }
 }
-
 function loadTheme() {
-  const savedTheme = getCookie('theme');
-  if (savedTheme) {
-    setTheme(savedTheme);
+  // Only load theme from cookie if cookies are accepted
+  if (getCookie('cookiesAccepted') === 'true') {
+    const savedTheme = getCookie('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
   }
 }
 
@@ -486,7 +486,6 @@ function showCookieConsent() {
     document.getElementById('cookieConsent').classList.add('show');
   }
 }
-
 function acceptCookies() {
   setCookie('cookiesAccepted', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
@@ -495,7 +494,6 @@ function acceptCookies() {
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
   setCookie('theme', currentTheme, 365);
 }
-
 function rejectCookies() {
   setCookie('cookiesRejected', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
@@ -504,12 +502,11 @@ function rejectCookies() {
   deleteCookie('theme');
 }
 
-// Event listeners
 document.addEventListener('DOMContentLoaded', function() {
   // Show cookie consent if needed
   showCookieConsent();
   
-  // Load saved theme
+  // Load saved theme (only if cookies are accepted)
   loadTheme();
   
   // Theme button click handlers

@@ -305,10 +305,72 @@ body {
     flex-direction: column;
   }
 }
+
+.group-switcher {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1002;
+  display: flex;
+  gap: 12px;
+  background: var(--bg-primary);
+  border-radius: 15px;
+  padding: 12px 20px;
+  box-shadow: 0 8px 24px var(--shadow-medium);
+  border: 2px solid var(--border-primary);
+  transition: all 0.3s ease;
+}
+
+.group-btn {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 2px solid var(--border-primary);
+  border-radius: 20px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.group-btn.active, .group-btn:focus {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  border-color: var(--primary-purple);
+  box-shadow: 0 4px 16px var(--shadow-medium);
+}
+
+.group-btn:hover {
+  background: var(--gradient-secondary);
+  color: var(--text-white);
+  border-color: var(--accent-blue);
+}
+
+@media (max-width: 768px) {
+  .group-switcher {
+    top: 65px;
+    padding: 8px 6px;
+    gap: 6px;
+  }
+  .group-btn {
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+}
 </style>
 
 <a href="/" class="back-link">← Back to Home</a>
 <div class="page-title">🌿 Nature</div>
+
+<!-- Group Switcher -->
+<div class="group-switcher" id="groupSwitcher">
+  <button class="group-btn active" data-group="random">Random</button>
+  <button class="group-btn" data-group="forest">Forest</button>
+  <button class="group-btn" data-group="flowingWater">Flowing Water</button>
+  <button class="group-btn" data-group="ocean">Ocean</button>
+</div>
 
 <div class="content">
   <div class="loading">Loading nature...</div>
@@ -339,26 +401,25 @@ body {
 <script>
 // Curated lists of nature-themed gifs
 const forestCinemagraphs = [
-  "https://i.pinimg.com/originals/60/d8/44/60d844679e07db517c19fdc5dd7af089.gif", // Forest with quickly blowing mist in the sunlight
-  "https://i.pinimg.com/originals/92/cd/fc/92cdfc9bdebc53a747331999b6933734.gif", // Forest with slowly blowing mist in the sunlight
-  "https://i.pinimg.com/originals/fc/5f/2c/fc5f2cbfc8b3f89af197a02aaef345c3.gif", // Forest with slowly blowing mist in ambient light
+  "https://i.pinimg.com/originals/60/d8/44/60d844679e07db517c19fdc5dd7af089.gif",
+  "https://i.pinimg.com/originals/92/cd/fc/92cdfc9bdebc53a747331999b6933734.gif",
+  "https://i.pinimg.com/originals/fc/5f/2c/fc5f2cbfc8b3f89af197a02aaef345c3.gif",
 ];
-
 const flowingWaterCinemagraphs = [
-  "https://livingstills.nl/wp-content/uploads/2020/11/waterfall_mist.gif", // small river with falling water and mist in sunbeams
-  "https://64.media.tumblr.com/c74ed91f169aea9552d8d1a38d245cbd/tumblr_ntr9fsF71S1upvbufo1_540.gif", // flowing water over the outside of a cave
-  "https://mir-s3-cdn-cf.behance.net/project_modules/source/1aacd211481791.560f867dabbbd.gif", // Flowing water by grass
+  "https://livingstills.nl/wp-content/uploads/2020/11/waterfall_mist.gif",
+  "https://64.media.tumblr.com/c74ed91f169aea9552d8d1a38d245cbd/tumblr_ntr9fsF71S1upvbufo1_540.gif",
+  "https://mir-s3-cdn-cf.behance.net/project_modules/source/1aacd211481791.560f867dabbbd.gif",
 ];
-
 const oceanCinemagraphs = [
-  "https://www.theodysseyonline.com/media-library/image.gif?id=10746909&width=800&quality=80", // morning sunlight over the sea with blowing plants
+  "https://www.theodysseyonline.com/media-library/image.gif?id=10746909&width=800&quality=80",
 ];
-
-const natureGifs = [
-  ...forestCinemagraphs,
-  ...flowingWaterCinemagraphs,
-  ...oceanCinemagraphs
-];
+const natureGroups = {
+  random: [...forestCinemagraphs, ...flowingWaterCinemagraphs, ...oceanCinemagraphs],
+  forest: forestCinemagraphs,
+  flowingWater: flowingWaterCinemagraphs,
+  ocean: oceanCinemagraphs
+};
+let currentGroup = 'random';
 
 // Cookie management functions
 function setCookie(name, value, days) {
@@ -366,7 +427,6 @@ function setCookie(name, value, days) {
   expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
   document.cookie = name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/";
 }
-
 function getCookie(name) {
   const nameEQ = name + "=";
   const ca = document.cookie.split(';');
@@ -377,103 +437,96 @@ function getCookie(name) {
   }
   return null;
 }
-
 function deleteCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
 }
-
 // Theme management
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  
-  // Update active button
-  document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
+  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
-  
-  // Save theme preference if cookies are accepted
   if (getCookie('cookiesAccepted') === 'true') {
     setCookie('theme', theme, 365);
   }
 }
-
 function loadTheme() {
   const savedTheme = getCookie('theme');
-  if (savedTheme) {
-    setTheme(savedTheme);
-  }
+  if (savedTheme) setTheme(savedTheme);
 }
-
 // Cookie consent management
 function showCookieConsent() {
   if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
     document.getElementById('cookieConsent').classList.add('show');
   }
 }
-
 function acceptCookies() {
   setCookie('cookiesAccepted', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
-  
-  // Save current theme preference
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
   setCookie('theme', currentTheme, 365);
 }
-
 function rejectCookies() {
   setCookie('cookiesRejected', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
-  
-  // Clear any existing theme cookie
   deleteCookie('theme');
 }
-
-// Function to get a random GIF from the list
-function getRandomNatureGif() {
-  const randomIndex = Math.floor(Math.random() * natureGifs.length);
-  return natureGifs[randomIndex];
+// Nature background logic
+function getRandomGifFromGroup(group) {
+  const arr = natureGroups[group] || natureGroups['random'];
+  if (!arr.length) return '';
+  const idx = Math.floor(Math.random() * arr.length);
+  return arr[idx];
 }
-
-// Set the background when the page loads
+function setNatureBackground(group) {
+  const gif = getRandomGifFromGroup(group);
+  document.body.style.backgroundImage = gif ? `url('${gif}')` : '';
+}
+function setActiveGroupBtn(group) {
+  document.querySelectorAll('.group-btn').forEach(btn => {
+    if (btn.getAttribute('data-group') === group) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
 window.addEventListener('load', function() {
-  const randomGif = getRandomNatureGif();
-  document.body.style.backgroundImage = `url('${randomGif}')`;
-  
-  // Remove loading text after a short delay
+  setNatureBackground(currentGroup);
   setTimeout(() => {
     const loadingElement = document.querySelector('.loading');
-    if (loadingElement) {
-      loadingElement.style.display = 'none';
-    }
+    if (loadingElement) loadingElement.style.display = 'none';
   }, 1000);
 });
-
-// Change background on click
-document.addEventListener('click', function(e) {
-  // Don't change if clicking on the back link or theme switcher
-  if (e.target.classList.contains('back-link') || e.target.closest('.theme-switcher') || e.target.closest('.cookie-consent')) {
-    return;
-  }
-  
-  const randomGif = getRandomNatureGif();
-  document.body.style.backgroundImage = `url('${randomGif}')`;
-});
-
-// Event listeners
 document.addEventListener('DOMContentLoaded', function() {
-  // Show cookie consent if needed
   showCookieConsent();
-  
-  // Load saved theme
   loadTheme();
-  
-  // Theme button click handlers
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const theme = this.getAttribute('data-theme');
       setTheme(theme);
     });
   });
+  document.querySelectorAll('.group-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const group = this.getAttribute('data-group');
+      currentGroup = group;
+      setActiveGroupBtn(group);
+      setNatureBackground(group);
+    });
+  });
+});
+document.addEventListener('click', function(e) {
+  if (
+    e.target.classList.contains('back-link') ||
+    e.target.closest('.theme-switcher') ||
+    e.target.closest('.cookie-consent') ||
+    e.target.closest('.group-switcher')
+  ) {
+    return;
+  }
+  setNatureBackground('random');
+  setActiveGroupBtn('random');
+  currentGroup = 'random';
 });
 </script> 
