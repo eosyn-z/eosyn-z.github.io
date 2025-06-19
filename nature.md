@@ -1,3 +1,9 @@
+---
+layout: page
+title: Nature
+permalink: /nature/
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

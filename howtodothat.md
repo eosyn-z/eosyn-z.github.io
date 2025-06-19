@@ -1,3 +1,9 @@
+---
+layout: page
+title: How to Do That
+permalink: /howtodothat/
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

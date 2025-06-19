@@ -178,10 +178,10 @@ h1 {
 
   <div class="nav-links">
     <a href="https://github.com/eosyn-z">🛠️ Check out my projects on GitHub</a>
-    <a href="/etc/">🎵 Listen to some music</a>
-    <a href="/nature/">🌿 Experience nature</a>
-    <a href="/search/">🔍 Discover websites</a>
-    <a href="/howtodothat/">🤔 Learn how to do that</a>
+    <a href="/etc/">🎵 music</a>
+    <a href="/nature/">🌿 nature</a>
+    <a href="/search/">🔍 discover sites</a>
+    <a href="/howtodothat/">how to do that</a>
   </div>
 
   <div class="discord-info">

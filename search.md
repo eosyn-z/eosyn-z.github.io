@@ -1,3 +1,9 @@
+---
+layout: page
+title: Search
+permalink: /search/
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
