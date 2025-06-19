@@ -38,6 +38,12 @@ permalink: /art/
   --shadow-light: rgba(0, 0, 0, 0.1);
   --shadow-medium: rgba(0, 0, 0, 0.2);
   --shadow-heavy: rgba(0, 0, 0, 0.3);
+  
+  /* Glass Effects */
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --text-accent: #667eea;
 }
 
 /* Theme: Sunset */
@@ -49,6 +55,8 @@ permalink: /art/
   --accent-orange: #ff8a65;
   --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
   --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
+  --text-accent: #ff6b6b;
+  --glass-bg: rgba(255, 107, 107, 0.25);
 }
 
 /* Theme: Ocean */
@@ -60,6 +68,8 @@ permalink: /art/
   --accent-orange: #00bcd4;
   --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
   --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
+  --text-accent: #4fc3f7;
+  --glass-bg: rgba(79, 195, 247, 0.25);
 }
 
 /* Theme: Forest */
@@ -71,6 +81,8 @@ permalink: /art/
   --accent-orange: #8bc34a;
   --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
   --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  --text-accent: #66bb6a;
+  --glass-bg: rgba(102, 187, 106, 0.25);
 }
 
 /* Theme: Dark */
@@ -90,6 +102,8 @@ permalink: /art/
   --border-accent: #555555;
   --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
   --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
+  --text-accent: #e91e63;
+  --glass-bg: rgba(233, 30, 99, 0.25);
 }
 
 body {
@@ -105,12 +119,12 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  background: var(--bg-primary);
+  background: var(--glass-bg);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 20px 40px var(--shadow-medium);
+  box-shadow: 0 20px 40px var(--glass-shadow);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--glass-border);
   transition: all 0.3s ease;
 }
 
@@ -122,7 +136,7 @@ body {
 .header h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: var(--primary-purple);
+  color: var(--text-accent);
   background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -143,18 +157,18 @@ body {
   color: var(--text-white);
   text-decoration: none;
   font-size: 18px;
-  background: var(--shadow-heavy);
+  background: var(--glass-bg);
   padding: 12px 20px;
   border-radius: 25px;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--glass-border);
 }
 
 .back-link:hover {
   background: var(--gradient-primary);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--shadow-medium);
+  box-shadow: 0 8px 20px var(--glass-shadow);
 }
 
 .gallery-grid {
@@ -165,8 +179,8 @@ body {
 }
 
 .art-piece {
-  background: var(--bg-secondary);
-  border: 2px solid var(--border-primary);
+  background: var(--glass-bg);
+  border: 2px solid var(--glass-border);
   border-radius: 15px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -174,9 +188,9 @@ body {
 }
 
 .art-piece:hover {
-  border-color: var(--primary-purple);
+  border-color: var(--text-accent);
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px var(--shadow-medium);
+  box-shadow: 0 15px 30px var(--glass-shadow);
 }
 
 .art-image {
@@ -199,16 +213,16 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-  animation: shimmer 3s infinite;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
 }
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+.art-piece:hover .art-image::before {
+  transform: translateX(100%);
 }
 
-.art-content {
+.art-info {
   padding: 20px;
 }
 
@@ -221,161 +235,29 @@ body {
 
 .art-description {
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
   margin-bottom: 15px;
-  font-size: 14px;
 }
 
 .art-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
+  font-size: 0.9rem;
   color: var(--text-light);
-}
-
-.art-type {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-weight: 500;
 }
 
 .art-date {
-  color: var(--text-light);
-}
-
-.placeholder-text {
-  text-align: center;
-  color: var(--text-secondary);
   font-style: italic;
-  margin: 40px 0;
-  padding: 40px;
-  background: var(--bg-accent);
-  border-radius: 15px;
-  border: 2px dashed var(--border-primary);
 }
 
-.placeholder-text h3 {
-  color: var(--text-primary);
-  margin-bottom: 10px;
-}
-
-/* Sparkle Animations */
-.sparkle {
-  position: absolute;
-  pointer-events: none;
-  font-size: 20px;
-  color: var(--primary-pink);
-  animation: sparkleFade 4s ease-in-out forwards;
-  z-index: 1000;
-}
-
-.sparkle::before {
-  content: '✨';
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: sparkleTwinkle 2s ease-in-out infinite;
-}
-
-/* Distant Star Dots */
-.distant-star {
-  position: absolute;
-  pointer-events: none;
-  background: var(--primary-purple);
-  border-radius: 50%;
-  animation: distantStarFade 4s ease-in-out infinite;
-  z-index: 999;
-}
-
-@keyframes sparkleFade {
-  0% { opacity: 0; transform: scale(0) rotate(0deg); }
-  50% { opacity: 1; transform: scale(1) rotate(180deg); }
-  100% { opacity: 0; transform: scale(0) rotate(360deg); }
-}
-
-@keyframes sparkleTwinkle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
-}
-
-@keyframes distantStarFade {
-  0% { opacity: 0; transform: scale(0); }
-  50% { opacity: 0.8; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0); }
-}
-
-/* Theme-specific distant star variations */
-[data-theme="sunset"] .distant-star {
-  background: var(--primary-pink);
-  box-shadow: 0 0 15px var(--primary-pink);
-}
-
-[data-theme="ocean"] .distant-star {
-  background: var(--accent-blue);
-  box-shadow: 0 0 10px var(--accent-blue);
-}
-
-[data-theme="forest"] .distant-star {
-  background: var(--accent-green);
-  box-shadow: 0 0 12px var(--accent-green);
-}
-
-[data-theme="dark"] .distant-star {
-  background: var(--primary-purple);
-  box-shadow: 0 0 25px var(--primary-purple);
-}
-
-#sparkleContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1000;
-  overflow: hidden;
-}
-
-/* Starfield Background */
-.starfield-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-  overflow: hidden;
-}
-
-.starfield-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-.starfield-image:hover {
-  opacity: 0.1;
-}
-
-/* Theme-specific starfield images */
-[data-theme="sunset"] .starfield-image[data-image="clouds1"],
-[data-theme="ocean"] .starfield-image[data-image="clouds2"],
-[data-theme="forest"] .starfield-image[data-image="clouds4"],
-[data-theme="dark"] .starfield-image[data-image="stars"] {
-  opacity: 0.05;
-}
-
-.starfield-image {
-  opacity: 0;
+.art-medium {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 /* Theme Switcher */
@@ -383,11 +265,11 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: var(--bg-primary);
+  background: var(--glass-bg);
   border-radius: 15px;
   padding: 15px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
+  box-shadow: 0 10px 30px var(--glass-shadow);
+  border: 2px solid var(--glass-border);
   z-index: 1000;
   transition: all 0.3s ease;
 }
@@ -410,7 +292,7 @@ body {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 2px solid var(--border-primary);
+  border: 2px solid var(--glass-border);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -418,102 +300,59 @@ body {
 
 .theme-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px var(--shadow-medium);
+  box-shadow: 0 4px 12px var(--glass-shadow);
 }
 
 .theme-btn.active {
-  border-color: var(--primary-purple);
+  border-color: var(--text-accent);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
 
-.theme-btn[data-theme="default"] { background: var(--gradient-primary); }
 .theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
 .theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
 .theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
 .theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
 
-/* Cookie Consent */
-.cookie-consent {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  z-index: 1001;
-  max-width: 500px;
-  margin: 0 auto;
-  display: none;
-}
-
-.cookie-consent.show {
-  display: block;
-}
-
-.cookie-consent h3 {
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-  font-size: 16px;
-}
-
-.cookie-consent p {
-  margin: 0 0 15px 0;
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.cookie-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.cookie-btn {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.cookie-btn.accept {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-}
-
-.cookie-btn.reject {
-  background: var(--bg-accent);
-  color: var(--text-primary);
-}
-
-.cookie-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-medium);
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
   .container {
-    padding: 20px;
-    margin: 10px;
+    padding: 30px 20px;
+  }
+  
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .art-image {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 25px 15px;
   }
   
   .gallery-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 15px;
   }
   
-  .art-piece {
-    margin-bottom: 20px;
+  .header h1 {
+    font-size: 1.8rem;
   }
   
-  .cookie-buttons {
-    flex-direction: column;
+  .art-image {
+    height: 180px;
+  }
+  
+  .art-title {
+    font-size: 1.1rem;
   }
 }
 </style>
@@ -545,11 +384,11 @@ body {
   <div class="gallery-grid">
     <div class="art-piece">
       <div class="art-image">🎨</div>
-      <div class="art-content">
+      <div class="art-info">
         <div class="art-title">Digital Painting</div>
         <p class="art-description">A vibrant digital painting exploring color theory and composition.</p>
         <div class="art-meta">
-          <span class="art-type">Digital Art</span>
+          <span class="art-medium">Digital Art</span>
           <span class="art-date">Coming Soon</span>
         </div>
       </div>
@@ -557,11 +396,11 @@ body {
 
     <div class="art-piece">
       <div class="art-image">✨</div>
-      <div class="art-content">
+      <div class="art-info">
         <div class="art-title">Generative Art</div>
         <p class="art-description">Algorithmic art created with code and mathematical patterns.</p>
         <div class="art-meta">
-          <span class="art-type">Generative</span>
+          <span class="art-medium">Generative</span>
           <span class="art-date">Coming Soon</span>
         </div>
       </div>
@@ -569,11 +408,11 @@ body {
 
     <div class="art-piece">
       <div class="art-image">🎭</div>
-      <div class="art-content">
+      <div class="art-info">
         <div class="art-title">Character Design</div>
         <p class="art-description">Original character designs and concept art.</p>
         <div class="art-meta">
-          <span class="art-type">Character Art</span>
+          <span class="art-medium">Character Art</span>
           <span class="art-date">Coming Soon</span>
         </div>
       </div>
@@ -581,11 +420,11 @@ body {
 
     <div class="art-piece">
       <div class="art-image">🌌</div>
-      <div class="art-content">
+      <div class="art-info">
         <div class="art-title">Space Art</div>
         <p class="art-description">Cosmic landscapes and space-themed illustrations.</p>
         <div class="art-meta">
-          <span class="art-type">Illustration</span>
+          <span class="art-medium">Illustration</span>
           <span class="art-date">Coming Soon</span>
         </div>
       </div>
@@ -593,11 +432,11 @@ body {
 
     <div class="art-piece">
       <div class="art-image">🎪</div>
-      <div class="art-content">
+      <div class="art-info">
         <div class="art-title">Abstract Art</div>
         <p class="art-description">Abstract compositions exploring form, color, and emotion.</p>
         <div class="art-meta">
-          <span class="art-type">Abstract</span>
+          <span class="art-medium">Abstract</span>
           <span class="art-date">Coming Soon</span>
         </div>
       </div>
@@ -605,11 +444,11 @@ body {
 
     <div class="art-piece">
       <div class="art-image">🏮</div>
-      <div class="art-content">
+      <div class="art-info">
         <div class="art-title">Pixel Art</div>
         <p class="art-description">Retro-style pixel art and sprite designs.</p>
         <div class="art-meta">
-          <span class="art-type">Pixel Art</span>
+          <span class="art-medium">Pixel Art</span>
           <span class="art-date">Coming Soon</span>
         </div>
       </div>
