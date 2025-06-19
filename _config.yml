@@ -1,5 +1,5 @@
 title: eosyn.net
 description: >- under construction!
-baseurl: "/home/"
-url: "https://www.eosyn.net/home/"
+baseurl: ""
+url: "https://eosyn.net"
 theme: minima
