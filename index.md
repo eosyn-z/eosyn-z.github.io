@@ -31,7 +31,7 @@ title: eosyn
   /* Border Colors */
   --border-primary: #e2e8f0;
   --border-accent: #cbd5e0;
-  --border-pink: #ffb6c1;
+  --border-pink: #ff9800;
   
   /* Shadow Colors */
   --shadow-light: rgba(0, 0, 0, 0.1);
@@ -252,58 +252,58 @@ title: eosyn
 
 /* Theme: Sunset */
 [data-theme="sunset"] {
-  --primary-purple: #ff6b6b;
-  --primary-pink: #ffa726;
+  --primary-purple: #ff8a65;
+  --primary-pink: #ffcc02;
   --accent-blue: #ff7043;
   --accent-green: #ffb74d;
   --accent-orange: #ff8a65;
-  --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+  --gradient-primary: linear-gradient(135deg, #ff8a65 0%, #ffcc02 100%);
   --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
-  --border-pink: #ffa726;
+  --border-pink: #ffcc02;
 }
 
 /* Theme: Ocean */
 [data-theme="ocean"] {
-  --primary-purple: #4fc3f7;
-  --primary-pink: #29b6f6;
-  --accent-blue: #26c6da;
-  --accent-green: #4dd0e1;
-  --accent-orange: #00bcd4;
-  --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-  --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
-  --border-pink: #29b6f6;
+  --primary-purple: #0277bd;
+  --primary-pink: #039be5;
+  --accent-blue: #00acc1;
+  --accent-green: #00bcd4;
+  --accent-orange: #0097a7;
+  --gradient-primary: linear-gradient(135deg, #0277bd 0%, #039be5 100%);
+  --gradient-secondary: linear-gradient(135deg, #00acc1 0%, #00bcd4 100%);
+  --border-pink: #039be5;
 }
 
 /* Theme: Forest */
 [data-theme="forest"] {
-  --primary-purple: #66bb6a;
-  --primary-pink: #81c784;
+  --primary-purple: #2e7d32;
+  --primary-pink: #388e3c;
   --accent-blue: #4caf50;
   --accent-green: #66bb6a;
   --accent-orange: #8bc34a;
-  --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+  --gradient-primary: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
   --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-  --border-pink: #81c784;
+  --border-pink: #388e3c;
 }
 
 /* Theme: Dark */
 [data-theme="dark"] {
-  --primary-purple: #9c27b0;
-  --primary-pink: #e91e63;
-  --accent-blue: #3f51b5;
-  --accent-green: #4caf50;
-  --accent-orange: #ff9800;
+  --primary-purple: #424242;
+  --primary-pink: #616161;
+  --accent-blue: #757575;
+  --accent-green: #9e9e9e;
+  --accent-orange: #bdbdbd;
   --text-primary: #ffffff;
   --text-secondary: #e0e0e0;
   --text-light: #bdbdbd;
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-accent: #404040;
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-accent: #2d2d2d;
   --border-primary: #404040;
   --border-accent: #555555;
-  --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
-  --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
-  --border-pink: #e91e63;
+  --gradient-primary: linear-gradient(135deg, #424242 0%, #616161 100%);
+  --gradient-secondary: linear-gradient(135deg, #757575 0%, #9e9e9e 100%);
+  --border-pink: #616161;
 }
 
 body {
@@ -370,11 +370,7 @@ h1 {
 /* Theme-specific image display */
 [data-theme="c"] .starfield-image[data-image="stars"],
 [data-theme="z"] .starfield-image[data-image="stars"],
-[data-theme="n"] .starfield-image[data-image="stars"],
-[data-theme="sunset"] .starfield-image[data-image="stars"],
-[data-theme="ocean"] .starfield-image[data-image="stars"],
-[data-theme="forest"] .starfield-image[data-image="stars"],
-[data-theme="dark"] .starfield-image[data-image="stars"] {
+[data-theme="n"] .starfield-image[data-image="stars"] {
   display: inline-block;
 }
 
@@ -510,10 +506,6 @@ h1 {
 .theme-btn[data-theme="z"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
 .theme-btn[data-theme="e"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
 .theme-btn[data-theme="n"] { background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); }
-.theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
-.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
-.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
-.theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
 
 /* Cookie Consent */
 .cookie-consent {
@@ -670,10 +662,6 @@ h1 {
     <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
     <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
     <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
-    <div class="theme-btn" data-theme="sunset" title="Sunset"></div>
-    <div class="theme-btn" data-theme="ocean" title="Ocean"></div>
-    <div class="theme-btn" data-theme="forest" title="Forest"></div>
-    <div class="theme-btn" data-theme="dark" title="Dark"></div>
   </div>
 </div>
 
@@ -848,18 +836,6 @@ function createDistantStar() {
     case 'n': // Nebula - medium-bright stars
       minSize = 2; maxSize = 4;
       break;
-    case 'sunset': // Sunset - warm, medium stars
-      minSize = 2; maxSize = 4;
-      break;
-    case 'ocean': // Ocean - cool, medium stars
-      minSize = 2; maxSize = 4;
-      break;
-    case 'forest': // Forest - natural, subtle stars
-      minSize = 1; maxSize = 3;
-      break;
-    case 'dark': // Dark - bright, prominent stars
-      minSize = 2; maxSize = 5;
-      break;
     default:
       minSize = 2; maxSize = 4;
   }
@@ -930,18 +906,6 @@ function initSparkles() {
         break;
       case 'z': // Zenith - fewer stars
         maxStars = 20;
-        break;
-      case 'sunset': // Sunset - medium stars
-        maxStars = 25;
-        break;
-      case 'ocean': // Ocean - medium stars
-        maxStars = 25;
-        break;
-      case 'forest': // Forest - fewer stars
-        maxStars = 20;
-        break;
-      case 'dark': // Dark - more stars
-        maxStars = 30;
         break;
       default:
         maxStars = 25;
