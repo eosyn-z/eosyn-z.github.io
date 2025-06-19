@@ -403,7 +403,7 @@ h1 {
     <a href="/etc/">🎵 music</a>
     <a href="/nature/">🌿 nature</a>
     <a href="/search/">🔍 discover</a>
-    <a href="/howtodothat/">how to do that</a>
+    <a href="/howtodothat/">how to do that: a WIP vibe coded answer to the people who are like "wow i could never figure out how to do that"</a>
   </div>
 
   <div class="social-links">
