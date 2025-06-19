@@ -39,6 +39,217 @@ title: eosyn
   --shadow-heavy: rgba(0, 0, 0, 0.3);
 }
 
+/* Sparkle Animations */
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  animation: sparkleFloat 12s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.sparkle::before {
+  content: '★';
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  display: block;
+  animation: sparkleTwinkle 3s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+/* Distant Star Dots */
+.distant-star {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+  animation: distantStarFade 4s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+@keyframes sparkleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes distantStarFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* Theme-specific distant star variations */
+[data-theme="c"] .distant-star {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="a"] .distant-star {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="r"] .distant-star {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="z"] .distant-star {
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="e"] .distant-star {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="n"] .distant-star {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="sunset"] .distant-star {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="ocean"] .distant-star {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="forest"] .distant-star {
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .distant-star {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+/* Theme: C - Cosmic */
+[data-theme="c"] {
+  --primary-purple: #667eea;
+  --primary-pink: #f093fb;
+  --accent-blue: #4facfe;
+  --accent-green: #43e97b;
+  --accent-orange: #fa709a;
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+  --gradient-secondary: linear-gradient(135deg, #4facfe 0%, #43e97b 100%);
+  --border-pink: #f093fb;
+}
+
+/* Theme: A - Aurora */
+[data-theme="a"] {
+  --primary-purple: #ff6b6b;
+  --primary-pink: #ffa726;
+  --accent-blue: #ff7043;
+  --accent-green: #ffb74d;
+  --accent-orange: #ff8a65;
+  --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
+  --border-pink: #ffa726;
+}
+
+/* Theme: R - Rainbow */
+[data-theme="r"] {
+  --primary-purple: #4fc3f7;
+  --primary-pink: #29b6f6;
+  --accent-blue: #26c6da;
+  --accent-green: #4dd0e1;
+  --accent-orange: #00bcd4;
+  --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
+  --border-pink: #29b6f6;
+}
+
+/* Theme: Z - Zenith */
+[data-theme="z"] {
+  --primary-purple: #66bb6a;
+  --primary-pink: #81c784;
+  --accent-blue: #4caf50;
+  --accent-green: #66bb6a;
+  --accent-orange: #8bc34a;
+  --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+  --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  --border-pink: #81c784;
+}
+
+/* Theme: E - Eclipse */
+[data-theme="e"] {
+  --primary-purple: #9c27b0;
+  --primary-pink: #e91e63;
+  --accent-blue: #3f51b5;
+  --accent-green: #4caf50;
+  --accent-orange: #ff9800;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-light: #bdbdbd;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-accent: #404040;
+  --border-primary: #404040;
+  --border-accent: #555555;
+  --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
+  --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
+  --border-pink: #e91e63;
+}
+
+/* Theme: N - Nebula */
+[data-theme="n"] {
+  --primary-purple: #ff5722;
+  --primary-pink: #ff9800;
+  --accent-blue: #ff5722;
+  --accent-green: #ff9800;
+  --accent-orange: #ff5722;
+  --gradient-primary: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+  --border-pink: #ff9800;
+}
+
 /* Theme: Sunset */
 [data-theme="sunset"] {
   --primary-purple: #ff6b6b;
@@ -48,6 +259,7 @@ title: eosyn
   --accent-orange: #ff8a65;
   --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
   --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
+  --border-pink: #ffa726;
 }
 
 /* Theme: Ocean */
@@ -59,6 +271,7 @@ title: eosyn
   --accent-orange: #00bcd4;
   --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
   --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
+  --border-pink: #29b6f6;
 }
 
 /* Theme: Forest */
@@ -70,6 +283,7 @@ title: eosyn
   --accent-orange: #8bc34a;
   --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
   --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  --border-pink: #81c784;
 }
 
 /* Theme: Dark */
@@ -89,6 +303,7 @@ title: eosyn
   --border-accent: #555555;
   --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
   --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
+  --border-pink: #e91e63;
 }
 
 body {
@@ -99,6 +314,7 @@ body {
   padding: 20px;
   min-height: 100vh;
   transition: all 0.3s ease;
+  overflow-x: hidden;
 }
 
 .container {
@@ -136,20 +352,47 @@ h1 {
 }
 
 .starfield-image {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   border: 4px solid var(--border-pink);
   object-fit: cover;
   display: inline-block;
   box-shadow: 0 8px 25px var(--shadow-medium);
-  margin: 0 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .starfield-image:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 35px var(--shadow-heavy);
+}
+
+/* Theme-specific image display */
+[data-theme="c"] .starfield-image[data-image="stars"],
+[data-theme="z"] .starfield-image[data-image="stars"],
+[data-theme="n"] .starfield-image[data-image="stars"],
+[data-theme="sunset"] .starfield-image[data-image="stars"],
+[data-theme="ocean"] .starfield-image[data-image="stars"],
+[data-theme="forest"] .starfield-image[data-image="stars"],
+[data-theme="dark"] .starfield-image[data-image="stars"] {
+  display: inline-block;
+}
+
+[data-theme="a"] .starfield-image[data-image="clouds1"] {
+  display: inline-block;
+}
+
+[data-theme="r"] .starfield-image[data-image="clouds2"] {
+  display: inline-block;
+}
+
+[data-theme="e"] .starfield-image[data-image="clouds4"] {
+  display: inline-block;
+}
+
+/* Hide all images by default */
+.starfield-image {
+  display: none;
 }
 
 .nav-links {
@@ -261,7 +504,12 @@ h1 {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
 
-.theme-btn[data-theme="default"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
+.theme-btn[data-theme="c"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
+.theme-btn[data-theme="a"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
+.theme-btn[data-theme="r"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
+.theme-btn[data-theme="z"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
+.theme-btn[data-theme="e"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
+.theme-btn[data-theme="n"] { background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); }
 .theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
 .theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
 .theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
@@ -387,10 +635,10 @@ h1 {
   <h1>hi, i'm eosyn</h1>
   
   <div class="starfield-container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="starfield-image">
-    <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="starfield-image">
-    <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="starfield-image">
-    <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="starfield-image" data-image="stars">
+    <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="starfield-image" data-image="clouds1">
+    <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="starfield-image" data-image="clouds2">
+    <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
   </div>
 
   <p style="text-align: center; font-size: 1.2em; color: var(--text-secondary); line-height: 1.6;">
@@ -401,7 +649,7 @@ h1 {
 
   <div class="nav-links">
     <a href="/etc/">🎵 music</a>
-    <a href="/nature/">🌿 nature</a>
+    <a href="/nature/">🌿 touch grass</a>
     <a href="/search/">🔍 discover</a>
     <a href="/howtodothat/">how to do that: a WIP vibe coded answer to the people who are like "wow i could never figure out how to do that"</a>
   </div>
@@ -416,7 +664,12 @@ h1 {
 <div class="theme-switcher">
   <h3>Theme</h3>
   <div class="theme-buttons">
-    <div class="theme-btn active" data-theme="default" title="Default"></div>
+    <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+    <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+    <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+    <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+    <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+    <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
     <div class="theme-btn" data-theme="sunset" title="Sunset"></div>
     <div class="theme-btn" data-theme="ocean" title="Ocean"></div>
     <div class="theme-btn" data-theme="forest" title="Forest"></div>
@@ -433,6 +686,9 @@ h1 {
     <button class="cookie-btn accept" onclick="acceptCookies()">Accept</button>
   </div>
 </div>
+
+<!-- Sparkle Container -->
+<div id="sparkleContainer"></div>
 
 <script>
 // Cookie management
@@ -477,6 +733,9 @@ function loadTheme() {
     if (savedTheme) {
       setTheme(savedTheme);
     }
+  } else {
+    // Set default theme to "c" if no cookies
+    setTheme('c');
   }
 }
 
@@ -491,7 +750,7 @@ function acceptCookies() {
   document.getElementById('cookieConsent').classList.remove('show');
   
   // Save current theme preference
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
   setCookie('theme', currentTheme, 365);
 }
 function rejectCookies() {
@@ -516,5 +775,182 @@ document.addEventListener('DOMContentLoaded', function() {
       setTheme(theme);
     });
   });
+  
+  // Initialize sparkles
+  initSparkles();
 });
+
+// Sparkle Animation Functions
+function createSparkle() {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  
+  // Random starting position
+  const startX = Math.random() * window.innerWidth;
+  sparkle.style.left = startX + 'px';
+  
+  // Random animation duration
+  const duration = 6 + Math.random() * 4; // 6-10 seconds
+  sparkle.style.animationDuration = duration + 's';
+  
+  // Random delay
+  const delay = Math.random() * 5;
+  sparkle.style.animationDelay = delay + 's';
+  
+  // Random size
+  const size = 15 + Math.random() * 15; // 15-30px
+  sparkle.style.fontSize = size + 'px';
+  
+  // Random opacity
+  const opacity = 0.6 + Math.random() * 0.4; // 0.6-1.0
+  sparkle.style.opacity = opacity;
+  
+  document.getElementById('sparkleContainer').appendChild(sparkle);
+  
+  // Remove sparkle after animation completes
+  setTimeout(() => {
+    if (sparkle.parentNode) {
+      sparkle.parentNode.removeChild(sparkle);
+    }
+  }, (duration + delay) * 1000);
+}
+
+function createDistantStar() {
+  const star = document.createElement('div');
+  star.className = 'distant-star';
+  
+  // Random position across the entire viewport
+  const x = Math.random() * window.innerWidth;
+  const y = Math.random() * window.innerHeight;
+  star.style.left = x + 'px';
+  star.style.top = y + 'px';
+  
+  // Theme-specific size variations
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
+  let minSize, maxSize;
+  
+  switch(currentTheme) {
+    case 'c': // Cosmic - medium stars
+      minSize = 2; maxSize = 4;
+      break;
+    case 'a': // Aurora - bright, larger stars
+      minSize = 3; maxSize = 6;
+      break;
+    case 'r': // Rainbow - small, delicate stars
+      minSize = 1; maxSize = 3;
+      break;
+    case 'z': // Zenith - tiny, subtle stars
+      minSize = 1; maxSize = 2;
+      break;
+    case 'e': // Eclipse - bright, prominent stars
+      minSize = 2; maxSize = 5;
+      break;
+    case 'n': // Nebula - medium-bright stars
+      minSize = 2; maxSize = 4;
+      break;
+    case 'sunset': // Sunset - warm, medium stars
+      minSize = 2; maxSize = 4;
+      break;
+    case 'ocean': // Ocean - cool, medium stars
+      minSize = 2; maxSize = 4;
+      break;
+    case 'forest': // Forest - natural, subtle stars
+      minSize = 1; maxSize = 3;
+      break;
+    case 'dark': // Dark - bright, prominent stars
+      minSize = 2; maxSize = 5;
+      break;
+    default:
+      minSize = 2; maxSize = 4;
+  }
+  
+  const size = minSize + Math.random() * (maxSize - minSize);
+  star.style.width = size + 'px';
+  star.style.height = size + 'px';
+  
+  // Random animation duration and delay
+  const duration = 3 + Math.random() * 3; // 3-6 seconds
+  const delay = Math.random() * 2;
+  star.style.animationDuration = duration + 's';
+  star.style.animationDelay = delay + 's';
+  
+  document.getElementById('sparkleContainer').appendChild(star);
+  
+  // Remove star after animation completes
+  setTimeout(() => {
+    if (star.parentNode) {
+      star.parentNode.removeChild(star);
+    }
+  }, (duration + delay) * 1000);
+}
+
+function initSparkles() {
+  // Create initial sparkles
+  for (let i = 0; i < 15; i++) {
+    setTimeout(() => {
+      createSparkle();
+    }, i * 500); // Stagger creation
+  }
+  
+  // Create initial distant stars
+  for (let i = 0; i < 25; i++) {
+    setTimeout(() => {
+      createDistantStar();
+    }, i * 200); // More frequent, smaller delay
+  }
+  
+  // Continue creating sparkles
+  setInterval(() => {
+    if (document.getElementById('sparkleContainer').children.length < 20) {
+      createSparkle();
+    }
+  }, 2000);
+  
+  // Continue creating distant stars (more frequent)
+  setInterval(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
+    let maxStars;
+    
+    // Theme-specific star density
+    switch(currentTheme) {
+      case 'a': // Aurora - more stars
+        maxStars = 35;
+        break;
+      case 'e': // Eclipse - more stars
+        maxStars = 30;
+        break;
+      case 'r': // Rainbow - medium stars
+        maxStars = 25;
+        break;
+      case 'c': // Cosmic - medium stars
+        maxStars = 25;
+        break;
+      case 'n': // Nebula - medium stars
+        maxStars = 25;
+        break;
+      case 'z': // Zenith - fewer stars
+        maxStars = 20;
+        break;
+      case 'sunset': // Sunset - medium stars
+        maxStars = 25;
+        break;
+      case 'ocean': // Ocean - medium stars
+        maxStars = 25;
+        break;
+      case 'forest': // Forest - fewer stars
+        maxStars = 20;
+        break;
+      case 'dark': // Dark - more stars
+        maxStars = 30;
+        break;
+      default:
+        maxStars = 25;
+    }
+    
+    const distantStars = document.querySelectorAll('.distant-star').length;
+    if (distantStars < maxStars) {
+      createDistantStar();
+    }
+  }, 800); // More frequent than sparkles
+}
 </script>
