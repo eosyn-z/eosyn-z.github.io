@@ -45,18 +45,17 @@ title: eosyn
   pointer-events: none;
   z-index: 1;
   opacity: 0;
-  animation: sparkleFloat 12s ease-in-out infinite;
-  will-change: transform, opacity;
+  animation: sparkleFade 4s ease-in-out forwards;
+  will-change: opacity;
 }
 
 .sparkle::before {
   content: '★';
   font-size: 20px;
-  color: rgba(255, 255, 255, 0.8);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  color: var(--text-white);
+  text-shadow: 0 0 10px var(--text-white);
   display: block;
-  animation: sparkleTwinkle 3s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+  will-change: opacity;
 }
 
 /* Distant Star Dots */
@@ -66,37 +65,21 @@ title: eosyn
   z-index: 0;
   opacity: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+  background: var(--text-white);
+  box-shadow: 0 0 4px var(--text-white);
   animation: distantStarFade 4s ease-in-out infinite;
   will-change: opacity, transform;
 }
 
-@keyframes sparkleFloat {
+@keyframes sparkleFade {
   0% {
-    transform: translateY(100vh) translateX(0) rotate(0deg);
     opacity: 0;
   }
-  15% {
-    opacity: 1;
-  }
-  85% {
+  10% {
     opacity: 1;
   }
   100% {
-    transform: translateY(-100px) translateX(100px) rotate(360deg);
     opacity: 0;
-  }
-}
-
-@keyframes sparkleTwinkle {
-  0% {
-    opacity: 0.4;
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1.1);
   }
 }
 
@@ -121,33 +104,33 @@ title: eosyn
 
 /* Theme-specific distant star variations */
 [data-theme="c"] .distant-star {
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  background: var(--text-white);
+  box-shadow: 0 0 6px var(--text-white);
 }
 
 [data-theme="a"] .distant-star {
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  background: var(--text-white);
+  box-shadow: 0 0 8px var(--text-white);
 }
 
 [data-theme="r"] .distant-star {
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  background: var(--text-white);
+  box-shadow: 0 0 5px var(--text-white);
 }
 
 [data-theme="z"] .distant-star {
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+  background: var(--text-white);
+  box-shadow: 0 0 4px var(--text-white);
 }
 
 [data-theme="e"] .distant-star {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  background: var(--text-white);
+  box-shadow: 0 0 10px var(--text-white);
 }
 
 [data-theme="n"] .distant-star {
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  background: var(--text-white);
+  box-shadow: 0 0 6px var(--text-white);
 }
 
 [data-theme="sunset"] .distant-star {
@@ -464,24 +447,18 @@ h1 {
   border: 2px solid var(--border-primary);
   z-index: 1000;
   transition: all 0.3s ease;
-  display: none;
-}
-
-.theme-switcher.show {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .gear-button {
-  position: fixed;
-  top: 20px;
-  right: 20px;
   width: 40px;
   height: 40px;
   background: var(--bg-primary);
   border-radius: 50%;
   border: 2px solid var(--border-primary);
   cursor: pointer;
-  z-index: 1001;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -489,6 +466,7 @@ h1 {
   color: var(--text-primary);
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px var(--shadow-medium);
+  margin-bottom: 10px;
 }
 
 .gear-button:hover {
@@ -496,6 +474,15 @@ h1 {
   background: var(--gradient-primary);
   color: var(--text-white);
   border-color: var(--primary-purple);
+}
+
+.theme-content {
+  display: none;
+  text-align: center;
+}
+
+.theme-switcher.show .theme-content {
+  display: block;
 }
 
 .theme-switcher h3 {
@@ -679,24 +666,24 @@ h1 {
   </div>
 
   <div class="social-links">
-    <a href="https://github.com/eosyn-z">GitHub</a>
-    <a href="https://discord.com/users/eosyn">@eosyn</a>
+    <a href="https://github.com/eosyn-z">GitHub: eosyn-z</a>
+    <a href="https://discord.com/users/eosyn"> Discord: eosyn</a>
   </div>
 </div>
 
-<!-- Gear Button -->
-<div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
-
 <!-- Theme Switcher -->
 <div class="theme-switcher">
-  <h3>Theme</h3>
-  <div class="theme-buttons">
-    <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
-    <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
-    <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
-    <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
-    <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
-    <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+  <div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
+  <div class="theme-content">
+    <h3>Theme</h3>
+    <div class="theme-buttons">
+      <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+      <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+      <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+      <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+      <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+      <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+    </div>
   </div>
 </div>
 
@@ -814,25 +801,15 @@ function createSparkle() {
   const sparkle = document.createElement('div');
   sparkle.className = 'sparkle';
   
-  // Random starting position
-  const startX = Math.random() * window.innerWidth;
-  sparkle.style.left = startX + 'px';
-  
-  // Random animation duration
-  const duration = 6 + Math.random() * 4; // 6-10 seconds
-  sparkle.style.animationDuration = duration + 's';
-  
-  // Random delay
-  const delay = Math.random() * 5;
-  sparkle.style.animationDelay = delay + 's';
+  // Random position across the entire viewport
+  const x = Math.random() * window.innerWidth;
+  const y = Math.random() * window.innerHeight;
+  sparkle.style.left = x + 'px';
+  sparkle.style.top = y + 'px';
   
   // Random size
   const size = 15 + Math.random() * 15; // 15-30px
   sparkle.style.fontSize = size + 'px';
-  
-  // Random opacity
-  const opacity = 0.6 + Math.random() * 0.4; // 0.6-1.0
-  sparkle.style.opacity = opacity;
   
   document.getElementById('sparkleContainer').appendChild(sparkle);
   
@@ -841,7 +818,7 @@ function createSparkle() {
     if (sparkle.parentNode) {
       sparkle.parentNode.removeChild(sparkle);
     }
-  }, (duration + delay) * 1000);
+  }, 4000); // 4 seconds to match animation duration
 }
 
 function createDistantStar() {

@@ -405,6 +405,163 @@ body {
     padding: 4px 8px;
   }
 }
+
+/* Theme Switcher */
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--bg-primary);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 10px 30px var(--shadow-medium);
+  border: 2px solid var(--border-primary);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gear-button {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-primary);
+  border-radius: 50%;
+  border: 2px solid var(--border-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px var(--shadow-medium);
+  margin-bottom: 10px;
+}
+
+.gear-button:hover {
+  transform: rotate(90deg);
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  border-color: var(--primary-purple);
+}
+
+.theme-content {
+  display: none;
+  text-align: center;
+}
+
+.theme-switcher.show .theme-content {
+  display: block;
+}
+
+.theme-switcher h3 {
+  margin: 0 0 10px 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  text-align: center;
+}
+
+.theme-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.theme-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--border-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+.theme-btn.active {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.theme-btn[data-theme="c"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
+.theme-btn[data-theme="a"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
+.theme-btn[data-theme="r"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
+.theme-btn[data-theme="z"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
+.theme-btn[data-theme="e"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
+.theme-btn[data-theme="n"] { background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); }
+
+/* Cookie Consent */
+.cookie-consent {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: var(--bg-primary);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px var(--shadow-medium);
+  border: 2px solid var(--border-primary);
+  z-index: 1001;
+  max-width: 500px;
+  margin: 0 auto;
+  display: none;
+}
+
+.cookie-consent.show {
+  display: block;
+}
+
+.cookie-consent h3 {
+  margin: 0 0 10px 0;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.cookie-consent p {
+  margin: 0 0 15px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.cookie-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cookie-btn.accept {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+}
+
+.cookie-btn.reject {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 2px solid var(--border-primary);
+}
+
+.cookie-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
 </style>
 
 <a href="/" class="back-link">← Back to Home</a>
@@ -423,6 +580,32 @@ body {
   <div class="selections-display" id="selectionsDisplay">
     <h3>Your Selections:</h3>
     <div class="selection-tags" id="selectionTags"></div>
+  </div>
+
+  <!-- Theme Switcher -->
+  <div class="theme-switcher">
+    <div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
+    <div class="theme-content">
+      <h3>Theme</h3>
+      <div class="theme-buttons">
+        <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+        <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+        <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+        <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+        <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+        <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie Consent -->
+  <div class="cookie-consent" id="cookieConsent">
+    <h3>🍪 Cookie Notice</h3>
+    <p>This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
+    <div class="cookie-buttons">
+      <button class="cookie-btn reject" onclick="rejectCookies()">Reject</button>
+      <button class="cookie-btn accept" onclick="acceptCookies()">Accept</button>
+    </div>
   </div>
 
   <!-- Question 1: Project Type -->
@@ -803,6 +986,7 @@ function generateRecommendation(answers) {
             { name: 'Firebase', type: 'backend' }
           ];
           resources = [
+            '<a href="https://cursor.sh" target="_blank">Cursor (AI-powered code editor)</a>',
             '<a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML Tutorial</a>',
             '<a href="https://www.w3schools.com/css/" target="_blank">W3Schools CSS Tutorial</a>',
             '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>',
@@ -828,22 +1012,21 @@ function generateRecommendation(answers) {
               <li>You can deploy for free and scale as needed</li>
               <li>Lots of tutorials and examples available</li>
             </ul>
+            <p><strong>💡 Pro Tip:</strong> For beginners who want something to work quickly, I highly recommend <a href="https://cursor.sh" target="_blank" style="color: var(--primary-purple); font-weight: 600;">Cursor</a> as your code editor. It's built on VS Code but with AI assistance that can help you write code, debug issues, and learn as you go!</p>
           `;
         } else {
           // Simple content - no backend needed
           techStack = [
-            { name: 'HTML/CSS', type: 'frontend' },
+            { name: 'HTML', type: 'frontend' },
+            { name: 'CSS', type: 'frontend' },
             { name: 'JavaScript', type: 'frontend' },
             { name: 'GitHub Pages', type: 'deployment' }
           ];
           resources = [
-            '<a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML Tutorial</a>',
-            '<a href="https://www.w3schools.com/css/" target="_blank">W3Schools CSS Tutorial</a>',
-            '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>',
-            '<a href="https://pages.github.com/" target="_blank">GitHub Pages</a>'
+            getRecommendationsByDifficultyWithDescriptions('beginner', 4)
           ];
           learningPath = [
-            'Learn HTML basics (structure, elements, forms)',
+            'Learn HTML basics (structure, elements)',
             'Master CSS (styling, layout, responsive design)',
             'Learn JavaScript fundamentals (variables, functions, DOM)',
             'Build your website locally',
@@ -858,6 +1041,8 @@ function generateRecommendation(answers) {
               <li>Learn fundamental web technologies</li>
               <li>Easy to maintain and update</li>
             </ul>
+            <p><strong>💡 Pro Tip:</strong> For beginners who want something to work quickly, I highly recommend <a href="https://cursor.sh" target="_blank" style="color: var(--primary-purple); font-weight: 600;">Cursor</a> as your code editor. It's built on VS Code but with AI assistance that can help you write code, debug issues, and learn as you go!</p>
+            <p><strong>🔧 Essential Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('beginner', 3)}</p>
           `;
         }
       } else {
@@ -871,10 +1056,8 @@ function generateRecommendation(answers) {
             { name: 'Vercel', type: 'deployment' }
           ];
           resources = [
-            '<a href="https://nextjs.org/" target="_blank">Next.js</a>',
-            '<a href="https://socket.io/" target="_blank">Socket.io</a>',
-            '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
-            '<a href="https://vercel.com/" target="_blank">Vercel</a>'
+            getRecommendationsByDifficultyWithDescriptions('intermediate', 2),
+            getRecommendationsByDifficultyWithDescriptions('expert', 2)
           ];
           learningPath = [
             'Learn TypeScript fundamentals',
@@ -892,6 +1075,7 @@ function generateRecommendation(answers) {
               <li>Type safety with TypeScript</li>
               <li>Easy deployment with Vercel</li>
             </ul>
+            <p><strong>🔧 Advanced Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
           `;
         } else if (features.includes('payments')) {
           techStack = [
@@ -902,10 +1086,8 @@ function generateRecommendation(answers) {
             { name: 'Vercel', type: 'deployment' }
           ];
           resources = [
-            '<a href="https://nextjs.org/" target="_blank">Next.js</a>',
-            '<a href="https://stripe.com/" target="_blank">Stripe</a>',
-            '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
-            '<a href="https://vercel.com/" target="_blank">Vercel</a>'
+            getRecommendationsByDifficultyWithDescriptions('intermediate', 2),
+            getRecommendationsByDifficultyWithDescriptions('expert', 2)
           ];
           learningPath = [
             'Learn TypeScript fundamentals',
@@ -923,6 +1105,7 @@ function generateRecommendation(answers) {
               <li>Type safety with TypeScript</li>
               <li>Easy deployment with Vercel</li>
             </ul>
+            <p><strong>🔧 Advanced Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
           `;
         } else {
           techStack = [
@@ -932,10 +1115,7 @@ function generateRecommendation(answers) {
             { name: 'Vercel', type: 'deployment' }
           ];
           resources = [
-            '<a href="https://nextjs.org/" target="_blank">Next.js</a>',
-            '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
-            '<a href="https://vercel.com/" target="_blank">Vercel</a>',
-            '<a href="https://www.postgresql.org/docs/" target="_blank">PostgreSQL Documentation</a>'
+            getRecommendationsByDifficultyWithDescriptions('intermediate', 4)
           ];
           learningPath = [
             'Learn TypeScript fundamentals',
@@ -954,6 +1134,7 @@ function generateRecommendation(answers) {
               <li>Easy deployment with Vercel</li>
               <li>Great developer experience</li>
             </ul>
+            <p><strong>🔧 Recommended Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('intermediate', 3)}</p>
           `;
         }
       }
@@ -967,10 +1148,7 @@ function generateRecommendation(answers) {
           { name: 'Firebase', type: 'backend' }
         ];
         resources = [
-          '<a href="https://expo.dev/" target="_blank">Expo</a>',
-          '<a href="https://reactnative.dev/" target="_blank">React Native</a>',
-          '<a href="https://firebase.google.com/" target="_blank">Firebase</a>',
-          '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>'
+          getRecommendationsByDifficultyWithDescriptions('beginner', 5)
         ];
         learningPath = [
           'Learn JavaScript fundamentals',
@@ -990,6 +1168,8 @@ function generateRecommendation(answers) {
             <li>Hot reloading for fast development</li>
             <li>Easy to test on your phone</li>
           </ul>
+          <p><strong>💡 Pro Tip:</strong> For beginners who want something to work quickly, I highly recommend <a href="https://cursor.sh" target="_blank" style="color: var(--primary-purple); font-weight: 600;">Cursor</a> as your code editor. It's built on VS Code but with AI assistance that can help you write code, debug issues, and learn as you go!</p>
+          <p><strong>🔧 Essential Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('beginner', 3)}</p>
         `;
       } else {
         techStack = [
@@ -998,9 +1178,7 @@ function generateRecommendation(answers) {
           { name: 'Firebase', type: 'backend' }
         ];
         resources = [
-          '<a href="https://flutter.dev/" target="_blank">Flutter</a>',
-          '<a href="https://dart.dev/" target="_blank">Dart</a>',
-          '<a href="https://firebase.google.com/" target="_blank">Firebase</a>'
+          getRecommendationsByDifficultyWithDescriptions('expert', 3)
         ];
         learningPath = [
           'Learn Dart programming language',
@@ -1020,6 +1198,7 @@ function generateRecommendation(answers) {
             <li>Single codebase for iOS and Android</li>
             <li>Great developer tools</li>
           </ul>
+          <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
         `;
       }
       break;
@@ -1034,9 +1213,8 @@ function generateRecommendation(answers) {
             { name: 'Rust', type: 'backend' }
           ];
           resources = [
-            '<a href="https://tauri.app/" target="_blank">Tauri</a>',
-            '<a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML Tutorial</a>',
-            '<a href="https://www.rust-lang.org/" target="_blank">Rust</a>'
+            getRecommendationsByDifficultyWithDescriptions('expert', 2),
+            getRecommendationsByDifficultyWithDescriptions('beginner', 1)
           ];
           learningPath = [
             'Learn HTML, CSS, and JavaScript basics',
@@ -1054,6 +1232,7 @@ function generateRecommendation(answers) {
               <li>Use web technologies you already know</li>
               <li>Cross-platform deployment</li>
             </ul>
+            <p><strong>🔧 Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
           `;
         } else {
           techStack = [
@@ -1062,9 +1241,8 @@ function generateRecommendation(answers) {
             { name: 'Node.js', type: 'backend' }
           ];
           resources = [
-            '<a href="https://www.electronjs.org/" target="_blank">Electron</a>',
-            '<a href="https://nodejs.org/" target="_blank">Node.js</a>',
-            '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>'
+            getRecommendationsByDifficultyWithDescriptions('expert', 2),
+            getRecommendationsByDifficultyWithDescriptions('beginner', 1)
           ];
           learningPath = [
             'Learn JavaScript fundamentals',
@@ -1083,6 +1261,7 @@ function generateRecommendation(answers) {
               <li>Access native system features</li>
               <li>Distribute easily to users</li>
             </ul>
+            <p><strong>🔧 Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
           `;
         }
       } else {
@@ -1095,10 +1274,8 @@ function generateRecommendation(answers) {
             { name: 'SQLite', type: 'database' }
           ];
           resources = [
-            '<a href="https://tauri.app/" target="_blank">Tauri</a>',
-            '<a href="https://react.dev/" target="_blank">React</a>',
-            '<a href="https://www.rust-lang.org/" target="_blank">Rust</a>',
-            '<a href="https://www.sqlite.org/" target="_blank">SQLite</a>'
+            getRecommendationsByDifficultyWithDescriptions('expert', 3),
+            getRecommendationsByDifficultyWithDescriptions('intermediate', 1)
           ];
           learningPath = [
             'Learn Rust programming language',
@@ -1117,6 +1294,7 @@ function generateRecommendation(answers) {
               <li>Local data storage with SQLite</li>
               <li>Smaller file sizes than Electron</li>
             </ul>
+            <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
           `;
         } else {
           techStack = [
@@ -1125,9 +1303,8 @@ function generateRecommendation(answers) {
             { name: 'Node.js', type: 'backend' }
           ];
           resources = [
-            '<a href="https://www.electronjs.org/" target="_blank">Electron</a>',
-            '<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>',
-            '<a href="https://nodejs.org/" target="_blank">Node.js</a>'
+            getRecommendationsByDifficultyWithDescriptions('expert', 2),
+            getRecommendationsByDifficultyWithDescriptions('intermediate', 1)
           ];
           learningPath = [
             'Learn TypeScript fundamentals',
@@ -1146,6 +1323,7 @@ function generateRecommendation(answers) {
               <li>Access to native system features</li>
               <li>Large ecosystem of packages</li>
             </ul>
+            <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 2)}</p>
           `;
         }
       }
@@ -1159,10 +1337,8 @@ function generateRecommendation(answers) {
         { name: 'Heroku', type: 'deployment' }
       ];
       resources = [
-        '<a href="https://nodejs.org/" target="_blank">Node.js</a>',
-        '<a href="https://expressjs.com/" target="_blank">Express</a>',
-        '<a href="https://www.mongodb.com/" target="_blank">MongoDB</a>',
-        '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>'
+        getRecommendationsByDifficultyWithDescriptions('intermediate', 3),
+        getRecommendationsByDifficultyWithDescriptions('beginner', 1)
       ];
       learningPath = [
         'Learn JavaScript fundamentals',
@@ -1182,6 +1358,7 @@ function generateRecommendation(answers) {
           <li>Easy to deploy and scale</li>
           <li>Great for real-time features</li>
         </ul>
+        <p><strong>🔧 Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('intermediate', 3)}</p>
       `;
       break;
 
@@ -1193,9 +1370,7 @@ function generateRecommendation(answers) {
           { name: 'Phaser.js', type: 'frontend' }
         ];
         resources = [
-          '<a href="https://phaser.io/" target="_blank">Phaser.js</a>',
-          '<a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" target="_blank">HTML5 Canvas</a>',
-          '<a href="https://www.w3schools.com/js/" target="_blank">W3Schools JavaScript Tutorial</a>'
+          getRecommendationsByDifficultyWithDescriptions('beginner', 3)
         ];
         learningPath = [
           'Learn JavaScript fundamentals',
@@ -1215,6 +1390,7 @@ function generateRecommendation(answers) {
             <li>Easy to share and distribute</li>
             <li>Works on all devices with a browser</li>
           </ul>
+          <p><strong>🔧 Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('beginner', 3)}</p>
         `;
       } else {
         techStack = [
@@ -1223,28 +1399,28 @@ function generateRecommendation(answers) {
           { name: 'Steam', type: 'deployment' }
         ];
         resources = [
-          '<a href="https://unity.com/" target="_blank">Unity</a>',
-          '<a href="https://docs.unity3d.com/" target="_blank">Unity Documentation</a>',
-          '<a href="https://docs.microsoft.com/en-us/dotnet/csharp/" target="_blank">C# Documentation</a>'
+          getRecommendationsByDifficultyWithDescriptions('expert', 3)
         ];
         learningPath = [
           'Learn C# programming basics',
           'Download and set up Unity',
           'Learn Unity interface and workflow',
-          'Create game objects and scenes',
-          'Write C# scripts for game logic',
-          'Add audio, effects, and UI',
-          'Build and test your game'
+          'Create 3D models and animations',
+          'Implement game mechanics and physics',
+          'Add sound effects and music',
+          'Test and optimize performance',
+          'Publish on Steam or other platforms'
         ];
         recommendation = `
-          <h2>🎯 Professional Game Development</h2>
-          <p>Use <strong>Unity</strong> for a professional game. Unity provides:</p>
+          <h2>🎮 Professional Game Development</h2>
+          <p>Use <strong>Unity and C#</strong> for professional game development. Unity provides:</p>
           <ul>
             <li>Powerful 3D and 2D game engine</li>
-            <li>Extensive asset store</li>
+            <li>Extensive asset store and community</li>
             <li>Cross-platform deployment</li>
-            <li>Large community and tutorials</li>
+            <li>Professional-grade tools and features</li>
           </ul>
+          <p><strong>🔧 Expert Tools:</strong> ${getRecommendationsByDifficultyWithDescriptions('expert', 3)}</p>
         `;
       }
       break;
@@ -1299,4 +1475,203 @@ function restartQuiz() {
 
 // Initialize
 updateProgress();
+
+// Website database for recommendations
+const websiteDatabase = {
+    beginner: [
+        { name: "Cursor", url: "https://cursor.sh", description: "AI-powered code editor", functions: ["code-editor", "ai-assistance", "debugging", "learning", "chat", "code-generation", "refactoring", "explanation"] },
+        { name: "W3Schools", url: "https://www.w3schools.com", description: "Web development tutorials", functions: ["learning", "tutorials", "reference", "examples", "html", "css", "javascript", "sql", "python", "php"] },
+        { name: "freeCodeCamp", url: "https://www.freecodecamp.org", description: "Free coding tutorials", functions: ["learning", "interactive-tutorials", "certification", "projects", "html-css", "javascript", "react", "nodejs", "databases"] },
+        { name: "GitHub", url: "https://github.com", description: "Code hosting and collaboration", functions: ["code-storage", "version-control", "collaboration", "project-management", "open-source", "deployment", "ci-cd", "code-review"] },
+        { name: "Figma", url: "https://www.figma.com", description: "Design and prototyping tool", functions: ["design", "prototyping", "collaboration", "ui-ux", "wireframing", "design-systems", "components", "plugins"] },
+        { name: "Notion", url: "https://www.notion.so", description: "All-in-one workspace", functions: ["note-taking", "project-management", "collaboration", "organization", "documentation", "databases", "templates", "knowledge-base"] },
+        { name: "Wisk", url: "https://wisk.cc", description: "Modern Notion alternative", functions: ["note-taking", "project-management", "collaboration", "organization", "documentation", "databases", "templates", "knowledge-base"] },
+        { name: "Firebase", url: "https://firebase.google.com", description: "Backend-as-a-Service", functions: ["backend-as-a-service", "authentication", "database", "hosting", "cloud-functions", "analytics", "messaging", "storage"] },
+        { name: "Netlify", url: "https://netlify.com", description: "Web hosting and deployment", functions: ["deployment", "hosting", "forms", "cms", "functions", "redirects", "headers", "build-tools"] },
+        { name: "CodePen", url: "https://codepen.io", description: "Frontend code playground", functions: ["code-editor", "frontend", "css", "javascript", "html", "inspiration", "showcase", "learning"] },
+        { name: "Glitch", url: "https://glitch.com", description: "Friendly coding community", functions: ["code-editor", "deployment", "collaboration", "learning", "web-development", "javascript", "nodejs", "community"] },
+        { name: "Replit", url: "https://replit.com", description: "Collaborative browser IDE", functions: ["code-editor", "deployment", "collaboration", "learning", "web-development", "python", "javascript", "education"] }
+    ],
+    intermediate: [
+        { name: "MDN Web Docs", url: "https://developer.mozilla.org", description: "Comprehensive web documentation", functions: ["documentation", "reference", "tutorials", "web-standards", "html", "css", "javascript", "apis", "web-apis"] },
+        { name: "React Documentation", url: "https://react.dev", description: "Official React docs", functions: ["documentation", "tutorials", "examples", "reference", "react", "hooks", "components", "state-management"] },
+        { name: "Vue.js", url: "https://vuejs.org", description: "Progressive JavaScript framework", functions: ["framework", "documentation", "tutorials", "examples", "vue", "components", "composition-api", "ecosystem"] },
+        { name: "TypeScript", url: "https://www.typescriptlang.org", description: "Typed JavaScript", functions: ["programming-language", "type-safety", "documentation", "compiler", "javascript", "static-analysis", "ide-support", "refactoring"] },
+        { name: "Vercel", url: "https://vercel.com", description: "Frontend deployment platform", functions: ["deployment", "hosting", "serverless", "ci-cd", "edge-functions", "domains", "analytics", "preview-deployments"] },
+        { name: "Expo", url: "https://expo.dev", description: "React Native platform", functions: ["mobile-development", "react-native", "deployment", "testing", "sdk", "cli", "ejected", "managed-workflow"] },
+        { name: "Stripe", url: "https://stripe.com", description: "Payment processing", functions: ["payments", "e-commerce", "api", "security", "subscriptions", "invoicing", "taxes", "fraud-prevention"] },
+        { name: "MongoDB", url: "https://www.mongodb.com", description: "Document database", functions: ["database", "nosql", "data-storage", "scalability", "aggregation", "indexing", "replication", "sharding"] },
+        { name: "Node.js", url: "https://nodejs.org", description: "JavaScript runtime", functions: ["runtime", "server-side", "npm", "javascript", "event-driven", "non-blocking", "package-management", "ecosystem"] },
+        { name: "Express.js", url: "https://expressjs.com", description: "Web framework for Node.js", functions: ["web-framework", "api", "middleware", "routing", "nodejs", "http-server", "static-files", "templating"] },
+        { name: "Next.js", url: "https://nextjs.org", description: "React framework for production", functions: ["react-framework", "ssr", "ssg", "routing", "api-routes", "image-optimization", "performance", "deployment"] },
+        { name: "Tailwind CSS", url: "https://tailwindcss.com", description: "Utility-first CSS framework", functions: ["css-framework", "utility-classes", "responsive-design", "customization", "components", "dark-mode", "purge-css", "jit-compiler"] },
+        { name: "Git", url: "https://git-scm.com", description: "Version control system", functions: ["version-control", "collaboration", "branching", "history", "merging", "stashing", "rebase", "hooks"] },
+        { name: "Postman", url: "https://www.postman.com", description: "API development platform", functions: ["api", "testing", "development", "documentation", "collections", "environments", "automation", "collaboration"] },
+        { name: "Can I Use", url: "https://caniuse.com", description: "Browser compatibility tables", functions: ["browser-support", "compatibility", "reference", "web-standards", "css", "javascript", "html", "apis"] },
+        { name: "Web.dev", url: "https://web.dev", description: "Modern web development guide", functions: ["web-development", "performance", "pwa", "accessibility", "seo", "best-practices", "tutorials", "analysis"] }
+    ],
+    expert: [
+        { name: "Angular", url: "https://angular.io", description: "Full-featured framework", functions: ["framework", "documentation", "tutorials", "cli-tools", "typescript", "dependency-injection", "routing", "forms"] },
+        { name: "Flutter", url: "https://flutter.dev", description: "Cross-platform UI toolkit", functions: ["mobile-development", "cross-platform", "ui-framework", "hot-reload", "dart", "widgets", "state-management", "packages"] },
+        { name: "Socket.io", url: "https://socket.io", description: "Real-time communication", functions: ["real-time", "websockets", "communication", "api", "chat", "gaming", "collaboration", "live-updates"] },
+        { name: "PostgreSQL", url: "https://www.postgresql.org", description: "Advanced database", functions: ["database", "sql", "data-storage", "scalability", "acid-compliance", "json-support", "full-text-search", "extensions"] },
+        { name: "Tauri", url: "https://tauri.app", description: "Desktop app framework", functions: ["desktop-apps", "cross-platform", "performance", "security", "rust", "webview", "native-apis", "bundling"] },
+        { name: "Electron", url: "https://www.electronjs.org", description: "Cross-platform desktop apps", functions: ["desktop-apps", "cross-platform", "web-technologies", "packaging", "distribution", "auto-updater", "native-modules", "chromium"] },
+        { name: "Docker", url: "https://www.docker.com", description: "Containerization platform", functions: ["containerization", "deployment", "devops", "microservices", "orchestration", "images", "volumes", "networking"] },
+        { name: "AWS", url: "https://aws.amazon.com", description: "Cloud computing platform", functions: ["cloud-computing", "hosting", "storage", "ai-ml", "serverless", "containers", "databases", "security"] },
+        { name: "Google Cloud", url: "https://cloud.google.com", description: "Cloud computing services", functions: ["cloud-computing", "hosting", "storage", "ai-ml", "kubernetes", "bigquery", "firestore", "functions"] },
+        { name: "Unity", url: "https://unity.com", description: "Game development platform", functions: ["game-development", "3d", "2d", "cross-platform", "physics", "animation", "audio", "asset-store"] },
+        { name: "Unreal Engine", url: "https://www.unrealengine.com", description: "3D creation tool", functions: ["game-development", "3d", "visualization", "vr-ar", "blueprints", "materials", "lighting", "cinematics"] }
+    ]
+};
+
+function getRecommendationsByDifficulty(difficulty, count = 3) {
+    const websites = websiteDatabase[difficulty] || [];
+    return websites.slice(0, count).map(site => 
+        `<a href="${site.url}" target="_blank">${site.name}</a>`
+    ).join(', ');
+}
+
+function getRecommendationsByDifficultyWithDescriptions(difficulty, count = 3) {
+    const websites = websiteDatabase[difficulty] || [];
+    return websites.slice(0, count).map(site => 
+        `<a href="${site.url}" target="_blank" title="${site.description}">${site.name}</a>`
+    ).join(', ');
+}
+
+function getRecommendationsByFunction(functionType, userDifficulty, count = 3) {
+    const allWebsites = [
+        ...websiteDatabase.beginner,
+        ...websiteDatabase.intermediate,
+        ...websiteDatabase.expert
+    ];
+    
+    const matchingWebsites = allWebsites.filter(site => 
+        site.functions && site.functions.includes(functionType)
+    );
+    
+    // Sort by difficulty preference
+    const difficultyOrder = userDifficulty === 'beginner' ? ['beginner', 'intermediate', 'expert'] :
+                           userDifficulty === 'intermediate' ? ['intermediate', 'beginner', 'expert'] :
+                           ['expert', 'intermediate', 'beginner'];
+    
+    const sortedWebsites = matchingWebsites.sort((a, b) => {
+        const aIndex = difficultyOrder.indexOf(a.difficulty);
+        const bIndex = difficultyOrder.indexOf(b.difficulty);
+        return aIndex - bIndex;
+    });
+    
+    return sortedWebsites.slice(0, count).map(site => 
+        `<a href="${site.url}" target="_blank" title="${site.description}">${site.name}</a>`
+    ).join(', ');
+}
+
+function getDifficultyWarning(userDifficulty, requiredDifficulty) {
+    if (userDifficulty === 'beginner' && requiredDifficulty === 'expert') {
+        return '<div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 10px; padding: 15px; margin: 15px 0; color: #92400e;"><strong>⚠️ Difficulty Warning:</strong> This project requires expert-level skills. You\'ll need to learn significantly more than just "vibe coding" to complete it successfully. Consider starting with a simpler project first!</div>';
+    } else if (userDifficulty === 'beginner' && requiredDifficulty === 'intermediate') {
+        return '<div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 10px; padding: 15px; margin: 15px 0; color: #1e40af;"><strong>💡 Learning Opportunity:</strong> This project is slightly more advanced than your current level, but definitely achievable with some learning!</div>';
+    }
+    return '';
+}
+
+// Cookie management
+function setCookie(name, value, days) {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+  document.cookie = name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/";
+}
+
+function getCookie(name) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+function deleteCookie(name) {
+  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+}
+
+// Theme management
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  
+  // Update active button
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+  
+  // Save theme preference if cookies are accepted
+  if (getCookie('cookiesAccepted') === 'true') {
+    setCookie('theme', theme, 365);
+  }
+}
+
+function loadTheme() {
+  // Only load theme from cookie if cookies are accepted
+  if (getCookie('cookiesAccepted') === 'true') {
+    const savedTheme = getCookie('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  } else {
+    // Set default theme to "c" if no cookies
+    setTheme('c');
+  }
+}
+
+// Cookie consent management
+function showCookieConsent() {
+  if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
+    document.getElementById('cookieConsent').classList.add('show');
+  }
+}
+
+function acceptCookies() {
+  setCookie('cookiesAccepted', 'true', 365);
+  document.getElementById('cookieConsent').classList.remove('show');
+  
+  // Save current theme preference
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
+  setCookie('theme', currentTheme, 365);
+}
+
+function rejectCookies() {
+  setCookie('cookiesRejected', 'true', 365);
+  document.getElementById('cookieConsent').classList.remove('show');
+  
+  // Clear any existing theme cookie
+  deleteCookie('theme');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Show cookie consent if needed
+  showCookieConsent();
+  
+  // Load saved theme (only if cookies are accepted)
+  loadTheme();
+  
+  // Gear button click handler
+  document.getElementById('gearButton').addEventListener('click', function() {
+    const themeSwitcher = document.querySelector('.theme-switcher');
+    themeSwitcher.classList.toggle('show');
+  });
+  
+  // Theme button click handlers
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const theme = this.getAttribute('data-theme');
+      setTheme(theme);
+    });
+  });
+  
+  // Initialize quiz
+  initializeQuiz();
+});
 </script> 
