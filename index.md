@@ -294,15 +294,60 @@ body {
   color: var(--text-primary);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 0;
   min-height: 100vh;
   transition: all 0.3s ease;
   overflow-x: hidden;
 }
 
+#sparkleContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+}
+
+.logo a {
+    color: var(--text-white);
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.main-nav a {
+    color: var(--text-white);
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: var(--primary-pink);
+}
+
 .container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 120px auto 40px;
   background: var(--bg-primary);
   border-radius: 20px;
   padding: 40px;
@@ -310,6 +355,8 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 h1 {
@@ -352,20 +399,11 @@ h1 {
 
 /* Theme-specific image display */
 [data-theme="c"] .starfield-image[data-image="stars"],
+[data-theme="a"] .starfield-image[data-image="clouds1"],
+[data-theme="r"] .starfield-image[data-image="clouds2"],
+[data-theme="e"] .starfield-image[data-image="clouds4"],
 [data-theme="z"] .starfield-image[data-image="stars"],
 [data-theme="n"] .starfield-image[data-image="stars"] {
-  display: inline-block;
-}
-
-[data-theme="a"] .starfield-image[data-image="clouds1"] {
-  display: inline-block;
-}
-
-[data-theme="r"] .starfield-image[data-image="clouds2"] {
-  display: inline-block;
-}
-
-[data-theme="e"] .starfield-image[data-image="clouds4"] {
   display: inline-block;
 }
 
@@ -437,19 +475,7 @@ h1 {
 
 /* Theme Switcher */
 .theme-switcher {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  z-index: 1000;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
 }
 
 .gear-button {
@@ -466,7 +492,6 @@ h1 {
   color: var(--text-primary);
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px var(--shadow-medium);
-  margin-bottom: 10px;
 }
 
 .gear-button:hover {
@@ -477,12 +502,18 @@ h1 {
 }
 
 .theme-content {
-  display: none;
-  text-align: center;
-}
-
-.theme-switcher.show .theme-content {
-  display: block;
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background: var(--bg-primary);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 10px 30px var(--shadow-medium);
+    border: 2px solid var(--border-primary);
+    z-index: 1002;
+    text-align: center;
+    width: 200px;
 }
 
 .theme-switcher h3 {
@@ -642,6 +673,34 @@ h1 {
 }
 </style>
 
+<body>
+<header class="top-bar">
+    <div class="logo">
+        <a href="/">eosyn.net</a>
+    </div>
+    <nav class="main-nav">
+        <a href="/etc/">ETC</a>
+        <a href="/howtodothat/">How To Do That</a>
+        <a href="/nature/">Nature</a>
+        <a href="/search/">Search</a>
+    </nav>
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
+        <div class="theme-content">
+            <h3>Theme</h3>
+            <div class="theme-buttons">
+                <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+                <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+                <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+                <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+                <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+                <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
 <div class="container">
   <h1>hi, i'm eosyn</h1>
   
@@ -658,32 +717,9 @@ h1 {
     thank you for checking it out so early! <3
   </p>
 
-  <div class="nav-links">
-    <a href="/etc/">🎵 music</a>
-    <a href="/nature/">🌿 touch grass</a>
-    <a href="/search/">🔍 discover</a>
-    <a href="/howtodothat/">how to do that: a WIP vibe coded answer to the people who are like "wow i could never figure out how to do that"</a>
-  </div>
-
   <div class="social-links">
     <a href="https://github.com/eosyn-z">GitHub: eosyn-z</a>
     <a href="https://discord.com/users/eosyn"> Discord: eosyn</a>
-  </div>
-</div>
-
-<!-- Theme Switcher -->
-<div class="theme-switcher">
-  <div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
-  <div class="theme-content">
-    <h3>Theme</h3>
-    <div class="theme-buttons">
-      <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
-      <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
-      <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
-      <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
-      <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
-      <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
-    </div>
   </div>
 </div>
 
@@ -730,12 +766,35 @@ function setTheme(theme) {
     btn.classList.remove('active');
   });
   document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+
+  // Update starfield image
+  document.querySelectorAll('.starfield-image').forEach(img => {
+      img.style.display = 'none';
+  });
+  const activeImage = document.querySelector(`.starfield-image[data-image="${getImageForTheme(theme)}"]`);
+  if(activeImage) {
+      activeImage.style.display = 'inline-block';
+  }
   
   // Save theme preference if cookies are accepted
   if (getCookie('cookiesAccepted') === 'true') {
     setCookie('theme', theme, 365);
   }
 }
+
+function getImageForTheme(theme) {
+    switch(theme) {
+        case 'a': return 'clouds1';
+        case 'r': return 'clouds2';
+        case 'e': return 'clouds4';
+        case 'c':
+        case 'z':
+        case 'n':
+        default:
+            return 'stars';
+    }
+}
+
 function loadTheme() {
   // Only load theme from cookie if cookies are accepted
   if (getCookie('cookiesAccepted') === 'true') {
@@ -779,9 +838,16 @@ document.addEventListener('DOMContentLoaded', function() {
   loadTheme();
   
   // Gear button click handler
-  document.getElementById('gearButton').addEventListener('click', function() {
-    const themeSwitcher = document.querySelector('.theme-switcher');
-    themeSwitcher.classList.toggle('show');
+  document.getElementById('gearButton').addEventListener('click', function(event) {
+    event.stopPropagation();
+    const themeContent = document.querySelector('.theme-content');
+    const isShown = themeContent.style.display === 'block';
+    themeContent.style.display = isShown ? 'none' : 'block';
+  });
+
+  document.addEventListener('click', function() {
+      const themeContent = document.querySelector('.theme-content');
+      themeContent.style.display = 'none';
   });
   
   // Theme button click handlers
@@ -880,25 +946,25 @@ function createDistantStar() {
 
 function initSparkles() {
   // Create initial sparkles
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 30; i++) {
     setTimeout(() => {
       createSparkle();
-    }, i * 500); // Stagger creation
+    }, i * 250); // Stagger creation
   }
   
   // Create initial distant stars
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 50; i++) {
     setTimeout(() => {
       createDistantStar();
-    }, i * 200); // More frequent, smaller delay
+    }, i * 100); // More frequent, smaller delay
   }
   
   // Continue creating sparkles
   setInterval(() => {
-    if (document.getElementById('sparkleContainer').children.length < 20) {
+    if (document.getElementById('sparkleContainer').children.length < 40) {
       createSparkle();
     }
-  }, 2000);
+  }, 1000);
   
   // Continue creating distant stars (more frequent)
   setInterval(() => {
@@ -908,31 +974,32 @@ function initSparkles() {
     // Theme-specific star density
     switch(currentTheme) {
       case 'a': // Aurora - more stars
-        maxStars = 35;
+        maxStars = 50;
         break;
       case 'e': // Eclipse - more stars
-        maxStars = 30;
+        maxStars = 45;
         break;
       case 'r': // Rainbow - medium stars
-        maxStars = 25;
+        maxStars = 40;
         break;
       case 'c': // Cosmic - medium stars
-        maxStars = 25;
+        maxStars = 40;
         break;
       case 'n': // Nebula - medium stars
-        maxStars = 25;
+        maxStars = 40;
         break;
       case 'z': // Zenith - fewer stars
-        maxStars = 20;
+        maxStars = 30;
         break;
       default:
-        maxStars = 25;
+        maxStars = 40;
     }
     
     const distantStars = document.querySelectorAll('.distant-star').length;
     if (distantStars < maxStars) {
       createDistantStar();
     }
-  }, 800); // More frequent than sparkles
+  }, 500); // More frequent than sparkles
 }
 </script>
+</body>

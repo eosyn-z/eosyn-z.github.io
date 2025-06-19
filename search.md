@@ -733,8 +733,8 @@ permalink: /search/
     <div class="theme-switcher">
         <div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
         <div class="theme-content">
-            <h3>Theme</h3>
-            <div class="theme-buttons">
+        <h3>Theme</h3>
+        <div class="theme-buttons">
                 <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
                 <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
                 <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
