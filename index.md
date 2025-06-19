@@ -1,6 +1,6 @@
 ---
 layout: home
-title: 
+title: eosyn
 ---
 
 # hi, i'm eosyn. this site is under construction.
