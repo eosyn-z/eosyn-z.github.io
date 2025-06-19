@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - eosyn</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 25px;
+            transition: background 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .search-bar:focus {
+            border-color: #667eea;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .filter-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .results-info {
+            margin-bottom: 20px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .website-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .website-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: #fafafa;
+        }
+
+        .website-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .website-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            text-decoration: none;
+        }
+
+        .website-title:hover {
+            color: #667eea;
+        }
+
+        .website-description {
+            color: #4a5568;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .website-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .tag.personal { background: #48bb78; }
+        .tag.company { background: #ed8936; }
+        .tag.tool { background: #9f7aea; }
+        .tag.creative { background: #f56565; }
+        .tag.tech { background: #4299e1; }
+        .tag.art { background: #ed64a6; }
+
+        .no-results {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        .clear-filters {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .clear-filters:hover {
+            background: #c53030;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Discover Amazing Websites</h1>
+            <p>Search for personal projects, small businesses, and useful tools</p>
+        </div>
+
+        <div class="search-section">
+            <input type="text" id="searchBar" class="search-bar" placeholder="Search websites by name, description, or tags...">
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <input type="checkbox" id="personal" checked>
+                    <label for="personal">Personal</label>
+                </div>
+                <div class="filter-group">
+                    <input type="checkbox" id="company" checked>
+                    <label for="company">Company</label>
+                </div>
+                <div class="filter-group">
+                    <input type="checkbox" id="tool" checked>
+                    <label for="tool">Tools</label>
+                </div>
+                <div class="filter-group">
+                    <input type="checkbox" id="creative" checked>
+                    <label for="creative">Creative</label>
+                </div>
+                <div class="filter-group">
+                    <input type="checkbox" id="tech" checked>
+                    <label for="tech">Tech</label>
+                </div>
+                <div class="filter-group">
+                    <input type="checkbox" id="art" checked>
+                    <label for="art">Art</label>
+                </div>
+                <button class="clear-filters" onclick="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+
+        <div class="results-info" id="resultsInfo">
+            Showing all websites
+        </div>
+
+        <div class="website-grid" id="websiteGrid">
+            <!-- Websites will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Website database
+        const websites = [
+            {
+                name: "Notion",
+                url: "https://notion.so",
+                description: "All-in-one workspace for notes, docs, and collaboration",
+                tags: ["company", "tool", "tech"]
+            },
+            {
+                name: "Figma",
+                url: "https://figma.com",
+                description: "Collaborative interface design tool",
+                tags: ["company", "tool", "creative", "tech"]
+            },
+            {
+                name: "Canva",
+                url: "https://canva.com",
+                description: "Easy-to-use graphic design platform",
+                tags: ["company", "tool", "creative", "art"]
+            },
+            {
+                name: "GitHub",
+                url: "https://github.com",
+                description: "Platform for version control and collaboration",
+                tags: ["company", "tool", "tech"]
+            },
+            {
+                name: "Dribbble",
+                url: "https://dribbble.com",
+                description: "Showcase and discover creative work",
+                tags: ["company", "creative", "art"]
+            },
+            {
+                name: "Behance",
+                url: "https://behance.net",
+                description: "Creative portfolio platform",
+                tags: ["company", "creative", "art"]
+            },
+            {
+                name: "Dev.to",
+                url: "https://dev.to",
+                description: "Community of software developers",
+                tags: ["company", "tech"]
+            },
+            {
+                name: "Product Hunt",
+                url: "https://producthunt.com",
+                description: "Discover the best new products",
+                tags: ["company", "tool", "tech"]
+            },
+            {
+                name: "Indie Hackers",
+                url: "https://indiehackers.com",
+                description: "Community for indie developers and entrepreneurs",
+                tags: ["personal", "tech"]
+            },
+            {
+                name: "Makerlog",
+                url: "https://makerlog.co",
+                description: "Track your progress building products",
+                tags: ["personal", "tool", "tech"]
+            },
+            {
+                name: "Glitch",
+                url: "https://glitch.com",
+                description: "Create and deploy web apps instantly",
+                tags: ["company", "tool", "tech", "creative"]
+            },
+            {
+                name: "Replit",
+                url: "https://replit.com",
+                description: "Online IDE and coding platform",
+                tags: ["company", "tool", "tech"]
+            },
+            {
+                name: "CodePen",
+                url: "https://codepen.io",
+                description: "Front-end development playground",
+                tags: ["company", "tool", "tech", "creative"]
+            },
+            {
+                name: "Unsplash",
+                url: "https://unsplash.com",
+                description: "Beautiful free images and photos",
+                tags: ["company", "creative", "art"]
+            },
+            {
+                name: "Pexels",
+                url: "https://pexels.com",
+                description: "Free stock photos and videos",
+                tags: ["company", "creative", "art"]
+            },
+            {
+                name: "Font Awesome",
+                url: "https://fontawesome.com",
+                description: "Icon toolkit for web developers",
+                tags: ["company", "tool", "tech", "creative"]
+            },
+            {
+                name: "Coolors",
+                url: "https://coolors.co",
+                description: "Color palette generator",
+                tags: ["personal", "tool", "creative", "art"]
+            },
+            {
+                name: "Paletton",
+                url: "https://paletton.com",
+                description: "Color scheme designer",
+                tags: ["personal", "tool", "creative", "art"]
+            },
+            {
+                name: "TinyPNG",
+                url: "https://tinypng.com",
+                description: "Smart PNG and JPEG compression",
+                tags: ["company", "tool", "tech"]
+            },
+            {
+                name: "Squoosh",
+                url: "https://squoosh.app",
+                description: "Image compression tool by Google",
+                tags: ["company", "tool", "tech"]
+            }
+        ];
+
+        let filteredWebsites = [...websites];
+
+        // Search and filter functionality
+        function filterWebsites() {
+            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+            const personalChecked = document.getElementById('personal').checked;
+            const companyChecked = document.getElementById('company').checked;
+            const toolChecked = document.getElementById('tool').checked;
+            const creativeChecked = document.getElementById('creative').checked;
+            const techChecked = document.getElementById('tech').checked;
+            const artChecked = document.getElementById('art').checked;
+
+            filteredWebsites = websites.filter(website => {
+                // Search term filter
+                const matchesSearch = website.name.toLowerCase().includes(searchTerm) ||
+                                    website.description.toLowerCase().includes(searchTerm) ||
+                                    website.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+
+                // Tag filters
+                const hasPersonal = website.tags.includes('personal');
+                const hasCompany = website.tags.includes('company');
+                const hasTool = website.tags.includes('tool');
+                const hasCreative = website.tags.includes('creative');
+                const hasTech = website.tags.includes('tech');
+                const hasArt = website.tags.includes('art');
+
+                const matchesTags = (personalChecked && hasPersonal) ||
+                                  (companyChecked && hasCompany) ||
+                                  (toolChecked && hasTool) ||
+                                  (creativeChecked && hasCreative) ||
+                                  (techChecked && hasTech) ||
+                                  (artChecked && hasArt);
+
+                return matchesSearch && matchesTags;
+            });
+
+            displayWebsites();
+        }
+
+        function displayWebsites() {
+            const grid = document.getElementById('websiteGrid');
+            const resultsInfo = document.getElementById('resultsInfo');
+
+            if (filteredWebsites.length === 0) {
+                grid.innerHTML = '<div class="no-results">No websites found matching your criteria</div>';
+                resultsInfo.textContent = 'No results found';
+                return;
+            }
+
+            resultsInfo.textContent = `Showing ${filteredWebsites.length} of ${websites.length} websites`;
+
+            grid.innerHTML = filteredWebsites.map(website => `
+                <div class="website-card">
+                    <a href="${website.url}" target="_blank" class="website-title">${website.name}</a>
+                    <p class="website-description">${website.description}</p>
+                    <div class="website-tags">
+                        ${website.tags.map(tag => `<span class="tag ${tag}">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function clearFilters() {
+            document.getElementById('searchBar').value = '';
+            document.getElementById('personal').checked = true;
+            document.getElementById('company').checked = true;
+            document.getElementById('tool').checked = true;
+            document.getElementById('creative').checked = true;
+            document.getElementById('tech').checked = true;
+            document.getElementById('art').checked = true;
+            filterWebsites();
+        }
+
+        // Event listeners
+        document.getElementById('searchBar').addEventListener('input', filterWebsites);
+        document.getElementById('personal').addEventListener('change', filterWebsites);
+        document.getElementById('company').addEventListener('change', filterWebsites);
+        document.getElementById('tool').addEventListener('change', filterWebsites);
+        document.getElementById('creative').addEventListener('change', filterWebsites);
+        document.getElementById('tech').addEventListener('change', filterWebsites);
+        document.getElementById('art').addEventListener('change', filterWebsites);
+
+        // Initial display
+        displayWebsites();
+    </script>
+</body>
+</html> 

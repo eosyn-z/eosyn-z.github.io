@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature - eosyn</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .loading {
+            font-size: 24px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <div class="content">
+        <div class="loading">Loading nature...</div>
+    </div>
+
+    <script>
+        // Curated list of nature-themed GIFs
+        const natureGifs = [
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Forest
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Ocean waves
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Mountain sunset
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Rainforest
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Waterfall
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Aurora borealis
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Desert dunes
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Cherry blossoms
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", // Snow falling
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"  // Fireflies
+        ];
+
+        // Function to get a random GIF from the list
+        function getRandomNatureGif() {
+            const randomIndex = Math.floor(Math.random() * natureGifs.length);
+            return natureGifs[randomIndex];
+        }
+
+        // Set the background when the page loads
+        window.addEventListener('load', function() {
+            const randomGif = getRandomNatureGif();
+            document.body.style.backgroundImage = `url('${randomGif}')`;
+            
+            // Remove loading text after a short delay
+            setTimeout(() => {
+                const loadingElement = document.querySelector('.loading');
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+            }, 1000);
+        });
+
+        // Optional: Change background on click
+        document.addEventListener('click', function(e) {
+            // Don't change if clicking on the back link
+            if (e.target.classList.contains('back-link')) {
+                return;
+            }
+            
+            const randomGif = getRandomNatureGif();
+            document.body.style.backgroundImage = `url('${randomGif}')`;
+        });
+    </script>
+</body>
+</html> 
