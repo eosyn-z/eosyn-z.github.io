@@ -5,22 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search - eosyn</title>
     <style>
+        :root {
+            /* Primary Color Palette */
+            --primary-purple: #667eea;
+            --primary-pink: #f093fb;
+            --accent-blue: #4facfe;
+            --accent-green: #43e97b;
+            --accent-orange: #fa709a;
+            
+            /* Background Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-pink) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+            --gradient-warm: linear-gradient(135deg, var(--accent-orange) 0%, var(--primary-pink) 100%);
+            
+            /* Text Colors */
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --text-white: #ffffff;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --bg-accent: #edf2f7;
+            
+            /* Border Colors */
+            --border-primary: #e2e8f0;
+            --border-accent: #cbd5e0;
+            --border-pink: #ffb6c1;
+            
+            /* Shadow Colors */
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.2);
+            --shadow-heavy: rgba(0, 0, 0, 0.3);
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             min-height: 100vh;
-            color: #333;
+            color: var(--text-primary);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
+            background: var(--bg-primary);
+            border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px var(--shadow-medium);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .header {
@@ -29,25 +66,34 @@
         }
 
         .header h1 {
-            color: #4a5568;
+            color: var(--primary-purple);
             margin-bottom: 10px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
         }
 
         .back-link {
             position: absolute;
             top: 20px;
             left: 20px;
-            color: white;
+            color: var(--text-white);
             text-decoration: none;
             font-size: 18px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px 15px;
+            background: var(--shadow-heavy);
+            padding: 12px 20px;
             border-radius: 25px;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .back-link:hover {
-            background: rgba(0, 0, 0, 0.5);
+            background: var(--gradient-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-medium);
         }
 
         .search-section {
@@ -58,15 +104,17 @@
             width: 100%;
             padding: 15px 20px;
             font-size: 16px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid var(--border-primary);
             border-radius: 25px;
             outline: none;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
             margin-bottom: 20px;
+            background: var(--bg-secondary);
         }
 
         .search-bar:focus {
-            border-color: #667eea;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .filters {
@@ -84,18 +132,18 @@
 
         .filter-group label {
             font-weight: 500;
-            color: #4a5568;
+            color: var(--text-secondary);
         }
 
         .filter-group input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            accent-color: #667eea;
+            accent-color: var(--primary-purple);
         }
 
         .results-info {
             margin-bottom: 20px;
-            color: #718096;
+            color: var(--text-light);
             font-size: 14px;
         }
 
@@ -106,32 +154,33 @@
         }
 
         .website-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
+            border: 1px solid var(--border-primary);
+            border-radius: 15px;
             padding: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            background: #fafafa;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
         }
 
         .website-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px var(--shadow-medium);
+            border-color: var(--primary-purple);
         }
 
         .website-title {
             font-size: 18px;
             font-weight: 600;
-            color: #2d3748;
+            color: var(--text-primary);
             margin-bottom: 8px;
             text-decoration: none;
         }
 
         .website-title:hover {
-            color: #667eea;
+            color: var(--primary-purple);
         }
 
         .website-description {
-            color: #4a5568;
+            color: var(--text-secondary);
             margin-bottom: 12px;
             line-height: 1.5;
         }
@@ -143,41 +192,42 @@
         }
 
         .tag {
-            background: #667eea;
-            color: white;
+            background: var(--primary-purple);
+            color: var(--text-white);
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 12px;
             font-weight: 500;
         }
 
-        .tag.personal { background: #48bb78; }
-        .tag.company { background: #ed8936; }
-        .tag.tool { background: #9f7aea; }
-        .tag.creative { background: #f56565; }
-        .tag.tech { background: #4299e1; }
-        .tag.art { background: #ed64a6; }
+        .tag.personal { background: var(--accent-green); }
+        .tag.company { background: var(--accent-orange); }
+        .tag.tool { background: var(--primary-purple); }
+        .tag.creative { background: var(--accent-orange); }
+        .tag.tech { background: var(--accent-blue); }
+        .tag.art { background: var(--primary-pink); }
 
         .no-results {
             text-align: center;
-            color: #718096;
+            color: var(--text-light);
             font-style: italic;
             padding: 40px;
         }
 
         .clear-filters {
-            background: #e53e3e;
-            color: white;
+            background: var(--accent-orange);
+            color: var(--text-white);
             border: none;
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .clear-filters:hover {
-            background: #c53030;
+            background: #e53e3e;
+            transform: translateY(-2px);
         }
     </style>
 </head>
