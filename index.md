@@ -9,4 +9,5 @@ thank you for checking it out so early! <3
 
 
 - 🛠️ Check out my projects on [GitHub](https://github.com/eosyn-z)
+- 🎵 Listen to some [music](/etc/)
 - Discord: @eosyn
