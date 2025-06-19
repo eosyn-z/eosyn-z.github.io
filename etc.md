@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Nature
-permalink: /nature/
+title: ETC
+permalink: /etc/
 ---
 
 <style>
@@ -93,70 +93,125 @@ permalink: /nature/
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: var(--gradient-primary);
+  color: var(--text-primary);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-white);
-  text-shadow: 2px 2px 4px var(--shadow-heavy);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
   transition: all 0.3s ease;
 }
 
-.content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 10;
-}
-
-.back-link {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: var(--text-white);
-  text-decoration: none;
-  font-size: 18px;
-  background: var(--shadow-heavy);
-  padding: 12px 20px;
-  border-radius: 25px;
-  transition: all 0.3s ease;
+.etc-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px var(--shadow-medium);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
 }
 
-.back-link:hover {
+.etc-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.etc-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-purple);
   background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.etc-header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.music-btn {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.music-btn:hover {
+  border-color: var(--primary-purple);
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--shadow-medium);
 }
 
-.loading {
-  font-size: 24px;
-  opacity: 0.9;
-  background: var(--shadow-heavy);
-  padding: 20px 30px;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.music-btn.active {
+  border-color: var(--primary-purple);
+  background: var(--gradient-primary);
+  color: var(--text-white);
 }
 
-.page-title {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: var(--shadow-heavy);
-  padding: 12px 20px;
-  border-radius: 25px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 16px;
+.btn-label {
+  font-size: 1.2rem;
   font-weight: 600;
+  display: block;
+}
+
+.btn-desc {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  display: block;
+}
+
+.player-container {
+  position: relative;
+  min-height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-primary);
+  transition: all 0.3s ease;
+}
+
+.spotify-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+  padding: 1rem;
+}
+
+.spotify-player.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.spotify-player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Theme Switcher */
@@ -279,7 +334,26 @@ body {
   box-shadow: 0 4px 12px var(--shadow-medium);
 }
 
+/* Mobile responsiveness */
 @media (max-width: 768px) {
+  .etc-container {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .button-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .etc-header h1 {
+    font-size: 2rem;
+  }
+  
+  .player-container {
+    min-height: 300px;
+  }
+  
   .theme-switcher {
     top: 10px;
     right: 10px;
@@ -307,11 +381,69 @@ body {
 }
 </style>
 
-<a href="/" class="back-link">← Back to Home</a>
-<div class="page-title">🌿 Nature</div>
+<div class="etc-container">
+  <div class="etc-header">
+    <h1>ETC</h1>
+    <p>Some music I've been listening to lately. Click any button to start playing.</p>
+  </div>
 
-<div class="content">
-  <div class="loading">Loading nature...</div>
+  <div class="button-grid">
+    <button class="music-btn" data-player="player1">
+      <span class="btn-label">Chill Vibes</span>
+      <span class="btn-desc">Lo-fi beats and ambient sounds</span>
+    </button>
+    
+    <button class="music-btn" data-player="player2">
+      <span class="btn-label">Workout Mix</span>
+      <span class="btn-desc">High energy tracks to keep you moving</span>
+    </button>
+    
+    <button class="music-btn" data-player="player3">
+      <span class="btn-label">Late Night</span>
+      <span class="btn-desc">Moody tunes for the evening hours</span>
+    </button>
+    
+    <button class="music-btn" data-player="player4">
+      <span class="btn-label">Study Session</span>
+      <span class="btn-desc">Instrumental focus music</span>
+    </button>
+    
+    <button class="music-btn" data-player="player5">
+      <span class="btn-label">Road Trip</span>
+      <span class="btn-desc">Perfect for long drives</span>
+    </button>
+    
+    <button class="music-btn" data-player="player6">
+      <span class="btn-label">Weekend Vibes</span>
+      <span class="btn-desc">Feel-good weekend energy</span>
+    </button>
+  </div>
+
+  <div class="player-container">
+    <div id="player1" class="spotify-player active">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX5Vy6DFOcx00?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    
+    <div id="player2" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX76Wlfdnj7AP?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    
+    <div id="player3" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX3Ogo9pFvBkY?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    
+    <div id="player4" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX9uKNf5jGX6m?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    
+    <div id="player5" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX5Vy6DFOcx00?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    
+    <div id="player6" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX76Wlfdnj7AP?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+  </div>
 </div>
 
 <!-- Theme Switcher -->
@@ -337,29 +469,6 @@ body {
 </div>
 
 <script>
-// Curated lists of nature-themed gifs
-const forestCinemagraphs = [
-  "https://i.pinimg.com/originals/60/d8/44/60d844679e07db517c19fdc5dd7af089.gif", // Forest with quickly blowing mist in the sunlight
-  "https://i.pinimg.com/originals/92/cd/fc/92cdfc9bdebc53a747331999b6933734.gif", // Forest with slowly blowing mist in the sunlight
-  "https://i.pinimg.com/originals/fc/5f/2c/fc5f2cbfc8b3f89af197a02aaef345c3.gif", // Forest with slowly blowing mist in ambient light
-];
-
-const flowingWaterCinemagraphs = [
-  "https://livingstills.nl/wp-content/uploads/2020/11/waterfall_mist.gif", // small river with falling water and mist in sunbeams
-  "https://64.media.tumblr.com/c74ed91f169aea9552d8d1a38d245cbd/tumblr_ntr9fsF71S1upvbufo1_540.gif", // flowing water over the outside of a cave
-  "https://mir-s3-cdn-cf.behance.net/project_modules/source/1aacd211481791.560f867dabbbd.gif", // Flowing water by grass
-];
-
-const oceanCinemagraphs = [
-  "https://www.theodysseyonline.com/media-library/image.gif?id=10746909&width=800&quality=80", // morning sunlight over the sea with blowing plants
-];
-
-const natureGifs = [
-  ...forestCinemagraphs,
-  ...flowingWaterCinemagraphs,
-  ...oceanCinemagraphs
-];
-
 // Cookie management functions
 function setCookie(name, value, days) {
   const expires = new Date();
@@ -429,37 +538,6 @@ function rejectCookies() {
   deleteCookie('theme');
 }
 
-// Function to get a random GIF from the list
-function getRandomNatureGif() {
-  const randomIndex = Math.floor(Math.random() * natureGifs.length);
-  return natureGifs[randomIndex];
-}
-
-// Set the background when the page loads
-window.addEventListener('load', function() {
-  const randomGif = getRandomNatureGif();
-  document.body.style.backgroundImage = `url('${randomGif}')`;
-  
-  // Remove loading text after a short delay
-  setTimeout(() => {
-    const loadingElement = document.querySelector('.loading');
-    if (loadingElement) {
-      loadingElement.style.display = 'none';
-    }
-  }, 1000);
-});
-
-// Change background on click
-document.addEventListener('click', function(e) {
-  // Don't change if clicking on the back link or theme switcher
-  if (e.target.classList.contains('back-link') || e.target.closest('.theme-switcher') || e.target.closest('.cookie-consent')) {
-    return;
-  }
-  
-  const randomGif = getRandomNatureGif();
-  document.body.style.backgroundImage = `url('${randomGif}')`;
-});
-
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
   // Show cookie consent if needed
@@ -473,6 +551,24 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function() {
       const theme = this.getAttribute('data-theme');
       setTheme(theme);
+    });
+  });
+  
+  // Music player functionality
+  const buttons = document.querySelectorAll('.music-btn');
+  const players = document.querySelectorAll('.spotify-player');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetPlayer = this.getAttribute('data-player');
+      
+      // Remove active class from all buttons and players
+      buttons.forEach(btn => btn.classList.remove('active'));
+      players.forEach(player => player.classList.remove('active'));
+      
+      // Add active class to clicked button and corresponding player
+      this.classList.add('active');
+      document.getElementById(targetPlayer).classList.add('active');
     });
   });
 });

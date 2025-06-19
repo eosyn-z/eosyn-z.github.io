@@ -46,6 +46,58 @@ permalink: /search/
             --shadow-heavy: rgba(0, 0, 0, 0.3);
         }
 
+        /* Theme: Sunset */
+        [data-theme="sunset"] {
+            --primary-purple: #ff6b6b;
+            --primary-pink: #ffa726;
+            --accent-blue: #ff7043;
+            --accent-green: #ffb74d;
+            --accent-orange: #ff8a65;
+            --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+            --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
+        }
+
+        /* Theme: Ocean */
+        [data-theme="ocean"] {
+            --primary-purple: #4fc3f7;
+            --primary-pink: #29b6f6;
+            --accent-blue: #26c6da;
+            --accent-green: #4dd0e1;
+            --accent-orange: #00bcd4;
+            --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
+        }
+
+        /* Theme: Forest */
+        [data-theme="forest"] {
+            --primary-purple: #66bb6a;
+            --primary-pink: #81c784;
+            --accent-blue: #4caf50;
+            --accent-green: #66bb6a;
+            --accent-orange: #8bc34a;
+            --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+            --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+        }
+
+        /* Theme: Dark */
+        [data-theme="dark"] {
+            --primary-purple: #9c27b0;
+            --primary-pink: #e91e63;
+            --accent-blue: #3f51b5;
+            --accent-green: #4caf50;
+            --accent-orange: #ff9800;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --text-light: #bdbdbd;
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-accent: #404040;
+            --border-primary: #404040;
+            --border-accent: #555555;
+            --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
+            --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -53,6 +105,7 @@ permalink: /search/
             background: var(--gradient-primary);
             min-height: 100vh;
             color: var(--text-primary);
+            transition: all 0.3s ease;
         }
 
         .container {
@@ -64,6 +117,7 @@ permalink: /search/
             box-shadow: 0 20px 40px var(--shadow-medium);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
 
         .header {
@@ -116,6 +170,7 @@ permalink: /search/
             transition: all 0.3s ease;
             margin-bottom: 20px;
             background: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
         .search-bar:focus {
@@ -206,34 +261,164 @@ permalink: /search/
             font-weight: 500;
         }
 
-        .tag.personal { background: var(--accent-green); }
-        .tag.company { background: var(--accent-orange); }
-        .tag.tool { background: var(--primary-purple); }
-        .tag.creative { background: var(--accent-orange); }
-        .tag.tech { background: var(--accent-blue); }
-        .tag.art { background: var(--primary-pink); }
+        .tag.personal { background: var(--accent-blue); }
+        .tag.company { background: var(--accent-green); }
+        .tag.tools { background: var(--accent-orange); }
 
-        .no-results {
-            text-align: center;
-            color: var(--text-light);
-            font-style: italic;
-            padding: 40px;
-        }
-
-        .clear-filters {
-            background: var(--accent-orange);
-            color: var(--text-white);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
+        /* Theme Switcher */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-primary);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 30px var(--shadow-medium);
+            border: 2px solid var(--border-primary);
+            z-index: 1000;
             transition: all 0.3s ease;
         }
 
-        .clear-filters:hover {
-            background: #e53e3e;
+        .theme-switcher h3 {
+            margin: 0 0 10px 0;
+            color: var(--text-primary);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .theme-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid var(--border-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px var(--shadow-medium);
+        }
+
+        .theme-btn.active {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .theme-btn[data-theme="default"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
+        .theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
+        .theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
+        .theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
+        .theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
+
+        /* Cookie Consent */
+        .cookie-consent {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: var(--bg-primary);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px var(--shadow-medium);
+            border: 2px solid var(--border-primary);
+            z-index: 1001;
+            max-width: 500px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .cookie-consent.show {
+            display: block;
+        }
+
+        .cookie-consent h3 {
+            margin: 0 0 10px 0;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .cookie-consent p {
+            margin: 0 0 15px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .cookie-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .cookie-btn.accept {
+            background: var(--gradient-primary);
+            color: var(--text-white);
+        }
+
+        .cookie-btn.reject {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-primary);
+        }
+
+        .cookie-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-medium);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .website-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .theme-switcher {
+                top: 10px;
+                right: 10px;
+                padding: 10px;
+            }
+            
+            .theme-buttons {
+                gap: 5px;
+            }
+            
+            .theme-btn {
+                width: 25px;
+                height: 25px;
+            }
+            
+            .cookie-consent {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+            }
+            
+            .cookie-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -242,12 +427,12 @@ permalink: /search/
     
     <div class="container">
         <div class="header">
-            <h1>🔍 Discover Amazing Websites</h1>
-            <p>Search for personal projects, small businesses, and useful tools</p>
+            <h1>🔍 Discover</h1>
+            <p>Find interesting websites and tools</p>
         </div>
 
         <div class="search-section">
-            <input type="text" id="searchBar" class="search-bar" placeholder="Search websites by name, description, or tags...">
+            <input type="text" class="search-bar" id="searchBar" placeholder="Search websites...">
             
             <div class="filters">
                 <div class="filter-group">
@@ -259,27 +444,14 @@ permalink: /search/
                     <label for="company">Company</label>
                 </div>
                 <div class="filter-group">
-                    <input type="checkbox" id="tool" checked>
-                    <label for="tool">Tools</label>
+                    <input type="checkbox" id="tools" checked>
+                    <label for="tools">Tools</label>
                 </div>
-                <div class="filter-group">
-                    <input type="checkbox" id="creative" checked>
-                    <label for="creative">Creative</label>
-                </div>
-                <div class="filter-group">
-                    <input type="checkbox" id="tech" checked>
-                    <label for="tech">Tech</label>
-                </div>
-                <div class="filter-group">
-                    <input type="checkbox" id="art" checked>
-                    <label for="art">Art</label>
-                </div>
-                <button class="clear-filters" onclick="clearFilters()">Clear Filters</button>
             </div>
-        </div>
-
-        <div class="results-info" id="resultsInfo">
-            Showing all websites
+            
+            <div class="results-info" id="resultsInfo">
+                Showing all websites
+            </div>
         </div>
 
         <div class="website-grid" id="websiteGrid">
@@ -287,215 +459,246 @@ permalink: /search/
         </div>
     </div>
 
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <h3>Theme</h3>
+        <div class="theme-buttons">
+            <div class="theme-btn active" data-theme="default" title="Default"></div>
+            <div class="theme-btn" data-theme="sunset" title="Sunset"></div>
+            <div class="theme-btn" data-theme="ocean" title="Ocean"></div>
+            <div class="theme-btn" data-theme="forest" title="Forest"></div>
+            <div class="theme-btn" data-theme="dark" title="Dark"></div>
+        </div>
+    </div>
+
+    <!-- Cookie Consent -->
+    <div class="cookie-consent" id="cookieConsent">
+        <h3>🍪 Cookie Notice</h3>
+        <p>This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
+        <div class="cookie-buttons">
+            <button class="cookie-btn reject" onclick="rejectCookies()">Reject</button>
+            <button class="cookie-btn accept" onclick="acceptCookies()">Accept</button>
+        </div>
+    </div>
+
     <script>
-        // Website database
-        const websites = [
-            {
-                name: "Notion",
-                url: "https://notion.so",
-                description: "All-in-one workspace for notes, docs, and collaboration",
-                tags: ["company", "tool", "tech"]
-            },
-            {
-                name: "Figma",
-                url: "https://figma.com",
-                description: "Collaborative interface design tool",
-                tags: ["company", "tool", "creative", "tech"]
-            },
-            {
-                name: "Canva",
-                url: "https://canva.com",
-                description: "Easy-to-use graphic design platform",
-                tags: ["company", "tool", "creative", "art"]
-            },
-            {
-                name: "GitHub",
-                url: "https://github.com",
-                description: "Platform for version control and collaboration",
-                tags: ["company", "tool", "tech"]
-            },
-            {
-                name: "Dribbble",
-                url: "https://dribbble.com",
-                description: "Showcase and discover creative work",
-                tags: ["company", "creative", "art"]
-            },
-            {
-                name: "Behance",
-                url: "https://behance.net",
-                description: "Creative portfolio platform",
-                tags: ["company", "creative", "art"]
-            },
-            {
-                name: "Dev.to",
-                url: "https://dev.to",
-                description: "Community of software developers",
-                tags: ["company", "tech"]
-            },
-            {
-                name: "Product Hunt",
-                url: "https://producthunt.com",
-                description: "Discover the best new products",
-                tags: ["company", "tool", "tech"]
-            },
-            {
-                name: "Indie Hackers",
-                url: "https://indiehackers.com",
-                description: "Community for indie developers and entrepreneurs",
-                tags: ["personal", "tech"]
-            },
-            {
-                name: "Makerlog",
-                url: "https://makerlog.co",
-                description: "Track your progress building products",
-                tags: ["personal", "tool", "tech"]
-            },
-            {
-                name: "Glitch",
-                url: "https://glitch.com",
-                description: "Create and deploy web apps instantly",
-                tags: ["company", "tool", "tech", "creative"]
-            },
-            {
-                name: "Replit",
-                url: "https://replit.com",
-                description: "Online IDE and coding platform",
-                tags: ["company", "tool", "tech"]
-            },
-            {
-                name: "CodePen",
-                url: "https://codepen.io",
-                description: "Front-end development playground",
-                tags: ["company", "tool", "tech", "creative"]
-            },
-            {
-                name: "Unsplash",
-                url: "https://unsplash.com",
-                description: "Beautiful free images and photos",
-                tags: ["company", "creative", "art"]
-            },
-            {
-                name: "Pexels",
-                url: "https://pexels.com",
-                description: "Free stock photos and videos",
-                tags: ["company", "creative", "art"]
-            },
-            {
-                name: "Font Awesome",
-                url: "https://fontawesome.com",
-                description: "Icon toolkit for web developers",
-                tags: ["company", "tool", "tech", "creative"]
-            },
-            {
-                name: "Coolors",
-                url: "https://coolors.co",
-                description: "Color palette generator",
-                tags: ["personal", "tool", "creative", "art"]
-            },
-            {
-                name: "Paletton",
-                url: "https://paletton.com",
-                description: "Color scheme designer",
-                tags: ["personal", "tool", "creative", "art"]
-            },
-            {
-                name: "TinyPNG",
-                url: "https://tinypng.com",
-                description: "Smart PNG and JPEG compression",
-                tags: ["company", "tool", "tech"]
-            },
-            {
-                name: "Squoosh",
-                url: "https://squoosh.app",
-                description: "Image compression tool by Google",
-                tags: ["company", "tool", "tech"]
-            }
-        ];
-
-        let filteredWebsites = [...websites];
-
-        // Search and filter functionality
-        function filterWebsites() {
-            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
-            const personalChecked = document.getElementById('personal').checked;
-            const companyChecked = document.getElementById('company').checked;
-            const toolChecked = document.getElementById('tool').checked;
-            const creativeChecked = document.getElementById('creative').checked;
-            const techChecked = document.getElementById('tech').checked;
-            const artChecked = document.getElementById('art').checked;
-
-            filteredWebsites = websites.filter(website => {
-                // Search term filter
-                const matchesSearch = website.name.toLowerCase().includes(searchTerm) ||
-                                    website.description.toLowerCase().includes(searchTerm) ||
-                                    website.tags.some(tag => tag.toLowerCase().includes(searchTerm));
-
-                // Tag filters
-                const hasPersonal = website.tags.includes('personal');
-                const hasCompany = website.tags.includes('company');
-                const hasTool = website.tags.includes('tool');
-                const hasCreative = website.tags.includes('creative');
-                const hasTech = website.tags.includes('tech');
-                const hasArt = website.tags.includes('art');
-
-                const matchesTags = (personalChecked && hasPersonal) ||
-                                  (companyChecked && hasCompany) ||
-                                  (toolChecked && hasTool) ||
-                                  (creativeChecked && hasCreative) ||
-                                  (techChecked && hasTech) ||
-                                  (artChecked && hasArt);
-
-                return matchesSearch && matchesTags;
-            });
-
-            displayWebsites();
+    // Website database
+    const websites = [
+        {
+            title: "GitHub",
+            description: "The world's leading software development platform",
+            url: "https://github.com",
+            tags: ["tools", "company"]
+        },
+        {
+            title: "Stack Overflow",
+            description: "Where developers learn, share, & build careers",
+            url: "https://stackoverflow.com",
+            tags: ["tools", "company"]
+        },
+        {
+            title: "Dev.to",
+            description: "A constructive and inclusive social network for software developers",
+            url: "https://dev.to",
+            tags: ["personal", "tools"]
+        },
+        {
+            title: "CSS-Tricks",
+            description: "Tips, tricks, and techniques for CSS",
+            url: "https://css-tricks.com",
+            tags: ["personal", "tools"]
+        },
+        {
+            title: "Smashing Magazine",
+            description: "For professional web designers and developers",
+            url: "https://www.smashingmagazine.com",
+            tags: ["company", "tools"]
+        },
+        {
+            title: "A List Apart",
+            description: "For people who make websites",
+            url: "https://alistapart.com",
+            tags: ["company", "tools"]
+        },
+        {
+            title: "Codrops",
+            description: "Creative front-end resources and inspiration",
+            url: "https://tympanus.net/codrops",
+            tags: ["personal", "tools"]
+        },
+        {
+            title: "Dribbble",
+            description: "Discover and connect with designers worldwide",
+            url: "https://dribbble.com",
+            tags: ["company", "tools"]
+        },
+        {
+            title: "Behance",
+            description: "Showcase and discover creative work",
+            url: "https://www.behance.net",
+            tags: ["company", "tools"]
+        },
+        {
+            title: "Figma",
+            description: "The collaborative interface design tool",
+            url: "https://www.figma.com",
+            tags: ["company", "tools"]
+        },
+        {
+            title: "Notion",
+            description: "All-in-one workspace for notes, docs, and collaboration",
+            url: "https://www.notion.so",
+            tags: ["company", "tools"]
+        },
+        {
+            title: "Linear",
+            description: "Issue tracking tool for high-performance teams",
+            url: "https://linear.app",
+            tags: ["company", "tools"]
         }
+    ];
 
-        function displayWebsites() {
-            const grid = document.getElementById('websiteGrid');
-            const resultsInfo = document.getElementById('resultsInfo');
+    // Cookie management functions
+    function setCookie(name, value, days) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/";
+    }
 
-            if (filteredWebsites.length === 0) {
-                grid.innerHTML = '<div class="no-results">No websites found matching your criteria</div>';
-                resultsInfo.textContent = 'No results found';
-                return;
-            }
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
 
-            resultsInfo.textContent = `Showing ${filteredWebsites.length} of ${websites.length} websites`;
+    function deleteCookie(name) {
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+    }
 
-            grid.innerHTML = filteredWebsites.map(website => `
-                <div class="website-card">
-                    <a href="${website.url}" target="_blank" class="website-title">${website.name}</a>
-                    <p class="website-description">${website.description}</p>
-                    <div class="website-tags">
-                        ${website.tags.map(tag => `<span class="tag ${tag}">${tag}</span>`).join('')}
-                    </div>
+    // Theme management
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        // Update active button
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+        
+        // Save theme preference if cookies are accepted
+        if (getCookie('cookiesAccepted') === 'true') {
+            setCookie('theme', theme, 365);
+        }
+    }
+
+    function loadTheme() {
+        const savedTheme = getCookie('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        }
+    }
+
+    // Cookie consent management
+    function showCookieConsent() {
+        if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
+            document.getElementById('cookieConsent').classList.add('show');
+        }
+    }
+
+    function acceptCookies() {
+        setCookie('cookiesAccepted', 'true', 365);
+        document.getElementById('cookieConsent').classList.remove('show');
+        
+        // Save current theme preference
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
+        setCookie('theme', currentTheme, 365);
+    }
+
+    function rejectCookies() {
+        setCookie('cookiesRejected', 'true', 365);
+        document.getElementById('cookieConsent').classList.remove('show');
+        
+        // Clear any existing theme cookie
+        deleteCookie('theme');
+    }
+
+    // Search and filter functionality
+    function filterWebsites() {
+        const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+        const personalFilter = document.getElementById('personal').checked;
+        const companyFilter = document.getElementById('company').checked;
+        const toolsFilter = document.getElementById('tools').checked;
+        
+        const filteredWebsites = websites.filter(website => {
+            const matchesSearch = website.title.toLowerCase().includes(searchTerm) || 
+                                 website.description.toLowerCase().includes(searchTerm);
+            
+            const matchesPersonal = personalFilter && website.tags.includes('personal');
+            const matchesCompany = companyFilter && website.tags.includes('company');
+            const matchesTools = toolsFilter && website.tags.includes('tools');
+            
+            return matchesSearch && (matchesPersonal || matchesCompany || matchesTools);
+        });
+        
+        displayWebsites(filteredWebsites);
+        updateResultsInfo(filteredWebsites.length);
+    }
+
+    function displayWebsites(websitesToShow) {
+        const grid = document.getElementById('websiteGrid');
+        grid.innerHTML = '';
+        
+        websitesToShow.forEach(website => {
+            const card = document.createElement('div');
+            card.className = 'website-card';
+            
+            card.innerHTML = `
+                <a href="${website.url}" target="_blank" class="website-title">${website.title}</a>
+                <p class="website-description">${website.description}</p>
+                <div class="website-tags">
+                    ${website.tags.map(tag => `<span class="tag ${tag}">${tag}</span>`).join('')}
                 </div>
-            `).join('');
-        }
+            `;
+            
+            grid.appendChild(card);
+        });
+    }
 
-        function clearFilters() {
-            document.getElementById('searchBar').value = '';
-            document.getElementById('personal').checked = true;
-            document.getElementById('company').checked = true;
-            document.getElementById('tool').checked = true;
-            document.getElementById('creative').checked = true;
-            document.getElementById('tech').checked = true;
-            document.getElementById('art').checked = true;
-            filterWebsites();
-        }
+    function updateResultsInfo(count) {
+        const info = document.getElementById('resultsInfo');
+        info.textContent = `Showing ${count} website${count !== 1 ? 's' : ''}`;
+    }
 
-        // Event listeners
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show cookie consent if needed
+        showCookieConsent();
+        
+        // Load saved theme
+        loadTheme();
+        
+        // Theme button click handlers
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const theme = this.getAttribute('data-theme');
+                setTheme(theme);
+            });
+        });
+        
+        // Search and filter event listeners
         document.getElementById('searchBar').addEventListener('input', filterWebsites);
         document.getElementById('personal').addEventListener('change', filterWebsites);
         document.getElementById('company').addEventListener('change', filterWebsites);
-        document.getElementById('tool').addEventListener('change', filterWebsites);
-        document.getElementById('creative').addEventListener('change', filterWebsites);
-        document.getElementById('tech').addEventListener('change', filterWebsites);
-        document.getElementById('art').addEventListener('change', filterWebsites);
-
+        document.getElementById('tools').addEventListener('change', filterWebsites);
+        
         // Initial display
-        displayWebsites();
+        filterWebsites();
+    });
     </script>
 </body>
 </html> 
