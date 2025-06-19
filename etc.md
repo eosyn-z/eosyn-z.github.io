@@ -40,58 +40,6 @@ permalink: /etc/
   --shadow-heavy: rgba(0, 0, 0, 0.3);
 }
 
-/* Theme: Sunset */
-[data-theme="sunset"] {
-  --primary-purple: #ff6b6b;
-  --primary-pink: #ffa726;
-  --accent-blue: #ff7043;
-  --accent-green: #ffb74d;
-  --accent-orange: #ff8a65;
-  --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
-}
-
-/* Theme: Ocean */
-[data-theme="ocean"] {
-  --primary-purple: #4fc3f7;
-  --primary-pink: #29b6f6;
-  --accent-blue: #26c6da;
-  --accent-green: #4dd0e1;
-  --accent-orange: #00bcd4;
-  --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-  --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
-}
-
-/* Theme: Forest */
-[data-theme="forest"] {
-  --primary-purple: #66bb6a;
-  --primary-pink: #81c784;
-  --accent-blue: #4caf50;
-  --accent-green: #66bb6a;
-  --accent-orange: #8bc34a;
-  --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
-  --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-}
-
-/* Theme: Dark */
-[data-theme="dark"] {
-  --primary-purple: #9c27b0;
-  --primary-pink: #e91e63;
-  --accent-blue: #3f51b5;
-  --accent-green: #4caf50;
-  --accent-orange: #ff9800;
-  --text-primary: #ffffff;
-  --text-secondary: #e0e0e0;
-  --text-light: #bdbdbd;
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-accent: #404040;
-  --border-primary: #404040;
-  --border-accent: #555555;
-  --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
-  --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
-}
-
 body {
   background: var(--gradient-primary);
   color: var(--text-primary);

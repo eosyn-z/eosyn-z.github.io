@@ -464,6 +464,38 @@ h1 {
   border: 2px solid var(--border-primary);
   z-index: 1000;
   transition: all 0.3s ease;
+  display: none;
+}
+
+.theme-switcher.show {
+  display: block;
+}
+
+.gear-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: var(--bg-primary);
+  border-radius: 50%;
+  border: 2px solid var(--border-primary);
+  cursor: pointer;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+.gear-button:hover {
+  transform: rotate(90deg);
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  border-color: var(--primary-purple);
 }
 
 .theme-switcher h3 {
@@ -652,6 +684,9 @@ h1 {
   </div>
 </div>
 
+<!-- Gear Button -->
+<div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
+
 <!-- Theme Switcher -->
 <div class="theme-switcher">
   <h3>Theme</h3>
@@ -755,6 +790,12 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Load saved theme (only if cookies are accepted)
   loadTheme();
+  
+  // Gear button click handler
+  document.getElementById('gearButton').addEventListener('click', function() {
+    const themeSwitcher = document.querySelector('.theme-switcher');
+    themeSwitcher.classList.toggle('show');
+  });
   
   // Theme button click handlers
   document.querySelectorAll('.theme-btn').forEach(btn => {
