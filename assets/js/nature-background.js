@@ -1,33 +1,8 @@
----
-layout: default
-title: Nature
-permalink: /nature/
----
-
-<div class="main-content">
-  <div class="glass-container container">
-    <div class="glass-card">
-<a href="/" class="glass-button" style="position: absolute; top: 20px; left: 20px; z-index: 10;">← Back to Home</a>
-<div class="glass-panel" style="position: absolute; top: 20px; right: 20px;">
-    <h3 style="margin: 0; font-size: 16px; font-weight: 600;">🌿 Nature</h3>
-</div>
-
-<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
-  <div class="glass-panel" id="loading">Loading nature...</div>
-</div>
-
-<!-- Group Switcher -->
-<div id="groupSwitcher" class="glass-panel" style="position: absolute; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; gap: 12px; padding: 12px 20px;">
-  <button class="glass-button primary" data-group="random">Random</button>
-  <button class="glass-button" data-group="forest">Forest</button>
-  <button class="glass-button" data-group="flowingWater">Flowing Water</button>
-  <button class="glass-button" data-group="ocean">Ocean</button>
-</div>
-
-<div id="imageContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
-
-<script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're on the nature page
+    const imageContainer = document.getElementById('imageContainer');
+    if (!imageContainer) return;
+
     // PASTE YOUR IMAGE LINKS IN THESE ARRAYS
     const forestImages = [
         // Add forest image URLs here
@@ -49,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const groupSwitcher = document.getElementById('groupSwitcher');
-    const imageContainer = document.getElementById('imageContainer');
     const loadingMessage = document.getElementById('loading');
 
     function setRandomImage(group = 'random') {
@@ -102,5 +76,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setRandomImage('random');
     setActiveButton('random');
-});
-</script> 
+}); 

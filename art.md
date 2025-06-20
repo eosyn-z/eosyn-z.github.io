@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: default
 title: Art Gallery
 permalink: /art/
 ---
 
-<link rel="stylesheet" href="/assets/css/themes.css">
-
-<div class="glass-container" style="padding: 40px; max-width: 1200px; margin: 0 auto;">
+<div class="main-content">
+  <div class="glass-container container">
+    <div class="glass-card">
   <header style="text-align: center; margin-bottom: 3rem;">
     <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--theme-primary); font-weight: 700;">Art Gallery</h1>
     <p style="font-size: 1.1rem; color: var(--theme-text-secondary); margin: 0;">Exploring creativity across different mediums and styles.</p>
@@ -53,10 +53,5 @@ permalink: /art/
     </p>
   </div>
 </div>
-
-<style>
-.glass-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--glass-shadow-heavy);
-}
-</style> 
+  </div>
+</div> 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
-  {%- include head.html -%}
+  {%- include head.html -%} 
 
   <body>
 
@@ -32,6 +32,18 @@
     </header>
 
     {{ content }}
+
+    {%- if page.url == "/" or page.url == "/index.html" or page.url == "" or page.url == nil -%}
+    <!-- Cookie Consent -->
+    <div class="cookie-consent glass-card" id="cookieConsent" style="display: none;">
+      <h3 style="margin: 0 0 10px 0; color: var(--theme-text-primary); font-size: 16px;">🍪 Cookie Notice</h3>
+      <p style="margin: 0 0 15px 0; color: var(--theme-text-secondary); font-size: 14px; line-height: 1.5;">This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
+      <div class="cookie-buttons">
+        <button class="glass-button cookie-btn reject" onclick="rejectCookies()">Reject</button>
+        <button class="glass-button cookie-btn accept" onclick="acceptCookies()">Accept</button>
+      </div>
+    </div>
+    {%- endif -%}
 
     <script>
       // script for theme switcher

@@ -1,7 +1,7 @@
 /* assets/css/theme.css */
 
 /* ----------------------------------------- */
-/* --- Delicious Glass Foundation --- */
+/* --- Glass Foundation --- */
 /* ----------------------------------------- */
 
 :root {
@@ -11,34 +11,6 @@
   --glass-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   --glass-border-radius: 18px;
 
-  /* --- Default Color Palette (Aurora Theme) --- */
-  --bg-primary: #f7fafc;
-  --bg-secondary: #ffffff;
-  --bg-accent: #edf2f7;
-  --text-primary: #2d3748;
-  --text-secondary: #4a5568;
-  --text-light: #718096;
-  --text-accent: #FF0080;
-  --accent: #FF0080;
-  --glass-bg: rgba(255, 255, 255, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.6);
-  --border-primary: #e2e8f0;
-  --border-accent: #cbd5e0;
-  --shine-opacity: 0;
-  --gradient-button: var(--gradient-aurora);
-  --chromatic-color-1: #ff6b6b;
-  --chromatic-color-2: #ffa726;
-
-  /* --- Static Gradients (for theme switcher buttons) --- */
-  --gradient-celestial: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
-  --gradient-aurora: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
-  --gradient-retro: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-  --gradient-zen: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
-  --gradient-eco: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
-  --gradient-neon: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
-
-  /* --- Shared variables --- */
-  --text-white: #ffffff;
 }
 
 /* --- Base Body Style --- */
@@ -129,126 +101,293 @@ body {
   100% { text-shadow: -1px 0px 1px var(--chromatic-color-1), 1px 0px 1px var(--chromatic-color-2); }
 }
 
-/* ----------------------------------------- */
-/* --- C A R Z E N Color Palettes --- */
-/* ----------------------------------------- */
-
-/* C: Celestial (Dark) */
-[data-theme="c"] {
-  --bg-primary: #1a202c;
-  --bg-secondary: #2d3748;
-  --bg-accent: #4a5568;
-  --text-primary: #ffffff;
-  --text-secondary: #e0e0e0;
-  --text-light: #bdbdbd;
-  --text-accent: #6dd5ed;
-  --accent: #6dd5ed;
-  --glass-bg: rgba(45, 55, 72, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --border-primary: #4a5568;
-  --border-accent: #718096;
-  --shine-opacity: 0.05;
-  --gradient-button: var(--gradient-celestial);
-  --chromatic-color-1: #6dd5ed;
-  --chromatic-color-2: #f093fb;
+/* --- Theme Switcher Button Styles --- */
+.theme-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--border-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background: var(--theme-button-gradient);
 }
 
-/* A: Aurora (Light) */
-[data-theme="a"] {
-  --bg-primary: #f7fafc;
-  --bg-secondary: #ffffff;
-  --bg-accent: #edf2f7;
-  --text-primary: #2d3748;
-  --text-secondary: #4a5568;
-  --text-light: #718096;
-  --text-accent: #FF0080;
-  --accent: #FF0080;
-  --glass-bg: rgba(255, 255, 255, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.6);
-  --border-primary: #e2e8f0;
-  --border-accent: #cbd5e0;
-  --shine-opacity: 0;
-  --gradient-button: var(--gradient-aurora);
-  --chromatic-color-1: #ff6b6b;
-  --chromatic-color-2: #ffa726;
+.theme-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px var(--shadow-medium);
 }
 
-/* R: Retro (Dark) */
-[data-theme="r"] {
-  --bg-primary: #0d0221;
-  --bg-secondary: #241b3a;
-  --bg-accent: #3a2e58;
-  --text-primary: #ffffff;
-  --text-secondary: #e0e0e0;
-  --text-light: #bdbdbd;
-  --text-accent: #00f2ff;
-  --accent: #00f2ff;
-  --glass-bg: rgba(36, 27, 58, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --border-primary: #3a2e58;
-  --border-accent: #5b4c81;
-  --shine-opacity: 0.08;
-  --gradient-button: var(--gradient-retro);
-  --chromatic-color-1: #00f2ff;
-  --chromatic-color-2: #ff00c1;
+.theme-btn.active {
+    border-color: var(--theme-accent);
+    box-shadow: 0 0 0 3px var(--theme-accent);
 }
 
-/* Z: Zen (Light) */
-[data-theme="z"] {
-  --bg-primary: #F5F5F5;
-  --bg-secondary: #FFFFFF;
-  --bg-accent: #EAEAEA;
-  --text-primary: #333333;
-  --text-secondary: #555555;
-  --text-light: #777777;
-  --text-accent: #AEAEAE;
-  --accent: #AEAEAE;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.1);
-  --border-primary: #DCDCDC;
-  --border-accent: #C9C9C9;
-  --shine-opacity: 0;
-  --gradient-button: var(--gradient-zen);
-  --chromatic-color-1: #AEAEAE;
-  --chromatic-color-2: #9B9B9B;
+/* ===== DEFAULT GLASS CONTAINERS ===== */
+/* Easy-to-use glass container classes */
+
+/* Basic Glass Container */
+.glass-container {
+  background-color: var(--glass-bg-medium);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 15px;
+  box-shadow: var(--glass-shadow-medium);
+  transition: all 0.3s ease;
 }
 
-/* E: Eco (Light) */
-[data-theme="e"] {
-  --bg-primary: #F0FFF0;
-  --bg-secondary: #FFFFFF;
-  --bg-accent: #E6F5E6;
-  --text-primary: #2d3748;
-  --text-secondary: #4a5568;
-  --text-light: #718096;
-  --text-accent: #2E8B57;
-  --accent: #2E8B57;
-  --glass-bg: rgba(240, 255, 240, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.1);
-  --border-primary: #D4EAD4;
-  --border-accent: #C2E0C2;
-  --shine-opacity: 0;
-  --gradient-button: var(--gradient-eco);
-  --chromatic-color-1: #556B2F;
-  --chromatic-color-2: #8FBC8F;
+/* Glass Button */
+.glass-button {
+  background-color: var(--glass-bg-heavy);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 25px;
+  padding: 12px 24px;
+  color: var(--theme-text);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: var(--glass-shadow-light);
 }
 
-/* N: Neon (Dark) */
-[data-theme="n"] {
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #1A1A1A;
-  --bg-accent: #2B2B2B;
-  --text-primary: #ffffff;
-  --text-secondary: #f0f0f0;
-  --text-light: #e0e0e0;
-  --text-accent: #4DFF00;
-  --accent: #4DFF00;
-  --glass-bg: rgba(26, 26, 26, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --border-primary: #3C3C3C;
-  --border-accent: #4F4F4F;
-  --shine-opacity: 0.12;
-  --gradient-button: var(--gradient-neon);
-  --chromatic-color-1: #4DFF00;
-  --chromatic-color-2: #F300FF;
+.glass-button:hover {
+  background-color: var(--glass-bg-dark);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-medium);
+  border-color: var(--glass-border-medium);
+}
+
+/* Glass Card */
+.glass-card {
+  background-color: var(--glass-bg-light);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--glass-shadow-light);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--glass-shadow-heavy);
+}
+
+/* Glass Panel */
+.glass-panel {
+  background-color: var(--glass-bg-heavy);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border-medium);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: var(--glass-shadow-heavy);
+}
+
+/* Glass Navigation */
+.glass-nav {
+  background-color: var(--glass-bg-medium);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-medium);
+  border-bottom: 1px solid var(--glass-border-light);
+  padding: 16px 24px;
+  box-shadow: var(--glass-shadow-light);
+}
+
+/* Glass Modal */
+.glass-modal {
+  background-color: var(--glass-bg-heavy);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border-medium);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: var(--glass-shadow-heavy);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Glass Input */
+.glass-input {
+  background-color: var(--glass-bg-light);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: var(--theme-text);
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+  outline: none;
+  background-color: var(--glass-bg-medium);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 0 3px var(--theme-primary-shadow, rgba(102, 126, 234, 0.2));
+}
+
+/* Glass Badge */
+.glass-badge {
+  background-color: var(--glass-bg-medium);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--theme-text);
+  display: inline-block;
+}
+
+/* Glass Divider */
+.glass-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border-light), transparent);
+  margin: 20px 0;
+  border: none;
+}
+
+/* ===== THEME-SPECIFIC GLASS EFFECTS ===== */
+/* These classes apply theme colors to glass elements */
+
+.glass-button.primary {
+  background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.glass-button.primary:hover {
+  background: linear-gradient(135deg, var(--theme-secondary), var(--theme-primary));
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.glass-card.accent {
+  border-color: var(--theme-accent);
+  box-shadow: 0 4px 12px rgba(79, 195, 247, 0.2);
+}
+
+.glass-panel.themed {
+  border-color: var(--theme-primary);
+  box-shadow: 0 12px 36px rgba(102, 126, 234, 0.15);
+}
+
+/* ===== RESPONSIVE GLASS EFFECTS ===== */
+@media (max-width: 768px) {
+  .glass-container {
+    border-radius: 12px;
+    margin: 10px;
+  }
+  
+  .glass-button {
+    padding: 10px 20px;
+    border-radius: 20px;
+  }
+  
+  .glass-card {
+    padding: 16px;
+    border-radius: 15px;
+  }
+  
+  .glass-panel {
+    padding: 16px;
+    border-radius: 12px;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+/* Quick modifiers for glass effects */
+
+.glass-blur-light { backdrop-filter: var(--glass-blur-light); }
+.glass-blur-medium { backdrop-filter: var(--glass-blur-medium); }
+.glass-blur-heavy { backdrop-filter: var(--glass-blur-heavy); }
+
+.glass-bg-light { background: var(--glass-bg-light); }
+.glass-bg-medium { background: var(--glass-bg-medium); }
+.glass-bg-heavy { background: var(--glass-bg-heavy); }
+.glass-bg-dark { background-color: var(--glass-bg-dark); background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color)); }
+
+.glass-border-light { border: 1px solid var(--glass-border-light); }
+.glass-border-medium { border: 1px solid var(--glass-border-medium); }
+.glass-border-dark { border: 1px solid var(--glass-border-dark); }
+
+.glass-shadow-light { box-shadow: var(--glass-shadow-light); }
+.glass-shadow-medium { box-shadow: var(--glass-shadow-medium); }
+.glass-shadow-heavy { box-shadow: var(--glass-shadow-heavy); }
+
+.spotify-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.spotify-player.active {
+  opacity: 1;
+  visibility: visible;
+  position: relative; /* Or static, depending on layout */
+}
+
+.glass-button.primary {
+    border-color: var(--theme-accent);
+    box-shadow: 0 0 15px var(--theme-accent);
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--theme-primary);
+    font-weight: 700;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    color: var(--theme-text-secondary);
+    margin: 0;
+}
+
+#playlist-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+#playlist-buttons .glass-button {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+#playlist-buttons .glass-button span:first-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: block;
+}
+
+#playlist-buttons .glass-button span:last-child {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    display: block;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
 } 
