@@ -1,10 +1,7 @@
-<<<<<<< HEAD
- 
-=======
 ---
 layout: page
-title: Art Gallery
-permalink: /art/
+title: ETC
+permalink: /etc/
 ---
 
 <style>
@@ -238,16 +235,16 @@ permalink: /art/
 }
 
 body {
+  background: var(--gradient-primary);
+  color: var(--text-primary);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 20px;
-  background: var(--gradient-primary);
   min-height: 100vh;
-  color: var(--text-primary);
   transition: all 0.3s ease;
 }
 
-.container {
+.etc-container {
   max-width: 1200px;
   margin: 0 auto;
   background: var(--glass-bg);
@@ -265,7 +262,7 @@ body {
   overflow: hidden;
 }
 
-.container::before {
+.etc-container::before {
   content: '';
   position: absolute;
   top: 0;
@@ -278,7 +275,7 @@ body {
   z-index: -1;
 }
 
-.container::after {
+.etc-container::after {
   content: '';
   position: absolute;
   top: 1px;
@@ -291,12 +288,12 @@ body {
   z-index: -1;
 }
 
-.header {
+.etc-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 3rem;
 }
 
-.header h1 {
+.etc-header h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
   color: var(--text-accent);
@@ -307,35 +304,42 @@ body {
   font-weight: 700;
 }
 
-.header p {
+.etc-header p {
   font-size: 1.1rem;
   color: var(--text-secondary);
   margin: 0;
 }
 
-.back-link {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: var(--text-white);
-  text-decoration: none;
-  font-size: 18px;
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.music-btn {
   background: var(--glass-bg);
-  padding: 12px 20px;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(15px) saturate(180%);
   box-shadow: 
     0 4px 16px var(--glass-shadow),
     inset 0 1px 0 var(--glass-highlight),
     inset 0 -1px 0 var(--glass-inner-shadow),
     0 0 0 1px var(--glass-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text-primary);
   border: none;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(15px) saturate(180%);
 }
 
-.back-link::before {
+.music-btn::before {
   content: '';
   position: absolute;
   top: 0;
@@ -343,13 +347,13 @@ body {
   right: 0;
   bottom: 0;
   background: var(--glass-gradient-2);
-  border-radius: 25px;
+  border-radius: 12px;
   pointer-events: none;
   z-index: -1;
 }
 
-.back-link:hover {
-  background: var(--gradient-primary);
+.music-btn:hover {
+  border-color: var(--text-accent);
   transform: translateY(-2px);
   box-shadow: 
     0 8px 20px var(--glass-shadow),
@@ -358,28 +362,47 @@ body {
     0 0 0 1px var(--text-accent);
 }
 
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+.music-btn.active {
+  border-color: var(--text-accent);
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  box-shadow: 
+    0 8px 20px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--text-accent);
 }
 
-.art-piece {
+.btn-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: block;
+}
+
+.btn-desc {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  display: block;
+}
+
+.player-container {
+  position: relative;
+  min-height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
   background: var(--glass-bg);
   box-shadow: 
     0 8px 32px var(--glass-shadow),
     inset 0 1px 0 var(--glass-highlight),
     inset 0 -1px 0 var(--glass-inner-shadow),
     0 0 0 1px var(--glass-border);
-  border-radius: 15px;
-  overflow: hidden;
   transition: all 0.3s ease;
-  position: relative;
   border: none;
+  backdrop-filter: blur(20px) saturate(180%);
+  position: relative;
 }
 
-.art-piece::after {
+.player-container::before {
   content: '';
   position: absolute;
   top: 0;
@@ -387,86 +410,32 @@ body {
   right: 0;
   bottom: 0;
   background: var(--glass-gradient-1);
-  border-radius: 15px;
+  border-radius: 12px;
   pointer-events: none;
   z-index: -1;
 }
 
-.art-piece:hover {
-  border-color: var(--text-accent);
-  transform: translateY(-5px);
-  box-shadow: 
-    0 15px 30px var(--glass-shadow),
-    inset 0 1px 0 var(--glass-highlight),
-    inset 0 -1px 0 var(--glass-inner-shadow),
-    0 0 0 1px var(--text-accent);
-}
-
-.art-image {
-  width: 100%;
-  height: 250px;
-  background: var(--gradient-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  color: var(--text-white);
-  position: relative;
-  overflow: hidden;
-}
-
-.art-image::before {
-  content: '';
+.spotify-player {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+  padding: 1rem;
 }
 
-.art-piece:hover .art-image::before {
-  transform: translateX(100%);
+.spotify-player.active {
+  opacity: 1;
+  visibility: visible;
 }
 
-.art-info {
-  padding: 20px;
-}
-
-.art-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-}
-
-.art-description {
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 15px;
-}
-
-.art-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  color: var(--text-light);
-}
-
-.art-date {
-  font-style: italic;
-}
-
-.art-medium {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 500;
+.spotify-player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Theme Switcher */
@@ -524,45 +493,192 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .container {
+  .etc-container {
     padding: 30px 20px;
   }
   
-  .gallery-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+  .button-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
-  .header h1 {
+  .etc-header h1 {
     font-size: 2rem;
   }
   
-  .art-image {
-    height: 200px;
+  .player-container {
+    min-height: 300px;
   }
 }
 
 @media (max-width: 480px) {
-  .container {
+  .etc-container {
     padding: 25px 15px;
   }
   
-  .gallery-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  
-  .header h1 {
+  .etc-header h1 {
     font-size: 1.8rem;
   }
   
-  .art-image {
-    height: 180px;
+  .music-btn {
+    padding: 1rem;
   }
   
-  .art-title {
+  .btn-label {
     font-size: 1.1rem;
   }
+  
+  .player-container {
+    min-height: 250px;
+  }
+}
+
+/* Sparkle Animations */
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 20px;
+  color: var(--primary-pink);
+  animation: sparkleFade 4s ease-in-out forwards;
+  z-index: 1000;
+}
+
+.sparkle::before {
+  content: '✨';
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: sparkleTwinkle 2s ease-in-out infinite;
+}
+
+/* Distant Star Dots */
+.distant-star {
+  position: absolute;
+  pointer-events: none;
+  background: var(--primary-purple);
+  border-radius: 50%;
+  animation: distantStarFade 4s ease-in-out infinite;
+  z-index: 999;
+}
+
+@keyframes sparkleFade {
+  0% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+  100% { opacity: 0; transform: scale(0) rotate(360deg); }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+@keyframes distantStarFade {
+  0% { opacity: 0; transform: scale(0); }
+  50% { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+/* Theme-specific distant star variations */
+[data-theme="c"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 10px var(--primary-purple);
+}
+
+[data-theme="a"] .distant-star {
+  background: var(--primary-pink);
+  box-shadow: 0 0 15px var(--primary-pink);
+}
+
+[data-theme="r"] .distant-star {
+  background: var(--accent-blue);
+  box-shadow: 0 0 8px var(--accent-blue);
+}
+
+[data-theme="z"] .distant-star {
+  background: var(--accent-green);
+  box-shadow: 0 0 12px var(--accent-green);
+}
+
+[data-theme="e"] .distant-star {
+  background: var(--accent-orange);
+  box-shadow: 0 0 20px var(--accent-orange);
+}
+
+[data-theme="n"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 18px var(--primary-purple);
+}
+
+[data-theme="sunset"] .distant-star {
+  background: var(--primary-pink);
+  box-shadow: 0 0 15px var(--primary-pink);
+}
+
+[data-theme="ocean"] .distant-star {
+  background: var(--accent-blue);
+  box-shadow: 0 0 10px var(--accent-blue);
+}
+
+[data-theme="forest"] .distant-star {
+  background: var(--accent-green);
+  box-shadow: 0 0 12px var(--accent-green);
+}
+
+[data-theme="dark"] .distant-star {
+  background: var(--primary-purple);
+  box-shadow: 0 0 25px var(--primary-purple);
+}
+
+#sparkleContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Starfield Background */
+.starfield-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.starfield-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.starfield-image:hover {
+  opacity: 0.1;
+}
+
+/* Theme-specific starfield images */
+[data-theme="c"] .starfield-image[data-image="stars"],
+[data-theme="a"] .starfield-image[data-image="clouds1"],
+[data-theme="r"] .starfield-image[data-image="clouds2"],
+[data-theme="e"] .starfield-image[data-image="clouds4"],
+[data-theme="z"] .starfield-image[data-image="stars"],
+[data-theme="n"] .starfield-image[data-image="stars"] {
+  opacity: 0.05;
+}
+
+.starfield-image {
+  opacity: 0;
 }
 </style>
 
@@ -574,90 +690,67 @@ body {
   <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
 </div>
 
-<a href="/" class="back-link">← Back to Home</a>
-
-<div class="container">
-  <div class="header">
-    <h1>Art Gallery</h1>
-    <p>A collection of creative works and visual experiments</p>
+<div class="etc-container">
+  <div class="etc-header">
+    <h1>ETC</h1>
+    <p>Some music I've been listening to lately. Click any button to start playing.</p>
   </div>
 
-  <div class="placeholder-text">
-    <h3>Gallery Coming Soon</h3>
-    <p>This space will showcase digital art, creative coding experiments, and visual projects. Currently in the planning phase - stay tuned for updates!</p>
+  <div class="button-grid">
+    <button class="music-btn" data-player="player1">
+      <span class="btn-label">Chill Vibes</span>
+      <span class="btn-desc">Lo-fi beats and ambient sounds</span>
+    </button>
+    
+    <button class="music-btn" data-player="player2">
+      <span class="btn-label">Workout Mix</span>
+      <span class="btn-desc">High energy tracks to keep you moving</span>
+    </button>
+    
+    <button class="music-btn" data-player="player3">
+      <span class="btn-label">Late Night</span>
+      <span class="btn-desc">Moody tunes for the evening hours</span>
+    </button>
+    
+    <button class="music-btn" data-player="player4">
+      <span class="btn-label">Study Session</span>
+      <span class="btn-desc">Instrumental focus music</span>
+    </button>
+    
+    <button class="music-btn" data-player="player5">
+      <span class="btn-label">Road Trip</span>
+      <span class="btn-desc">Perfect for long drives</span>
+    </button>
+    
+    <button class="music-btn" data-player="player6">
+      <span class="btn-label">Weekend Vibes</span>
+      <span class="btn-desc">Feel-good weekend energy</span>
+    </button>
   </div>
 
-  <div class="gallery-grid">
-    <div class="art-piece">
-      <div class="art-image">Digital</div>
-      <div class="art-info">
-        <div class="art-title">Digital Painting</div>
-        <p class="art-description">A vibrant digital painting exploring color theory and composition.</p>
-        <div class="art-meta">
-          <span class="art-medium">Digital Art</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
-      </div>
+  <div class="player-container">
+    <div id="player1" class="spotify-player active">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX5Vy6DFOcx00?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-
-    <div class="art-piece">
-      <div class="art-image">Code</div>
-      <div class="art-info">
-        <div class="art-title">Generative Art</div>
-        <p class="art-description">Algorithmic art created with code and mathematical patterns.</p>
-        <div class="art-meta">
-          <span class="art-medium">Generative</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
-      </div>
+    
+    <div id="player2" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX76Wlfdnj7AP?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-
-    <div class="art-piece">
-      <div class="art-image">Character</div>
-      <div class="art-info">
-        <div class="art-title">Character Design</div>
-        <p class="art-description">Original character designs and concept art.</p>
-        <div class="art-meta">
-          <span class="art-medium">Character Art</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
-      </div>
+    
+    <div id="player3" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX3Ogo9pFvBkY?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-
-    <div class="art-piece">
-      <div class="art-image">Space</div>
-      <div class="art-info">
-        <div class="art-title">Space Art</div>
-        <p class="art-description">Cosmic landscapes and space-themed illustrations.</p>
-        <div class="art-meta">
-          <span class="art-medium">Illustration</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
-      </div>
+    
+    <div id="player4" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX9uKNf5jGX6m?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-
-    <div class="art-piece">
-      <div class="art-image">Abstract</div>
-      <div class="art-info">
-        <div class="art-title">Abstract Art</div>
-        <p class="art-description">Abstract compositions exploring form, color, and emotion.</p>
-        <div class="art-meta">
-          <span class="art-medium">Abstract</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
-      </div>
+    
+    <div id="player5" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX5Vy6DFOcx00?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-
-    <div class="art-piece">
-      <div class="art-image">Pixel</div>
-      <div class="art-info">
-        <div class="art-title">Pixel Art</div>
-        <p class="art-description">Retro-style pixel art and sprite designs.</p>
-        <div class="art-meta">
-          <span class="art-medium">Pixel Art</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
-      </div>
+    
+    <div id="player6" class="spotify-player">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX76Wlfdnj7AP?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
   </div>
 </div>
@@ -777,6 +870,23 @@ document.addEventListener('DOMContentLoaded', function() {
       setTheme(theme);
     });
   });
+  
+  // Music player functionality
+  const buttons = document.querySelectorAll('.music-btn');
+  const players = document.querySelectorAll('.spotify-player');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetPlayer = this.getAttribute('data-player');
+      
+      // Remove active class from all buttons and players
+      buttons.forEach(btn => btn.classList.remove('active'));
+      players.forEach(player => player.classList.remove('active'));
+      
+      // Add active class to clicked button and corresponding player
+      this.classList.add('active');
+      document.getElementById(targetPlayer).classList.add('active');
+    });
+  });
 });
 </script> 
->>>>>>> d9edde2bf9ec4a8cd666404e256a939608e51d95

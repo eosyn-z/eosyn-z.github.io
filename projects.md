@@ -1,10 +1,7 @@
-<<<<<<< HEAD
- 
-=======
 ---
 layout: page
-title: Art Gallery
-permalink: /art/
+title: Personal Projects
+permalink: /projects/
 ---
 
 <style>
@@ -358,14 +355,14 @@ body {
     0 0 0 1px var(--text-accent);
 }
 
-.gallery-grid {
+.projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 30px;
   margin-top: 40px;
 }
 
-.art-piece {
+.project-card {
   background: var(--glass-bg);
   box-shadow: 
     0 8px 32px var(--glass-shadow),
@@ -373,13 +370,26 @@ body {
     inset 0 -1px 0 var(--glass-inner-shadow),
     0 0 0 1px var(--glass-border);
   border-radius: 15px;
-  overflow: hidden;
+  padding: 25px;
   transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
   border: none;
 }
 
-.art-piece::after {
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.project-card::after {
   content: '';
   position: absolute;
   top: 0;
@@ -392,7 +402,11 @@ body {
   z-index: -1;
 }
 
-.art-piece:hover {
+.project-card:hover::before {
+  transform: scaleX(1);
+}
+
+.project-card:hover {
   border-color: var(--text-accent);
   transform: translateY(-5px);
   box-shadow: 
@@ -402,71 +416,49 @@ body {
     0 0 0 1px var(--text-accent);
 }
 
-.art-image {
-  width: 100%;
-  height: 250px;
-  background: var(--gradient-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  color: var(--text-white);
-  position: relative;
-  overflow: hidden;
-}
-
-.art-image::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.art-piece:hover .art-image::before {
-  transform: translateX(100%);
-}
-
-.art-info {
-  padding: 20px;
-}
-
-.art-title {
-  font-size: 1.3rem;
+.project-title {
+  font-size: 1.4rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.art-description {
+.project-description {
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
   margin-bottom: 15px;
 }
 
-.art-meta {
+.project-tech {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  color: var(--text-light);
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
-.art-date {
-  font-style: italic;
-}
-
-.art-medium {
+.tech-tag {
   background: var(--gradient-primary);
   color: var(--text-white);
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
+}
+
+.project-links {
+  display: flex;
+  gap: 10px;
+}
+
+.project-link {
+  color: var(--text-accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.project-link:hover {
+  color: var(--primary-pink);
 }
 
 /* Theme Switcher */
@@ -477,10 +469,30 @@ body {
   background: var(--glass-bg);
   border-radius: 15px;
   padding: 15px;
-  box-shadow: 0 10px 30px var(--glass-shadow);
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 10px 30px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: none;
   z-index: 1000;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-switcher::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-1);
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .theme-switcher h3 {
@@ -501,20 +513,48 @@ body {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 2px 8px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
+}
+
+.theme-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-2);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .theme-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px var(--glass-shadow);
+  box-shadow: 
+    0 4px 12px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
 }
 
 .theme-btn.active {
+  box-shadow: 
+    0 0 0 3px rgba(102, 126, 234, 0.2),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--text-accent);
   border-color: var(--text-accent);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
 
 .theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
@@ -528,17 +568,17 @@ body {
     padding: 30px 20px;
   }
   
-  .gallery-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  .projects-grid {
+    grid-template-columns: 1fr;
     gap: 20px;
+  }
+  
+  .project-card {
+    padding: 20px;
   }
   
   .header h1 {
     font-size: 2rem;
-  }
-  
-  .art-image {
-    height: 200px;
   }
 }
 
@@ -547,21 +587,12 @@ body {
     padding: 25px 15px;
   }
   
-  .gallery-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  
   .header h1 {
     font-size: 1.8rem;
   }
   
-  .art-image {
-    height: 180px;
-  }
-  
-  .art-title {
-    font-size: 1.1rem;
+  .project-title {
+    font-size: 1.2rem;
   }
 }
 </style>
@@ -578,85 +609,124 @@ body {
 
 <div class="container">
   <div class="header">
-    <h1>Art Gallery</h1>
-    <p>A collection of creative works and visual experiments</p>
+    <h1>🚀 Personal Projects</h1>
+    <p>A collection of things I've built and am working on</p>
   </div>
 
-  <div class="placeholder-text">
-    <h3>Gallery Coming Soon</h3>
-    <p>This space will showcase digital art, creative coding experiments, and visual projects. Currently in the planning phase - stay tuned for updates!</p>
-  </div>
-
-  <div class="gallery-grid">
-    <div class="art-piece">
-      <div class="art-image">Digital</div>
-      <div class="art-info">
-        <div class="art-title">Digital Painting</div>
-        <p class="art-description">A vibrant digital painting exploring color theory and composition.</p>
-        <div class="art-meta">
-          <span class="art-medium">Digital Art</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="status-badge completed">Completed</div>
+      <div class="project-header">
+        <span class="project-icon">Web</span>
+        <h3>Personal Website</h3>
+      </div>
+      <p class="project-description">
+        My personal website built with Jekyll, featuring multiple themes, interactive elements, and a magical sparkle system. Includes a search page, project recommendations, and nature backgrounds.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">Jekyll</span>
+        <span class="tech-tag">HTML/CSS</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">GitHub Pages</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/eosyn-z/eosyn-z.github.io" class="project-link" target="_blank">GitHub</a>
+        <a href="/" class="project-link live">Live Site</a>
       </div>
     </div>
 
-    <div class="art-piece">
-      <div class="art-image">Code</div>
-      <div class="art-info">
-        <div class="art-title">Generative Art</div>
-        <p class="art-description">Algorithmic art created with code and mathematical patterns.</p>
-        <div class="art-meta">
-          <span class="art-medium">Generative</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
+    <div class="project-card">
+      <div class="status-badge in-progress">In Progress</div>
+      <div class="project-header">
+        <span class="project-icon">Game</span>
+        <h3>Game Project</h3>
+      </div>
+      <p class="project-description">
+        Working on a small indie game project. Learning game development fundamentals and exploring creative coding techniques.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">Unity</span>
+        <span class="tech-tag">C#</span>
+        <span class="tech-tag">Game Design</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Coming Soon</a>
       </div>
     </div>
 
-    <div class="art-piece">
-      <div class="art-image">Character</div>
-      <div class="art-info">
-        <div class="art-title">Character Design</div>
-        <p class="art-description">Original character designs and concept art.</p>
-        <div class="art-meta">
-          <span class="art-medium">Character Art</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
+    <div class="project-card">
+      <div class="status-badge planned">Planned</div>
+      <div class="project-title">
+        <span class="project-icon">🤖</span>
+        AI Assistant
+      </div>
+      <p class="project-description">
+        Planning to build a personal AI assistant that can help with daily tasks, learning, and creative projects.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">OpenAI API</span>
+        <span class="tech-tag">Machine Learning</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Planning</a>
       </div>
     </div>
 
-    <div class="art-piece">
-      <div class="art-image">Space</div>
-      <div class="art-info">
-        <div class="art-title">Space Art</div>
-        <p class="art-description">Cosmic landscapes and space-themed illustrations.</p>
-        <div class="art-meta">
-          <span class="art-medium">Illustration</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
+    <div class="project-card">
+      <div class="status-badge planned">Planned</div>
+      <div class="project-header">
+        <span class="project-icon">Mobile</span>
+        <h3>Mobile App</h3>
+      </div>
+      <p class="project-description">
+        A productivity app focused on helping developers and creators stay organized and inspired.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">React Native</span>
+        <span class="tech-tag">TypeScript</span>
+        <span class="tech-tag">Firebase</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Planning</a>
       </div>
     </div>
 
-    <div class="art-piece">
-      <div class="art-image">Abstract</div>
-      <div class="art-info">
-        <div class="art-title">Abstract Art</div>
-        <p class="art-description">Abstract compositions exploring form, color, and emotion.</p>
-        <div class="art-meta">
-          <span class="art-medium">Abstract</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
+    <div class="project-card">
+      <div class="status-badge planned">Planned</div>
+      <div class="project-header">
+        <span class="project-icon">Art</span>
+        <h3>Art Project</h3>
+      </div>
+      <p class="project-description">
+        Exploring generative art and creative coding projects using p5.js and other creative coding libraries.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">p5.js</span>
+        <span class="tech-tag">Creative Coding</span>
+        <span class="tech-tag">Generative Art</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Coming Soon</a>
       </div>
     </div>
 
-    <div class="art-piece">
-      <div class="art-image">Pixel</div>
-      <div class="art-info">
-        <div class="art-title">Pixel Art</div>
-        <p class="art-description">Retro-style pixel art and sprite designs.</p>
-        <div class="art-meta">
-          <span class="art-medium">Pixel Art</span>
-          <span class="art-date">Coming Soon</span>
-        </div>
+    <div class="project-card">
+      <div class="status-badge planned">Planned</div>
+      <div class="project-title">
+        <span class="project-icon">🔧</span>
+        Developer Tools
+      </div>
+      <p class="project-description">
+        Building useful developer tools and utilities to improve workflow and productivity.
+      </p>
+      <div class="project-tech">
+        <span class="tech-tag">Node.js</span>
+        <span class="tech-tag">CLI Tools</span>
+        <span class="tech-tag">Developer Experience</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">Planning</a>
       </div>
     </div>
   </div>
@@ -779,4 +849,3 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script> 
->>>>>>> d9edde2bf9ec4a8cd666404e256a939608e51d95

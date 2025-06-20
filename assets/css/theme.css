@@ -1,0 +1,254 @@
+/* assets/css/theme.css */
+
+/* ----------------------------------------- */
+/* --- Delicious Glass Foundation --- */
+/* ----------------------------------------- */
+
+:root {
+  /* --- Core Structure Variables --- */
+  --glass-backdrop-filter: blur(18px) saturate(140%);
+  --glass-webkit-backdrop-filter: blur(18px) saturate(140%);
+  --glass-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --glass-border-radius: 18px;
+
+  /* --- Default Color Palette (Aurora Theme) --- */
+  --bg-primary: #f7fafc;
+  --bg-secondary: #ffffff;
+  --bg-accent: #edf2f7;
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-accent: #FF0080;
+  --accent: #FF0080;
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --border-primary: #e2e8f0;
+  --border-accent: #cbd5e0;
+  --shine-opacity: 0;
+  --gradient-button: var(--gradient-aurora);
+  --chromatic-color-1: #ff6b6b;
+  --chromatic-color-2: #ffa726;
+
+  /* --- Static Gradients (for theme switcher buttons) --- */
+  --gradient-celestial: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+  --gradient-aurora: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+  --gradient-retro: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  --gradient-zen: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+  --gradient-eco: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
+  --gradient-neon: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+
+  /* --- Shared variables --- */
+  --text-white: #ffffff;
+}
+
+/* --- Base Body Style --- */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* --- Core Glass Component Style --- */
+.glass-effect {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-webkit-backdrop-filter);
+  border-radius: var(--glass-border-radius);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-box-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%);
+  transform: translate(10%, 10%);
+  opacity: var(--shine-opacity, 0);
+  filter: blur(40px);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* --- Core Delicious Button Style --- */
+.btn-delicious {
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2), inset 0 -1px 2px rgba(0,0,0,0.3);
+  background: var(--gradient-button);
+}
+
+.btn-delicious::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -50px;
+  width: 30px;
+  height: 150%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: rotate(25deg);
+  transition: all 0.6s ease;
+}
+
+.btn-delicious:hover::before {
+  left: calc(100% + 50px);
+}
+
+.btn-delicious:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), inset 0 -1px 2px rgba(0,0,0,0.3);
+}
+
+.btn-delicious:active {
+  transform: translateY(1px) scale(1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 2px 5px rgba(0,0,0,0.4);
+}
+
+/* --- Core Chromatic Aberration Effect --- */
+.chromatic-text:hover {
+  animation: chromatic-anim 0.5s infinite linear;
+}
+
+@keyframes chromatic-anim {
+  0% { text-shadow: 1px 0px 1px var(--chromatic-color-1), -1px 0px 1px var(--chromatic-color-2); }
+  33% { text-shadow: -1px 0px 1px var(--chromatic-color-1), 1px 0px 1px var(--chromatic-color-2); }
+  66% { text-shadow: 1px 0px 1px var(--chromatic-color-1), -1px 0px 1px var(--chromatic-color-2); }
+  100% { text-shadow: -1px 0px 1px var(--chromatic-color-1), 1px 0px 1px var(--chromatic-color-2); }
+}
+
+/* ----------------------------------------- */
+/* --- C A R Z E N Color Palettes --- */
+/* ----------------------------------------- */
+
+/* C: Celestial (Dark) */
+[data-theme="c"] {
+  --bg-primary: #1a202c;
+  --bg-secondary: #2d3748;
+  --bg-accent: #4a5568;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-light: #bdbdbd;
+  --text-accent: #6dd5ed;
+  --accent: #6dd5ed;
+  --glass-bg: rgba(45, 55, 72, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --border-primary: #4a5568;
+  --border-accent: #718096;
+  --shine-opacity: 0.05;
+  --gradient-button: var(--gradient-celestial);
+  --chromatic-color-1: #6dd5ed;
+  --chromatic-color-2: #f093fb;
+}
+
+/* A: Aurora (Light) */
+[data-theme="a"] {
+  --bg-primary: #f7fafc;
+  --bg-secondary: #ffffff;
+  --bg-accent: #edf2f7;
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-accent: #FF0080;
+  --accent: #FF0080;
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --border-primary: #e2e8f0;
+  --border-accent: #cbd5e0;
+  --shine-opacity: 0;
+  --gradient-button: var(--gradient-aurora);
+  --chromatic-color-1: #ff6b6b;
+  --chromatic-color-2: #ffa726;
+}
+
+/* R: Retro (Dark) */
+[data-theme="r"] {
+  --bg-primary: #0d0221;
+  --bg-secondary: #241b3a;
+  --bg-accent: #3a2e58;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-light: #bdbdbd;
+  --text-accent: #00f2ff;
+  --accent: #00f2ff;
+  --glass-bg: rgba(36, 27, 58, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --border-primary: #3a2e58;
+  --border-accent: #5b4c81;
+  --shine-opacity: 0.08;
+  --gradient-button: var(--gradient-retro);
+  --chromatic-color-1: #00f2ff;
+  --chromatic-color-2: #ff00c1;
+}
+
+/* Z: Zen (Light) */
+[data-theme="z"] {
+  --bg-primary: #F5F5F5;
+  --bg-secondary: #FFFFFF;
+  --bg-accent: #EAEAEA;
+  --text-primary: #333333;
+  --text-secondary: #555555;
+  --text-light: #777777;
+  --text-accent: #AEAEAE;
+  --accent: #AEAEAE;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --border-primary: #DCDCDC;
+  --border-accent: #C9C9C9;
+  --shine-opacity: 0;
+  --gradient-button: var(--gradient-zen);
+  --chromatic-color-1: #AEAEAE;
+  --chromatic-color-2: #9B9B9B;
+}
+
+/* E: Eco (Light) */
+[data-theme="e"] {
+  --bg-primary: #F0FFF0;
+  --bg-secondary: #FFFFFF;
+  --bg-accent: #E6F5E6;
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-accent: #2E8B57;
+  --accent: #2E8B57;
+  --glass-bg: rgba(240, 255, 240, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --border-primary: #D4EAD4;
+  --border-accent: #C2E0C2;
+  --shine-opacity: 0;
+  --gradient-button: var(--gradient-eco);
+  --chromatic-color-1: #556B2F;
+  --chromatic-color-2: #8FBC8F;
+}
+
+/* N: Neon (Dark) */
+[data-theme="n"] {
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #1A1A1A;
+  --bg-accent: #2B2B2B;
+  --text-primary: #ffffff;
+  --text-secondary: #f0f0f0;
+  --text-light: #e0e0e0;
+  --text-accent: #4DFF00;
+  --accent: #4DFF00;
+  --glass-bg: rgba(26, 26, 26, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --border-primary: #3C3C3C;
+  --border-accent: #4F4F4F;
+  --shine-opacity: 0.12;
+  --gradient-button: var(--gradient-neon);
+  --chromatic-color-1: #4DFF00;
+  --chromatic-color-2: #F300FF;
+} 
