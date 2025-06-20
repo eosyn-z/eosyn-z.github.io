@@ -43,6 +43,14 @@ title: eosyn
   --glass-border: rgba(255, 255, 255, 0.3);
   --glass-shadow: rgba(0, 0, 0, 0.1);
   --text-accent: #667eea;
+  
+  /* Advanced Glass Effects */
+  --glass-bevel: rgba(255, 255, 255, 0.4);
+  --glass-inner-shadow: rgba(0, 0, 0, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.6);
+  --glass-gradient-1: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%);
+  --glass-gradient-2: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --glass-gradient-3: linear-gradient(225deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
 }
 
 /* Sparkle Animations */
@@ -171,6 +179,10 @@ title: eosyn
   --border-pink: #f093fb;
   --text-accent: #667eea;
   --glass-bg: rgba(102, 126, 234, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: A - Aurora */
@@ -185,6 +197,10 @@ title: eosyn
   --border-pink: #ffa726;
   --text-accent: #ff6b6b;
   --glass-bg: rgba(255, 107, 107, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: R - Rainbow */
@@ -199,6 +215,10 @@ title: eosyn
   --border-pink: #29b6f6;
   --text-accent: #4fc3f7;
   --glass-bg: rgba(79, 195, 247, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: Z - Zenith */
@@ -213,6 +233,10 @@ title: eosyn
   --border-pink: #81c784;
   --text-accent: #66bb6a;
   --glass-bg: rgba(102, 187, 106, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: E - Eclipse */
@@ -235,6 +259,7 @@ title: eosyn
   --border-pink: #e91e63;
   --text-accent: #e91e63;
   --glass-bg: rgba(233, 30, 99, 0.25);
+  --text-white: #ffffff;
 }
 
 /* Theme: N - Nebula */
@@ -249,6 +274,10 @@ title: eosyn
   --border-pink: #ff9800;
   --text-accent: #ff5722;
   --glass-bg: rgba(255, 87, 34, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: Sunset */
@@ -263,6 +292,10 @@ title: eosyn
   --border-pink: #ffcc02;
   --text-accent: #ff8a65;
   --glass-bg: rgba(255, 138, 101, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: Ocean */
@@ -277,6 +310,10 @@ title: eosyn
   --border-pink: #039be5;
   --text-accent: #0277bd;
   --glass-bg: rgba(2, 119, 189, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: Forest */
@@ -291,6 +328,10 @@ title: eosyn
   --border-pink: #388e3c;
   --text-accent: #2e7d32;
   --glass-bg: rgba(46, 125, 50, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: Dark */
@@ -313,6 +354,7 @@ title: eosyn
   --border-pink: #616161;
   --text-accent: #424242;
   --glass-bg: rgba(66, 66, 66, 0.25);
+  --text-white: #ffffff;
 }
 
 body {
@@ -377,12 +419,43 @@ body {
   background: var(--glass-bg);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 20px 40px var(--glass-shadow);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 20px 40px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: none;
   transition: all 0.3s ease;
   position: relative;
   z-index: 1;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-1);
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.container::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+  background: var(--glass-gradient-2);
+  border-radius: 19px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 h1 {
@@ -443,8 +516,29 @@ h1 {
   border-radius: 15px;
   padding: 25px;
   margin-top: 30px;
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 8px 32px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: none;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-links::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-1);
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .nav-links a {
@@ -455,16 +549,41 @@ h1 {
   margin: 8px;
   background: var(--glass-bg);
   border-radius: 25px;
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 4px 16px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(15px) saturate(180%);
+  border: none;
   transition: all 0.3s ease;
   font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-2);
+  border-radius: 25px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .nav-links a:hover {
   background: var(--gradient-primary);
   color: var(--text-white);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--glass-shadow);
+  box-shadow: 
+    0 8px 20px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--text-accent);
   border-color: var(--text-accent);
 }
 
@@ -473,9 +592,30 @@ h1 {
   border-radius: 15px;
   padding: 25px;
   margin-top: 20px;
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 8px 32px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: none;
   text-align: center;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-links::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-1);
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .social-links a {
@@ -486,16 +626,41 @@ h1 {
   margin: 8px;
   background: var(--glass-bg);
   border-radius: 25px;
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 4px 16px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(15px) saturate(180%);
+  border: none;
   transition: all 0.3s ease;
   font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-2);
+  border-radius: 25px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .social-links a:hover {
   background: var(--gradient-secondary);
   color: var(--text-white);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--glass-shadow);
+  box-shadow: 
+    0 8px 20px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--text-accent);
   border-color: var(--text-accent);
 }
 
@@ -509,7 +674,13 @@ h1 {
   height: 40px;
   background: var(--glass-bg);
   border-radius: 50%;
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 4px 16px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(15px) saturate(180%);
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -517,13 +688,32 @@ h1 {
   font-size: 18px;
   color: var(--text-primary);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.gear-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-2);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .gear-button:hover {
   transform: rotate(90deg);
   background: var(--gradient-primary);
   color: var(--text-white);
+  box-shadow: 
+    0 8px 24px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--text-accent);
   border-color: var(--text-accent);
 }
 
@@ -535,11 +725,31 @@ h1 {
     background: var(--glass-bg);
     border-radius: 15px;
     padding: 15px;
-    box-shadow: 0 10px 30px var(--glass-shadow);
-    border: 2px solid var(--glass-border);
+    box-shadow: 
+      0 10px 30px var(--glass-shadow),
+      inset 0 1px 0 var(--glass-highlight),
+      inset 0 -1px 0 var(--glass-inner-shadow),
+      0 0 0 1px var(--glass-border);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: none;
     z-index: 1002;
     text-align: center;
     width: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-1);
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .theme-switcher h3 {
@@ -560,20 +770,48 @@ h1 {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 2px 8px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
+}
+
+.theme-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-2);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .theme-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px var(--glass-shadow);
+  box-shadow: 
+    0 4px 12px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
 }
 
 .theme-btn.active {
+  box-shadow: 
+    0 0 0 3px rgba(102, 126, 234, 0.2),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--text-accent);
   border-color: var(--text-accent);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
 
 .theme-btn[data-theme="c"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
@@ -755,7 +993,7 @@ h1 {
 
 <!-- Cookie Consent -->
 <div class="cookie-consent" id="cookieConsent">
-  <h3>🍪 Cookie Notice</h3>
+  <h3>Cookie Notice</h3>
   <p>This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
   <div class="cookie-buttons">
     <button class="cookie-btn reject" onclick="rejectCookies()">Reject</button>
@@ -787,6 +1025,30 @@ function deleteCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
 }
 
+// Cookie consent management
+function showCookieConsent() {
+  if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
+    document.getElementById('cookieConsent').classList.add('show');
+  }
+}
+
+function acceptCookies() {
+  setCookie('cookiesAccepted', 'true', 365);
+  document.getElementById('cookieConsent').classList.remove('show');
+  
+  // Save current theme preference
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
+  setCookie('theme', currentTheme, 365);
+}
+
+function rejectCookies() {
+  setCookie('cookiesRejected', 'true', 365);
+  document.getElementById('cookieConsent').classList.remove('show');
+  
+  // Clear any existing theme cookie
+  deleteCookie('theme');
+}
+
 // Theme management
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
@@ -796,33 +1058,11 @@ function setTheme(theme) {
     btn.classList.remove('active');
   });
   document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
-
-  // Update starfield image
-  document.querySelectorAll('.starfield-image').forEach(img => {
-      img.style.display = 'none';
-  });
-  const activeImage = document.querySelector(`.starfield-image[data-image="${getImageForTheme(theme)}"]`);
-  if(activeImage) {
-      activeImage.style.display = 'inline-block';
-  }
   
-  // Save theme preference if cookies are accepted
+  // Save theme preference ONLY if cookies are accepted
   if (getCookie('cookiesAccepted') === 'true') {
     setCookie('theme', theme, 365);
   }
-}
-
-function getImageForTheme(theme) {
-    switch(theme) {
-        case 'a': return 'clouds1';
-        case 'r': return 'clouds2';
-        case 'e': return 'clouds4';
-        case 'c':
-        case 'z':
-        case 'n':
-        default:
-            return 'stars';
-    }
 }
 
 function loadTheme() {
@@ -831,33 +1071,13 @@ function loadTheme() {
     const savedTheme = getCookie('theme');
     if (savedTheme) {
       setTheme(savedTheme);
+    } else {
+      setTheme('c');
     }
   } else {
-    // Set default theme to "c" if no cookies
+    // Set default theme to "c" if no cookies accepted
     setTheme('c');
   }
-}
-
-// Cookie consent management
-function showCookieConsent() {
-  if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
-    document.getElementById('cookieConsent').classList.add('show');
-  }
-}
-function acceptCookies() {
-  setCookie('cookiesAccepted', 'true', 365);
-  document.getElementById('cookieConsent').classList.remove('show');
-  
-  // Save current theme preference
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
-  setCookie('theme', currentTheme, 365);
-}
-function rejectCookies() {
-  setCookie('cookiesRejected', 'true', 365);
-  document.getElementById('cookieConsent').classList.remove('show');
-  
-  // Clear any existing theme cookie
-  deleteCookie('theme');
 }
 
 document.addEventListener('DOMContentLoaded', function() {

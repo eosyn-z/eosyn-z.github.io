@@ -44,6 +44,20 @@ permalink: /search/
             --shadow-light: rgba(0, 0, 0, 0.1);
             --shadow-medium: rgba(0, 0, 0, 0.2);
             --shadow-heavy: rgba(0, 0, 0, 0.3);
+            
+            /* Glass Effects */
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-shadow: rgba(0, 0, 0, 0.1);
+            --text-accent: #667eea;
+            
+            /* Advanced Glass Effects */
+            --glass-bevel: rgba(255, 255, 255, 0.4);
+            --glass-inner-shadow: rgba(0, 0, 0, 0.1);
+            --glass-highlight: rgba(255, 255, 255, 0.6);
+            --glass-gradient-1: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%);
+            --glass-gradient-2: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+            --glass-gradient-3: linear-gradient(225deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
         }
 
         /* Theme: Sunset */
@@ -55,6 +69,13 @@ permalink: /search/
             --accent-orange: #ff8a65;
             --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
             --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
+            --text-accent: #ff6b6b;
+            --glass-bg: rgba(255, 107, 107, 0.25);
+            --glass-border: rgba(255, 107, 107, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --text-white: #ffffff;
         }
 
         /* Theme: Ocean */
@@ -66,6 +87,13 @@ permalink: /search/
             --accent-orange: #00bcd4;
             --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
             --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
+            --text-accent: #4fc3f7;
+            --glass-bg: rgba(79, 195, 247, 0.25);
+            --glass-border: rgba(79, 195, 247, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --text-white: #ffffff;
         }
 
         /* Theme: Forest */
@@ -77,6 +105,13 @@ permalink: /search/
             --accent-orange: #8bc34a;
             --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
             --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            --text-accent: #66bb6a;
+            --glass-bg: rgba(102, 187, 106, 0.25);
+            --glass-border: rgba(102, 187, 106, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --text-white: #ffffff;
         }
 
         /* Theme: Dark */
@@ -96,21 +131,34 @@ permalink: /search/
             --border-accent: #555555;
             --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
             --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
+            --text-accent: #e91e63;
+            --glass-bg: rgba(233, 30, 99, 0.25);
+            --glass-border: rgba(233, 30, 99, 0.3);
+            --text-white: #ffffff;
         }
 
-        /* Theme: C - Cosmic */
+        /* Theme: C - Cosmic (Dark Theme) */
         [data-theme="c"] {
             --primary-purple: #667eea;
             --primary-pink: #f093fb;
             --accent-blue: #4facfe;
             --accent-green: #43e97b;
             --accent-orange: #fa709a;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --text-light: #bdbdbd;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-accent: #2d2d2d;
+            --border-primary: #404040;
+            --border-accent: #555555;
             --gradient-primary: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
             --gradient-secondary: linear-gradient(135deg, #4facfe 0%, #43e97b 100%);
             --border-pink: #f093fb;
             --text-accent: #667eea;
             --glass-bg: rgba(102, 126, 234, 0.25);
             --glass-border: rgba(102, 126, 234, 0.3);
+            --text-white: #ffffff;
         }
 
         /* Theme: A - Aurora */
@@ -126,6 +174,10 @@ permalink: /search/
             --text-accent: #ff6b6b;
             --glass-bg: rgba(255, 107, 107, 0.25);
             --glass-border: rgba(255, 107, 107, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --text-white: #ffffff;
         }
 
         /* Theme: R - Rainbow */
@@ -141,6 +193,10 @@ permalink: /search/
             --text-accent: #4fc3f7;
             --glass-bg: rgba(79, 195, 247, 0.25);
             --glass-border: rgba(79, 195, 247, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --text-white: #ffffff;
         }
 
         /* Theme: Z - Zenith */
@@ -156,6 +212,10 @@ permalink: /search/
             --text-accent: #66bb6a;
             --glass-bg: rgba(102, 187, 106, 0.25);
             --glass-border: rgba(102, 187, 106, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --text-white: #ffffff;
         }
 
         /* Theme: E - Eclipse */
@@ -179,6 +239,7 @@ permalink: /search/
             --text-accent: #e91e63;
             --glass-bg: rgba(233, 30, 99, 0.25);
             --glass-border: rgba(233, 30, 99, 0.3);
+            --text-white: #ffffff;
         }
 
         /* Theme: N - Nebula */
@@ -194,6 +255,10 @@ permalink: /search/
             --text-accent: #ff5722;
             --glass-bg: rgba(255, 87, 34, 0.25);
             --glass-border: rgba(255, 87, 34, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --text-white: #ffffff;
         }
 
         body {
@@ -917,8 +982,8 @@ permalink: /search/
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             z-index: -1;
+            pointer-events: none;
             overflow: hidden;
         }
 
@@ -930,11 +995,11 @@ permalink: /search/
             height: 100%;
             object-fit: cover;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 0.5s ease;
         }
 
-        .starfield-image:hover {
-            opacity: 0.1;
+        .starfield-image[data-image="stars"] {
+            opacity: 0.05;
         }
 
         /* Theme-specific starfield images */
@@ -1075,7 +1140,7 @@ permalink: /search/
     
     <div class="container">
         <div class="header">
-            <h1>🔍 Discover</h1>
+            <h1>Discover</h1>
             <p>Find interesting websites and tools</p>
         </div>
 
@@ -1105,7 +1170,7 @@ permalink: /search/
                 </div>
                 <div class="filter-group">
                     <input type="checkbox" id="personalRecommendation">
-                    <label for="personalRecommendation">⭐ Has eosyn used this?</label>
+                    <label for="personalRecommendation">Has eosyn used this?</label>
                 </div>
             </div>
             
@@ -1123,7 +1188,7 @@ permalink: /search/
 
         <!-- Social Websites Ticker -->
         <div class="ticker-section">
-            <h3>🌐 Social Websites</h3>
+            <h3>Social Websites</h3>
             <div class="ticker-container">
                 <div class="ticker-track social">
                     <a href="https://twitter.com" class="ticker-item" target="_blank">Twitter</a>
@@ -1147,7 +1212,7 @@ permalink: /search/
 
         <!-- Forums Ticker -->
         <div class="ticker-section">
-            <h3>💬 Forums & Communities</h3>
+            <h3>Forums & Communities</h3>
             <div class="ticker-container">
                 <div class="ticker-track forums">
                     <a href="https://stackoverflow.com" class="ticker-item" target="_blank">Stack Overflow</a>
@@ -1192,7 +1257,7 @@ permalink: /search/
 
     <!-- Cookie Consent -->
     <div class="cookie-consent" id="cookieConsent">
-        <h3>🍪 Cookie Notice</h3>
+        <h3>Cookie Notice</h3>
         <p>This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
         <div class="cookie-buttons">
             <button class="cookie-btn reject" onclick="rejectCookies()">Reject</button>
@@ -1728,16 +1793,24 @@ permalink: /search/
         });
         document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
         
-        // Save theme preference if cookies are accepted
+        // Save theme preference ONLY if cookies are accepted
         if (getCookie('cookiesAccepted') === 'true') {
             setCookie('theme', theme, 365);
         }
     }
 
     function loadTheme() {
-        const savedTheme = getCookie('theme');
-        if (savedTheme) {
-            setTheme(savedTheme);
+        // Only load theme from cookie if cookies are accepted
+        if (getCookie('cookiesAccepted') === 'true') {
+            const savedTheme = getCookie('theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else {
+                setTheme('c');
+            }
+        } else {
+            // Set default theme to "c" if no cookies accepted
+            setTheme('c');
         }
     }
 
@@ -1753,7 +1826,7 @@ permalink: /search/
         document.getElementById('cookieConsent').classList.remove('show');
         
         // Save current theme preference
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
         setCookie('theme', currentTheme, 365);
     }
 

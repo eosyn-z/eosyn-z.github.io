@@ -44,6 +44,14 @@ permalink: /art/
   --glass-border: rgba(255, 255, 255, 0.3);
   --glass-shadow: rgba(0, 0, 0, 0.1);
   --text-accent: #667eea;
+  
+  /* Advanced Glass Effects */
+  --glass-bevel: rgba(255, 255, 255, 0.4);
+  --glass-inner-shadow: rgba(0, 0, 0, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.6);
+  --glass-gradient-1: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%);
+  --glass-gradient-2: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --glass-gradient-3: linear-gradient(225deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
 }
 
 /* Theme: Sunset */
@@ -57,6 +65,10 @@ permalink: /art/
   --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
   --text-accent: #ff6b6b;
   --glass-bg: rgba(255, 107, 107, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: Ocean */
@@ -70,6 +82,10 @@ permalink: /art/
   --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
   --text-accent: #4fc3f7;
   --glass-bg: rgba(79, 195, 247, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: Forest */
@@ -83,6 +99,10 @@ permalink: /art/
   --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
   --text-accent: #66bb6a;
   --glass-bg: rgba(102, 187, 106, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 /* Theme: Dark */
@@ -104,6 +124,114 @@ permalink: /art/
   --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
   --text-accent: #e91e63;
   --glass-bg: rgba(233, 30, 99, 0.25);
+  --text-white: #ffffff;
+}
+
+/* Theme: C - Cosmic */
+[data-theme="c"] {
+  --primary-purple: #667eea;
+  --primary-pink: #f093fb;
+  --accent-blue: #4facfe;
+  --accent-green: #43e97b;
+  --accent-orange: #fa709a;
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+  --gradient-secondary: linear-gradient(135deg, #4facfe 0%, #43e97b 100%);
+  --text-accent: #667eea;
+  --glass-bg: rgba(102, 126, 234, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
+}
+
+/* Theme: A - Aurora */
+[data-theme="a"] {
+  --primary-purple: #ff6b6b;
+  --primary-pink: #ffa726;
+  --accent-blue: #ff7043;
+  --accent-green: #ffb74d;
+  --accent-orange: #ff8a65;
+  --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
+  --text-accent: #ff6b6b;
+  --glass-bg: rgba(255, 107, 107, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
+}
+
+/* Theme: R - Rainbow */
+[data-theme="r"] {
+  --primary-purple: #4fc3f7;
+  --primary-pink: #29b6f6;
+  --accent-blue: #26c6da;
+  --accent-green: #4dd0e1;
+  --accent-orange: #00bcd4;
+  --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
+  --text-accent: #4fc3f7;
+  --glass-bg: rgba(79, 195, 247, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
+}
+
+/* Theme: Z - Zenith */
+[data-theme="z"] {
+  --primary-purple: #66bb6a;
+  --primary-pink: #81c784;
+  --accent-blue: #4caf50;
+  --accent-green: #66bb6a;
+  --accent-orange: #8bc34a;
+  --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+  --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  --text-accent: #66bb6a;
+  --glass-bg: rgba(102, 187, 106, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
+}
+
+/* Theme: E - Eclipse */
+[data-theme="e"] {
+  --primary-purple: #9c27b0;
+  --primary-pink: #e91e63;
+  --accent-blue: #3f51b5;
+  --accent-green: #4caf50;
+  --accent-orange: #ff9800;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-light: #bdbdbd;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-accent: #404040;
+  --border-primary: #404040;
+  --border-accent: #555555;
+  --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
+  --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
+  --text-accent: #e91e63;
+  --glass-bg: rgba(233, 30, 99, 0.25);
+  --text-white: #ffffff;
+}
+
+/* Theme: N - Nebula */
+[data-theme="n"] {
+  --primary-purple: #ff5722;
+  --primary-pink: #ff9800;
+  --accent-blue: #ff5722;
+  --accent-green: #ff9800;
+  --accent-orange: #ff5722;
+  --gradient-primary: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+  --text-accent: #ff5722;
+  --glass-bg: rgba(255, 87, 34, 0.25);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --text-white: #ffffff;
 }
 
 body {
@@ -122,10 +250,42 @@ body {
   background: var(--glass-bg);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 20px 40px var(--glass-shadow);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 20px 40px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: none;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-1);
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.container::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+  background: var(--glass-gradient-2);
+  border-radius: 19px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .header {
@@ -161,14 +321,38 @@ body {
   padding: 12px 20px;
   border-radius: 25px;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(15px) saturate(180%);
+  box-shadow: 
+    0 4px 16px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.back-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-2);
+  border-radius: 25px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .back-link:hover {
   background: var(--gradient-primary);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--glass-shadow);
+  box-shadow: 
+    0 8px 20px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--text-accent);
 }
 
 .gallery-grid {
@@ -180,17 +364,39 @@ body {
 
 .art-piece {
   background: var(--glass-bg);
-  border: 2px solid var(--glass-border);
+  box-shadow: 
+    0 8px 32px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--glass-border);
   border-radius: 15px;
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
+  border: none;
+}
+
+.art-piece::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient-1);
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .art-piece:hover {
   border-color: var(--text-accent);
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px var(--glass-shadow);
+  box-shadow: 
+    0 15px 30px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-inner-shadow),
+    0 0 0 1px var(--text-accent);
 }
 
 .art-image {
@@ -365,25 +571,22 @@ body {
   <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
 </div>
 
-<!-- Sparkle Container -->
-<div id="sparkleContainer"></div>
-
 <a href="/" class="back-link">← Back to Home</a>
 
 <div class="container">
   <div class="header">
-    <h1>🎨 Art Gallery</h1>
+    <h1>Art Gallery</h1>
     <p>A collection of creative works and visual experiments</p>
   </div>
 
   <div class="placeholder-text">
-    <h3>🖼️ Gallery Coming Soon</h3>
+    <h3>Gallery Coming Soon</h3>
     <p>This space will showcase digital art, creative coding experiments, and visual projects. Currently in the planning phase - stay tuned for updates!</p>
   </div>
 
   <div class="gallery-grid">
     <div class="art-piece">
-      <div class="art-image">🎨</div>
+      <div class="art-image">Digital</div>
       <div class="art-info">
         <div class="art-title">Digital Painting</div>
         <p class="art-description">A vibrant digital painting exploring color theory and composition.</p>
@@ -395,7 +598,7 @@ body {
     </div>
 
     <div class="art-piece">
-      <div class="art-image">✨</div>
+      <div class="art-image">Code</div>
       <div class="art-info">
         <div class="art-title">Generative Art</div>
         <p class="art-description">Algorithmic art created with code and mathematical patterns.</p>
@@ -407,7 +610,7 @@ body {
     </div>
 
     <div class="art-piece">
-      <div class="art-image">🎭</div>
+      <div class="art-image">Character</div>
       <div class="art-info">
         <div class="art-title">Character Design</div>
         <p class="art-description">Original character designs and concept art.</p>
@@ -419,7 +622,7 @@ body {
     </div>
 
     <div class="art-piece">
-      <div class="art-image">🌌</div>
+      <div class="art-image">Space</div>
       <div class="art-info">
         <div class="art-title">Space Art</div>
         <p class="art-description">Cosmic landscapes and space-themed illustrations.</p>
@@ -431,7 +634,7 @@ body {
     </div>
 
     <div class="art-piece">
-      <div class="art-image">🎪</div>
+      <div class="art-image">Abstract</div>
       <div class="art-info">
         <div class="art-title">Abstract Art</div>
         <p class="art-description">Abstract compositions exploring form, color, and emotion.</p>
@@ -443,7 +646,7 @@ body {
     </div>
 
     <div class="art-piece">
-      <div class="art-image">🏮</div>
+      <div class="art-image">Pixel</div>
       <div class="art-info">
         <div class="art-title">Pixel Art</div>
         <p class="art-description">Retro-style pixel art and sprite designs.</p>
@@ -470,7 +673,7 @@ body {
 
 <!-- Cookie Consent -->
 <div class="cookie-consent" id="cookieConsent">
-  <h3>🍪 Cookie Notice</h3>
+  <h3>Cookie Notice</h3>
   <p>This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
   <div class="cookie-buttons">
     <button class="cookie-btn reject" onclick="rejectCookies()">Reject</button>
@@ -501,29 +704,6 @@ function deleteCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
 }
 
-// Theme management
-function setTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  
-  // Update active button
-  document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
-  
-  // Save theme preference if cookies are accepted
-  if (getCookie('cookiesAccepted') === 'true') {
-    setCookie('theme', theme, 365);
-  }
-}
-
-function loadTheme() {
-  const savedTheme = getCookie('theme');
-  if (savedTheme) {
-    setTheme(savedTheme);
-  }
-}
-
 // Cookie consent management
 function showCookieConsent() {
   if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
@@ -536,7 +716,7 @@ function acceptCookies() {
   document.getElementById('cookieConsent').classList.remove('show');
   
   // Save current theme preference
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
   setCookie('theme', currentTheme, 365);
 }
 
@@ -548,159 +728,36 @@ function rejectCookies() {
   deleteCookie('theme');
 }
 
-// Sparkle Animation Functions
-function createSparkle() {
-  const sparkle = document.createElement('div');
-  sparkle.className = 'sparkle';
+// Theme management
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
   
-  // Random position
-  const x = Math.random() * window.innerWidth;
-  const y = Math.random() * window.innerHeight;
-  const size = Math.random() * 20 + 10;
-  
-  sparkle.style.left = x + 'px';
-  sparkle.style.top = y + 'px';
-  sparkle.style.fontSize = size + 'px';
-  
-  document.getElementById('sparkleContainer').appendChild(sparkle);
-  
-  // Remove sparkle after animation completes
-  setTimeout(() => {
-    if (sparkle.parentNode) {
-      sparkle.parentNode.removeChild(sparkle);
-    }
-  }, 4000);
-}
-
-function createDistantStar() {
-  const star = document.createElement('div');
-  star.className = 'distant-star';
-  
-  // Random position
-  const x = Math.random() * window.innerWidth;
-  const y = Math.random() * window.innerHeight;
-  const size = Math.random() * 4 + 2;
-  const duration = Math.random() * 3 + 2;
-  const delay = Math.random() * 2;
-  
-  // Theme-specific star properties
-  const theme = document.documentElement.getAttribute('data-theme') || 'default';
-  switch (theme) {
-    case 'sunset':
-      star.style.background = 'var(--primary-pink)';
-      break;
-    case 'ocean':
-      star.style.background = 'var(--accent-blue)';
-      break;
-    case 'forest':
-      star.style.background = 'var(--accent-green)';
-      break;
-    case 'dark':
-      star.style.background = 'var(--primary-purple)';
-      break;
-    default:
-      star.style.background = 'var(--primary-purple)';
-  }
-  
-  star.style.left = x + 'px';
-  star.style.top = y + 'px';
-  star.style.width = size + 'px';
-  star.style.height = size + 'px';
-  star.style.animationDuration = duration + 's';
-  star.style.animationDelay = delay + 's';
-  
-  document.getElementById('sparkleContainer').appendChild(star);
-  
-  // Remove star after animation completes
-  setTimeout(() => {
-    if (star.parentNode) {
-      star.parentNode.removeChild(star);
-    }
-  }, (duration + delay) * 1000);
-}
-
-function initSparkles() {
-  // Create initial sparkles
-  for (let i = 0; i < 10; i++) {
-    setTimeout(() => {
-      createSparkle();
-    }, i * 200);
-  }
-  
-  // Create initial distant stars
-  for (let i = 0; i < 20; i++) {
-    setTimeout(() => {
-      createDistantStar();
-    }, i * 100);
-  }
-  
-  // Continue creating sparkles
-  setInterval(() => {
-    if (document.getElementById('sparkleContainer').children.length < 40) {
-      createSparkle();
-    }
-  }, 2000);
-  
-  // Continue creating distant stars (more frequent)
-  setInterval(() => {
-    let maxStars;
-    const theme = document.documentElement.getAttribute('data-theme') || 'default';
-    
-    // Theme-specific star density
-    switch (theme) {
-      case 'sunset': // Sunset - more stars
-        maxStars = 50;
-        break;
-      case 'dark': // Dark - many stars
-        maxStars = 60;
-        break;
-      default:
-        maxStars = 30;
-    }
-    
-    if (document.getElementById('sparkleContainer').children.length < maxStars) {
-      createDistantStar();
-    }
-  }, 800);
-}
-
-// Update starfield image
-function updateStarfield() {
-  const theme = document.documentElement.getAttribute('data-theme') || 'default';
-  
-  // Hide all starfield images
-  document.querySelectorAll('.starfield-image').forEach(img => {
-    img.style.opacity = '0';
+  // Update active button
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.remove('active');
   });
+  document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
   
-  // Show the appropriate image for the current theme
-  const activeImage = document.querySelector(`.starfield-image[data-image="${getImageForTheme(theme)}"]`);
-  if (activeImage) {
-    activeImage.style.opacity = '0.05';
+  // Save theme preference ONLY if cookies are accepted
+  if (getCookie('cookiesAccepted') === 'true') {
+    setCookie('theme', theme, 365);
   }
 }
 
-function getImageForTheme(theme) {
-  switch (theme) {
-    case 'sunset':
-      return 'clouds1';
-    case 'ocean':
-      return 'clouds2';
-    case 'forest':
-      return 'clouds4';
-    case 'dark':
-      return 'stars';
-    default:
-      return 'stars';
+function loadTheme() {
+  // Only load theme from cookie if cookies are accepted
+  if (getCookie('cookiesAccepted') === 'true') {
+    const savedTheme = getCookie('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else {
+      setTheme('c');
+    }
+  } else {
+    // Set default theme to "c" if no cookies accepted
+    setTheme('c');
   }
 }
-
-// Update starfield when theme changes
-const originalSetTheme = setTheme;
-setTheme = function(theme) {
-  originalSetTheme(theme);
-  updateStarfield();
-};
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
@@ -717,8 +774,5 @@ document.addEventListener('DOMContentLoaded', function() {
       setTheme(theme);
     });
   });
-  
-  // Initialize sparkles
-  initSparkles();
 });
 </script> 
