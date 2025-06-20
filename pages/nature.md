@@ -5,7 +5,6 @@ permalink: /nature/
 ---
 
 <div class="main-content">
-  <div class="glass-container container">
     <div class="glass-card">
 
 // "back to home" and "nature" buttons below
