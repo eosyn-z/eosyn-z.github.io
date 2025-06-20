@@ -7,15 +7,19 @@ permalink: /nature/
 <div class="main-content">
   <div class="glass-container container">
     <div class="glass-card">
+
+// "back to home" and "nature" buttons below
 <a href="/" class="glass-button" style="position: absolute; top: 20px; left: 20px; z-index: 10;">← Back to Home</a>
 <div class="glass-panel" style="position: absolute; top: 20px; right: 20px;">
     <h3 style="margin: 0; font-size: 16px; font-weight: 600;">🌿 Nature</h3>
 </div>
 
-<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
-  <div class="glass-panel" id="loading">Loading nature...</div>
-</div>
+// shows loading this time and, commented this out for now - not sure if this is the ribbon I need to delete or not xd -eos div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
+div id="loading">Loading nature...</div>
+/div>
 
+
+// this switches between the groups of cinemagraphs I've found online. 
 <!-- Group Switcher -->
 <div id="groupSwitcher" class="glass-panel" style="position: absolute; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; gap: 12px; padding: 12px 20px;">
   <button class="glass-button primary" data-group="random">Random</button>
@@ -28,7 +32,10 @@ permalink: /nature/
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // PASTE YOUR IMAGE LINKS IN THESE ARRAYS
+    // PASTE YOUR IMAGE LINKS IN THESE ARRAYS! IF YOU WANT TO ADD IMAGES, THIS IS WHERE TO DO IT!
+    // MAKE SURE TO LABEL THEM CORRECTLY, OTHERWISE BUTTON USE WON'T MAKE SENSE!
+
+
     const forestImages = [
         // Add forest image URLs here
     ];
@@ -58,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (loadingMessage) {
             loadingMessage.style.display = 'none';
         }
+// If you don't find any images, error instead of breaking the page! 
 
         if (!images || images.length === 0) {
             imageContainer.style.backgroundImage = 'none';
@@ -67,6 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return;
         }
+
+// Pick a random image and actually display it!
 
         const randomIndex = Math.floor(Math.random() * images.length);
         const imageUrl = images[randomIndex];
@@ -99,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentGroup = activeButton ? activeButton.dataset.group : 'random';
         setRandomImage(currentGroup);
     });
+// make the button do this random image thing!
 
     setRandomImage('random');
     setActiveButton('random');
