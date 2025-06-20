@@ -1,34 +1,9 @@
 ---
-layout: home
+layout: default
 title: eosyn
 ---
 
 <div class="main-content">
-  <header class="glass-nav top-nav">
-    <div class="nav-container">
-      <a href="/" class="brand" style="color: var(--theme-text);">eosyn.net</a>
-      <nav class="nav-links-header">
-        <a href="/music/" class="glass-button">Music</a>
-        <a href="/art/" class="glass-button">Art</a>
-        <a href="/howtodothat/" class="glass-button">How To Do That</a>
-        <a href="/nature/" class="glass-button">Nature</a>
-        <a href="/search/" class="glass-button">Search</a>
-      </nav>
-      <div class="theme-switcher-container">
-        <div class="gear-button glass-button" id="gearButton" title="Theme Settings">⚙️</div>
-        <div class="theme-content" id="themeContent">
-          <div class="theme-buttons">
-            <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
-            <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
-            <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
-            <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
-            <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
-            <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
 
   <div class="glass-container container">
     <h1 class="glass-card" style="text-align: center; font-size: 2.5em; font-weight: 700; background: none; color: var(--theme-primary);

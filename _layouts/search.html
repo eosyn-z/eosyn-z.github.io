@@ -1,0 +1,31 @@
+---
+layout: default
+---
+<div class="main-content">
+  <div class="glass-container container">
+    <h1 class="page-title" style="text-align: center; font-size: 2em; margin-bottom: 20px;">Cool Websites Search</h1>
+    <div class="search-container" style="text-align: center; margin-bottom: 30px;">
+      <input type="text" id="searchInput" class="glass-input" placeholder="Search for tags or keywords..." style="width: 80%; max-width: 600px;">
+    </div>
+    <div class="filter-container" style="text-align: center; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+      <label class="glass-checkbox"><input type="checkbox" name="tag" value="Personal"> Personal</label>
+      <label class="glass-checkbox"><input type="checkbox" name="tag" value="Professional"> Professional</label>
+      <label class="glass-checkbox"><input type="checkbox" name="tag" value="Tool"> Tool</label>
+      <label class="glass-checkbox"><input type="checkbox" name="tag" value="Other"> Other</label>
+    </div>
+    <div id="resultsContainer" class="results-grid">
+      <!-- Search result cards will be injected here by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<style>
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding-top: 20px;
+  }
+</style>
+
+{{ content }} 

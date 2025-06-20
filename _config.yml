@@ -7,4 +7,5 @@ github_username: eosyn-z
 timezone: EST
 
 # remote_theme: "jekyll/minima@1e8a445"
+# set to null in order to use the local glass theme.
 theme: null
