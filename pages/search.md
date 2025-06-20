@@ -836,4 +836,4 @@ function displayWebsites(websitesToShow) {
         grid.appendChild(card);
     });
 }
-</script> 
+</script>

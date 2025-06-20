@@ -102,9 +102,15 @@ body {
 }
 
 /* --- Theme Switcher Button Styles --- */
+.theme-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .theme-btn {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 2px solid var(--border-primary);
     cursor: pointer;
@@ -275,7 +281,26 @@ body {
 
 .glass-panel.themed {
   border-color: var(--theme-primary);
-  box-shadow: 0 12px 36px rgba(102, 126, 234, 0.15);
+}
+
+.options-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.option-card {
+  padding: 15px;
+  text-align: left;
+  cursor: pointer;
+  border-width: 2px;
+  /* Make the whole card act as a label */
+  display: block; 
+}
+
+.option-card.primary {
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 15px var(--theme-primary-shadow, rgba(102, 126, 234, 0.3));
 }
 
 /* ===== RESPONSIVE GLASS EFFECTS ===== */
@@ -390,4 +415,22 @@ iframe {
     width: 100%;
     height: 100%;
     border: none;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-links-header {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .glass-container {
+    padding: 15px;
+  }
 } 

@@ -1,23 +1,46 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const gearButton = document.getElementById('gearButton');
-    const themeContent = document.getElementById('themeContent');
+document.addEventListener('DOMContentLoaded', function() {
     const themeButtons = document.querySelectorAll('.theme-btn');
-    const cookieConsent = document.getElementById('cookieConsent');
-    const acceptButton = cookieConsent?.querySelector('.accept');
-    const rejectButton = cookieConsent?.querySelector('.reject');
+    const body = document.body;
 
-    // Helper functions for cookies
-    function setCookie(name, value, days) {
-        let expires = '';
+    // Function to set the theme
+    const setTheme = (theme) => {
+        body.setAttribute('data-theme', theme);
+        themeButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-theme') === theme) {
+                btn.classList.add('active');
+            }
+        });
+        // Save theme to cookie if consent is given
+        if (getCookie('cookie_consent') === 'accepted') {
+            setCookie('theme', theme, 3650); // Store for 10 years
+        }
+    };
+
+    // Event listeners for theme buttons
+    themeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const theme = button.getAttribute('data-theme');
+            setTheme(theme);
+        });
+    });
+
+    // Cookie consent logic
+    const cookieConsent = document.getElementById('cookieConsent');
+    
+    // Functions to set, get, and reject cookies
+    window.setCookie = (name, value, days) => {
+        let expires = "";
         if (days) {
             const date = new Date();
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = '; expires=' + date.toUTCString();
+            expires = "; expires=" + date.toUTCString();
         }
-        document.cookie = name + '=' + (value || '') + expires + '; path=/';
-    }
-    function getCookie(name) {
-        const nameEQ = name + '=';
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    };
+
+    window.getCookie = (name) => {
+        const nameEQ = name + "=";
         const ca = document.cookie.split(';');
         for (let i = 0; i < ca.length; i++) {
             let c = ca[i];
@@ -25,72 +48,32 @@ document.addEventListener('DOMContentLoaded', () => {
             if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
         }
         return null;
-    }
-
-    // Function to set the theme
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        // Only save to cookie if consent is given
-        if (getCookie('cookie_consent') === 'given') {
-            setCookie('theme', theme, 3650);
-        }
-        themeButtons.forEach(button => {
-            button.classList.toggle('active', button.dataset.theme === theme);
-        });
-    }
-
-    // Toggle theme content visibility
-    gearButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        themeContent.classList.toggle('visible');
-    });
-
-    // Close theme content if clicking outside
-    document.addEventListener('click', (e) => {
-        if (!themeContent.contains(e.target) && !gearButton.contains(e.target)) {
-            themeContent.classList.remove('visible');
-        }
-    });
-
-    // Handle theme button clicks
-    themeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            setTheme(button.dataset.theme);
-        });
-    });
-
-    // Cookie Consent Logic
-    function showCookieConsent() {
-        if (cookieConsent) {
-            cookieConsent.style.display = 'block';
-        }
-    }
-    function hideCookieConsent() {
-        if (cookieConsent) {
-            cookieConsent.style.display = 'none';
-        }
-    }
-
-    // Global functions for onclick handlers
-    window.acceptCookies = function() {
-        setCookie('cookie_consent', 'given', 3650);
-        const savedTheme = getCookie('theme') || 'a';
-        setTheme(savedTheme);
-        hideCookieConsent();
     };
 
-    window.rejectCookies = function() {
-        // Don't save ANY cookies if user rejects
-        hideCookieConsent();
+    window.acceptCookies = () => {
+        setCookie('cookie_consent', 'accepted', 3650); // Store for 10 years
+        cookieConsent.style.display = 'none';
+        // Apply saved theme after accepting
+        const savedTheme = getCookie('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        }
     };
 
-    // Check for cookie consent on page load
-    const consent = getCookie('cookie_consent');
-    if (consent === 'given') {
-        const savedTheme = getCookie('theme') || 'a';
-        setTheme(savedTheme);
-    } else if (cookieConsent) {
-        // No consent cookie exists, show the banner
-        showCookieConsent();
+    window.rejectCookies = () => {
+        cookieConsent.style.display = 'none';
+    };
+
+    // Check cookie consent on load
+    if (getCookie('cookie_consent') === 'accepted') {
+        const savedTheme = getCookie('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        }
+    } else {
+        // Show banner only on the home page
+        if (cookieConsent) {
+             cookieConsent.style.display = 'block';
+        }
     }
 }); 
