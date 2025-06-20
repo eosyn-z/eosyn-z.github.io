@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Search
+title: some cool or helpful websites
 permalink: /search/
 ---
 
@@ -74,83 +74,6 @@ permalink: /search/
             --gradient-zen: linear-gradient(135deg, #8bc34a 0%, #ff9800 100%);
             --gradient-eco: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
             --gradient-neon: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
-        }
-
-        /* Theme: Sunset */
-        [data-theme="sunset"] {
-            --primary-purple: #ff6b6b;
-            --primary-pink: #ffa726;
-            --accent-blue: #ff7043;
-            --accent-green: #ffb74d;
-            --accent-orange: #ff8a65;
-            --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
-            --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
-            --text-accent: #ff6b6b;
-            --glass-bg: rgba(255, 107, 107, 0.25);
-            --glass-border: rgba(255, 107, 107, 0.3);
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
-            --text-light: #718096;
-            --text-white: #ffffff;
-        }
-
-        /* Theme: Ocean */
-        [data-theme="ocean"] {
-            --primary-purple: #4fc3f7;
-            --primary-pink: #29b6f6;
-            --accent-blue: #26c6da;
-            --accent-green: #4dd0e1;
-            --accent-orange: #00bcd4;
-            --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-            --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
-            --text-accent: #4fc3f7;
-            --glass-bg: rgba(79, 195, 247, 0.25);
-            --glass-border: rgba(79, 195, 247, 0.3);
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
-            --text-light: #718096;
-            --text-white: #ffffff;
-        }
-
-        /* Theme: Forest */
-        [data-theme="forest"] {
-            --primary-purple: #66bb6a;
-            --primary-pink: #81c784;
-            --accent-blue: #4caf50;
-            --accent-green: #66bb6a;
-            --accent-orange: #8bc34a;
-            --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
-            --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-            --text-accent: #66bb6a;
-            --glass-bg: rgba(102, 187, 106, 0.25);
-            --glass-border: rgba(102, 187, 106, 0.3);
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
-            --text-light: #718096;
-            --text-white: #ffffff;
-        }
-
-        /* Theme: Dark */
-        [data-theme="dark"] {
-            --primary-purple: #9c27b0;
-            --primary-pink: #e91e63;
-            --accent-blue: #3f51b5;
-            --accent-green: #4caf50;
-            --accent-orange: #ff9800;
-            --text-primary: #ffffff;
-            --text-secondary: #e0e0e0;
-            --text-light: #bdbdbd;
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --bg-accent: #404040;
-            --border-primary: #404040;
-            --border-accent: #555555;
-            --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
-            --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
-            --text-accent: #e91e63;
-            --glass-bg: rgba(233, 30, 99, 0.25);
-            --glass-border: rgba(233, 30, 99, 0.3);
-            --text-white: #ffffff;
         }
 
         /* Theme: C - Cosmic (Dark Theme) */
@@ -1129,6 +1052,9 @@ permalink: /search/
 
     <script>
     // list of websites, not really a "database" xdddd -eos
+
+
+    
     const websites = [
         {
             title: "GitHub",
@@ -1772,92 +1698,6 @@ permalink: /search/
         const info = document.getElementById('resultsInfo');
         info.textContent = `Showing ${count} website${count !== 1 ? 's' : ''}`;
     }
-
-    // Event listeners
-    document.addEventListener('DOMContentLoaded', function() {
-        // Show cookie consent if needed
-        showCookieConsent();
-        
-        // Load saved theme
-        loadTheme();
-        
-        // Theme button click handlers
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const theme = this.getAttribute('data-theme');
-                setTheme(theme);
-            });
-        });
-        
-        // Gear button click handler
-        document.getElementById('gearButton').addEventListener('click', function() {
-            const themeSwitcher = document.querySelector('.theme-switcher');
-            themeSwitcher.classList.toggle('show');
-        });
-        
-        // Search and filter event listeners
-        document.getElementById('searchBar').addEventListener('input', filterWebsites);
-        document.getElementById('personal').addEventListener('change', filterWebsites);
-        document.getElementById('company').addEventListener('change', filterWebsites);
-        document.getElementById('tools').addEventListener('change', filterWebsites);
-        document.getElementById('documentation').addEventListener('change', filterWebsites);
-        document.getElementById('repository').addEventListener('change', filterWebsites);
-        document.getElementById('personalRecommendation').addEventListener('change', filterWebsites);
-        
-        // Difficulty filter event listeners
-        document.querySelectorAll('.difficulty-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                filterWebsites();
-            });
-        });
-        
-        // Initial display
-        filterWebsites();
-    });
-
-    // Update starfield image
-    function updateStarfield() {
-        const theme = document.documentElement.getAttribute('data-theme') || 'a';
-        
-        // Hide all starfield images
-        document.querySelectorAll('.starfield-image').forEach(img => {
-            img.style.opacity = '0';
-        });
-        
-        // Show the appropriate image for the current theme
-        const activeImage = document.querySelector(`.starfield-image[data-image="${getImageForTheme(theme)}"]`);
-        if (activeImage) {
-            activeImage.style.opacity = '0.05';
-        }
-    }
-
-    function getImageForTheme(theme) {
-        switch (theme) {
-            case 'c':
-            case 'z':
-            case 'n':
-                return 'stars';
-            case 'a':
-                return 'clouds1';
-            case 'r':
-                return 'clouds2';
-            case 'e':
-                return 'clouds4';
-            default:
-                return 'stars';
-        }
-    }
-
-    // Update starfield when theme changes
-    const originalSetTheme = setTheme;
-    setTheme = function(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        // The original setTheme function from the template might not exist,
-        // so we just set the attribute directly.
-        updateStarfield();
-    };
-    </script>
+</script>
 </body>
 </html> 
