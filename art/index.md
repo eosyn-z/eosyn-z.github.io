@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Art Gallery
-permalink: /art/
 ---
 
 <div class="main-content">
