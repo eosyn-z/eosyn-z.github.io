@@ -39,257 +39,9 @@ title: eosyn
   --shadow-heavy: rgba(0, 0, 0, 0.3);
 }
 
-/* Sparkle Animations */
-.sparkle {
-  position: fixed;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0;
-  animation: sparkleFade 4s ease-in-out forwards;
-  will-change: opacity;
-}
-
-.sparkle::before {
-  content: '★';
-  font-size: 20px;
-  color: var(--text-white);
-  text-shadow: 0 0 10px var(--text-white);
-  display: block;
-  will-change: opacity;
-}
-
-/* Distant Star Dots */
-.distant-star {
-  position: fixed;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0;
-  border-radius: 50%;
-  background: var(--text-white);
-  box-shadow: 0 0 4px var(--text-white);
-  animation: distantStarFade 4s ease-in-out infinite;
-  will-change: opacity, transform;
-}
-
-@keyframes sparkleFade {
-  0% {
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes distantStarFade {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  25% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  75% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-}
-
-/* Theme-specific distant star variations */
-[data-theme="c"] .distant-star {
-  background: var(--text-white);
-  box-shadow: 0 0 6px var(--text-white);
-}
-
-[data-theme="a"] .distant-star {
-  background: var(--text-white);
-  box-shadow: 0 0 8px var(--text-white);
-}
-
-[data-theme="r"] .distant-star {
-  background: var(--text-white);
-  box-shadow: 0 0 5px var(--text-white);
-}
-
-[data-theme="z"] .distant-star {
-  background: var(--text-white);
-  box-shadow: 0 0 4px var(--text-white);
-}
-
-[data-theme="e"] .distant-star {
-  background: var(--text-white);
-  box-shadow: 0 0 10px var(--text-white);
-}
-
-[data-theme="n"] .distant-star {
-  background: var(--text-white);
-  box-shadow: 0 0 6px var(--text-white);
-}
-
-[data-theme="sunset"] .distant-star {
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
-}
-
-[data-theme="ocean"] .distant-star {
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-}
-
-[data-theme="forest"] .distant-star {
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
-}
-
-[data-theme="dark"] .distant-star {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-}
-
-/* Theme: C - Cosmic */
-[data-theme="c"] {
-  --primary-purple: #667eea;
-  --primary-pink: #f093fb;
-  --accent-blue: #4facfe;
-  --accent-green: #43e97b;
-  --accent-orange: #fa709a;
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
-  --gradient-secondary: linear-gradient(135deg, #4facfe 0%, #43e97b 100%);
-  --border-pink: #f093fb;
-}
-
-/* Theme: A - Aurora */
-[data-theme="a"] {
-  --primary-purple: #ff6b6b;
-  --primary-pink: #ffa726;
-  --accent-blue: #ff7043;
-  --accent-green: #ffb74d;
-  --accent-orange: #ff8a65;
-  --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
-  --border-pink: #ffa726;
-}
-
-/* Theme: R - Rainbow */
-[data-theme="r"] {
-  --primary-purple: #4fc3f7;
-  --primary-pink: #29b6f6;
-  --accent-blue: #26c6da;
-  --accent-green: #4dd0e1;
-  --accent-orange: #00bcd4;
-  --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-  --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
-  --border-pink: #29b6f6;
-}
-
-/* Theme: Z - Zenith */
-[data-theme="z"] {
-  --primary-purple: #66bb6a;
-  --primary-pink: #81c784;
-  --accent-blue: #4caf50;
-  --accent-green: #66bb6a;
-  --accent-orange: #8bc34a;
-  --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
-  --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-  --border-pink: #81c784;
-}
-
-/* Theme: E - Eclipse */
-[data-theme="e"] {
-  --primary-purple: #9c27b0;
-  --primary-pink: #e91e63;
-  --accent-blue: #3f51b5;
-  --accent-green: #4caf50;
-  --accent-orange: #ff9800;
-  --text-primary: #ffffff;
-  --text-secondary: #e0e0e0;
-  --text-light: #bdbdbd;
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-accent: #404040;
-  --border-primary: #404040;
-  --border-accent: #555555;
-  --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
-  --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
-  --border-pink: #e91e63;
-}
-
-/* Theme: N - Nebula */
-[data-theme="n"] {
-  --primary-purple: #ff5722;
-  --primary-pink: #ff9800;
-  --accent-blue: #ff5722;
-  --accent-green: #ff9800;
-  --accent-orange: #ff5722;
-  --gradient-primary: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
-  --border-pink: #ff9800;
-}
-
-/* Theme: Sunset */
-[data-theme="sunset"] {
-  --primary-purple: #ff8a65;
-  --primary-pink: #ffcc02;
-  --accent-blue: #ff7043;
-  --accent-green: #ffb74d;
-  --accent-orange: #ff8a65;
-  --gradient-primary: linear-gradient(135deg, #ff8a65 0%, #ffcc02 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
-  --border-pink: #ffcc02;
-}
-
-/* Theme: Ocean */
-[data-theme="ocean"] {
-  --primary-purple: #0277bd;
-  --primary-pink: #039be5;
-  --accent-blue: #00acc1;
-  --accent-green: #00bcd4;
-  --accent-orange: #0097a7;
-  --gradient-primary: linear-gradient(135deg, #0277bd 0%, #039be5 100%);
-  --gradient-secondary: linear-gradient(135deg, #00acc1 0%, #00bcd4 100%);
-  --border-pink: #039be5;
-}
-
-/* Theme: Forest */
-[data-theme="forest"] {
-  --primary-purple: #2e7d32;
-  --primary-pink: #388e3c;
-  --accent-blue: #4caf50;
-  --accent-green: #66bb6a;
-  --accent-orange: #8bc34a;
-  --gradient-primary: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
-  --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-  --border-pink: #388e3c;
-}
-
-/* Theme: Dark */
-[data-theme="dark"] {
-  --primary-purple: #424242;
-  --primary-pink: #616161;
-  --accent-blue: #757575;
-  --accent-green: #9e9e9e;
-  --accent-orange: #bdbdbd;
-  --text-primary: #ffffff;
-  --text-secondary: #e0e0e0;
-  --text-light: #bdbdbd;
-  --bg-primary: #121212;
-  --bg-secondary: #1e1e1e;
-  --bg-accent: #2d2d2d;
-  --border-primary: #404040;
-  --border-accent: #555555;
-  --gradient-primary: linear-gradient(135deg, #424242 0%, #616161 100%);
-  --gradient-secondary: linear-gradient(135deg, #757575 0%, #9e9e9e 100%);
-  --border-pink: #616161;
-}
-
 body {
+  display: flex;
+  flex-direction: column;
   background: var(--gradient-primary);
   color: var(--text-primary);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -298,6 +50,10 @@ body {
   min-height: 100vh;
   transition: all 0.3s ease;
   overflow-x: hidden;
+}
+
+.main-content {
+  flex: 1 0 auto;
 }
 
 .container {
@@ -640,52 +396,197 @@ h1 {
     flex-direction: column;
   }
 }
+
+/* New Top Navigation Bar */
+.top-nav {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 15px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin: -20px -20px 20px -20px;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.brand {
+  color: var(--text-white);
+  font-weight: bold;
+  font-size: 1.5em;
+  text-decoration: none;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.nav-links-header {
+  margin: 0 auto;
+}
+
+.nav-links-header a {
+  color: var(--text-white);
+  text-decoration: none;
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.nav-links-header a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* New Theme Switcher Styles */
+.theme-switcher-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.theme-switcher-container .gear-button {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--text-white);
+  transition: all 0.3s ease;
+  box-shadow: none;
+  margin-bottom: 0;
+  border-radius: 50%;
+}
+
+.theme-switcher-container .gear-button:hover {
+  transform: rotate(90deg);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.theme-switcher-container .theme-content {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  padding: 5px;
+  margin-left: -50px; /* Hide it behind the gear */
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.4s ease-in-out;
+  z-index: -1;
+}
+
+.theme-switcher-container.open .theme-content {
+  max-width: 300px; /* Adjust as needed */
+  opacity: 1;
+  margin-left: -235px; /* Pull it out to the left */
+  padding: 5px 10px 5px 45px;
+}
+
+.theme-switcher-container .theme-buttons {
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+/* Hide old theme switcher */
+.theme-switcher {
+  display: none;
+}
+
+.site-footer {
+  flex-shrink: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+.site-footer .social-links a {
+  color: var(--text-white);
+  text-decoration: none;
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  background: rgba(0,0,0,0.2);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.site-footer .social-links a:hover {
+  background: var(--gradient-primary);
+}
 </style>
 
-<div class="container">
-  <h1>hi, i'm eosyn</h1>
-  
-  <div class="starfield-container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="starfield-image" data-image="stars">
-    <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="starfield-image" data-image="clouds1">
-    <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="starfield-image" data-image="clouds2">
-    <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
-  </div>
-
-  <p style="text-align: center; font-size: 1.2em; color: var(--text-secondary); line-height: 1.6;">
-    this site is under construction.<br>
-    if you know about this already, you're probably one of my friends.<br>
-    thank you for checking it out so early! <3
-  </p>
-
-  <div class="nav-links">
-    <a href="/etc/">🎵 music</a>
-    <a href="/nature/">🌿 touch grass</a>
-    <a href="/search/">🔍 discover</a>
-    <a href="/howtodothat/">how to do that: a WIP vibe coded answer to the people who are like "wow i could never figure out how to do that"</a>
-  </div>
-
-  <div class="social-links">
-    <a href="https://github.com/eosyn-z">GitHub: eosyn-z</a>
-    <a href="https://discord.com/users/eosyn"> Discord: eosyn</a>
-  </div>
-</div>
-
-<!-- Theme Switcher -->
-<div class="theme-switcher">
-  <div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
-  <div class="theme-content">
-    <h3>Theme</h3>
-    <div class="theme-buttons">
-      <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
-      <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
-      <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
-      <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
-      <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
-      <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+<div class="main-content">
+  <header class="top-nav">
+    <div class="nav-container">
+      <a href="/" class="brand">eosyn.net</a>
+      <nav class="nav-links-header">
+        <a href="/music/">Music</a>
+        <a href="/howtodothat/">How To Do That</a>
+        <a href="/nature/">Nature</a>
+        <a href="/search/">Search</a>
+      </nav>
+      <div class="theme-switcher-container">
+        <div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
+        <div class="theme-content" id="themeContent">
+          <div class="theme-buttons">
+            <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+            <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+            <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+            <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+            <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+            <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </header>
+
+  <div class="container">
+    <h1>hi, i'm eosyn</h1>
+    
+    <div class="starfield-container">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="starfield-image" data-image="stars">
+      <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="starfield-image" data-image="clouds1">
+      <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="starfield-image" data-image="clouds2">
+      <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
+    </div>
+
+    <p style="text-align: center; font-size: 1.2em; color: var(--text-secondary); line-height: 1.6;">
+      this site is under construction.<br>
+      if you know about this already, you're probably one of my friends.<br>
+      thank you for checking it out so early! <3
+    </p>
+
+    <div class="nav-links" style="display: none;">
+      <a href="/music/">🎵 music</a>
+      <a href="/nature/">🌿 touch grass</a>
+      <a href="/search/">🔍 discover</a>
+      <a href="/howtodothat/">how to do that: a WIP vibe coded answer to the people who are like "wow i could never figure out how to do that"</a>
+    </div>
+
+    <!-- Social links moved to footer -->
   </div>
 </div>
+
+<footer class="site-footer">
+  <div class="social-links">
+    <a href="https://github.com/{{ site.github_username }}">GitHub</a>
+    <a href="https://discord.com/users/{{ site.discord_username }}">Discord</a>
+    <a href="https://twitter.com/{{ site.twitter_username }}">Twitter</a>
+    <a href="{{ "/feed.xml" | relative_url }}">RSS</a>
+  </div>
+</footer>
 
 <!-- Cookie Consent -->
 <div class="cookie-consent" id="cookieConsent">
@@ -749,6 +650,67 @@ function loadTheme() {
   }
 }
 
+// Sparkle effect
+const sparkleContainer = document.getElementById('sparkleContainer');
+document.addEventListener('mousemove', (e) => {
+  if (Math.random() > 0.98) {
+    createSparkle(e.pageX, e.pageY);
+  }
+});
+
+function createSparkle(x, y) {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  sparkle.style.left = `${x}px`;
+  sparkle.style.top = `${y}px`;
+  sparkleContainer.appendChild(sparkle);
+  
+  setTimeout(() => {
+    sparkle.remove();
+  }, 4000);
+}
+
+// Distant star effect
+function createDistantStars() {
+  const container = document.body;
+  for (let i = 0; i < 50; i++) {
+    const star = document.createElement('div');
+    star.className = 'distant-star';
+    star.style.left = `${Math.random() * 100}vw`;
+    star.style.top = `${Math.random() * 100}vh`;
+    const size = Math.random() * 2 + 1;
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.animationDelay = `${Math.random() * 4}s`;
+    container.appendChild(star);
+  }
+}
+
+// Event Listeners
+window.addEventListener('load', () => {
+  loadTheme();
+  showCookieConsent();
+  createDistantStars();
+});
+
+document.querySelectorAll('.theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setTheme(btn.getAttribute('data-theme'));
+  });
+});
+
+document.getElementById('gearButton').addEventListener('click', (e) => {
+  e.stopPropagation();
+  document.querySelector('.theme-switcher-container').classList.toggle('open');
+});
+
+document.addEventListener('click', (e) => {
+  const themeSwitcher = document.querySelector('.theme-switcher-container');
+  if (themeSwitcher.classList.contains('open') && !themeSwitcher.contains(e.target)) {
+    themeSwitcher.classList.remove('open');
+  }
+});
+
 // Cookie consent management
 function showCookieConsent() {
   if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
@@ -759,180 +721,12 @@ function acceptCookies() {
   setCookie('cookiesAccepted', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
   
-  // Save current theme preference
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
   setCookie('theme', currentTheme, 365);
 }
 function rejectCookies() {
   setCookie('cookiesRejected', 'true', 365);
   document.getElementById('cookieConsent').classList.remove('show');
-  
-  // Clear any existing theme cookie
   deleteCookie('theme');
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Show cookie consent if needed
-  showCookieConsent();
-  
-  // Load saved theme (only if cookies are accepted)
-  loadTheme();
-  
-  // Gear button click handler
-  document.getElementById('gearButton').addEventListener('click', function() {
-    const themeSwitcher = document.querySelector('.theme-switcher');
-    themeSwitcher.classList.toggle('show');
-  });
-  
-  // Theme button click handlers
-  document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const theme = this.getAttribute('data-theme');
-      setTheme(theme);
-    });
-  });
-  
-  // Initialize sparkles
-  initSparkles();
-});
-
-// Sparkle Animation Functions
-function createSparkle() {
-  const sparkle = document.createElement('div');
-  sparkle.className = 'sparkle';
-  
-  // Random position across the entire viewport
-  const x = Math.random() * window.innerWidth;
-  const y = Math.random() * window.innerHeight;
-  sparkle.style.left = x + 'px';
-  sparkle.style.top = y + 'px';
-  
-  // Random size
-  const size = 15 + Math.random() * 15; // 15-30px
-  sparkle.style.fontSize = size + 'px';
-  
-  document.getElementById('sparkleContainer').appendChild(sparkle);
-  
-  // Remove sparkle after animation completes
-  setTimeout(() => {
-    if (sparkle.parentNode) {
-      sparkle.parentNode.removeChild(sparkle);
-    }
-  }, 4000); // 4 seconds to match animation duration
-}
-
-function createDistantStar() {
-  const star = document.createElement('div');
-  star.className = 'distant-star';
-  
-  // Random position across the entire viewport
-  const x = Math.random() * window.innerWidth;
-  const y = Math.random() * window.innerHeight;
-  star.style.left = x + 'px';
-  star.style.top = y + 'px';
-  
-  // Theme-specific size variations
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
-  let minSize, maxSize;
-  
-  switch(currentTheme) {
-    case 'c': // Cosmic - medium stars
-      minSize = 2; maxSize = 4;
-      break;
-    case 'a': // Aurora - bright, larger stars
-      minSize = 3; maxSize = 6;
-      break;
-    case 'r': // Rainbow - small, delicate stars
-      minSize = 1; maxSize = 3;
-      break;
-    case 'z': // Zenith - tiny, subtle stars
-      minSize = 1; maxSize = 2;
-      break;
-    case 'e': // Eclipse - bright, prominent stars
-      minSize = 2; maxSize = 5;
-      break;
-    case 'n': // Nebula - medium-bright stars
-      minSize = 2; maxSize = 4;
-      break;
-    default:
-      minSize = 2; maxSize = 4;
-  }
-  
-  const size = minSize + Math.random() * (maxSize - minSize);
-  star.style.width = size + 'px';
-  star.style.height = size + 'px';
-  
-  // Random animation duration and delay
-  const duration = 3 + Math.random() * 3; // 3-6 seconds
-  const delay = Math.random() * 2;
-  star.style.animationDuration = duration + 's';
-  star.style.animationDelay = delay + 's';
-  
-  document.getElementById('sparkleContainer').appendChild(star);
-  
-  // Remove star after animation completes
-  setTimeout(() => {
-    if (star.parentNode) {
-      star.parentNode.removeChild(star);
-    }
-  }, (duration + delay) * 1000);
-}
-
-function initSparkles() {
-  // Create initial sparkles
-  for (let i = 0; i < 15; i++) {
-    setTimeout(() => {
-      createSparkle();
-    }, i * 500); // Stagger creation
-  }
-  
-  // Create initial distant stars
-  for (let i = 0; i < 25; i++) {
-    setTimeout(() => {
-      createDistantStar();
-    }, i * 200); // More frequent, smaller delay
-  }
-  
-  // Continue creating sparkles
-  setInterval(() => {
-    if (document.getElementById('sparkleContainer').children.length < 20) {
-      createSparkle();
-    }
-  }, 2000);
-  
-  // Continue creating distant stars (more frequent)
-  setInterval(() => {
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
-    let maxStars;
-    
-    // Theme-specific star density
-    switch(currentTheme) {
-      case 'a': // Aurora - more stars
-        maxStars = 35;
-        break;
-      case 'e': // Eclipse - more stars
-        maxStars = 30;
-        break;
-      case 'r': // Rainbow - medium stars
-        maxStars = 25;
-        break;
-      case 'c': // Cosmic - medium stars
-        maxStars = 25;
-        break;
-      case 'n': // Nebula - medium stars
-        maxStars = 25;
-        break;
-      case 'z': // Zenith - fewer stars
-        maxStars = 20;
-        break;
-      default:
-        maxStars = 25;
-    }
-    
-    const distantStars = document.querySelectorAll('.distant-star').length;
-    if (distantStars < maxStars) {
-      createDistantStar();
-    }
-  }, 800); // More frequent than sparkles
 }
 </script>

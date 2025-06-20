@@ -4,397 +4,44 @@ title: Nature
 permalink: /nature/
 ---
 
-<style>
-:root {
-  /* Primary Color Palette */
-  --primary-purple: #667eea;
-  --primary-pink: #f093fb;
-  --accent-blue: #4facfe;
-  --accent-green: #43e97b;
-  --accent-orange: #fa709a;
-  
-  /* Background Gradients */
-  --gradient-primary: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-pink) 100%);
-  --gradient-secondary: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
-  --gradient-warm: linear-gradient(135deg, var(--accent-orange) 0%, var(--primary-pink) 100%);
-  
-  /* Text Colors */
-  --text-primary: #2d3748;
-  --text-secondary: #4a5568;
-  --text-light: #718096;
-  --text-white: #ffffff;
-  
-  /* Background Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f7fafc;
-  --bg-accent: #edf2f7;
-  
-  /* Border Colors */
-  --border-primary: #e2e8f0;
-  --border-accent: #cbd5e0;
-  --border-pink: #ffb6c1;
-  
-  /* Shadow Colors */
-  --shadow-light: rgba(0, 0, 0, 0.1);
-  --shadow-medium: rgba(0, 0, 0, 0.2);
-  --shadow-heavy: rgba(0, 0, 0, 0.3);
-}
+<link rel="stylesheet" href="/assets/css/themes.css">
 
-/* Theme: Sunset */
-[data-theme="sunset"] {
-  --primary-purple: #ff6b6b;
-  --primary-pink: #ffa726;
-  --accent-blue: #ff7043;
-  --accent-green: #ffb74d;
-  --accent-orange: #ff8a65;
-  --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
-}
-
-/* Theme: Ocean */
-[data-theme="ocean"] {
-  --primary-purple: #4fc3f7;
-  --primary-pink: #29b6f6;
-  --accent-blue: #26c6da;
-  --accent-green: #4dd0e1;
-  --accent-orange: #00bcd4;
-  --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-  --gradient-secondary: linear-gradient(135deg, #26c6da 0%, #4dd0e1 100%);
-}
-
-/* Theme: Forest */
-[data-theme="forest"] {
-  --primary-purple: #66bb6a;
-  --primary-pink: #81c784;
-  --accent-blue: #4caf50;
-  --accent-green: #66bb6a;
-  --accent-orange: #8bc34a;
-  --gradient-primary: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
-  --gradient-secondary: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-}
-
-/* Theme: Dark */
-[data-theme="dark"] {
-  --primary-purple: #9c27b0;
-  --primary-pink: #e91e63;
-  --accent-blue: #3f51b5;
-  --accent-green: #4caf50;
-  --accent-orange: #ff9800;
-  --text-primary: #ffffff;
-  --text-secondary: #e0e0e0;
-  --text-light: #bdbdbd;
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-accent: #404040;
-  --border-primary: #404040;
-  --border-accent: #555555;
-  --gradient-primary: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
-  --gradient-secondary: linear-gradient(135deg, #3f51b5 0%, #4caf50 100%);
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-white);
-  text-shadow: 2px 2px 4px var(--shadow-heavy);
-  transition: all 0.3s ease;
-}
-
-.content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 10;
-}
-
-.back-link {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: var(--text-white);
-  text-decoration: none;
-  font-size: 18px;
-  background: var(--shadow-heavy);
-  padding: 12px 20px;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.back-link:hover {
-  background: var(--gradient-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--shadow-medium);
-}
-
-.loading {
-  font-size: 24px;
-  opacity: 0.9;
-  background: var(--shadow-heavy);
-  padding: 20px 30px;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.page-title {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: var(--shadow-heavy);
-  padding: 12px 20px;
-  border-radius: 25px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 16px;
-  font-weight: 600;
-}
-
-/* Theme Switcher */
-.theme-switcher {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  z-index: 1000;
-  transition: all 0.3s ease;
-}
-
-.theme-switcher h3 {
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-  font-size: 14px;
-  text-align: center;
-}
-
-.theme-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.theme-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid var(--border-primary);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.theme-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px var(--shadow-medium);
-}
-
-.theme-btn.active {
-  border-color: var(--primary-purple);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-}
-
-.theme-btn[data-theme="default"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
-.theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
-.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
-.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
-.theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
-
-/* Cookie Consent */
-.cookie-consent {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 10px 30px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  z-index: 1001;
-  max-width: 500px;
-  margin: 0 auto;
-  display: none;
-}
-
-.cookie-consent.show {
-  display: block;
-}
-
-.cookie-consent h3 {
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-  font-size: 16px;
-}
-
-.cookie-consent p {
-  margin: 0 0 15px 0;
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.cookie-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.cookie-btn {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.cookie-btn.accept {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-}
-
-.cookie-btn.reject {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 2px solid var(--border-primary);
-}
-
-.cookie-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-medium);
-}
-
-@media (max-width: 768px) {
-  .theme-switcher {
-    top: 10px;
-    right: 10px;
-    padding: 10px;
-  }
-  
-  .theme-buttons {
-    gap: 5px;
-  }
-  
-  .theme-btn {
-    width: 25px;
-    height: 25px;
-  }
-  
-  .cookie-consent {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-  }
-  
-  .cookie-buttons {
-    flex-direction: column;
-  }
-}
-
-.group-switcher {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1002;
-  display: flex;
-  gap: 12px;
-  background: var(--bg-primary);
-  border-radius: 15px;
-  padding: 12px 20px;
-  box-shadow: 0 8px 24px var(--shadow-medium);
-  border: 2px solid var(--border-primary);
-  transition: all 0.3s ease;
-}
-
-.group-btn {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 2px solid var(--border-primary);
-  border-radius: 20px;
-  padding: 10px 18px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  outline: none;
-}
-
-.group-btn.active, .group-btn:focus {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-  border-color: var(--primary-purple);
-  box-shadow: 0 4px 16px var(--shadow-medium);
-}
-
-.group-btn:hover {
-  background: var(--gradient-secondary);
-  color: var(--text-white);
-  border-color: var(--accent-blue);
-}
-
-@media (max-width: 768px) {
-  .group-switcher {
-    top: 65px;
-    padding: 8px 6px;
-    gap: 6px;
-  }
-  .group-btn {
-    padding: 7px 10px;
-    font-size: 13px;
-  }
-}
-</style>
-
-<a href="/" class="back-link">← Back to Home</a>
-<div class="page-title">🌿 Nature</div>
-
-<!-- Group Switcher -->
-<div class="group-switcher" id="groupSwitcher">
-  <button class="group-btn active" data-group="random">Random</button>
-  <button class="group-btn" data-group="forest">Forest</button>
-  <button class="group-btn" data-group="flowingWater">Flowing Water</button>
-  <button class="group-btn" data-group="ocean">Ocean</button>
+<a href="/" class="glass-button" style="position: absolute; top: 20px; left: 20px; z-index: 10;">← Back to Home</a>
+<div class="glass-panel" style="position: absolute; top: 20px; right: 20px;">
+    <h3 style="margin: 0; font-size: 16px; font-weight: 600;">🌿 Nature</h3>
 </div>
 
-<div class="content">
-  <div class="loading">Loading nature...</div>
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
+  <div class="glass-panel" id="loading">Loading nature...</div>
+</div>
+
+<!-- Group Switcher -->
+<div id="groupSwitcher" class="glass-panel" style="position: absolute; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; gap: 12px; padding: 12px 20px;">
+  <button class="glass-button primary" data-group="random">Random</button>
+  <button class="glass-button" data-group="forest">Forest</button>
+  <button class="glass-button" data-group="flowingWater">Flowing Water</button>
+  <button class="glass-button" data-group="ocean">Ocean</button>
 </div>
 
 <!-- Theme Switcher -->
-<div class="theme-switcher">
-  <h3>Theme</h3>
-  <div class="theme-buttons">
-    <div class="theme-btn active" data-theme="default" title="Default"></div>
-    <div class="theme-btn" data-theme="sunset" title="Sunset"></div>
-    <div class="theme-btn" data-theme="ocean" title="Ocean"></div>
-    <div class="theme-btn" data-theme="forest" title="Forest"></div>
-    <div class="theme-btn" data-theme="dark" title="Dark"></div>
+<div class="glass-panel" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+  <h3 style="margin: 0 0 10px 0; font-size: 14px; text-align: center;">Theme</h3>
+  <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+    <div class="glass-button primary" data-theme="default" title="Default" style="width: 30px; height: 30px; border-radius: 50%;"></div>
+    <div class="glass-button" data-theme="sunset" title="Sunset" style="width: 30px; height: 30px; border-radius: 50%;"></div>
+    <div class="glass-button" data-theme="ocean" title="Ocean" style="width: 30px; height: 30px; border-radius: 50%;"></div>
+    <div class="glass-button" data-theme="forest" title="Forest" style="width: 30px; height: 30px; border-radius: 50%;"></div>
+    <div class="glass-button" data-theme="dark" title="Dark" style="width: 30px; height: 30px; border-radius: 50%;"></div>
   </div>
 </div>
 
 <!-- Cookie Consent -->
-<div class="cookie-consent" id="cookieConsent">
+<div id="cookieConsent" class="glass-modal" style="position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 1001; display: none;">
   <h3>🍪 Cookie Notice</h3>
   <p>This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
-  <div class="cookie-buttons">
-    <button class="cookie-btn reject" onclick="rejectCookies()">Reject</button>
-    <button class="cookie-btn accept" onclick="acceptCookies()">Accept</button>
+  <div style="display: flex; gap: 10px; justify-content: flex-end;">
+    <button class="glass-button" onclick="rejectCookies()">Reject</button>
+    <button class="glass-button primary" onclick="acceptCookies()">Accept</button>
   </div>
 </div>
 
@@ -443,8 +90,8 @@ function deleteCookie(name) {
 // Theme management
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+  document.querySelectorAll('.glass-button[data-theme]').forEach(btn => btn.classList.remove('primary'));
+  document.querySelector(`.glass-button[data-theme="${theme}"]`).classList.add('primary');
   if (getCookie('cookiesAccepted') === 'true') {
     setCookie('theme', theme, 365);
   }
@@ -456,18 +103,18 @@ function loadTheme() {
 // Cookie consent management
 function showCookieConsent() {
   if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
-    document.getElementById('cookieConsent').classList.add('show');
+    document.getElementById('cookieConsent').style.display = 'block';
   }
 }
 function acceptCookies() {
   setCookie('cookiesAccepted', 'true', 365);
-  document.getElementById('cookieConsent').classList.remove('show');
+  document.getElementById('cookieConsent').style.display = 'none';
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
   setCookie('theme', currentTheme, 365);
 }
 function rejectCookies() {
   setCookie('cookiesRejected', 'true', 365);
-  document.getElementById('cookieConsent').classList.remove('show');
+  document.getElementById('cookieConsent').style.display = 'none';
   deleteCookie('theme');
 }
 // Nature background logic
@@ -482,31 +129,31 @@ function setNatureBackground(group) {
   document.body.style.backgroundImage = gif ? `url('${gif}')` : '';
 }
 function setActiveGroupBtn(group) {
-  document.querySelectorAll('.group-btn').forEach(btn => {
+  document.querySelectorAll('.glass-button[data-group]').forEach(btn => {
     if (btn.getAttribute('data-group') === group) {
-      btn.classList.add('active');
+      btn.classList.add('primary');
     } else {
-      btn.classList.remove('active');
+      btn.classList.remove('primary');
     }
   });
 }
 window.addEventListener('load', function() {
   setNatureBackground(currentGroup);
   setTimeout(() => {
-    const loadingElement = document.querySelector('.loading');
+    const loadingElement = document.getElementById('loading');
     if (loadingElement) loadingElement.style.display = 'none';
   }, 1000);
 });
 document.addEventListener('DOMContentLoaded', function() {
   showCookieConsent();
   loadTheme();
-  document.querySelectorAll('.theme-btn').forEach(btn => {
+  document.querySelectorAll('.glass-button[data-theme]').forEach(btn => {
     btn.addEventListener('click', function() {
       const theme = this.getAttribute('data-theme');
       setTheme(theme);
     });
   });
-  document.querySelectorAll('.group-btn').forEach(btn => {
+  document.querySelectorAll('.glass-button[data-group]').forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
       const group = this.getAttribute('data-group');
@@ -518,10 +165,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 document.addEventListener('click', function(e) {
   if (
-    e.target.classList.contains('back-link') ||
-    e.target.closest('.theme-switcher') ||
-    e.target.closest('.cookie-consent') ||
-    e.target.closest('.group-switcher')
+    e.target.classList.contains('glass-button') ||
+    e.target.closest('.glass-panel') ||
+    e.target.closest('.glass-modal') ||
+    e.target.closest('#groupSwitcher')
   ) {
     return;
   }
