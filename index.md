@@ -3,9 +3,9 @@ layout: default
 title: eosyn
 ---
 
-<div class="main-content">
-  <div class="glass-container container">
-    <div class="glass-card">
+<div>
+  <div>
+    <div>
       <h1 style="text-align: center; font-size: 2.5em; font-weight: 700; color: var(--theme-primary);">
         hi, i'm eosyn!
 
