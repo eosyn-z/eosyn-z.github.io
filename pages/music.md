@@ -12,35 +12,49 @@ permalink: /music/
                 <p>Curated playlists for different moods and genres.</p>
             </header>
             <div id="playlist-buttons">
-                <button class="glass-button">
-                  <span>Today's Top Hits</span>
-                  <span>The most popular songs right now.</span>
+                <button class="glass-button" data-playlist="1">
+                  <span>C:\ [REDACTED] </span>
+                  <span>This is a placeholder description...</span>
                 </button>
-                <button class="glass-button">
-                  <span>RapCaviar</span>
-                  <span>The hottest rap tracks.</span>
+                <button class="glass-button" data-playlist="2">
+                  <span>A:\ [REDACTED] </span>
+                  <span>This is a placeholder description...</span>
                 </button>
-                <button class="glass-button">
-                  <span>Rock Classics</span>
-                  <span>Iconic rock anthems.</span>
+                <button class="glass-button" data-playlist="3">
+                  <span>R:\ [REDACTED]</span>
+                  <span>This is a placeholder description...</span>
                 </button>
-                <button class="glass-button">
-                  <span>Chill Hits</span>
-                  <span>Relax and unwind with these chill tracks.</span>
+                <button class="glass-button" data-playlist="4">
+                  <span>Z:\ [REDACTED]</span>
+                  <span>This is a placeholder description...</span>
+                </button>
+                <button class="glass-button" data-playlist="5">
+                  <span>E:\ [REDACTED]</span>
+                  <span>This is a placeholder description...</span>
+                </button>
+                <button class="glass-button" data-playlist="6">
+                  <span>N:\ [REDACTED]</span>
+                  <span>This is a placeholder description...</span>
                 </button>
             </div>
             <div class="glass-panel" style="min-height: 400px; position: relative;">
                 <div class="spotify-player active" id="spotify-player-1">
-                  <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" allow="encrypted-media"></iframe>
+                  <iframe src="https://open.spotify.com/embed/playlist/2FBwEzxQjsxv64JChoNuJS" allow="encrypted-media"></iframe>
                 </div>
                 <div class="spotify-player" id="spotify-player-2">
-                  <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUfTFmNBRM" allow="encrypted-media"></iframe>
+                  <iframe src="https://open.spotify.com/embed/playlist/6mjiGvDpxeLCG2KskJTBwi" allow="encrypted-media"></iframe>
                 </div>
                 <div class="spotify-player" id="spotify-player-3">
-                  <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWY4xNBQviFRD" allow="encrypted-media"></iframe>
+                  <iframe src="https://open.spotify.com/embed/playlist/4QV72DSVPUqH211VrwEhcG" allow="encrypted-media"></iframe>
                 </div>
                 <div class="spotify-player" id="spotify-player-4">
-                  <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4sWSpwq3LiO" allow="encrypted-media"></iframe>
+                  <iframe src="https://open.spotify.com/embed/playlist/69eDWxuTvpgFsw76XPti17" allow="encrypted-media"></iframe>
+                </div>
+                <div class="spotify-player" id="spotify-player-5">
+                  <iframe src="https://open.spotify.com/embed/playlist/2YofAall8io9JBtY6eHN1q" allow="encrypted-media"></iframe>
+                </div>
+                <div class="spotify-player" id="spotify-player-6">
+                  <iframe src="https://open.spotify.com/embed/playlist/1JTOk3S05pndnlDdDz1quk" allow="encrypted-media"></iframe>
                 </div>
             </div>
         </div>

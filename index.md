@@ -3,9 +3,7 @@ layout: default
 title: eosyn
 ---
 
-<div>
-  <div>
-    <div>
+<div class="glass-card">
       <h1 style="text-align: center; font-size: 2.5em; font-weight: 700; color: var(--theme-primary);">
         hi, i'm eosyn!
 
@@ -23,6 +21,4 @@ title: eosyn
       <p style="text-align: center; font-size: 1.2em; color: var(--theme-text-secondary); line-height: 1.6;">
         this site is under construction.<br>if you know about this already, you're probably one of my friends.<br>thank you for checking it out so early! 
         <3</p>
-    </div>
-  </div>
 </div>
