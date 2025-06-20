@@ -58,6 +58,22 @@ permalink: /search/
             --glass-gradient-1: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%);
             --glass-gradient-2: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
             --glass-gradient-3: linear-gradient(225deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
+            
+            /* Chromatic Colors */
+            --chromatic-purple: #667eea;
+            --chromatic-pink: #f093fb;
+            --chromatic-blue: #4facfe;
+            --chromatic-green: #43e97b;
+            --chromatic-orange: #fa709a;
+            
+            /* Gradient Colors */
+            --gradient-delicious: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            --gradient-celestial: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            --gradient-aurora: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+            --gradient-retro: linear-gradient(135deg, #ff8a65 0%, #ff5722 100%);
+            --gradient-zen: linear-gradient(135deg, #8bc34a 0%, #ff9800 100%);
+            --gradient-eco: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            --gradient-neon: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
         }
 
         /* Theme: Sunset */
@@ -406,48 +422,49 @@ permalink: /search/
 
         .difficulty-btn {
             padding: 8px 16px;
-            border-radius: 20px;
-            border: 2px solid var(--glass-border);
-            cursor: pointer;
             font-size: 14px;
+            border-radius: 25px;
+            cursor: pointer;
             font-weight: 500;
             transition: all 0.3s ease;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            color: var(--text-accent);
+            border: 1px solid transparent;
+            color: var(--text-white);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2), inset 0 -1px 2px rgba(0,0,0,0.3);
+            background: var(--gradient-button);
         }
 
         .difficulty-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.6s;
+            top: -20px;
+            left: -50px;
+            width: 30px;
+            height: 150%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: rotate(25deg);
+            transition: all 0.6s ease;
         }
-
+        
         .difficulty-btn:hover::before {
-            left: 100%;
+            left: calc(100% + 50px);
         }
 
         .difficulty-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px var(--shadow-medium);
-            border-color: var(--text-accent);
-            background: var(--glass-bg);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), inset 0 -1px 2px rgba(0,0,0,0.3);
+        }
+
+        .difficulty-btn:active {
+            transform: translateY(1px) scale(1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 2px 5px rgba(0,0,0,0.4);
         }
 
         .difficulty-btn.active {
-            border-color: var(--text-accent);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            font-weight: 600;
+            box-shadow: 0 0 0 3px var(--accent), 0 5px 15px rgba(0,0,0,0.2), inset 0 -1px 2px rgba(0,0,0,0.3);
+            transform: translateY(1px) scale(1);
         }
 
         .results-info {
@@ -688,16 +705,17 @@ permalink: /search/
         }
 
         .theme-btn.active {
-            border-color: var(--primary-purple);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent);
         }
 
-        .theme-btn[data-theme="c"] { background: linear-gradient(135deg, #667eea 0%, #f093fb 100%); }
-        .theme-btn[data-theme="a"] { background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); }
-        .theme-btn[data-theme="r"] { background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%); }
-        .theme-btn[data-theme="z"] { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
-        .theme-btn[data-theme="e"] { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); }
-        .theme-btn[data-theme="n"] { background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); }
+        .theme-btn[data-theme="d"] { background: var(--gradient-delicious); }
+        .theme-btn[data-theme="c"] { background: var(--gradient-celestial); }
+        .theme-btn[data-theme="a"] { background: var(--gradient-aurora); }
+        .theme-btn[data-theme="r"] { background: var(--gradient-retro); }
+        .theme-btn[data-theme="z"] { background: var(--gradient-zen); }
+        .theme-btn[data-theme="e"] { background: var(--gradient-eco); }
+        .theme-btn[data-theme="n"] { background: var(--gradient-neon); }
 
         /* Cookie Consent */
         .cookie-consent {
@@ -741,17 +759,47 @@ permalink: /search/
 
         .cookie-btn {
             padding: 8px 16px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
             font-size: 14px;
+            border-radius: 25px;
+            cursor: pointer;
             font-weight: 500;
             transition: all 0.3s ease;
+            border: 1px solid transparent;
+            color: var(--text-white);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2), inset 0 -1px 2px rgba(0,0,0,0.3);
+        }
+
+        .cookie-btn::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -50px;
+            width: 30px;
+            height: 150%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: rotate(25deg);
+            transition: all 0.6s ease;
+        }
+
+        .cookie-btn:hover::before {
+            left: calc(100% + 50px);
+        }
+
+        .cookie-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), inset 0 -1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .cookie-btn:active {
+            transform: translateY(1px) scale(1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 2px 5px rgba(0,0,0,0.4);
         }
 
         .cookie-btn.accept {
-            background: var(--gradient-primary);
-            color: var(--text-white);
+            background: var(--gradient-button);
         }
 
         .cookie-btn.reject {
@@ -822,157 +870,6 @@ permalink: /search/
             .cookie-buttons {
                 flex-direction: column;
             }
-        }
-
-        /* Sparkle Animations */
-        .sparkle {
-            position: absolute;
-            color: var(--text-accent);
-            font-size: 20px;
-            pointer-events: none;
-            animation: sparkle 4s linear infinite;
-            opacity: 0;
-            z-index: 1;
-        }
-
-        .sparkle::before {
-            content: '✨';
-        }
-
-        .sparkle.round {
-            font-size: 16px;
-        }
-
-        .sparkle.round::before {
-            content: '💫';
-        }
-
-        .sparkle.star {
-            font-size: 18px;
-        }
-
-        .sparkle.star::before {
-            content: '⭐';
-        }
-
-        .distant-star {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--text-accent);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: twinkle 3s ease-in-out infinite;
-            opacity: 0;
-            z-index: 1;
-        }
-
-        @keyframes sparkle {
-            0% {
-                opacity: 0;
-                transform: scale(0) rotate(0deg);
-            }
-            10% {
-                opacity: 1;
-                transform: scale(1) rotate(180deg);
-            }
-            90% {
-                opacity: 1;
-                transform: scale(1) rotate(360deg);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0) rotate(720deg);
-            }
-        }
-
-        @keyframes twinkle {
-            0%, 100% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* Distant Star Dots */
-        .distant-star {
-            position: absolute;
-            pointer-events: none;
-            background: var(--primary-purple);
-            border-radius: 50%;
-            animation: distantStarFade 4s ease-in-out infinite;
-            z-index: 999;
-        }
-
-        @keyframes distantStarFade {
-            0% { opacity: 0; transform: scale(0); }
-            50% { opacity: 0.8; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0); }
-        }
-
-        /* Theme-specific distant star variations */
-        [data-theme="c"] .distant-star {
-            background: var(--primary-purple);
-            box-shadow: 0 0 10px var(--primary-purple);
-        }
-
-        [data-theme="a"] .distant-star {
-            background: var(--primary-pink);
-            box-shadow: 0 0 15px var(--primary-pink);
-        }
-
-        [data-theme="r"] .distant-star {
-            background: var(--accent-blue);
-            box-shadow: 0 0 8px var(--accent-blue);
-        }
-
-        [data-theme="z"] .distant-star {
-            background: var(--accent-green);
-            box-shadow: 0 0 12px var(--accent-green);
-        }
-
-        [data-theme="e"] .distant-star {
-            background: var(--accent-orange);
-            box-shadow: 0 0 20px var(--accent-orange);
-        }
-
-        [data-theme="n"] .distant-star {
-            background: var(--primary-purple);
-            box-shadow: 0 0 18px var(--primary-purple);
-        }
-
-        [data-theme="sunset"] .distant-star {
-            background: var(--primary-pink);
-            box-shadow: 0 0 15px var(--primary-pink);
-        }
-
-        [data-theme="ocean"] .distant-star {
-            background: var(--accent-blue);
-            box-shadow: 0 0 10px var(--accent-blue);
-        }
-
-        [data-theme="forest"] .distant-star {
-            background: var(--accent-green);
-            box-shadow: 0 0 12px var(--accent-green);
-        }
-
-        [data-theme="dark"] .distant-star {
-            background: var(--primary-purple);
-            box-shadow: 0 0 25px var(--primary-purple);
-        }
-
-        #sparkleContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-            overflow: hidden;
         }
 
         /* Starfield Background */
@@ -1133,14 +1030,11 @@ permalink: /search/
         <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="starfield-image" data-image="clouds4">
     </div>
 
-    <!-- Sparkle Container -->
-    <div id="sparkleContainer"></div>
-
     <a href="/" class="back-link">← Back to Home</a>
     
     <div class="container">
         <div class="header">
-            <h1>Discover</h1>
+            <h1 class="chromatic-text">Discover</h1>
             <p>Find interesting websites and tools</p>
         </div>
 
@@ -1192,11 +1086,7 @@ permalink: /search/
             <div class="ticker-container">
                 <div class="ticker-track social">
                     <a href="https://twitter.com" class="ticker-item" target="_blank">Twitter</a>
-                    <a href="https://instagram.com" class="ticker-item" target="_blank">Instagram</a>
-                    <a href="https://linkedin.com" class="ticker-item" target="_blank">LinkedIn</a>
-                    <a href="https://reddit.com" class="ticker-item" target="_blank">Reddit</a>
                     <a href="https://discord.com" class="ticker-item" target="_blank">Discord</a>
-                    <a href="https://tiktok.com" class="ticker-item" target="_blank">TikTok</a>
                     <a href="https://youtube.com" class="ticker-item" target="_blank">YouTube</a>
                     <a href="https://twitch.tv" class="ticker-item" target="_blank">Twitch</a>
                     <a href="https://github.com" class="ticker-item" target="_blank">GitHub</a>
@@ -1216,19 +1106,6 @@ permalink: /search/
             <div class="ticker-container">
                 <div class="ticker-track forums">
                     <a href="https://stackoverflow.com" class="ticker-item" target="_blank">Stack Overflow</a>
-                    <a href="https://reddit.com/r/webdev" class="ticker-item" target="_blank">r/webdev</a>
-                    <a href="https://reddit.com/r/programming" class="ticker-item" target="_blank">r/programming</a>
-                    <a href="https://reddit.com/r/reactjs" class="ticker-item" target="_blank">r/reactjs</a>
-                    <a href="https://reddit.com/r/javascript" class="ticker-item" target="_blank">r/javascript</a>
-                    <a href="https://reddit.com/r/css" class="ticker-item" target="_blank">r/css</a>
-                    <a href="https://reddit.com/r/design" class="ticker-item" target="_blank">r/design</a>
-                    <a href="https://reddit.com/r/learnprogramming" class="ticker-item" target="_blank">r/learnprogramming</a>
-                    <a href="https://reddit.com/r/cscareerquestions" class="ticker-item" target="_blank">r/cscareerquestions</a>
-                    <a href="https://reddit.com/r/freelance" class="ticker-item" target="_blank">r/freelance</a>
-                    <a href="https://reddit.com/r/startups" class="ticker-item" target="_blank">r/startups</a>
-                    <a href="https://reddit.com/r/entrepreneur" class="ticker-item" target="_blank">r/entrepreneur</a>
-                    <a href="https://reddit.com/r/UXDesign" class="ticker-item" target="_blank">r/UXDesign</a>
-                    <a href="https://reddit.com/r/graphic_design" class="ticker-item" target="_blank">r/graphic_design</a>
                     <a href="https://reddit.com/r/art" class="ticker-item" target="_blank">r/art</a>
                 </div>
             </div>
@@ -1239,21 +1116,6 @@ permalink: /search/
         </div>
     </div>
 
-    <!-- Theme Switcher -->
-    <div class="theme-switcher">
-        <div class="gear-button" id="gearButton" title="Theme Settings">⚙️</div>
-        <div class="theme-content">
-        <h3>Theme</h3>
-        <div class="theme-buttons">
-                <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
-                <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
-                <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
-                <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
-                <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
-                <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
-            </div>
-        </div>
-    </div>
 
     <!-- Cookie Consent -->
     <div class="cookie-consent" id="cookieConsent">
@@ -1266,7 +1128,7 @@ permalink: /search/
     </div>
 
     <script>
-    // Website database
+    // list of websites, not really a "database" xdddd -eos
     const websites = [
         {
             title: "GitHub",
@@ -1806,11 +1668,11 @@ permalink: /search/
             if (savedTheme) {
                 setTheme(savedTheme);
             } else {
-                setTheme('c');
+                setTheme('a');
             }
         } else {
-            // Set default theme to "c" if no cookies accepted
-            setTheme('c');
+            // Set default theme to "a" if no cookies accepted
+            setTheme('a');
         }
     }
 
@@ -1826,7 +1688,7 @@ permalink: /search/
         document.getElementById('cookieConsent').classList.remove('show');
         
         // Save current theme preference
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'c';
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'a';
         setCookie('theme', currentTheme, 365);
     }
 
@@ -1953,118 +1815,11 @@ permalink: /search/
         
         // Initial display
         filterWebsites();
-        
-        // Initialize sparkles
-        initSparkles();
     });
-
-    // Sparkle Animation Functions
-    function createSparkle() {
-        const sparkle = document.createElement('div');
-        
-        // Random sparkle type
-        const sparkleTypes = ['sparkle', 'round', 'star'];
-        const randomType = sparkleTypes[Math.floor(Math.random() * sparkleTypes.length)];
-        sparkle.className = `sparkle ${randomType}`;
-        
-        // Random position
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * window.innerHeight;
-        const size = Math.random() * 20 + 10;
-        
-        sparkle.style.left = x + 'px';
-        sparkle.style.top = y + 'px';
-        sparkle.style.fontSize = size + 'px';
-        
-        document.getElementById('sparkleContainer').appendChild(sparkle);
-        
-        // Remove sparkle after animation completes
-        setTimeout(() => {
-            if (sparkle.parentNode) {
-                sparkle.parentNode.removeChild(sparkle);
-            }
-        }, 4000);
-    }
-
-    function createDistantStar() {
-        const star = document.createElement('div');
-        star.className = 'distant-star';
-        
-        // Random position
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * window.innerHeight;
-        const size = Math.random() * 4 + 2;
-        const duration = Math.random() * 3 + 2;
-        const delay = Math.random() * 2;
-        
-        star.style.left = x + 'px';
-        star.style.top = y + 'px';
-        star.style.width = size + 'px';
-        star.style.height = size + 'px';
-        star.style.animationDuration = duration + 's';
-        star.style.animationDelay = delay + 's';
-        
-        document.getElementById('sparkleContainer').appendChild(star);
-        
-        // Remove star after animation completes
-        setTimeout(() => {
-            if (star.parentNode) {
-                star.parentNode.removeChild(star);
-            }
-        }, (duration + delay) * 1000);
-    }
-
-    function initSparkles() {
-        // Create initial sparkles
-        for (let i = 0; i < 15; i++) {
-            setTimeout(() => {
-                createSparkle();
-            }, i * 150);
-        }
-        
-        // Create initial distant stars
-        for (let i = 0; i < 25; i++) {
-            setTimeout(() => {
-                createDistantStar();
-            }, i * 80);
-        }
-        
-        // Continue creating sparkles
-        setInterval(() => {
-            if (document.getElementById('sparkleContainer').children.length < 50) {
-                createSparkle();
-            }
-        }, 1500);
-        
-        // Continue creating distant stars (more frequent)
-        setInterval(() => {
-            let maxStars;
-            const theme = document.documentElement.getAttribute('data-theme') || 'c';
-            
-            // Theme-specific star density
-            switch (theme) {
-                case 'a': // Aurora - more stars
-                    maxStars = 60;
-                    break;
-                case 'e': // Eclipse - many stars
-                    maxStars = 70;
-                    break;
-                case 'n': // Nebula - lots of stars
-                    maxStars = 80;
-                    break;
-                default:
-                    maxStars = 40;
-            }
-            
-            if (document.getElementById('sparkleContainer').children.length < maxStars) {
-                createDistantStar();
-            }
-        }, 600);
-    }
 
     // Update starfield image
     function updateStarfield() {
-        const theme = document.documentElement.getAttribute('data-theme') || 'c';
+        const theme = document.documentElement.getAttribute('data-theme') || 'a';
         
         // Hide all starfield images
         document.querySelectorAll('.starfield-image').forEach(img => {
@@ -2098,7 +1853,9 @@ permalink: /search/
     // Update starfield when theme changes
     const originalSetTheme = setTheme;
     setTheme = function(theme) {
-        originalSetTheme(theme);
+        document.documentElement.setAttribute('data-theme', theme);
+        // The original setTheme function from the template might not exist,
+        // so we just set the attribute directly.
         updateStarfield();
     };
     </script>

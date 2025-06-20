@@ -392,95 +392,57 @@ permalink: /nature/
       transform: translateX(-50%);
       z-index: 1002;
       display: flex;
-      gap: 12px;
-      background: var(--glass-bg);
-      border-radius: 15px;
-      padding: 12px 20px;
-      box-shadow: 0 8px 24px var(--shadow-medium);
-      border: 2px solid var(--glass-border);
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .group-switcher::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-      transition: left 0.8s;
-    }
-
-    .group-switcher:hover::before {
-      left: 100%;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
     }
 
     .group-btn {
-      background: var(--glass-bg);
-      color: var(--text-accent);
-      border: 2px solid var(--glass-border);
-      border-radius: 20px;
       padding: 10px 18px;
+      border-radius: 25px;
+      cursor: pointer;
       font-size: 15px;
       font-weight: 500;
-      cursor: pointer;
       transition: all 0.3s ease;
-      outline: none;
-      backdrop-filter: blur(10px);
+      border: 1px solid transparent;
+      color: var(--text-white);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2), inset 0 -1px 2px rgba(0,0,0,0.3);
+      background: var(--gradient-button);
     }
 
     .group-btn::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
+      top: -20px;
+      left: -50px;
+      width: 30px;
+      height: 150%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transform: rotate(25deg);
+      transition: all 0.6s ease;
     }
 
     .group-btn:hover::before {
-      left: 100%;
-    }
-
-    .group-btn.active, .group-btn:focus {
-      background: var(--glass-bg);
-      color: var(--text-primary);
-      border-color: var(--text-accent);
-      box-shadow: 0 4px 16px var(--shadow-medium);
-      font-weight: 600;
-    }
-
-    .group-btn.active::before {
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      left: calc(100% + 50px);
     }
 
     .group-btn:hover {
-      background: var(--glass-bg);
-      color: var(--text-primary);
-      border-color: var(--text-accent);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), inset 0 -1px 2px rgba(0,0,0,0.3);
     }
 
-    @media (max-width: 768px) {
-      .group-switcher {
-        top: 65px;
-        padding: 8px 6px;
-        gap: 6px;
-      }
-      .group-btn {
-        padding: 7px 10px;
-        font-size: 13px;
-      }
+    .group-btn:active {
+      transform: translateY(1px) scale(1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 2px 5px rgba(0,0,0,0.4);
+    }
+
+    .group-btn.active {
+      box-shadow: 0 0 0 3px var(--accent), 0 5px 15px rgba(0,0,0,0.2), inset 0 -1px 2px rgba(0,0,0,0.3);
+      transform: translateY(1px) scale(1);
     }
 
     /* Starfield Background - REMOVED FOR NATURE PAGE */
@@ -544,52 +506,56 @@ const natureGroups = {
 };
 let currentGroup = 'random';
 
-// Cookie management functions
+// --- Theme & Cookie Logic ---
 function setCookie(name, value, days) {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-  document.cookie = name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/";
+  let expires = "";
+  if (days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
+
 function getCookie(name) {
   const nameEQ = name + "=";
   const ca = document.cookie.split(';');
   for(let i = 0; i < ca.length; i++) {
     let c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
   }
   return null;
 }
-function deleteCookie(name) {
-  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-}
 
-// Cookie consent management
-function showCookieConsent() {
-  if (!getCookie('cookiesAccepted') && !getCookie('cookiesRejected')) {
-    document.getElementById('cookieConsent').classList.add('show');
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  if (getCookie('cookiesAccepted') === 'true') {
+    setCookie('theme', theme, 365);
   }
 }
-function acceptCookies() {
-  setCookie('cookiesAccepted', 'true', 365);
-  document.getElementById('cookieConsent').classList.remove('show');
-}
-function rejectCookies() {
-  setCookie('cookiesRejected', 'true', 365);
-  document.getElementById('cookieConsent').classList.remove('show');
-}
 
-// Nature background logic
-function getRandomGifFromGroup(group) {
+function loadTheme() {
+  let theme = 'a'; // Default to Aurora
+  if (getCookie('cookiesAccepted') === 'true') {
+    theme = getCookie('theme') || 'a';
+  }
+  setTheme(theme);
+}
+// --- End Theme & Cookie Logic ---
+
+function showRandomCinemagraph(group = 'random') {
   const arr = natureGroups[group] || natureGroups['random'];
   if (!arr.length) return '';
   const idx = Math.floor(Math.random() * arr.length);
   return arr[idx];
 }
+
 function setNatureBackground(group) {
-  const gif = getRandomGifFromGroup(group);
+  const gif = showRandomCinemagraph(group);
   document.body.style.backgroundImage = gif ? `url('${gif}')` : '';
 }
+
 function setActiveGroupBtn(group) {
   document.querySelectorAll('.group-btn').forEach(btn => {
     if (btn.getAttribute('data-group') === group) {
@@ -599,6 +565,7 @@ function setActiveGroupBtn(group) {
     }
   });
 }
+
 window.addEventListener('load', function() {
   setNatureBackground(currentGroup);
   setTimeout(() => {
@@ -606,6 +573,7 @@ window.addEventListener('load', function() {
     if (loadingElement) loadingElement.style.display = 'none';
   }, 1000);
 });
+
 document.addEventListener('DOMContentLoaded', function() {
   showCookieConsent();
   

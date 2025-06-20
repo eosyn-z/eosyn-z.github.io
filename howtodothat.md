@@ -4,324 +4,6 @@ title: How to Do That
 permalink: /howtodothat/
 ---
 
-<style>
-{% include themes.css %}
-
-:root {
-  /* Spacing & Sizing */
-  --container-width: 900px;
-  --padding-large: 30px;
-  --padding-medium: 20px;
-  --padding-small: 15px;
-  --border-radius-large: 20px;
-  --border-radius-medium: 15px;
-  --gradient-primary: linear-gradient(135deg, var(--accent), var(--primary-pink, var(--accent)));
-  --gradient-secondary: linear-gradient(135deg, var(--accent-blue, var(--accent)), var(--accent-green, var(--accent)));
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding-top: 80px;
-  background: var(--bg-primary);
-  min-height: 100vh;
-  color: var(--text-primary);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.container {
-  max-width: var(--container-width);
-  margin: 0 auto;
-  padding: var(--padding-large);
-  border-radius: var(--border-radius-large);
-  position: relative;
-}
-
-/* Glass Effect */
-.glass-effect {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-/* Progress Bar */
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  background: var(--bg-accent);
-  border-radius: 3px;
-  margin-bottom: 30px;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--gradient-primary);
-  border-radius: 3px;
-  transition: width 0.3s ease;
-  position: relative;
-}
-
-.progress-fill::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.header h1 {
-  color: var(--accent);
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-
-.header p {
-  color: var(--text-secondary);
-}
-
-.selections-display {
-  padding: var(--padding-medium);
-  margin-bottom: 30px;
-  display: none;
-  border-radius: var(--border-radius-medium);
-}
-
-.selections-display.show {
-  display: block;
-}
-
-.selections-display h3 {
-  margin: 0 0 15px 0;
-  color: var(--text-primary);
-  font-size: 16px;
-}
-
-.selection-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.selection-tag {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-  padding: 6px 12px;
-  border-radius: 15px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.quiz-section {
-  margin-bottom: 30px;
-  display: none;
-}
-
-.quiz-section.active {
-  display: block;
-}
-
-.question {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.question-description {
-  text-align: center;
-  color: var(--text-secondary);
-  margin-bottom: 25px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.options {
-  display: grid;
-  gap: 15px;
-}
-
-.option {
-  padding: var(--padding-medium);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: left;
-  border-radius: var(--border-radius-medium);
-  border: 1px solid transparent;
-}
-
-.option:hover {
-  border-color: var(--accent);
-  background: var(--bg-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1), 0 0 0 1px var(--accent);
-}
-
-.option.selected {
-  border-color: var(--accent);
-  background: var(--bg-accent);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1), 0 0 0 2px var(--accent);
-}
-
-.option-title {
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-}
-
-.option-description {
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 30px;
-}
-
-.nav-btn, .btn, .restart-btn {
-  color: var(--text-primary);
-  padding: 12px 24px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-}
-
-.nav-btn:hover, .btn:hover, .restart-btn:hover {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.nav-btn:disabled, .btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.restart-btn {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-  margin-top: 20px;
-}
-
-.results {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.results h2 {
-  color: var(--accent);
-  margin-bottom: 20px;
-  font-size: 24px;
-}
-
-.recommendation {
-  padding: 25px;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
-  border-radius: var(--border-radius-medium);
-}
-
-.recommendation:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-}
-
-.recommendation h3 {
-  color: var(--text-primary);
-  margin-bottom: 10px;
-  font-size: 18px;
-}
-
-.recommendation p {
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.recommendation-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.recommendation-tag {
-  background: var(--gradient-primary);
-  color: var(--text-white);
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.recommendation-link {
-  display: inline-block;
-  background: var(--gradient-secondary);
-  color: var(--text-white);
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.recommendation-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .container {
-    padding: 25px 20px;
-  }
-  .question { font-size: 18px; }
-  .option { padding: 15px; }
-  .navigation { flex-direction: column; gap: 15px; }
-  .nav-btn, .btn { width: 100%; }
-}
-
-@media (max-width: 480px) {
-  .container { padding: 20px 15px; }
-  .header h1 { font-size: 1.8rem; }
-  .question { font-size: 16px; }
-  .option { padding: 12px; }
-  .recommendation { padding: 20px; }
-}
-
-</style>
-
-
 <div class="container glass-effect">
   <div class="header">
     <h1>How to Do That?</h1>
@@ -340,7 +22,7 @@ body {
 
   <!-- Question 1: Project Type -->
   <div class="quiz-section active" id="section1">
-    <div class="question">I want to create a...</div>
+    <div class="question chromatic-text">I want to create a...</div>
     <div class="question-description">Choose the type of project you want to build</div>
     <div class="options">
       <div class="option glass-effect" data-value="webapp" data-label="Web Application">
@@ -372,7 +54,7 @@ body {
 
   <!-- Question 2: Features -->
   <div class="quiz-section" id="section2">
-    <div class="question">It should be able to...</div>
+    <div class="question chromatic-text">It should be able to...</div>
     <div class="question-description">Select all the features your project needs (you can choose multiple)</div>
     <div class="options">
       <div class="option glass-effect" data-value="user-auth" data-label="User Accounts & Login">
@@ -408,7 +90,7 @@ body {
 
   <!-- Question 3: What You Need to Build -->
   <div class="quiz-section" id="section3">
-    <div class="question">What do you need to build?</div>
+    <div class="question chromatic-text">What do you need to build?</div>
     <div class="question-description">This helps us determine the right difficulty level for you</div>
     <div class="options">
       <div class="option glass-effect" data-value="drag-drop" data-label="Drag & Drop Tools">
@@ -436,7 +118,7 @@ body {
 
   <!-- Question 4: Learning Style -->
   <div class="quiz-section" id="section4">
-    <div class="question">How do you prefer to learn?</div>
+    <div class="question chromatic-text">How do you prefer to learn?</div>
     <div class="question-description">This helps us recommend the best resources for you</div>
     <div class="options">
       <div class="option glass-effect" data-value="video" data-label="Video Tutorials">
@@ -464,7 +146,7 @@ body {
 
   <!-- Question 5: Timeline -->
   <div class="quiz-section" id="section5">
-    <div class="question">How quickly do you want to see results?</div>
+    <div class="question chromatic-text">How quickly do you want to see results?</div>
     <div class="question-description">This affects which tools and frameworks we recommend</div>
     <div class="options">
       <div class="option glass-effect" data-value="fast" data-label="As Fast as Possible">
@@ -488,7 +170,7 @@ body {
 
   <!-- Question 6: Budget -->
   <div class="quiz-section" id="section6">
-    <div class="question">What's your budget for hosting/deployment?</div>
+    <div class="question chromatic-text">What's your budget for hosting/deployment?</div>
     <div class="question-description">This helps us recommend cost-effective solutions</div>
     <div class="options">
       <div class="option glass-effect" data-value="free" data-label="Free">
@@ -626,7 +308,7 @@ function getRecommendation() {
   }
 
   const questionKey = getQuestionKey(currentSection);
-  answers[questionKey] = selectedOptions[0].dataset.value;
+    answers[questionKey] = selectedOptions[0].dataset.value;
   updateSelectionsDisplay();
 
   const recommendation = generateRecommendation(answers);
@@ -734,7 +416,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         this.classList.add('selected');
       }
-    });
   });
 });
 </script> 
