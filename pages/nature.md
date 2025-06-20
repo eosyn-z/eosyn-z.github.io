@@ -13,9 +13,6 @@ permalink: /nature/
     <h3 style="margin: 0; font-size: 16px; font-weight: 600;">🌿 Nature</h3>
 </div>
 
-// shows loading this time and, commented this out for now - not sure if this is the ribbon I need to delete or not xd -eos div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
-div id="loading">Loading nature...</div>
-/div>
 
 
 // this switches between the groups of cinemagraphs I've found online. 
