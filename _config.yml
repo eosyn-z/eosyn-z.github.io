@@ -1,11 +1,19 @@
-title: eosyn.net
-url: https://eosyn.net
+title: eosyn
+description: >- # this means to ignore newlines until "baseurl:"
+  eosyn's personal website
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://eosyn-z.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 email: gen3sys@proton.me
 discord_username: eosyn
-twitter_username: _eosyn
+twitter_username: eosyn_
 github_username: eosyn-z
 timezone: EST
 
 # remote_theme: "jekyll/minima@1e8a445"
 # set to null in order to use the local glass theme.
 theme: null
+
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name

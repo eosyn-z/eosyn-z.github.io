@@ -9,10 +9,10 @@
     {% else %}
       <header class="glass-nav top-nav">
         <div class="nav-container">
-          <a href="/" class="brand" style="color: var(--theme-text);">eosyn.net</a>
-          <div class="nav-right-group">
+          <!-- Website Mode Navigation -->
+          <div class="nav-links-header">
+            <a href="/" class="glass-button">Home</a>
             <nav class="nav-links">
-              <a href="/" class="glass-button">Home</a>
               <a href="/pages/music/" class="glass-button">Music</a>
               <a href="/pages/portfolio/" class="glass-button">Portfolio</a>
               <a href="/pages/howtodothat/" class="glass-button">How To Do That</a>
@@ -20,25 +20,31 @@
               <a href="/pages/search/" class="glass-button">Search</a>
               <a href="/pages/chat/" class="glass-button">Chat</a>
             </nav>
-            <div class="header-controls">
-              <!-- View Toggle -->
-              <div class="view-toggle-container">
-                <button id="view-toggle" class="view-toggle-btn glass-button" title="Toggle Desktop Mode">
-                  <span class="view-icon website">🌐</span>
-                  <span class="view-icon desktop" style="display: none;">🖥️</span>
-                </button>
-              </div>
-              <div class="theme-buttons">
-                <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
-                <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
-                <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
-                <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
-                <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
-                <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
-                <div class="theme-btn custom-theme" data-theme="custom" title="🎨 Custom Theme Editor">🎨</div>
-              </div>
-              {%- include discord_status.html -%}
+          </div>
+          
+          <!-- Desktop Mode Navigation (simplified) -->
+          <div class="nav-links-desktop" style="display: none;">
+            <a href="/" class="glass-button back-btn">← Back to Website</a>
+          </div>
+          
+          <div class="header-controls">
+            <!-- View Toggle -->
+            <div class="view-toggle-container">
+              <button id="view-toggle" class="view-toggle-btn glass-button" title="Toggle Desktop Mode">
+                <span class="view-icon website">🌐</span>
+                <span class="view-icon desktop" style="display: none;">🖥️</span>
+              </button>
             </div>
+            <div class="theme-buttons">
+              <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+              <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+              <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+              <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+              <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+              <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+              <div class="theme-btn custom-theme" data-theme="custom" title="🎨 Custom Theme Editor">🎨</div>
+            </div>
+            {%- include discord_status.html -%}
           </div>
         </div>
       </header>

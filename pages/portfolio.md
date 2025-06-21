@@ -30,23 +30,34 @@ permalink: /portfolio/
         <header class="page-header" style="text-align: center; margin-bottom: 1.5rem;">
           <h2>Artwork</h2>
         </header>
-        <div class="art-grid">
-          <a href="/artpages/digital/"><div class="art-card" data-art-category="digital"><h3>[Digital Art]</h3></div></a>
-          <a href="/artpages/traditional/"><div class="art-card" data-art-category="ink"><h3>[Traditional Art]</h3></div></a>
-          <a href="/artpages/3d/"><div class="art-card" data-art-category="3d_modeling"><h3>[3D Modeling]</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="watercolor"><h3>[Watercolor]</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="sketching"><h3>[Sketching]</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="mixed_media"><h3>[Mixed Media]</h3></div></a>
+        <div class="portfolio-art-grid">
+          <a href="/artpages/digital/"><div class="art-card" data-art-category="digital"><h3>Digital</h3></div></a>
+          <a href="#"><div class="art-card" data-art-category="ink"><h3>Ink</h3></div></a>
+          <a href="#"><div class="art-card" data-art-category="watercolor"><h3>Watercolor</h3></div></a>
+          <a href="#"><div class="art-card" data-art-category="sketching"><h3>Sketching</h3></div></a>
+          <a href="/artpages/3d/"><div class="art-card" data-art-category="3d_modeling"><h3>3D Modeling</h3></div></a>
+          <a href="#"><div class="art-card" data-art-category="mixed_media"><h3>Mixed Media</h3></div></a>
         </div>
       </div>
 
       <!-- Right Container: Software Projects -->
-      <div class="glass-panel" style="flex: 1; min-width: 250px; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-        <header class="page-header" style="margin-bottom: 2rem;">
+      <div class="glass-panel" style="flex: 2; min-width: 300px; padding: 1.5rem;">
+        <header class="page-header" style="text-align: center; margin-bottom: 1.5rem;">
           <h2>Projects</h2>
-          <p>A collection of my software development work.</p>
         </header>
-        <a href="/pages/projects/" class="glass-button">View Projects</a>
+        <div class="projects-grid">
+          {%- for project in site.projects -%}
+          <a href="{{ project.url | relative_url }}" class="project-card-link">
+            <div class="project-card glass-card">
+              <div class="project-card-image" style="background-image: url('{{ project.thumbnail_image | relative_url }}');"></div>
+              <div class="project-card-content">
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.description }}</p>
+              </div>
+            </div>
+          </a>
+          {%- endfor -%}
+        </div>
       </div>
 
     </div> <!-- End Two-Column Layout -->

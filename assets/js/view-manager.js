@@ -1,22 +1,45 @@
 // View Manager - Handles switching between regular website and desktop simulator modes
 class ViewManager {
     constructor() {
-        this.viewToggle = document.getElementById('view-toggle');
         this.body = document.body;
         this.isDesktopMode = false;
+        this.viewToggle = null;
         
-        this.init();
+        // Wait a bit for DOM to be ready
+        setTimeout(() => {
+            this.init();
+        }, 100);
     }
 
     init() {
+        // Find the toggle button
+        this.viewToggle = document.getElementById('view-toggle');
+        
         // Load saved view preference
         this.loadViewPreference();
         
         // Add event listener to toggle button
-        this.viewToggle.addEventListener('click', () => this.toggleView());
+        if (this.viewToggle) {
+            this.viewToggle.addEventListener('click', () => this.toggleView());
+            console.log('View toggle button found and event listener added');
+        } else {
+            console.error('View toggle button not found! Looking for element with id="view-toggle"');
+            // Try to find it again after a delay
+            setTimeout(() => {
+                this.viewToggle = document.getElementById('view-toggle');
+                if (this.viewToggle) {
+                    this.viewToggle.addEventListener('click', () => this.toggleView());
+                    console.log('View toggle button found on retry');
+                } else {
+                    console.error('View toggle button still not found after retry');
+                }
+            }, 500);
+        }
         
         // Apply initial view
+        console.log('Applying initial view, isDesktopMode:', this.isDesktopMode);
         this.applyView();
+        this.updateToggleButton();
     }
 
     loadViewPreference() {
@@ -30,57 +53,105 @@ class ViewManager {
     }
 
     toggleView() {
+        console.log('Toggle view called! Current mode:', this.isDesktopMode ? 'desktop' : 'website');
         this.isDesktopMode = !this.isDesktopMode;
         this.saveViewPreference();
         this.applyView();
         this.updateToggleButton();
+        console.log('New mode:', this.isDesktopMode ? 'desktop' : 'website');
     }
 
     applyView() {
+        console.log('applyView called, isDesktopMode:', this.isDesktopMode);
         if (this.isDesktopMode) {
+            console.log('Enabling desktop mode...');
             this.enableDesktopMode();
         } else {
+            console.log('Disabling desktop mode (enabling website mode)...');
             this.disableDesktopMode();
         }
     }
 
     enableDesktopMode() {
+        console.log('enableDesktopMode: Adding desktop-mode class to body');
         // Add desktop mode class to body
         this.body.classList.add('desktop-mode');
         
         // Show desktop elements
         const desktopElements = document.querySelectorAll('.desktop-only');
+        console.log('enableDesktopMode: Found', desktopElements.length, 'desktop-only elements');
         desktopElements.forEach(el => el.style.display = 'block');
         
-        // Hide regular navigation
-        const navLinks = document.querySelector('.nav-links-header');
-        if (navLinks) navLinks.style.display = 'none';
+        // Hide regular navigation and show desktop navigation
+        const navLinksHeader = document.querySelector('.nav-links-header');
+        const navLinksDesktop = document.querySelector('.nav-links-desktop');
+        if (navLinksHeader) {
+            navLinksHeader.style.display = 'none';
+            console.log('enableDesktopMode: Hidden nav-links-header');
+        }
+        if (navLinksDesktop) {
+            navLinksDesktop.style.display = 'flex';
+            console.log('enableDesktopMode: Shown nav-links-desktop');
+        }
+        
+        // Hide website content
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.style.display = 'none';
+            console.log('enableDesktopMode: Hidden main-content');
+        } else {
+            console.log('enableDesktopMode: main-content not found');
+        }
         
         // Show desktop background and icons
         this.showDesktopEnvironment();
         
         // Initialize desktop manager if it exists
         if (window.desktopManager) {
-            window.desktopManager.init();
+            // Desktop manager is already initialized in constructor
+            console.log('Desktop manager found and ready');
+        } else {
+            console.log('Desktop manager not found');
         }
         
         // Initialize window manager if it exists
         if (window.windowManager) {
-            window.windowManager.init();
+            console.log('Window manager found and ready');
+        } else {
+            console.log('Window manager not found');
         }
     }
 
     disableDesktopMode() {
+        console.log('disableDesktopMode: Removing desktop-mode class from body');
         // Remove desktop mode class from body
         this.body.classList.remove('desktop-mode');
         
         // Hide desktop elements
         const desktopElements = document.querySelectorAll('.desktop-only');
+        console.log('disableDesktopMode: Found', desktopElements.length, 'desktop-only elements');
         desktopElements.forEach(el => el.style.display = 'none');
         
-        // Show regular navigation
-        const navLinks = document.querySelector('.nav-links-header');
-        if (navLinks) navLinks.style.display = 'flex';
+        // Show regular navigation and hide desktop navigation
+        const navLinksHeader = document.querySelector('.nav-links-header');
+        const navLinksDesktop = document.querySelector('.nav-links-desktop');
+        if (navLinksHeader) {
+            navLinksHeader.style.display = 'flex';
+            console.log('disableDesktopMode: Shown nav-links-header');
+        }
+        if (navLinksDesktop) {
+            navLinksDesktop.style.display = 'none';
+            console.log('disableDesktopMode: Hidden nav-links-desktop');
+        }
+        
+        // Show website content
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.style.display = 'block';
+            console.log('disableDesktopMode: Shown main-content');
+        } else {
+            console.log('disableDesktopMode: main-content not found');
+        }
         
         // Hide desktop background and icons
         this.hideDesktopEnvironment();
@@ -106,6 +177,17 @@ class ViewManager {
             desktopIcons.id = 'desktop-icons';
             desktopIcons.className = 'desktop-icons';
             document.body.appendChild(desktopIcons);
+        }
+        
+        // Show desktop icons container
+        const desktopIcons = document.getElementById('desktop-icons');
+        if (desktopIcons) {
+            desktopIcons.style.display = 'block';
+        }
+        
+        // Trigger desktop manager to render icons if it exists
+        if (window.desktopManager) {
+            window.desktopManager.renderIcons();
         }
         
         // Show taskbar
@@ -136,17 +218,26 @@ class ViewManager {
     }
 
     updateToggleButton() {
+        if (!this.viewToggle) {
+            console.warn('Toggle button not found for update');
+            return;
+        }
+        
         const websiteIcon = this.viewToggle.querySelector('.view-icon.website');
         const desktopIcon = this.viewToggle.querySelector('.view-icon.desktop');
         
-        if (this.isDesktopMode) {
-            websiteIcon.style.display = 'none';
-            desktopIcon.style.display = 'inline';
-            this.viewToggle.title = 'Switch to Website Mode';
+        if (websiteIcon && desktopIcon) {
+            if (this.isDesktopMode) {
+                websiteIcon.style.display = 'none';
+                desktopIcon.style.display = 'inline';
+                this.viewToggle.title = 'Switch to Website Mode';
+            } else {
+                websiteIcon.style.display = 'inline';
+                desktopIcon.style.display = 'none';
+                this.viewToggle.title = 'Switch to Desktop Mode';
+            }
         } else {
-            websiteIcon.style.display = 'inline';
-            desktopIcon.style.display = 'none';
-            this.viewToggle.title = 'Switch to Desktop Mode';
+            console.warn('Toggle button icons not found');
         }
     }
 }
@@ -160,5 +251,11 @@ window.toggleViewMode = function() {
 
 // Initialize view manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    window.viewManager = new ViewManager();
+    console.log('DOM loaded, initializing view manager...');
+    try {
+        window.viewManager = new ViewManager();
+        console.log('View manager initialized successfully');
+    } catch (error) {
+        console.error('Error initializing view manager:', error);
+    }
 }); 

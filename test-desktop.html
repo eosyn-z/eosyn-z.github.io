@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Desktop Toggle Test</title>
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    <link rel="stylesheet" href="/assets/css/themes.css">
+    <script src="/assets/js/theme-switcher.js" defer></script>
+    <script src="/assets/js/view-manager.js" defer></script>
+    <script src="/assets/js/window-manager.js" defer></script>
+    <script src="/assets/js/desktop-manager.js" defer></script>
+</head>
+<body data-theme="c">
+    <header class="glass-nav top-nav">
+        <div class="nav-container">
+            <!-- Website Mode Navigation -->
+            <div class="nav-links-header">
+                <a href="/" class="glass-button">Home</a>
+                <nav class="nav-links">
+                    <a href="#" class="glass-button">Test 1</a>
+                    <a href="#" class="glass-button">Test 2</a>
+                </nav>
+            </div>
+            
+            <!-- Desktop Mode Navigation (simplified) -->
+            <div class="nav-links-desktop" style="display: none;">
+                <a href="/" class="glass-button back-btn">← Back to Website</a>
+            </div>
+            
+            <div class="header-controls">
+                <!-- View Toggle -->
+                <div class="view-toggle-container">
+                    <button id="view-toggle" class="view-toggle-btn glass-button" title="Toggle Desktop Mode">
+                        <span class="view-icon website">🌐</span>
+                        <span class="view-icon desktop" style="display: none;">🖥️</span>
+                    </button>
+                </div>
+                <div class="theme-buttons">
+                    <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+                    <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="glass-card">
+            <h1>Desktop Toggle Test</h1>
+            <p>This is a test page to verify the desktop toggle functionality.</p>
+            <p>Click the 🌐 button in the header to switch to desktop mode.</p>
+            <p>You should see desktop icons appear and the navigation change to just a back button.</p>
+        </div>
+    </div>
+
+    <!-- Bottom bar for desktop mode -->
+    <div class="bottom-bar" style="display: none;">
+        <div class="bar-content">
+            <button class="start-button glass-button">Start</button>
+            <div class="divider"></div>
+            <div class="taskbar-programs">
+                <!-- Taskbar items will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test function
+        function testDesktopToggle() {
+            console.log('Testing desktop toggle...');
+            console.log('View manager:', window.viewManager);
+            console.log('Desktop manager:', window.desktopManager);
+            console.log('Window manager:', window.windowManager);
+            
+            if (window.viewManager) {
+                window.viewManager.toggleView();
+            }
+        }
+
+        // Add test button
+        document.addEventListener('DOMContentLoaded', () => {
+            const testBtn = document.createElement('button');
+            testBtn.textContent = 'Test Toggle';
+            testBtn.className = 'glass-button';
+            testBtn.style.position = 'fixed';
+            testBtn.style.top = '100px';
+            testBtn.style.right = '20px';
+            testBtn.style.zIndex = '9999';
+            testBtn.onclick = testDesktopToggle;
+            document.body.appendChild(testBtn);
+        });
+    </script>
+</body>
+</html> 

@@ -9,6 +9,7 @@ class WindowManager {
         this.resizeHandle = null;
         
         this.init();
+        this.loadWindowStates();
     }
 
     init() {
@@ -27,6 +28,298 @@ class WindowManager {
 
         this.setupEventListeners();
         this.setupWindowControls();
+    }
+
+    // Load saved window states from localStorage
+    loadWindowStates() {
+        try {
+            const savedStates = JSON.parse(localStorage.getItem('windowStates') || '{}');
+            Object.keys(savedStates).forEach(windowId => {
+                const state = savedStates[windowId];
+                const windowData = this.getWindow(windowId);
+                if (windowData) {
+                    // Apply saved position and size
+                    windowData.position = state.position || { x: 0, y: 0 };
+                    windowData.size = state.size || { width: 400, height: 300 };
+                    windowData.isMinimized = state.isMinimized || false;
+                    windowData.isMaximized = state.isMaximized || false;
+                    
+                    // Apply to DOM
+                    windowData.element.style.transform = `translate(${windowData.position.x}px, ${windowData.position.y}px)`;
+                    windowData.element.style.width = `${windowData.size.width}px`;
+                    windowData.element.style.height = `${windowData.size.height}px`;
+                    
+                    if (windowData.isMinimized) {
+                        windowData.element.style.transform = 'scale(0.1)';
+                        windowData.element.style.opacity = '0';
+                        windowData.element.style.pointerEvents = 'none';
+                    }
+                    
+                    if (windowData.isMaximized) {
+                        windowData.element.style.position = 'fixed';
+                        windowData.element.style.top = '0';
+                        windowData.element.style.left = '0';
+                        windowData.element.style.width = '100vw';
+                        windowData.element.style.height = '100vh';
+                        windowData.element.style.zIndex = '9999';
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error loading window states:', error);
+        }
+    }
+
+    // Save window states to localStorage
+    saveWindowStates() {
+        const states = {};
+        this.windows.forEach(windowData => {
+            states[windowData.id] = {
+                position: windowData.position,
+                size: windowData.size,
+                isMinimized: windowData.isMinimized,
+                isMaximized: windowData.isMaximized
+            };
+        });
+        localStorage.setItem('windowStates', JSON.stringify(states));
+    }
+
+    // Save sticky notes data
+    saveStickyNotes() {
+        const stickyNotes = [];
+        const noteElements = document.querySelectorAll('.sticky-note');
+        
+        noteElements.forEach((noteEl, index) => {
+            const rect = noteEl.getBoundingClientRect();
+            const content = noteEl.querySelector('.note-content');
+            const title = noteEl.querySelector('.note-title');
+            
+            stickyNotes.push({
+                id: noteEl.dataset.noteId || `note-${index}`,
+                position: {
+                    x: rect.left,
+                    y: rect.top
+                },
+                size: {
+                    width: rect.width,
+                    height: rect.height
+                },
+                title: title ? title.textContent : 'New Note',
+                content: content ? content.innerHTML : '',
+                transform: noteEl.style.transform || '',
+                isPinned: noteEl.classList.contains('pinned')
+            });
+        });
+        
+        localStorage.setItem('stickyNotes', JSON.stringify(stickyNotes));
+    }
+
+    // Load sticky notes data
+    loadStickyNotes() {
+        try {
+            const savedNotes = JSON.parse(localStorage.getItem('stickyNotes') || '[]');
+            const container = document.querySelector('.sticky-notes-container');
+            
+            if (container && savedNotes.length > 0) {
+                // Clear existing notes
+                container.innerHTML = '';
+                
+                // Restore saved notes
+                savedNotes.forEach(noteData => {
+                    this.createStickyNoteFromData(noteData);
+                });
+            }
+        } catch (error) {
+            console.error('Error loading sticky notes:', error);
+        }
+    }
+
+    // Create sticky note from saved data
+    createStickyNoteFromData(noteData) {
+        const container = document.querySelector('.sticky-notes-container');
+        if (!container) return;
+        
+        const note = document.createElement('div');
+        note.className = 'sticky-note';
+        note.dataset.noteId = noteData.id;
+        
+        // Apply saved position and size
+        note.style.position = 'absolute';
+        note.style.left = `${noteData.position.x}px`;
+        note.style.top = `${noteData.position.y}px`;
+        note.style.width = `${noteData.size.width}px`;
+        note.style.height = `${noteData.size.height}px`;
+        note.style.transform = noteData.transform;
+        
+        if (noteData.isPinned) {
+            note.classList.add('pinned');
+        }
+        
+        note.innerHTML = `
+            <div class="note-header">
+                <span class="note-title">${noteData.title}</span>
+                <div class="note-controls">
+                    <button class="note-btn btn-pin" title="Pin Note">📌</button>
+                    <button class="note-btn btn-close" title="Close Note">✕</button>
+                </div>
+            </div>
+            <div class="note-content" contenteditable="true">
+                ${noteData.content}
+            </div>
+            <div class="resize-handle"></div>
+        `;
+        
+        // Make note draggable and resizable
+        this.makeStickyNoteDraggable(note);
+        this.makeStickyNoteResizable(note);
+        this.setupStickyNoteControls(note);
+        
+        container.appendChild(note);
+    }
+
+    // Make sticky note draggable
+    makeStickyNoteDraggable(note) {
+        let isDragging = false;
+        let startX, startY, startLeft, startTop;
+
+        const header = note.querySelector('.note-header');
+        if (!header) return;
+
+        const onMouseDown = (e) => {
+            if (e.target.closest('.note-controls')) return; // Don't drag if clicking controls
+            
+            isDragging = true;
+            note.style.cursor = 'grabbing';
+            note.style.zIndex = '1000';
+            
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = parseInt(note.style.left) || 0;
+            startTop = parseInt(note.style.top) || 0;
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        };
+
+        const onMouseMove = (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            
+            let newX = startLeft + deltaX;
+            let newY = startTop + deltaY;
+            
+            // Constrain to viewport
+            const maxX = window.innerWidth - note.offsetWidth;
+            const maxY = window.innerHeight - note.offsetHeight;
+            
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+            
+            note.style.left = `${newX}px`;
+            note.style.top = `${newY}px`;
+        };
+
+        const onMouseUp = () => {
+            if (isDragging) {
+                isDragging = false;
+                note.style.cursor = '';
+                note.style.zIndex = '';
+                this.saveStickyNotes();
+            }
+            
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        header.addEventListener('mousedown', onMouseDown);
+    }
+
+    // Make sticky note resizable
+    makeStickyNoteResizable(note) {
+        let isResizing = false;
+        let startX, startY, startWidth, startHeight;
+
+        const resizeHandle = note.querySelector('.resize-handle');
+        if (!resizeHandle) return;
+
+        const onMouseDown = (e) => {
+            isResizing = true;
+            note.style.cursor = 'se-resize';
+            
+            startX = e.clientX;
+            startY = e.clientY;
+            startWidth = note.offsetWidth;
+            startHeight = note.offsetHeight;
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        };
+
+        const onMouseMove = (e) => {
+            if (!isResizing) return;
+            
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            
+            const newWidth = Math.max(200, startWidth + deltaX);
+            const newHeight = Math.max(150, startHeight + deltaY);
+            
+            note.style.width = `${newWidth}px`;
+            note.style.height = `${newHeight}px`;
+        };
+
+        const onMouseUp = () => {
+            if (isResizing) {
+                isResizing = false;
+                note.style.cursor = '';
+                this.saveStickyNotes();
+            }
+            
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        resizeHandle.addEventListener('mousedown', onMouseDown);
+    }
+
+    // Setup sticky note controls
+    setupStickyNoteControls(note) {
+        const pinBtn = note.querySelector('.btn-pin');
+        const closeBtn = note.querySelector('.btn-close');
+        const content = note.querySelector('.note-content');
+        const title = note.querySelector('.note-title');
+
+        // Pin button
+        if (pinBtn) {
+            pinBtn.addEventListener('click', () => {
+                note.classList.toggle('pinned');
+                this.saveStickyNotes();
+            });
+        }
+
+        // Close button
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                note.remove();
+                this.saveStickyNotes();
+            });
+        }
+
+        // Auto-save content changes
+        if (content) {
+            content.addEventListener('input', () => {
+                this.saveStickyNotes();
+            });
+        }
+
+        // Auto-save title changes
+        if (title) {
+            title.addEventListener('input', () => {
+                this.saveStickyNotes();
+            });
+        }
     }
 
     setupEventListeners() {
@@ -143,6 +436,7 @@ class WindowManager {
         if (this.activeWindow) {
             this.activeWindow.element.style.cursor = '';
             this.activeWindow = null;
+            this.saveWindowStates(); // Save position after dragging
         }
         this.isDragging = false;
     }
@@ -183,6 +477,7 @@ class WindowManager {
         if (this.activeWindow) {
             this.activeWindow.element.style.cursor = '';
             this.activeWindow = null;
+            this.saveWindowStates(); // Save size after resizing
         }
         this.isResizing = false;
         this.resizeHandle = null;
@@ -201,6 +496,8 @@ class WindowManager {
             windowEl.style.opacity = '1';
             windowEl.style.pointerEvents = '';
         }
+        
+        this.saveWindowStates(); // Save minimized state
     }
 
     maximizeWindow(windowData) {
@@ -222,6 +519,8 @@ class WindowManager {
             windowEl.style.height = '';
             windowEl.style.zIndex = '';
         }
+        
+        this.saveWindowStates(); // Save maximized state
     }
 
     closeWindow(windowData) {
@@ -230,6 +529,12 @@ class WindowManager {
         
         setTimeout(() => {
             windowData.element.style.display = 'none';
+            // Remove from windows array
+            const index = this.windows.indexOf(windowData);
+            if (index > -1) {
+                this.windows.splice(index, 1);
+            }
+            this.saveWindowStates(); // Save after closing
         }, 200);
     }
 
@@ -289,7 +594,7 @@ class WindowManager {
         
         // Create window element
         const windowEl = document.createElement('div');
-        windowEl.className = 'window app-window';
+        windowEl.className = 'app-window glass-container';
         windowEl.id = windowId;
         windowEl.style.position = 'fixed';
         windowEl.style.top = '50px';
@@ -315,63 +620,42 @@ class WindowManager {
         // Add to DOM
         document.body.appendChild(windowEl);
         
-        // Add to windows array
+        // Create window data object
         const windowData = {
             element: windowEl,
             id: windowId,
-            appId: appId,
-            title: title,
             position: { x: 50, y: 50 },
             size: { width: 400, height: 300 },
             isMinimized: false,
             isMaximized: false
         };
         
+        // Add to windows array
         this.windows.push(windowData);
         
-        // Setup event listeners for this window
+        // Setup window functionality
         this.setupWindowEventListeners(windowData);
         this.setupWindowControlsForWindow(windowData);
         this.addResizeHandles(windowData);
         
-        return windowId;
+        // Load sticky notes if this is a sticky notes window
+        if (appId === 'sticky-notes') {
+            setTimeout(() => {
+                this.loadStickyNotes();
+            }, 100);
+        }
+        
+        // Save window states
+        this.saveWindowStates();
+        
+        return windowData;
     }
 
     createStickyNotesContent() {
         return `
             <div style="padding: 1rem; height: 100%; overflow-y: auto;">
                 <div class="sticky-notes-container">
-                    <div class="sticky-note" style="position: relative; top: 0; left: 0; transform: rotate(-2deg);">
-                        <div class="note-header">
-                            <span class="note-title">Welcome!</span>
-                            <div class="note-controls">
-                                <button class="note-btn btn-pin" title="Pin Note">📌</button>
-                                <button class="note-btn btn-close" title="Close Note">✕</button>
-                            </div>
-                        </div>
-                        <div class="note-content" contenteditable="true">
-                            <h3>Sticky Notes</h3>
-                            <p>Click to edit this note! You can write anything you want here.</p>
-                            <ul>
-                                <li>Make to-do lists</li>
-                                <li>Write reminders</li>
-                                <li>Jot down ideas</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="sticky-note" style="position: relative; top: 20px; left: 120px; transform: rotate(1deg);">
-                        <div class="note-header">
-                            <span class="note-title">Quick Note</span>
-                            <div class="note-controls">
-                                <button class="note-btn btn-pin" title="Pin Note">📌</button>
-                                <button class="note-btn btn-close" title="Close Note">✕</button>
-                            </div>
-                        </div>
-                        <div class="note-content" contenteditable="true">
-                            <p>Another note! You can drag these around and resize them too.</p>
-                        </div>
-                    </div>
+                    <!-- Sticky notes will be loaded here -->
                 </div>
                 
                 <button class="glass-button" style="margin-top: 1rem;" onclick="window.windowManager.addNewStickyNote()">
@@ -418,13 +702,17 @@ class WindowManager {
     addNewStickyNote() {
         const stickyNotesContainer = document.querySelector('.sticky-notes-container');
         if (stickyNotesContainer) {
+            const noteId = `note-${Date.now()}`;
             const newNote = document.createElement('div');
             newNote.className = 'sticky-note';
+            newNote.dataset.noteId = noteId;
             newNote.style.cssText = `
-                position: relative;
+                position: absolute;
                 top: ${Math.random() * 50}px;
                 left: ${Math.random() * 100}px;
                 transform: rotate(${(Math.random() - 0.5) * 4}deg);
+                width: 300px;
+                height: 250px;
             `;
             
             newNote.innerHTML = `
@@ -438,9 +726,18 @@ class WindowManager {
                 <div class="note-content" contenteditable="true">
                     <p>Click to edit this new note!</p>
                 </div>
+                <div class="resize-handle"></div>
             `;
             
+            // Make note draggable and resizable
+            this.makeStickyNoteDraggable(newNote);
+            this.makeStickyNoteResizable(newNote);
+            this.setupStickyNoteControls(newNote);
+            
             stickyNotesContainer.appendChild(newNote);
+            
+            // Save sticky notes
+            this.saveStickyNotes();
         }
     }
 
@@ -483,11 +780,76 @@ class WindowManager {
         });
         this.windows = [];
     }
+
+    // Global function to create sticky notes (for demo page)
+    createStickyNote(title = 'New Note', content = '') {
+        const stickyNotesContainer = document.querySelector('.sticky-notes-container');
+        if (!stickyNotesContainer) {
+            // If no container exists, create a sticky notes window first
+            this.createWindow('sticky-notes', 'Sticky Notes');
+            setTimeout(() => {
+                this.createStickyNote(title, content);
+            }, 200);
+            return;
+        }
+
+        const noteId = `note-${Date.now()}`;
+        const newNote = document.createElement('div');
+        newNote.className = 'sticky-note';
+        newNote.dataset.noteId = noteId;
+        newNote.style.cssText = `
+            position: absolute;
+            top: ${Math.random() * 100 + 50}px;
+            left: ${Math.random() * 150 + 50}px;
+            transform: rotate(${(Math.random() - 0.5) * 4}deg);
+            width: 300px;
+            height: 250px;
+        `;
+        
+        newNote.innerHTML = `
+            <div class="note-header">
+                <span class="note-title">${title}</span>
+                <div class="note-controls">
+                    <button class="note-btn btn-pin" title="Pin Note">📌</button>
+                    <button class="note-btn btn-close" title="Close Note">✕</button>
+                </div>
+            </div>
+            <div class="note-content" contenteditable="true">
+                ${content}
+            </div>
+            <div class="resize-handle"></div>
+        `;
+        
+        // Make note draggable and resizable
+        this.makeStickyNoteDraggable(newNote);
+        this.makeStickyNoteResizable(newNote);
+        this.setupStickyNoteControls(newNote);
+        
+        stickyNotesContainer.appendChild(newNote);
+        
+        // Save sticky notes
+        this.saveStickyNotes();
+        
+        return newNote;
+    }
+
+    // Initialize sticky notes on page load
+    initializeStickyNotes() {
+        // Load any existing sticky notes
+        this.loadStickyNotes();
+        
+        // Make global function available
+        window.createStickyNote = this.createStickyNote.bind(this);
+    }
 }
 
-// Initialize window manager when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Global initialization
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize window manager globally
     window.windowManager = new WindowManager();
-    // Also expose as windowManager for desktop system compatibility
-    window.windowManager = window.windowManager;
+    
+    // Initialize sticky notes
+    if (window.windowManager) {
+        window.windowManager.initializeStickyNotes();
+    }
 }); 

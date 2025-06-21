@@ -31,6 +31,16 @@ If this fails, rollback to:
           not claiming to have made anything here yet! <33
         </h1>
         
+        <!-- Test button for desktop toggle -->
+        <div style="margin: 2rem 0; text-align: center;">
+          <button onclick="testViewToggle()" class="glass-button" style="margin: 0 1rem;">
+            Test View Toggle
+          </button>
+          <button onclick="console.log('View manager:', window.viewManager)" class="glass-button" style="margin: 0 1rem;">
+            Check View Manager
+          </button>
+        </div>
+        
         <!-- Window Component -->
         <div class="window-container">
           <div class="window" id="main-window">
@@ -78,11 +88,6 @@ If this fails, rollback to:
 </div>
 
 <script>
-// DESKTOP ENVIRONMENT ENABLER
-// This enables the desktop mode with icons and wallpaper
-// If this fails, remove this entire script tag
-document.body.classList.add('desktop-mode');
-
 // TPOT Sites Scrolling List
 document.addEventListener('DOMContentLoaded', function() {
   // Define sites data directly on this page
@@ -166,6 +171,21 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Populate TPOT sites immediately
   populateTpotSites();
+  
+  // Initialize sticky notes functionality
+  if (window.windowManager) {
+    window.windowManager.initializeStickyNotes();
+  } else {
+    // Wait for window manager to load
+    setTimeout(() => {
+      if (window.windowManager) {
+        window.windowManager.initializeStickyNotes();
+      }
+    }, 1000);
+  }
+
+  // Initial counter update
+  updateCounter();
 });
 
 function populateTpotSites() {
@@ -189,6 +209,20 @@ function populateTpotSites() {
       <span class="tpot-site-desc">${site.description}</span>
     </a>
   `).join('');
+}
+
+// Test function for view toggle
+function testViewToggle() {
+  console.log('Testing view toggle...');
+  console.log('View manager exists:', !!window.viewManager);
+  console.log('View toggle button exists:', !!document.getElementById('view-toggle'));
+  
+  if (window.viewManager) {
+    console.log('Current mode:', window.viewManager.isDesktopMode ? 'desktop' : 'website');
+    window.viewManager.toggleView();
+  } else {
+    console.error('View manager not found!');
+  }
 }
 </script>
 

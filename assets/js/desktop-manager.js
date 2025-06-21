@@ -133,14 +133,27 @@ class DesktopManager {
     const existingIcons = document.querySelectorAll('.desktop-icon');
     existingIcons.forEach(icon => icon.remove());
 
+    // Get or create desktop icons container
+    let desktopIconsContainer = document.getElementById('desktop-icons');
+    if (!desktopIconsContainer) {
+      desktopIconsContainer = document.createElement('div');
+      desktopIconsContainer.id = 'desktop-icons';
+      desktopIconsContainer.className = 'desktop-icons';
+      document.body.appendChild(desktopIconsContainer);
+    }
+
     // Create new icons
     this.icons.forEach(iconData => {
-      this.createDesktopIcon(iconData);
+      this.createDesktopIcon(iconData, desktopIconsContainer);
     });
   }
 
   // Create a single desktop icon
-  createDesktopIcon(iconData) {
+  createDesktopIcon(iconData, container = null) {
+    if (!container) {
+      container = document.getElementById('desktop-icons') || document.body;
+    }
+    
     const icon = document.createElement('div');
     icon.className = 'desktop-icon';
     icon.dataset.iconId = iconData.id;
@@ -172,7 +185,11 @@ class DesktopManager {
     // Add click handler to launch app
     icon.addEventListener('click', (e) => {
       if (!icon.classList.contains('dragging')) {
-        windowManager.createWindow(iconData.appId, iconData.appTitle);
+        if (window.windowManager) {
+          window.windowManager.createWindow(iconData.appId, iconData.appTitle);
+        } else {
+          console.error('Window manager not found');
+        }
       }
     });
 
@@ -182,7 +199,7 @@ class DesktopManager {
       this.showIconContextMenu(e, iconData);
     });
 
-    this.desktop.appendChild(icon);
+    container.appendChild(icon);
   }
 
   // Make icon draggable
@@ -275,7 +292,11 @@ class DesktopManager {
   handleIconAction(action, iconData) {
     switch (action) {
       case 'open':
-        windowManager.createWindow(iconData.appId, iconData.appTitle);
+        if (window.windowManager) {
+          window.windowManager.createWindow(iconData.appId, iconData.appTitle);
+        } else {
+          console.error('Window manager not found');
+        }
         break;
       case 'rename':
         this.renameIcon(iconData);
@@ -683,52 +704,22 @@ class DesktopManager {
 
   // Add custom wallpaper
   addCustomWallpaper() {
-    const urlInput = document.getElementById('wallpaperUrl');
-    const nameInput = document.getElementById('wallpaperName');
+    const url = prompt('Enter wallpaper URL:');
+    const name = prompt('Enter wallpaper name:');
     
-    const url = urlInput.value.trim();
-    const name = nameInput.value.trim();
-    
-    if (!url) {
-      alert('Please enter a valid image URL');
-      return;
-    }
-
-    // Validate URL
-    try {
-      new URL(url);
-    } catch (error) {
-      alert('Please enter a valid URL');
-      return;
-    }
-
-    const customWallpapers = this.getCustomWallpapers();
-    const newWallpaper = {
-      id: 'custom-' + Date.now(),
-      name: name || 'Custom Wallpaper',
-      url: url,
-      added: new Date().toISOString()
-    };
-    
-    customWallpapers.push(newWallpaper);
-    this.saveCustomWallpapers(customWallpapers);
-    
-    // Clear form
-    urlInput.value = '';
-    nameInput.value = '';
-    
-    // Reload wallpaper picker
-    this.loadCustomWallpapers();
-    
-    // Switch to custom tab
-    const customTab = document.querySelector('[data-tab="custom"]');
-    if (customTab) {
-      customTab.click();
+    if (url && name) {
+      this.addCustomWallpaperFromPicker(url, name);
     }
   }
 }
 
-// Initialize desktop manager when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  window.desktopManager = new DesktopManager();
+// Global initialization
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Initializing desktop manager...');
+    try {
+        window.desktopManager = new DesktopManager();
+        console.log('Desktop manager initialized successfully');
+    } catch (error) {
+        console.error('Error initializing desktop manager:', error);
+    }
 }); 

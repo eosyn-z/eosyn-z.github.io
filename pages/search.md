@@ -5,22 +5,22 @@ permalink: /search/
 ---
 
 <div class="main-content">
-  <div class="glass-card" style="margin-bottom: 2rem;">
+  <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
     <header class="page-header" style="margin-bottom: 0; text-align: center;">
         <h1>some cool or helpful websites</h1>
         <p>Discover amazing tools, resources, and websites</p>
       </header>
-      </div>
+  </div>
   
-      <div class="search-section">
-    <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px;">
-          </div>
+  <div class="search-section" style="margin-bottom: 2rem;">
+    <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px; padding: 1rem;">
+  </div>
 
   <!-- Social & Forums Section -->
   <div class="social-forums-section" style="display: flex; gap: 1.5rem; margin-bottom: 2rem;">
     
     <!-- Social Websites Container -->
-    <div class="glass-card" style="flex: 3; padding: 1.5rem;">
+    <div class="glass-card" style="flex: 3; padding: 2rem;">
       <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Social Websites</h3>
       <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
         <a href="https://twitter.com" class="glass-button" target="_blank">Twitter</a>
@@ -34,24 +34,23 @@ permalink: /search/
         <a href="https://pinterest.com" class="glass-button" target="_blank">Pinterest</a>
         <a href="https://medium.com" class="glass-button" target="_blank">Medium</a>
         <a href="https://hashnode.com" class="glass-button" target="_blank">Hashnode</a>
-          </div>
-        </div>
+      </div>
+    </div>
     
     <!-- Forums & Communities Container -->
-    <div class="glass-card" style="flex: 1; padding: 1.5rem;">
+    <div class="glass-card" style="flex: 1; padding: 2rem;">
       <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Forums & Communities</h3>
       <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
         <a href="https://stackoverflow.com" class="glass-button" target="_blank">Stack Overflow</a>
         <a href="https://reddit.com/r/art" class="glass-button" target="_blank">r/art</a>
       </div>
-                </div>
-
-        </div>
-
-        <div class="website-grid" id="websiteGrid">
-            <!-- Websites will be populated here -->
-        </div>
     </div>
+  </div>
+
+  <div class="website-grid" id="websiteGrid">
+    <!-- Websites will be populated here -->
+  </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
