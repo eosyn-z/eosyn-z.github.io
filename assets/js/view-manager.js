@@ -194,9 +194,17 @@ class ViewManager {
         const taskbar = document.querySelector('.bottom-bar');
         if (taskbar) taskbar.style.display = 'block';
         
-        // Show start menu (but keep it hidden initially)
+        // Only show start menu if we're on the desktop page or if desktop mode is properly intended
         const startMenu = document.getElementById('start-menu');
-        if (startMenu) startMenu.style.display = 'block';
+        if (startMenu) {
+            // Check if we're on the desktop page or if desktop mode is properly activated
+            const isOnDesktopPage = window.location.pathname === '/desktop/' || window.location.pathname === '/desktop';
+            if (isOnDesktopPage || this.isDesktopMode) {
+                startMenu.style.display = 'block';
+            } else {
+                startMenu.style.display = 'none';
+            }
+        }
     }
 
     hideDesktopEnvironment() {
@@ -212,7 +220,7 @@ class ViewManager {
         const taskbar = document.querySelector('.bottom-bar');
         if (taskbar) taskbar.style.display = 'none';
         
-        // Hide start menu
+        // Always hide start menu when desktop environment is hidden
         const startMenu = document.getElementById('start-menu');
         if (startMenu) startMenu.style.display = 'none';
     }
