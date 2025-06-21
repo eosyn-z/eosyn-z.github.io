@@ -1,6 +1,7 @@
 ---
-layout: default
+layout: game
 title: Snake
+icon: 🐍
 permalink: /snake/
 ---
 

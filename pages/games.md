@@ -2,6 +2,7 @@
 layout: default
 title: Game Center
 permalink: /games/
+icon: 🎮
 ---
 
 <div class="main-content" data-page-script="games">

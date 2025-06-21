@@ -2,6 +2,7 @@
 layout: default
 title: Portfolio
 permalink: /portfolio/
+icon: 🎨
 ---
 
 <div class="main-content" data-page-script="portfolio">

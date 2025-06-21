@@ -249,6 +249,13 @@ window.toggleViewMode = function() {
     }
 };
 
+// Also expose the toggleView function directly
+window.toggleView = function() {
+    if (window.viewManager) {
+        window.viewManager.toggleView();
+    }
+};
+
 // Initialize view manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing view manager...');

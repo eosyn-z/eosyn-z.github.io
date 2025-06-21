@@ -1,7 +1,8 @@
 ---
-layout: default
+layout: game
 title: Tetris
 permalink: /tetris/
+icon: 🧩
 ---
 
 <div class="main-content" data-page-script="tetris-game">

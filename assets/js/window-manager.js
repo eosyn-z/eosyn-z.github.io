@@ -364,36 +364,28 @@ class WindowManager {
             this.addResizeHandles(windowData);
         });
 
-        // Global mouse events
-        document.addEventListener('mousemove', (e) => {
-            if (this.isDragging) {
-                this.handleDrag(e);
-            }
-            if (this.isResizing) {
-                this.handleResize(e);
-            }
-        });
-
-        document.addEventListener('mouseup', () => {
-            this.stopDragging();
-            this.stopResizing();
-        });
+        // Set up global event listeners only once
+        if (!this.globalListenersSetup) {
+            this.setupGlobalEventListeners();
+            this.globalListenersSetup = true;
+        }
     }
 
     setupWindowControls() {
         this.windows.forEach(windowData => {
             const windowEl = windowData.element;
-            const controls = windowEl.querySelectorAll('.window-control');
+            const controls = windowEl.querySelectorAll('.window-control-btn');
             
-            controls.forEach(control => {
+            controls.forEach((control, index) => {
                 control.addEventListener('click', (e) => {
                     e.stopPropagation();
                     
-                    if (control.classList.contains('minimize')) {
+                    // Determine which control was clicked based on index or content
+                    if (control.innerHTML === '−' || index === 0) {
                         this.minimizeWindow(windowData);
-                    } else if (control.classList.contains('maximize')) {
+                    } else if (control.innerHTML === '□' || index === 1) {
                         this.maximizeWindow(windowData);
-                    } else if (control.classList.contains('close')) {
+                    } else if (control.innerHTML === '✕' || index === 2) {
                         this.closeWindow(windowData);
                     }
                 });
@@ -611,8 +603,8 @@ class WindowManager {
         
         window.style.cssText = `
             position: absolute;
-            left: ${x}px;
-            top: ${y}px;
+            left: 0;
+            top: 0;
             width: 600px;
             height: 400px;
             background: var(--glass-bg-heavy);
@@ -624,6 +616,7 @@ class WindowManager {
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            transform: translate(${x}px, ${y}px);
         `;
 
         // Create window header
@@ -734,6 +727,15 @@ class WindowManager {
                 case 'window-demo':
                     content = this.createWindowDemoContent();
                     break;
+                case 'bookmark':
+                    // Handle bookmark windows - find the bookmark data
+                    const bookmarkData = this.findBookmarkData(title);
+                    if (bookmarkData) {
+                        content = this.createBookmarkContent(bookmarkData);
+                    } else {
+                        content = this.createBookmarkErrorContent(title);
+                    }
+                    break;
                 default:
                     // Try to load content from a page if no special case
                     this.loadAppContent(appId, window, title);
@@ -758,6 +760,7 @@ class WindowManager {
         this.windows.push(windowData);
         this.setupWindowEventListeners(windowData);
         this.setupWindowControlsForWindow(windowData);
+        this.addResizeHandles(windowData);
 
         // Bring window to front
         this.focusWindow(windowId);
@@ -835,6 +838,7 @@ class WindowManager {
                 transform: rotate(${(Math.random() - 0.5) * 4}deg);
                 width: 300px;
                 height: 250px;
+                pointer-events: auto;
             `;
             
             newNote.innerHTML = `
@@ -877,17 +881,18 @@ class WindowManager {
 
     setupWindowControlsForWindow(windowData) {
         const windowEl = windowData.element;
-        const controls = windowEl.querySelectorAll('.window-control');
+        const controls = windowEl.querySelectorAll('.window-control-btn');
         
-        controls.forEach(control => {
+        controls.forEach((control, index) => {
             control.addEventListener('click', (e) => {
                 e.stopPropagation();
                 
-                if (control.classList.contains('minimize')) {
+                // Determine which control was clicked based on index or content
+                if (control.innerHTML === '−' || index === 0) {
                     this.minimizeWindow(windowData);
-                } else if (control.classList.contains('maximize')) {
+                } else if (control.innerHTML === '□' || index === 1) {
                     this.maximizeWindow(windowData);
-                } else if (control.classList.contains('close')) {
+                } else if (control.innerHTML === '✕' || index === 2) {
                     this.closeWindow(windowData);
                 }
             });
@@ -926,6 +931,7 @@ class WindowManager {
             transform: rotate(${(Math.random() - 0.5) * 4}deg);
             width: 300px;
             height: 250px;
+            pointer-events: auto;
         `;
         
         newNote.innerHTML = `
@@ -992,47 +998,110 @@ class WindowManager {
         this.saveWindowStates();
     }
 
-    loadAppContent(appId, windowData, title) {
-        const appUrl = `/${appId}`; // Assumes a page exists at /<appId>
-        console.log(`Loading content for ${title} from ${appUrl}`);
+    // Load content from a page/app
+    loadAppContent(appId, window, title) {
+        // Special handling for bookmark windows
+        if (appId === 'bookmark') {
+            const bookmarkData = this.findBookmarkData(title);
+            if (bookmarkData) {
+                const content = this.createBookmarkContent(bookmarkData);
+                window.querySelector('.window-content').innerHTML = content;
+            } else {
+                const content = this.createBookmarkErrorContent(title);
+                window.querySelector('.window-content').innerHTML = content;
+            }
+            return;
+        }
 
-        fetch(appUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok for ${appUrl}`);
-                }
-                return response.text();
-            })
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const appContent = doc.querySelector('.main-content') || doc.body;
+        // For games and other apps, load the full HTML content
+        if (appId && title) {
+            // Try different URL patterns for different app types
+            let appUrl;
+            
+            // Games have trailing slash in their permalinks
+            if (['snake', 'tetris', 'pong'].includes(appId)) {
+                appUrl = `/${appId}/`;
+            } else {
+                appUrl = `/${appId}`; // Default pattern for other apps
+            }
+            
+            console.log(`Loading content for ${title} from ${appUrl}`);
 
-                if (appContent) {
-                    const contentDiv = windowData.element.querySelector('.window-content');
-                    contentDiv.innerHTML = ''; // Clear loading indicator
-                    contentDiv.appendChild(appContent.cloneNode(true));
-
-                    // Re-initialize any scripts within the loaded content if necessary
-                    const scripts = doc.querySelectorAll('script');
-                    scripts.forEach(script => {
-                        const newScript = document.createElement('script');
-                        if (script.src) {
-                            newScript.src = script.src;
-                        } else {
-                            newScript.textContent = script.innerHTML;
+            fetch(appUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok for ${appUrl}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    let appContent;
+                    
+                    // For games, we need to extract the content from the game layout
+                    if (['snake', 'tetris', 'pong'].includes(appId)) {
+                        // Look for the main-content div which contains the actual game
+                        appContent = doc.querySelector('.main-content');
+                        
+                        // If no main-content found, try to find the content directly
+                        if (!appContent) {
+                            // Look for the content that would be inside {{ content }}
+                            const body = doc.body;
+                            const gameContent = body.querySelector('.main-content') || body.querySelector('[data-page-script]');
+                            if (gameContent) {
+                                appContent = gameContent;
+                            } else {
+                                // Fallback: create a simple game container
+                                appContent = document.createElement('div');
+                                appContent.className = 'main-content';
+                                appContent.innerHTML = `
+                                    <div class="glass-panel" style="padding: 2rem; height: 100%; display: flex; flex-direction: column; align-items: center;">
+                                        <header class="page-header" style="text-align: center; margin-bottom: 1rem;">
+                                            <h1>${title}</h1>
+                                            <p>Game content loading...</p>
+                                        </header>
+                                        <div class="game-window">
+                                            <div style="text-align: center; color: var(--theme-text-secondary);">
+                                                Loading game content...
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
                         }
-                        document.body.appendChild(newScript).parentNode.removeChild(newScript);
-                    });
-                } else {
-                    throw new Error('Could not find .main-content in fetched HTML');
-                }
-            })
-            .catch(error => {
-                console.error('Failed to load app content:', error);
-                const contentDiv = windowData.element.querySelector('.window-content');
-                contentDiv.innerHTML = `<p style="padding: 1rem; color: var(--text-secondary);">Error: Could not load application content for "${title}".</p>`;
-            });
+                    } else {
+                        // For non-games, use the standard approach
+                        appContent = doc.querySelector('.main-content') || doc.body;
+                    }
+
+                    if (appContent) {
+                        const contentDiv = window.querySelector('.window-content');
+                        contentDiv.innerHTML = ''; // Clear loading indicator
+                        contentDiv.appendChild(appContent.cloneNode(true));
+
+                        // Re-initialize any scripts within the loaded content if necessary
+                        const scripts = doc.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const newScript = document.createElement('script');
+                            if (script.src) {
+                                newScript.src = script.src;
+                            } else {
+                                newScript.textContent = script.innerHTML;
+                            }
+                            document.body.appendChild(newScript).parentNode.removeChild(newScript);
+                        });
+                    } else {
+                        throw new Error('Could not find content in fetched HTML');
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to load app content:', error);
+                    const contentDiv = window.querySelector('.window-content');
+                    contentDiv.innerHTML = `<p style="padding: 1rem; color: var(--text-secondary);">Error: Could not load application content for "${title}".</p>`;
+                });
+        }
     }
 
     // Apply theme settings to all currently open windows
@@ -1087,6 +1156,155 @@ class WindowManager {
         // Save the state after applying changes
         this.saveWindowStates();
     }
+
+    // Find bookmark data by title
+    findBookmarkData(title) {
+        const bookmarks = this.getCookie('bookmarkedSites');
+        if (bookmarks) {
+            try {
+                const bookmarkedSites = JSON.parse(bookmarks);
+                return bookmarkedSites.find(site => site.title === title);
+            } catch (error) {
+                console.error('Error parsing bookmarks:', error);
+            }
+        }
+        return null;
+    }
+
+    // Create bookmark content
+    createBookmarkContent(bookmarkData) {
+        return `
+            <div style="padding: 1rem; height: 100%; overflow-y: auto;">
+                <div class="glass-card" style="margin-bottom: 1rem;">
+                    <h3 style="margin-top: 0; color: var(--theme-text);">${bookmarkData.title}</h3>
+                    <p style="color: var(--theme-text-secondary); margin-bottom: 1rem;">${bookmarkData.description}</p>
+                    <div class="tags" style="margin-bottom: 1rem;">
+                        ${bookmarkData.tags.map(tag => `<span style="background: var(--glass-bg-medium); padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.8rem; margin-right: 0.5rem;">${tag}</span>`).join('')}
+                    </div>
+                    <a href="${bookmarkData.url}" target="_blank" class="glass-button" style="display: inline-block;">
+                        🔗 Open ${bookmarkData.title}
+                    </a>
+                </div>
+                
+                <div class="glass-card">
+                    <h4 style="margin-top: 0; color: var(--theme-text);">Bookmark Actions</h4>
+                    <button class="glass-button" onclick="window.open('${bookmarkData.url}', '_blank')" style="margin-right: 0.5rem;">
+                        🌐 Open in New Tab
+                    </button>
+                    <button class="glass-button" onclick="removeBookmark('${bookmarkData.url}')" style="background: var(--theme-error);">
+                        🗑️ Remove Bookmark
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Create bookmark error content
+    createBookmarkErrorContent(title) {
+        return `
+            <div style="padding: 1rem; text-align: center; color: var(--theme-text-secondary);">
+                <h3>Bookmark Not Found</h3>
+                <p>The bookmark "${title}" could not be found.</p>
+                <p>It may have been removed or the data is corrupted.</p>
+            </div>
+        `;
+    }
+
+    // Simple markdown to HTML conversion
+    convertMarkdownToHtml(markdown) {
+        let html = markdown;
+        
+        // Convert headers
+        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+        
+        // Convert bold and italic
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        // Convert links
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+        
+        // Convert paragraphs
+        html = html.replace(/^(?!<[h|a|d|u|o])(.+)$/gm, '<p>$1</p>');
+        
+        // Clean up empty paragraphs
+        html = html.replace(/<p><\/p>/g, '');
+        
+        return html;
+    }
+
+    setupGlobalEventListeners() {
+        // Global mouse events for dragging and resizing
+        document.addEventListener('mousemove', (e) => {
+            if (this.isDragging) {
+                this.handleDrag(e);
+            }
+            if (this.isResizing) {
+                this.handleResize(e);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            this.stopDragging();
+            this.stopResizing();
+        });
+    }
+
+    // Test method to verify window manager functionality
+    testWindowManager() {
+        console.log('🧪 Testing Window Manager...');
+        
+        // Test 1: Create a test window
+        console.log('✅ Creating test window...');
+        const testWindow = this.createWindow('test', 'Test Window', '<div style="padding: 1rem;"><h3>Test Window</h3><p>This is a test window to verify functionality.</p></div>');
+        
+        if (testWindow) {
+            console.log('✅ Test window created successfully');
+            
+            // Test 2: Verify window properties
+            console.log('✅ Window properties:', {
+                id: testWindow.id,
+                position: testWindow.position,
+                size: testWindow.size,
+                isMinimized: testWindow.isMinimized,
+                isMaximized: testWindow.isMaximized
+            });
+            
+            // Test 3: Verify DOM element
+            if (testWindow.element && testWindow.element.parentNode) {
+                console.log('✅ Window element properly attached to DOM');
+            } else {
+                console.error('❌ Window element not properly attached to DOM');
+            }
+            
+            // Test 4: Verify controls
+            const controls = testWindow.element.querySelectorAll('.window-control-btn');
+            console.log(`✅ Found ${controls.length} window controls`);
+            
+            // Test 5: Verify resize handle
+            const resizeHandle = testWindow.element.querySelector('.window-resize-handle');
+            if (resizeHandle) {
+                console.log('✅ Resize handle found');
+            } else {
+                console.error('❌ Resize handle not found');
+            }
+            
+            // Test 6: Verify draggable header
+            const header = testWindow.element.querySelector('.window-header');
+            if (header) {
+                console.log('✅ Draggable header found');
+            } else {
+                console.error('❌ Draggable header not found');
+            }
+            
+            return testWindow;
+        } else {
+            console.error('❌ Failed to create test window');
+            return null;
+        }
+    }
 }
 
 // Global initialization
@@ -1098,4 +1316,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.windowManager) {
         window.windowManager.initializeStickyNotes();
     }
+    
+    // Add test function to global scope
+    window.testWindowManager = () => {
+        if (window.windowManager) {
+            return window.windowManager.testWindowManager();
+        } else {
+            console.error('Window manager not initialized');
+            return null;
+        }
+    };
 }); 

@@ -163,6 +163,7 @@ class DesktopManager {
   initializeDesktop() {
     this.setWallpaper(this.currentWallpaper);
     this.renderIcons();
+    this.loadBookmarkedIcons(); // Load bookmarked sites as icons
     this.createDesktopSettings();
   }
 
@@ -888,6 +889,64 @@ class DesktopManager {
 
     // Note: This only affects new windows. 
     // The WindowManager will handle applying themes to existing windows.
+  }
+
+  // Load bookmarked sites from cookies and add them to desktop
+  loadBookmarkedIcons() {
+    const bookmarks = this.getCookie('bookmarkedSites');
+    if (bookmarks) {
+      try {
+        const bookmarkedSites = JSON.parse(bookmarks);
+        bookmarkedSites.forEach((site, index) => {
+          this.addBookmarkToDesktop(site, index);
+        });
+      } catch (error) {
+        console.error('Error loading bookmarked icons:', error);
+      }
+    }
+  }
+
+  // Add a bookmark to the desktop
+  addBookmarkToDesktop(site, index = null) {
+    const iconId = `bookmark-${site.url.replace(/[^a-zA-Z0-9]/g, '')}`;
+    
+    // Check if icon already exists
+    if (document.getElementById(iconId)) {
+      return;
+    }
+
+    const icon = {
+      id: iconId,
+      title: site.title,
+      icon: '🔖', // Bookmark emoji
+      x: index ? 50 + (index * 100) : 50 + (Math.random() * 200),
+      y: index ? 100 + (index * 120) : 100 + (Math.random() * 200),
+      appId: 'bookmark',
+      appTitle: site.title,
+      dateCreated: new Date().toISOString().split('T')[0],
+      description: site.description,
+      redbubbleLink: '',
+      bookmarkData: site // Store the full bookmark data
+    };
+
+    this.icons.push(icon);
+    this.renderIcon(icon);
+    this.saveIcons();
+  }
+
+  // Remove a bookmark from the desktop
+  removeBookmarkFromDesktop(siteUrl) {
+    const iconId = `bookmark-${siteUrl.replace(/[^a-zA-Z0-9]/g, '')}`;
+    const iconIndex = this.icons.findIndex(icon => icon.id === iconId);
+    
+    if (iconIndex !== -1) {
+      const iconElement = document.getElementById(iconId);
+      if (iconElement) {
+        iconElement.remove();
+      }
+      this.icons.splice(iconIndex, 1);
+      this.saveIcons();
+    }
   }
 }
 

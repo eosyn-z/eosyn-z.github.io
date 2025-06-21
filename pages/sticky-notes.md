@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Sticky Notes Demo
+title: Sticky Notes
+permalink: /sticky-notes/
+icon: 📝
 ---
 
 <div class="main-content">
@@ -63,6 +65,11 @@ title: Sticky Notes Demo
         📄 Empty Note
       </button>
     </div>
+  </div>
+
+  <!-- Sticky Notes Container -->
+  <div class="sticky-notes-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000;">
+    <!-- Notes will be spawned here with pointer-events: auto -->
   </div>
 
   <div class="glass-panel">

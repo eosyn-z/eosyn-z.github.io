@@ -22,12 +22,12 @@ class WindowSwitcher {
         // Check for bar container and append button to it
         const barContainer = document.getElementById('window-switcher-bar-container');
         if (barContainer) {
+            // Append to the container regardless of visibility
             barContainer.appendChild(button);
         } else {
             console.error('Window Switcher container not found in the bar.');
-            // Fallback to appending to body if bar is missing
-            button.style.cssText = 'position: fixed; top: 20px; left: 20px; z-index: 20001;';
-            document.body.appendChild(button);
+            // Don't create the button if container doesn't exist
+            return;
         }
 
         // Click handler
@@ -35,8 +35,6 @@ class WindowSwitcher {
             this.toggleSwitcher();
         });
 
-        // The button is part of the bar, which is only shown in desktop mode.
-        // No need to hide it separately.
         this.switcherButton = button;
     }
 
@@ -251,9 +249,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Make sure the class is available globally
     window.WindowSwitcher = WindowSwitcher;
     
-    // If we're in desktop mode and no window switcher exists, create one
-    if (document.body.classList.contains('desktop-mode') && !window.windowSwitcher) {
-        console.log('Auto-initializing WindowSwitcher for desktop mode');
-        window.windowSwitcher = new WindowSwitcher();
+    // Initialize if we're in desktop mode OR if we have the bottom bar available
+    const isDesktopMode = document.body.classList.contains('desktop-mode');
+    const hasBottomBar = document.getElementById('window-switcher-bar-container');
+    
+    if (isDesktopMode || hasBottomBar) {
+        console.log('Auto-initializing WindowSwitcher - Desktop mode:', isDesktopMode, 'Has bottom bar:', !!hasBottomBar);
+        // Small delay to ensure the bottom bar is rendered
+        setTimeout(() => {
+            if (!window.windowSwitcher) {
+                window.windowSwitcher = new WindowSwitcher();
+            }
+        }, 100);
     }
 }); 

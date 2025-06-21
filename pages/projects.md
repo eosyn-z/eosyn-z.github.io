@@ -2,6 +2,7 @@
 layout: default
 title: Projects
 permalink: /projects/
+icon: 📁
 ---
 
 <div class="main-content">

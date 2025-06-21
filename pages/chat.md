@@ -1,7 +1,8 @@
 ---
 layout: default
-title: Chat
+title: AI Chat
 permalink: /chat/
+icon: 💬
 ---
 
 <div class="main-content">

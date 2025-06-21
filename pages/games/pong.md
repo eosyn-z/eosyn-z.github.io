@@ -1,7 +1,8 @@
 ---
-layout: default
+layout: game
 title: Pong
 permalink: /pong/
+icon: 🏓
 ---
 
 <div class="main-content" data-page-script="pong-game">

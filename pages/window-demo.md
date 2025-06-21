@@ -2,6 +2,7 @@
 layout: default
 title: Window Demo
 permalink: /window-demo/
+icon: 🪟
 ---
 
 <div class="main-content">

@@ -2,6 +2,7 @@
 layout: default
 title: Wallpaper Demo
 permalink: /wallpaper-demo/
+icon: 🖼️
 ---
 
 <div class="main-content">

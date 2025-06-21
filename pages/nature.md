@@ -1,7 +1,8 @@
 ---
-layout: nature
+layout: default
 title: Nature
 permalink: /nature/
+icon: 🌲
 ---
 
 <div class="main-content">

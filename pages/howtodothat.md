@@ -1,7 +1,8 @@
 ---
 layout: default
-title: How to do that
+title: How To Do That
 permalink: /howtodothat/
+icon: 🤔
 ---
 
 <div class="main-content">

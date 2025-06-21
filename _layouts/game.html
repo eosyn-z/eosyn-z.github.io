@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {%- include head.html -%}
+    <style>
+      .game-launch-container {
+        text-align: center;
+        padding: 2rem;
+        background: var(--glass-bg-medium);
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        border: 1px solid var(--glass-border-light);
+      }
+      
+      .launch-btn {
+        background: var(--theme-accent);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin: 1rem;
+      }
+      
+      .launch-btn:hover {
+        background: var(--theme-accent-dark);
+        transform: translateY(-2px);
+      }
+      
+      .game-info {
+        margin-bottom: 1rem;
+        color: var(--theme-text-secondary);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="glass-nav top-nav">
+      <div class="nav-container">
+        <div class="nav-links-header">
+          <a href="/" class="glass-button">Home</a>
+          <nav class="nav-links">
+            <a href="/portfolio/" class="glass-button">Portfolio</a>
+            <a href="/games/" class="glass-button">Games</a>
+            <a href="/search/" class="glass-button">Search</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+    
+    <div class="game-launch-container">
+      <div class="game-info">
+        <h2>{{ page.title }}</h2>
+        <p>Click the button below to launch this game in a window</p>
+      </div>
+      <button class="launch-btn" onclick="launchGameInWindow('{{ page.name | remove: '.md' }}', '{{ page.title }}')">
+        🎮 Launch {{ page.title }} in Window
+      </button>
+    </div>
+
+    {{ content }}
+
+    <script>
+      function launchGameInWindow(gameId, gameTitle) {
+        if (window.windowManager) {
+          window.windowManager.createWindow(gameId, gameTitle);
+        } else {
+          // Fallback: try to navigate to the game page
+          window.location.href = '/{{ page.name | remove: '.md' }}/';
+        }
+      }
+    </script>
+  </body>
+</html> 

@@ -1,7 +1,8 @@
 ---
 layout: default
-title: Music
+title: Music Player
 permalink: /music/
+icon: 🎵
 ---
 
 <div class="main-content">

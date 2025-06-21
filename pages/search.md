@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Search
+title: Search & Pin
+permalink: /search/
+icon: 🔍
 ---
 
 <style>
@@ -35,12 +37,8 @@ title: Search
   border: 1px solid var(--glass-border-light);
   border-radius: 12px;
   padding: 1.5rem;
-  transition: all 0.3s ease;
-}
-.website-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--glass-shadow-medium);
-  border-color: var(--glass-border-medium);
+  position: relative;
+  /* Removed animations from base card */
 }
 .website-card h4 a {
   color: var(--theme-accent);
@@ -64,67 +62,158 @@ title: Search
   border-radius: 6px;
   font-size: 0.8rem;
 }
+
+.bookmark-btn.bookmarked {
+  background: var(--theme-accent);
+  color: white;
+}
+
+.desktop-btn.on-desktop {
+  background: var(--theme-success);
+  color: white;
+}
+
+.desktop-btn.on-desktop:hover {
+  background: var(--theme-success-dark);
+}
+
+/* Star button styles */
+.star-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: var(--glass-bg-medium);
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  z-index: 10;
+  backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border-light);
+}
+
+.star-button:hover {
+  background: var(--glass-bg-heavy);
+  color: var(--theme-accent);
+  transform: scale(1.1);
+}
+
+.star-button.bookmarked {
+  color: #ffd700;
+  background: var(--glass-bg-heavy);
+}
+
+.star-button.bookmarked:hover {
+  color: #ffed4e;
+  transform: scale(1.1);
+}
+
+.star-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.star-button.disabled:hover {
+  transform: none;
+  background: var(--glass-bg-medium);
+  color: var(--theme-text-secondary);
+}
+
+/* Responsive adjustments for chat layout */
+@media (max-width: 768px) {
+  .main-content > div:last-child {
+    flex-direction: column;
+  }
+  
+  .main-content > div:last-child > div:first-child {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .main-content > div:last-child > div:first-child > div {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .main-content > div:last-child > div:first-child .glass-button {
+    width: auto;
+    flex: 1;
+    min-width: 120px;
+  }
+}
 </style>
 
 <div class="main-content">
-  <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
-    <header class="page-header" style="margin-bottom: 0; text-align: center;">
-        <h1>some cool or helpful websites</h1>
-        <p>Discover amazing tools, resources, and websites</p>
-      </header>
-  </div>
-  
-  <div class="search-section" style="margin-bottom: 2rem;">
-    <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px; padding: 1rem;">
-    
-    <!-- Filter Buttons -->
-    <div class="filter-buttons" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
-      <button class="filter-btn glass-button active" data-filter="all">All</button>
-      <button class="filter-btn glass-button" data-filter="personal">Personal</button>
-      <button class="filter-btn glass-button" data-filter="tools">Tools</button>
-      <button class="filter-btn glass-button" data-filter="company">Company</button>
-      <button class="filter-btn glass-button" data-filter="documentation">Documentation</button>
-      <button class="filter-btn glass-button" data-filter="repository">Repository</button>
-      <button class="filter-btn glass-button" data-filter="archive">Archive</button>
-      <button class="filter-btn glass-button" data-filter="in-construction">🚧 In Construction</button>
-      <button class="filter-btn glass-button" data-filter="github-portfolio">📁 GitHub Portfolio</button>
+  <div class="glass-container">
+    <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
+      <header class="page-header" style="margin-bottom: 0; text-align: center;">
+          <h1>some cool or helpful websites</h1>
+          <p>Discover amazing tools, resources, and websites</p>
+        </header>
     </div>
-  </div>
-
-  <!-- Social & Forums Section -->
-  <div class="social-forums-section" style="display: flex; gap: 1.5rem; margin-bottom: 2rem;">
     
-    <!-- Social Websites Container -->
-    <div class="glass-card" style="flex: 3; padding: 2rem;">
-      <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Social Websites</h3>
-      <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-        <a href="https://twitter.com" class="glass-button" target="_blank">Twitter</a>
-        <a href="https://discord.com" class="glass-button" target="_blank">Discord</a>
-        <a href="https://youtube.com" class="glass-button" target="_blank">YouTube</a>
-        <a href="https://twitch.tv" class="glass-button" target="_blank">Twitch</a>
-        <a href="https://github.com" class="glass-button" target="_blank">GitHub</a>
-        <a href="https://dev.to" class="glass-button" target="_blank">Dev.to</a>
-        <a href="https://dribbble.com" class="glass-button" target="_blank">Dribbble</a>
-        <a href="https://behance.net" class="glass-button" target="_blank">Behance</a>
-        <a href="https://pinterest.com" class="glass-button" target="_blank">Pinterest</a>
-        <a href="https://medium.com" class="glass-button" target="_blank">Medium</a>
-        <a href="https://hashnode.com" class="glass-button" target="_blank">Hashnode</a>
+    <div class="search-section" style="margin-bottom: 2rem;">
+      <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px; padding: 1rem;">
+      
+      <!-- Filter Buttons -->
+      <div class="filter-buttons" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        <button class="filter-btn glass-button active" data-filter="all">All</button>
+        <button class="filter-btn glass-button" data-filter="personal">Personal</button>
+        <button class="filter-btn glass-button" data-filter="tools">Tools</button>
+        <button class="filter-btn glass-button" data-filter="company">Company</button>
+        <button class="filter-btn glass-button" data-filter="documentation">Documentation</button>
+        <button class="filter-btn glass-button" data-filter="repository">Repository</button>
+        <button class="filter-btn glass-button" data-filter="archive">Archive</button>
+        <button class="filter-btn glass-button" data-filter="in-construction">🚧 In Construction</button>
+        <button class="filter-btn glass-button" data-filter="github-portfolio">📁 GitHub Portfolio</button>
+        <button class="filter-btn glass-button" data-filter="bookmark">🔖 Bookmarks</button>
       </div>
     </div>
-    
-    <!-- Forums & Communities Container -->
-    <div class="glass-card" style="flex: 1; padding: 2rem;">
-      <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Forums & Communities</h3>
-      <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-        <a href="https://stackoverflow.com" class="glass-button" target="_blank">Stack Overflow</a>
-        <a href="https://reddit.com/r/art" class="glass-button" target="_blank">r/art</a>
+
+    <!-- Social & Forums Section -->
+    <div class="social-forums-section" style="display: flex; gap: 1.5rem; margin-bottom: 2rem;">
+      
+      <!-- Social Websites Container -->
+      <div class="glass-card" style="flex: 3; padding: 2rem;">
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Social Websites</h3>
+        <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+          <a href="https://twitter.com" class="glass-button" target="_blank">Twitter</a>
+          <a href="https://discord.com" class="glass-button" target="_blank">Discord</a>
+          <a href="https://youtube.com" class="glass-button" target="_blank">YouTube</a>
+          <a href="https://twitch.tv" class="glass-button" target="_blank">Twitch</a>
+          <a href="https://github.com" class="glass-button" target="_blank">GitHub</a>
+          <a href="https://dev.to" class="glass-button" target="_blank">Dev.to</a>
+          <a href="https://dribbble.com" class="glass-button" target="_blank">Dribbble</a>
+          <a href="https://behance.net" class="glass-button" target="_blank">Behance</a>
+          <a href="https://pinterest.com" class="glass-button" target="_blank">Pinterest</a>
+          <a href="https://medium.com" class="glass-button" target="_blank">Medium</a>
+          <a href="https://hashnode.com" class="glass-button" target="_blank">Hashnode</a>
+        </div>
+      </div>
+      
+      <!-- Forums & Communities Container -->
+      <div class="glass-card" style="flex: 1; padding: 2rem;">
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Forums & Communities</h3>
+        <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+          <a href="https://stackoverflow.com" class="glass-button" target="_blank">Stack Overflow</a>
+          <a href="https://reddit.com/r/art" class="glass-button" target="_blank">r/art</a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="glass-card" style="padding: 2rem;">
-    <div class="website-grid" id="websiteGrid">
-      <!-- Websites will be populated here -->
+    <div class="glass-card" style="padding: 2rem;">
+      <div class="website-grid" id="websiteGrid">
+        <!-- Websites will be populated here -->
+      </div>
     </div>
   </div>
 </div>
@@ -536,31 +625,206 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterButtons = document.querySelectorAll('.filter-btn');
   let activeFilter = 'all';
 
+  // Load bookmarked sites from cookies
+  function loadBookmarks() {
+    const bookmarks = getCookie('bookmarkedSites');
+    return bookmarks ? JSON.parse(bookmarks) : [];
+  }
+
+  // Save bookmarked sites to cookies
+  function saveBookmarks(bookmarks) {
+    setCookie('bookmarkedSites', JSON.stringify(bookmarks), 365);
+  }
+
+  // Cookie helper functions
+  function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/';
+  }
+
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+  }
+
+  // Add bookmark to a site
+  function addBookmark(site) {
+    const bookmarks = loadBookmarks();
+    if (!bookmarks.find(b => b.url === site.url)) {
+      bookmarks.push(site);
+      saveBookmarks(bookmarks);
+      return true;
+    }
+    return false;
+  }
+
+  // Remove bookmark from a site
+  function removeBookmark(site) {
+    const bookmarks = loadBookmarks();
+    const filteredBookmarks = bookmarks.filter(b => b.url !== site.url);
+    saveBookmarks(filteredBookmarks);
+    
+    // Also remove from desktop if it exists there
+    if (window.desktopManager) {
+      window.desktopManager.removeBookmarkFromDesktop(site.url);
+    }
+    
+    return filteredBookmarks.length !== bookmarks.length;
+  }
+
+  // Add bookmark to desktop
+  function addToDesktop(site) {
+    if (window.desktopManager) {
+      window.desktopManager.addBookmarkToDesktop(site);
+      return true;
+    } else {
+      console.warn('Desktop manager not available');
+      return false;
+    }
+  }
+
+  // Remove bookmark from desktop
+  function removeFromDesktop(site) {
+    if (window.desktopManager) {
+      window.desktopManager.removeBookmarkFromDesktop(site.url);
+      return true;
+    } else {
+      console.warn('Desktop manager not available');
+      return false;
+    }
+  }
+
+  // Check if a site is bookmarked
+  function isBookmarked(site) {
+    const bookmarks = loadBookmarks();
+    return bookmarks.some(b => b.url === site.url);
+  }
+
+  // Check if a site is on desktop
+  function isOnDesktop(site) {
+    if (window.desktopManager) {
+      const iconId = `bookmark-${site.url.replace(/[^a-zA-Z0-9]/g, '')}`;
+      return document.getElementById(iconId) !== null;
+    }
+    return false;
+  }
+
+  // Check if cookies are accepted
+  function cookiesAccepted() {
+    const consent = getCookie('cookie_consent');
+    return consent === 'accepted';
+  }
+
+  // Show cookie consent message
+  function showCookieMessage() {
+    const message = document.createElement('div');
+    message.className = 'glass-card';
+    message.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      padding: 1rem;
+      background: var(--glass-bg-heavy);
+      border: 1px solid var(--glass-border-medium);
+      border-radius: 8px;
+      box-shadow: var(--glass-shadow-heavy);
+      max-width: 300px;
+      animation: slideIn 0.3s ease;
+    `;
+    message.innerHTML = `
+      <p style="margin: 0 0 0.5rem 0; color: var(--theme-text); font-weight: 600;">🍪 Cookie Required</p>
+      <p style="margin: 0; color: var(--theme-text-secondary); font-size: 0.9rem;">
+        Please accept cookies to use the bookmark feature.
+      </p>
+    `;
+    
+    document.body.appendChild(message);
+    
+    // Remove message after 3 seconds
+    setTimeout(() => {
+      if (message.parentNode) {
+        message.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => message.remove(), 300);
+      }
+    }, 3000);
+  }
+
+  // Add CSS animations for the message
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+
   function renderSites(filter = 'all', searchTerm = '') {
     grid.innerHTML = '';
     searchTerm = searchTerm.toLowerCase();
 
-    const filteredSites = sites.filter(site => {
-      const matchesFilter = filter === 'all' || site.tags.includes(filter);
-      const matchesSearch = searchTerm === '' || 
-                            site.title.toLowerCase().includes(searchTerm) || 
-                            site.description.toLowerCase().includes(searchTerm) || 
-                            site.tags.some(tag => tag.toLowerCase().includes(searchTerm));
-      return matchesFilter && matchesSearch;
-    });
+    let filteredSites;
+    
+    if (filter === 'bookmark') {
+      // Show only bookmarked sites
+      filteredSites = loadBookmarks();
+    } else {
+      // Filter from all sites
+      filteredSites = sites.filter(site => {
+        const matchesFilter = filter === 'all' || site.tags.includes(filter);
+        const matchesSearch = searchTerm === '' || 
+                              site.title.toLowerCase().includes(searchTerm) || 
+                              site.description.toLowerCase().includes(searchTerm) || 
+                              site.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+        return matchesFilter && matchesSearch;
+      });
+      
+      // Also include bookmarked sites that match the search term (if not already in results)
+      if (searchTerm !== '') {
+        const bookmarks = loadBookmarks();
+        const matchingBookmarks = bookmarks.filter(site => {
+          const matchesSearch = site.title.toLowerCase().includes(searchTerm) || 
+                               site.description.toLowerCase().includes(searchTerm) || 
+                               site.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+          const notAlreadyIncluded = !filteredSites.some(s => s.url === site.url);
+          return matchesSearch && notAlreadyIncluded;
+        });
+        filteredSites = [...filteredSites, ...matchingBookmarks];
+      }
+    }
 
     if (filteredSites.length === 0) {
       grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No sites found matching your criteria.</p>';
       return;
     }
     
-    // Group sites by tag
-    const groups = {
-        'Personal Sites': filteredSites.filter(s => s.tags.includes('personal')),
-        'Tools & Resources': filteredSites.filter(s => s.tags.includes('tools') && !s.tags.includes('personal')),
-        'Company & Platform': filteredSites.filter(s => s.tags.includes('company') && !s.tags.includes('tools') && !s.tags.includes('personal')),
-        'Uncategorized': filteredSites.filter(s => !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
-    };
+    // Group sites by tag (only for non-bookmark filters)
+    let groups;
+    if (filter === 'bookmark') {
+      groups = {
+        'Bookmarked Sites': filteredSites
+      };
+    } else {
+      groups = {
+          'Personal Sites': filteredSites.filter(s => s.tags.includes('personal')),
+          'Tools & Resources': filteredSites.filter(s => s.tags.includes('tools') && !s.tags.includes('personal')),
+          'Company & Platform': filteredSites.filter(s => s.tags.includes('company') && !s.tags.includes('tools') && !s.tags.includes('personal')),
+          'Bookmarked Sites': filteredSites.filter(s => isBookmarked(s) && !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
+          'Uncategorized': filteredSites.filter(s => !isBookmarked(s) && !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
+      };
+    }
 
     Object.entries(groups).forEach(([groupName, sitesInGroup]) => {
         if (sitesInGroup.length === 0) return;
@@ -581,15 +845,33 @@ document.addEventListener('DOMContentLoaded', () => {
         groupGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;';
 
         sitesInGroup.forEach(site => {
+            const isBookmarked = isBookmarked(site);
+            const isOnDesktop = isOnDesktop(site);
+            const cookiesOk = cookiesAccepted();
             const card = document.createElement('div');
             card.className = 'website-card';
             card.innerHTML = `
+                <button class="star-button ${isBookmarked ? 'bookmarked' : ''} ${!cookiesOk ? 'disabled' : ''}" 
+                        data-site='${JSON.stringify(site)}' 
+                        title="${cookiesOk ? (isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks') : 'Accept cookies to bookmark'}"
+                        onclick="handleStarClick(event, '${site.url}')">
+                    ${isBookmarked ? '⭐' : '☆'}
+                </button>
                 <h4><a href="${site.url}" target="_blank">${site.title}</a></h4>
                 <p>${site.description}</p>
                 <div class="tags">
                     ${site.tags.map(tag => `<span>${tag}</span>`).join('')}
                 </div>
-                <button class="pin-btn glass-button" data-site='${JSON.stringify(site)}'>Pin</button>
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <button class="bookmark-btn glass-button ${isBookmarked ? 'bookmarked' : ''}" data-site='${JSON.stringify(site)}'>
+                        ${isBookmarked ? '🔖 Unbookmark' : '🔖 Bookmark'}
+                    </button>
+                    ${isBookmarked ? `
+                        <button class="desktop-btn glass-button ${isOnDesktop ? 'on-desktop' : ''}" data-site='${JSON.stringify(site)}'>
+                            ${isOnDesktop ? '🖥️ Remove from Desktop' : '🖥️ Add to Desktop'}
+                        </button>
+                    ` : ''}
+                </div>
             `;
             groupGrid.appendChild(card);
         });
@@ -616,12 +898,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Pinning logic (assuming it exists and works)
+  // Bookmark and desktop logic
   grid.addEventListener('click', function(e) {
-      if (e.target.matches('.pin-btn')) {
-          // ... pinning logic
+      if (e.target.matches('.bookmark-btn')) {
+          const siteData = JSON.parse(e.target.dataset.site);
+          
+          if (isBookmarked(siteData)) {
+              // Remove bookmark
+              removeBookmark(siteData);
+              e.target.textContent = '🔖 Bookmark';
+              e.target.classList.remove('bookmarked');
+          } else {
+              // Add bookmark
+              addBookmark(siteData);
+              e.target.textContent = '🔖 Unbookmark';
+              e.target.classList.add('bookmarked');
+          }
+          
+          // If we're currently viewing bookmarks, re-render to update the list
+          if (activeFilter === 'bookmark') {
+              renderSites(activeFilter, searchBar.value);
+          }
+      }
+      
+      if (e.target.matches('.desktop-btn')) {
+          const siteData = JSON.parse(e.target.dataset.site);
+          
+          if (isOnDesktop(siteData)) {
+              // Remove from desktop
+              removeFromDesktop(siteData);
+              e.target.textContent = '🖥️ Add to Desktop';
+              e.target.classList.remove('on-desktop');
+          } else {
+              // Add to desktop
+              addToDesktop(siteData);
+              e.target.textContent = '🖥️ Remove from Desktop';
+              e.target.classList.add('on-desktop');
+          }
       }
   });
+
+  // Handle star button clicks
+  window.handleStarClick = function(event, siteUrl) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    if (!cookiesAccepted()) {
+      showCookieMessage();
+      return;
+    }
+    
+    const siteData = JSON.parse(event.target.dataset.site);
+    
+    if (isBookmarked(siteData)) {
+      // Remove bookmark
+      removeBookmark(siteData);
+      event.target.innerHTML = '☆';
+      event.target.classList.remove('bookmarked');
+      event.target.title = 'Add to bookmarks';
+    } else {
+      // Add bookmark
+      addBookmark(siteData);
+      event.target.innerHTML = '⭐';
+      event.target.classList.add('bookmarked');
+      event.target.title = 'Remove from bookmarks';
+    }
+    
+    // If we're currently viewing bookmarks, re-render to update the list
+    if (activeFilter === 'bookmark') {
+      renderSites(activeFilter, searchBar.value);
+    }
+  };
 
 });
 </script>
