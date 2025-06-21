@@ -20,7 +20,7 @@ permalink: /portfolio/
       <a href="https://buymeacoffee.com/eosyn" target="_blank" rel="noopener noreferrer" class="glass-button">☕ Buy Me a Coffee</a>
       <a href="https://patreon.com/eosyn" target="_blank" rel="noopener noreferrer" class="glass-button">❤️ Patreon</a>
       <a href="https://redbubble.com/people/eosyn" target="_blank" rel="noopener noreferrer" class="glass-button">🎨 Redbubble</a>
-    </div>
+    </div>hey
 
     <!-- Main Content: Two-Column Layout -->
     <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
@@ -31,11 +31,11 @@ permalink: /portfolio/
           <h2>Artwork</h2>
         </header>
         <div class="art-grid">
-          <a href="#"><div class="art-card" data-art-category="digital"><h3>[Digital Art]</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="ink"><h3>[Ink]</h3></div></a>
+          <a href="/artpages/digital/"><div class="art-card" data-art-category="digital"><h3>[Digital Art]</h3></div></a>
+          <a href="/artpages/traditional/"><div class="art-card" data-art-category="ink"><h3>[Traditional Art]</h3></div></a>
+          <a href="/artpages/3d/"><div class="art-card" data-art-category="3d_modeling"><h3>[3D Modeling]</h3></div></a>
           <a href="#"><div class="art-card" data-art-category="watercolor"><h3>[Watercolor]</h3></div></a>
           <a href="#"><div class="art-card" data-art-category="sketching"><h3>[Sketching]</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="3d_modeling"><h3>[3D Modeling]</h3></div></a>
           <a href="#"><div class="art-card" data-art-category="mixed_media"><h3>[Mixed Media]</h3></div></a>
         </div>
       </div>
@@ -46,7 +46,7 @@ permalink: /portfolio/
           <h2>Projects</h2>
           <p>A collection of my software development work.</p>
         </header>
-        <a href="/projects/" class="glass-button">View Projects</a>
+        <a href="/pages/projects/" class="glass-button">View Projects</a>
       </div>
 
     </div> <!-- End Two-Column Layout -->

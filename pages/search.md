@@ -58,6 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const sites = [
     {
+        title: "Example Site",
+        description: "A dummy example site for testing the tpot tag functionality",
+        url: "https://examplelink.com",
+        tags: ["tpot", "example", "dummy"],
+    },
+    {
         title: "GitHub",
         description: "The world's leading software development platform",
         url: "https://github.com",
@@ -73,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "CSS-Tricks",
         description: "Tips, tricks, and techniques for CSS",
         url: "https://css-tricks.com",
-        tags: ["personal", "tools", "documentation", "css-learning", "tutorials", "examples", "reference", "frontend", "styling", "layout", "responsive-design"],
+        tags: ["personal", "tpot", "tools", "documentation", "css-learning", "tutorials", "examples", "reference", "frontend", "styling", "layout", "responsive-design"],
     },
     {
         title: "Smashing Magazine",
@@ -91,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "Codrops",
         description: "Creative front-end resources and inspiration",
         url: "https://tympanus.net/codrops",
-        tags: ["personal", "tools", "documentation", "inspiration", "experiments", "tutorials", "creative-coding", "animations", "interactions", "css-effects", "javascript-effects"],
+        tags: ["personal", "tpot", "tools", "documentation", "inspiration", "experiments", "tutorials", "creative-coding", "animations", "interactions", "css-effects", "javascript-effects"],
     },
     {
         title: "Figma",
@@ -211,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "Can I Use",
         description: "Browser compatibility tables",
         url: "https://caniuse.com",
-        tags: ["tools", "personal", "browser-support", "compatibility", "reference", "web-standards", "css", "javascript", "html", "apis"],
+        tags: ["tools", "personal", "tpot", "browser-support", "compatibility", "reference", "web-standards", "css", "javascript", "html", "apis"],
     },
     {
         title: "Web.dev",
@@ -289,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "CodePen",
         description: "Frontend code playground",
         url: "https://codepen.io",
-        tags: ["tools", "personal", "code-editor", "frontend", "css", "javascript", "html", "inspiration", "showcase", "learning"],
+        tags: ["tools", "personal", "tpot", "code-editor", "frontend", "css", "javascript", "html", "inspiration", "showcase", "learning"],
     },
     {
         title: "Glitch",
@@ -325,19 +331,19 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "Wisk",
         description: "Modern Notion alternative",
         url: "https://wisk.cc",
-        tags: ["tools", "personal", "note-taking", "project-management", "collaboration", "organization", "documentation", "databases", "templates", "knowledge-base"],
+        tags: ["tools", "personal", "tpot", "note-taking", "project-management", "collaboration", "organization", "documentation", "databases", "templates", "knowledge-base"],
     },
     {
         title: "cameronsworld",
         description: "Web aesthetic archive and inspiration",
         url: "https://cameronsworld.net",
-        tags: ["personal", "tools", "inspiration", "web-aesthetics", "archive", "retro-web", "design-inspiration", "creative-coding"],
+        tags: ["personal", "tpot", "tools", "inspiration", "web-aesthetics", "archive", "retro-web", "design-inspiration", "creative-coding"],
     },
     {
         title: "everything2",
         description: "Collaborative writing and knowledge base",
         url: "https://everything2.com",
-        tags: ["personal", "tools", "collaborative-writing", "knowledge-base", "community", "articles", "learning", "reference"],
+        tags: ["personal", "tpot", "tools", "collaborative-writing", "knowledge-base", "community", "articles", "learning", "reference"],
     },
     {
         title: "codespaced.com",
@@ -349,13 +355,13 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "strwb.com",
         description: "Personal website and portfolio",
         url: "https://strwb.com",
-        tags: ["personal", "tools", "portfolio", "personal-site", "inspiration", "web-design"],
+        tags: ["personal", "tpot", "tools", "portfolio", "personal-site", "inspiration", "web-design"],
     },
     {
         title: "cyb3r17.space",
         description: "Personal portfolio with ML focus",
         url: "https://cyb3r17.space",
-        tags: ["personal", "tools", "portfolio", "machine-learning", "personal-site", "ai", "research"],
+        tags: ["personal", "tpot", "tools", "portfolio", "machine-learning", "personal-site", "ai", "research"],
     },
     {
         title: "Wayback Machine",
@@ -367,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "Archive.today",
         description: "Web archiving service",
         url: "https://archive.today",
-        tags: ["tools", "personal", "archive", "web-snapshots", "research", "reference", "historical-data"],
+        tags: ["tools", "personal", "tpot", "archive", "web-snapshots", "research", "reference", "historical-data"],
     },
     {
         title: "GitLab",
@@ -385,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "Hacker News",
         description: "Social news website focusing on computer science and entrepreneurship",
         url: "https://news.ycombinator.com",
-        tags: ["tools", "personal", "news", "community", "programming", "technology", "discussion", "startups"],
+        tags: ["tools", "personal", "tpot", "news", "community", "programming", "technology", "discussion", "startups"],
     },
     {
         title: "Convert Tool",
@@ -394,6 +400,9 @@ document.addEventListener('DOMContentLoaded', () => {
         tags: ["tools", "repository", "cli-tool", "image-conversion", "markdown", "pdf", "utilities"],
     }
   ];
+
+  // Expose sites array globally for other pages to access
+  window.globalSites = sites;
 
   const searchBar = document.getElementById('searchBar');
   const websiteGrid = document.getElementById('websiteGrid');

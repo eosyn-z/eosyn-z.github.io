@@ -13,6 +13,14 @@ If this fails, rollback to:
 -->
 
 <div class="main-content">
+  <!-- TPOT Sites Scrolling List -->
+  <div class="glass-card" style="margin-bottom: 2rem;">
+    <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--theme-text);">TPOT Sites</h3>
+    <div class="tpot-sites-scroll" id="tpotSitesScroll">
+      <!-- TPOT sites will be populated here -->
+    </div>
+  </div>
+
   <div class="glass-card">
         <h1>
           hi, i'm eosyn!
@@ -74,4 +82,121 @@ If this fails, rollback to:
 // This enables the desktop mode with icons and wallpaper
 // If this fails, remove this entire script tag
 document.body.classList.add('desktop-mode');
+
+// TPOT Sites Scrolling List
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait for globalSites to be available (from search.md)
+  const checkForSites = setInterval(() => {
+    if (window.globalSites) {
+      clearInterval(checkForSites);
+      populateTpotSites();
+    }
+  }, 100);
+});
+
+function populateTpotSites() {
+  const tpotSitesScroll = document.getElementById('tpotSitesScroll');
+  if (!tpotSitesScroll || !window.globalSites) return;
+
+  // Filter sites with "tpot" tag
+  const tpotSites = window.globalSites.filter(site => 
+    site.tags && site.tags.includes('tpot')
+  );
+
+  if (tpotSites.length === 0) {
+    tpotSitesScroll.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No TPOT sites found.</p>';
+    return;
+  }
+
+  // Create scrolling list of buttons
+  tpotSitesScroll.innerHTML = tpotSites.map(site => `
+    <a href="${site.url}" target="_blank" class="tpot-site-btn">
+      <span class="tpot-site-title">${site.title}</span>
+      <span class="tpot-site-desc">${site.description}</span>
+    </a>
+  `).join('');
+}
 </script>
+
+<style>
+/* TPOT Sites Scrolling List Styles */
+.tpot-sites-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--glass-border-medium) transparent;
+}
+
+.tpot-sites-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tpot-sites-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tpot-sites-scroll::-webkit-scrollbar-thumb {
+  background: var(--glass-border-medium);
+  border-radius: 3px;
+}
+
+.tpot-site-btn {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 1rem;
+  background: var(--glass-bg-medium);
+  border: 1px solid var(--glass-border-light);
+  border-radius: var(--glass-border-radius);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  backdrop-filter: var(--glass-blur-medium);
+  box-shadow: var(--glass-shadow-light);
+  white-space: nowrap;
+}
+
+.tpot-site-btn:hover {
+  background: var(--glass-bg-heavy);
+  border-color: var(--glass-border-medium);
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-medium);
+}
+
+.tpot-site-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--theme-text);
+}
+
+.tpot-site-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tpot-site-btn {
+    min-width: 160px;
+    padding: 0.75rem;
+  }
+  
+  .tpot-site-title {
+    font-size: 0.9rem;
+  }
+  
+  .tpot-site-desc {
+    font-size: 0.8rem;
+  }
+}
+</style>

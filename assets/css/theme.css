@@ -958,9 +958,13 @@ p {
 .art-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: 2rem; /* Increased gap for better separation */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Ensure art cards don't overlap and have proper spacing */
 .art-card {
   height: 200px;
   background-size: cover;
@@ -974,21 +978,20 @@ p {
   padding: 1rem;
   box-shadow: var(--glass-shadow-light);
   transition: all 0.3s ease;
-  opacity: 1; /* For fade transition */
+  opacity: 1;
+  margin: 0;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
-.art-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
+/* Ensure grid items don't overflow and maintain spacing */
+.art-grid > * {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
+/* Prevent text overflow in art cards */
 .art-card h3 {
   color: white;
   margin: 0;
@@ -997,15 +1000,133 @@ p {
   z-index: 2;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
-.art-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--glass-shadow-heavy);
+/* Ensure glass cards have consistent spacing */
+.glass-card {
+  background-color: var(--glass-bg-light);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--glass-shadow-light);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
 }
 
-.art-card:hover::before {
-  opacity: 1;
+/* Ensure tile grids have consistent gaps */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem; /* Increased gap for better separation */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tile-grid > * {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ensure images don't overflow their containers */
+img {
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* Prevent any potential z-index issues */
+.glass-container {
+  position: relative;
+  z-index: 1;
+}
+
+.glass-card {
+  position: relative;
+  z-index: 1;
+}
+
+.glass-panel {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure proper spacing between sections */
+div[style*="margin-bottom: 3rem"] {
+  margin-bottom: 3rem !important;
+}
+
+div[style*="margin-bottom: 2rem"] {
+  margin-bottom: 2rem !important;
+}
+
+/* Prevent horizontal overflow */
+.main-content {
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.glass-container {
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Specific spacing for art page grid layouts */
+div[style*="display: grid"] {
+  gap: 2rem !important; /* Force consistent gaps */
+}
+
+/* Ensure art page sections have proper spacing */
+div[style*="margin-bottom: 3rem"] {
+  margin-bottom: 3rem !important;
+}
+
+/* Ensure responsive behavior with consistent gaps */
+@media (max-width: 768px) {
+  .tile-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem; /* Maintain good spacing on tablets */
+  }
+  
+  .art-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem; /* Maintain good spacing on tablets */
+  }
+  
+  .glass-card {
+    padding: 1rem;
+  }
+  
+  div[style*="display: grid"] {
+    gap: 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .tile-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem; /* Still maintain spacing on mobile */
+  }
+  
+  .art-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem; /* Still maintain spacing on mobile */
+  }
+  
+  div[style*="display: grid"] {
+    gap: 1rem !important;
+  }
 }
 
 /* ===== Windowed App System ===== */
@@ -2913,4 +3034,179 @@ body:not(.desktop-mode) .window {
 .desktop-mode .sticky-note {
   position: absolute !important;
   z-index: 100;
+}
+
+/* Art Page Specific Styles - Prevent Overlap */
+.art-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem; /* Increased gap for better separation */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure art cards don't overlap and have proper spacing */
+.art-card {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--glass-border-radius);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1rem;
+  box-shadow: var(--glass-shadow-light);
+  transition: all 0.3s ease;
+  opacity: 1;
+  margin: 0;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Ensure grid items don't overflow and maintain spacing */
+.art-grid > * {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Prevent text overflow in art cards */
+.art-card h3 {
+  color: white;
+  margin: 0;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Ensure glass cards have consistent spacing */
+.glass-card {
+  background-color: var(--glass-bg-light);
+  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--glass-shadow-light);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Ensure tile grids have consistent gaps */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem; /* Increased gap for better separation */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tile-grid > * {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ensure images don't overflow their containers */
+img {
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* Prevent any potential z-index issues */
+.glass-container {
+  position: relative;
+  z-index: 1;
+}
+
+.glass-card {
+  position: relative;
+  z-index: 1;
+}
+
+.glass-panel {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure proper spacing between sections */
+div[style*="margin-bottom: 3rem"] {
+  margin-bottom: 3rem !important;
+}
+
+div[style*="margin-bottom: 2rem"] {
+  margin-bottom: 2rem !important;
+}
+
+/* Prevent horizontal overflow */
+.main-content {
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.glass-container {
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Specific spacing for art page grid layouts */
+div[style*="display: grid"] {
+  gap: 2rem !important; /* Force consistent gaps */
+}
+
+/* Ensure art page sections have proper spacing */
+div[style*="margin-bottom: 3rem"] {
+  margin-bottom: 3rem !important;
+}
+
+/* Ensure responsive behavior with consistent gaps */
+@media (max-width: 768px) {
+  .tile-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem; /* Maintain good spacing on tablets */
+  }
+  
+  .art-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem; /* Maintain good spacing on tablets */
+  }
+  
+  .glass-card {
+    padding: 1rem;
+  }
+  
+  div[style*="display: grid"] {
+    gap: 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .tile-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem; /* Still maintain spacing on mobile */
+  }
+  
+  .art-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem; /* Still maintain spacing on mobile */
+  }
+  
+  div[style*="display: grid"] {
+    gap: 1rem !important;
+  }
 }
