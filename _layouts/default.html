@@ -6,6 +6,14 @@
   <body data-theme="c">
     <header class="glass-nav top-nav">
       <div class="nav-container">
+        <!-- View Toggle -->
+        <div class="view-toggle-container">
+          <button id="view-toggle" class="view-toggle-btn glass-button" title="Toggle Desktop Mode">
+            <span class="view-icon website">🌐</span>
+            <span class="view-icon desktop" style="display: none;">🖥️</span>
+          </button>
+        </div>
+
         <!-- Website Mode Navigation -->
         <div class="nav-links-header">
           <a href="/" class="glass-button">Home</a>
@@ -16,7 +24,6 @@
             <a href="/pages/nature/" class="glass-button">Nature</a>
             <a href="/pages/search/" class="glass-button">Search</a>
             <a href="/pages/chat/" class="glass-button">Chat</a>
-            <a href="/desktop/" class="glass-button">🖥️ Desktop</a>
           </nav>
         </div>
         
@@ -26,13 +33,6 @@
         </div>
         
         <div class="header-controls">
-          <!-- View Toggle -->
-          <div class="view-toggle-container">
-            <button id="view-toggle" class="view-toggle-btn glass-button" title="Toggle Desktop Mode">
-              <span class="view-icon website">🌐</span>
-              <span class="view-icon desktop" style="display: none;">🖥️</span>
-            </button>
-          </div>
           <div class="theme-buttons">
             <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
             <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
@@ -46,7 +46,9 @@
         </div>
       </div>
     </header>
-    {{ content }}
+    <main class="main-content glass-container">
+      {{ content }}
+    </main>
     {%- if page.url == "/" or page.url == "/index.html" or page.url == "" or page.url == nil -%}
     <!-- Cookie Consent -->
     <div class="cookie-consent glass-card" id="cookieConsent" style="display: none;">

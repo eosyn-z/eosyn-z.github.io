@@ -219,6 +219,17 @@ html {
   transition: all 0.3s ease;
 }
 
+.view-toggle-container {
+  position: fixed;
+  top: 16px;
+  left: 24px;
+  z-index: 1001; /* Above the nav bar */
+}
+
+.nav-links-header {
+  margin-left: 80px; /* Add space for the toggle button */
+}
+
 /* --- Main Content Area --- */
 .main-content {
   padding: 120px 20px 100px 20px;
