@@ -568,3 +568,5 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPinnedSites(); // Render pinned sites on load
 });
 </script>
+
+</div>

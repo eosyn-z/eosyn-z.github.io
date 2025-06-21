@@ -1,5 +1,3 @@
-import { WallpaperPicker } from '../wallpaper/picker.js';
-
 class DesktopManager {
   constructor() {
     this.desktop = document.body;
@@ -7,9 +5,6 @@ class DesktopManager {
     this.currentWallpaper = '';
     this.iconSize = 64;
     this.iconSpacing = 20;
-    
-    // Initialize wallpaper picker
-    this.wallpaperPicker = new WallpaperPicker(this);
     
     this.loadDesktopState();
     this.initializeDesktop();
@@ -359,7 +354,111 @@ class DesktopManager {
 
   // Show wallpaper picker
   showWallpaperPicker() {
-    this.wallpaperPicker.showWallpaperPicker();
+    const pickerHTML = `
+      <div class="wallpaper-picker-overlay" id="wallpaperPickerOverlay">
+        <div class="wallpaper-picker-modal">
+          <div class="wallpaper-picker-header">
+            <h3>Wallpaper Picker</h3>
+            <button class="close-btn" onclick="this.closest('.wallpaper-picker-overlay').remove()">×</button>
+          </div>
+          
+          <div class="wallpaper-picker-tabs">
+            <button class="tab-btn active" data-tab="default">Default</button>
+            <button class="tab-btn" data-tab="custom">Custom</button>
+            <button class="tab-btn" data-tab="add">Add New</button>
+          </div>
+          
+          <div class="wallpaper-picker-content">
+            <!-- Default Wallpapers Tab -->
+            <div class="tab-content active" id="defaultTab">
+              <div class="wallpaper-grid" id="defaultWallpaperGrid">
+                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-1.jpg">
+                  <img src="/assets/wallpapers/default/desktop-1.jpg" alt="Default Wallpaper 1">
+                  <span>Cosmic</span>
+                </div>
+                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-2.jpg">
+                  <img src="/assets/wallpapers/default/desktop-2.jpg" alt="Default Wallpaper 2">
+                  <span>Aurora</span>
+                </div>
+                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-3.jpg">
+                  <img src="/assets/wallpapers/default/desktop-3.jpg" alt="Default Wallpaper 3">
+                  <span>Nebula</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Custom Wallpapers Tab -->
+            <div class="tab-content" id="customTab">
+              <div class="wallpaper-grid" id="customWallpaperGrid">
+                <!-- Custom wallpapers will be loaded here -->
+              </div>
+            </div>
+            
+            <!-- Add New Tab -->
+            <div class="tab-content" id="addTab">
+              <div class="add-wallpaper-form">
+                <div class="form-group">
+                  <label for="wallpaperUrl">Image URL:</label>
+                  <input type="url" id="wallpaperUrl" placeholder="https://example.com/image.jpg" class="glass-input">
+                </div>
+                <div class="form-group">
+                  <label for="wallpaperName">Name (optional):</label>
+                  <input type="text" id="wallpaperName" placeholder="My Wallpaper" class="glass-input">
+                </div>
+                <button class="glass-button" onclick="desktopManager.addCustomWallpaper()">Add Wallpaper</button>
+                
+                <div class="recommended-sources">
+                  <h4>Recommended Image Sources:</h4>
+                  <ul>
+                    <li><a href="https://unsplash.com" target="_blank">Unsplash</a> - High-quality free photos</li>
+                    <li><a href="https://pexels.com" target="_blank">Pexels</a> - Free stock photos</li>
+                    <li><a href="https://pixabay.com" target="_blank">Pixabay</a> - Free images and videos</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', pickerHTML);
+    
+    // Add tab switching functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabName = btn.dataset.tab;
+        
+        // Update active tab button
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Update active tab content
+        tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById(tabName + 'Tab').classList.add('active');
+        
+        // Load custom wallpapers if switching to custom tab
+        if (tabName === 'custom') {
+          this.loadCustomWallpapers();
+        }
+      });
+    });
+    
+    // Add wallpaper selection functionality
+    const wallpaperItems = document.querySelectorAll('.wallpaper-item');
+    wallpaperItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const wallpaperUrl = item.dataset.wallpaper;
+        this.setWallpaper(wallpaperUrl);
+        document.getElementById('wallpaperPickerOverlay').remove();
+      });
+    });
+    
+    // Load custom wallpapers initially
+    this.loadCustomWallpapers();
   }
 
   // Get custom wallpapers from localStorage
@@ -410,14 +509,16 @@ class DesktopManager {
 
   // Remove custom wallpaper
   removeCustomWallpaper(id) {
-    if (confirm('Are you sure you want to remove this wallpaper?')) {
-      const customWallpapers = this.getCustomWallpapers();
-      const filtered = customWallpapers.filter(w => w.id !== id);
-      this.saveCustomWallpapers(filtered);
-      
-      // Reload wallpaper picker
-      this.wallpaperPicker.loadCustomWallpapers();
+    if (!confirm('Are you sure you want to remove this wallpaper?')) {
+      return;
     }
+
+    const customWallpapers = this.getCustomWallpapers();
+    const filteredWallpapers = customWallpapers.filter(w => w.id !== id);
+    this.saveCustomWallpapers(filteredWallpapers);
+    
+    // Reload wallpaper picker
+    this.loadCustomWallpapers();
   }
 
   // Set wallpaper from URL input
@@ -546,4 +647,88 @@ class DesktopManager {
       }
     }
   }
-} 
+
+  // Load custom wallpapers
+  loadCustomWallpapers() {
+    const customGrid = document.getElementById('customWallpaperGrid');
+    if (!customGrid) return;
+
+    const customWallpapers = this.getCustomWallpapers();
+    
+    if (customWallpapers.length === 0) {
+      customGrid.innerHTML = '<p class="no-wallpapers">No custom wallpapers yet. Add some in the "Add New" tab!</p>';
+      return;
+    }
+
+    customGrid.innerHTML = customWallpapers.map(wallpaper => `
+      <div class="wallpaper-item custom-wallpaper" data-wallpaper="${wallpaper.url}" data-id="${wallpaper.id}">
+        <img src="${wallpaper.url}" alt="${wallpaper.name || 'Custom Wallpaper'}" onerror="this.parentElement.remove()">
+        <span>${wallpaper.name || 'Custom'}</span>
+        <button class="remove-wallpaper-btn" onclick="desktopManager.removeCustomWallpaper('${wallpaper.id}')">×</button>
+      </div>
+    `).join('');
+
+    // Add click handlers for custom wallpapers
+    const customWallpaperItems = customGrid.querySelectorAll('.wallpaper-item');
+    customWallpaperItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('remove-wallpaper-btn')) {
+          const wallpaperUrl = item.dataset.wallpaper;
+          this.setWallpaper(wallpaperUrl);
+          document.getElementById('wallpaperPickerOverlay').remove();
+        }
+      });
+    });
+  }
+
+  // Add custom wallpaper
+  addCustomWallpaper() {
+    const urlInput = document.getElementById('wallpaperUrl');
+    const nameInput = document.getElementById('wallpaperName');
+    
+    const url = urlInput.value.trim();
+    const name = nameInput.value.trim();
+    
+    if (!url) {
+      alert('Please enter a valid image URL');
+      return;
+    }
+
+    // Validate URL
+    try {
+      new URL(url);
+    } catch (error) {
+      alert('Please enter a valid URL');
+      return;
+    }
+
+    const customWallpapers = this.getCustomWallpapers();
+    const newWallpaper = {
+      id: 'custom-' + Date.now(),
+      name: name || 'Custom Wallpaper',
+      url: url,
+      added: new Date().toISOString()
+    };
+    
+    customWallpapers.push(newWallpaper);
+    this.saveCustomWallpapers(customWallpapers);
+    
+    // Clear form
+    urlInput.value = '';
+    nameInput.value = '';
+    
+    // Reload wallpaper picker
+    this.loadCustomWallpapers();
+    
+    // Switch to custom tab
+    const customTab = document.querySelector('[data-tab="custom"]');
+    if (customTab) {
+      customTab.click();
+    }
+  }
+}
+
+// Initialize desktop manager when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  window.desktopManager = new DesktopManager();
+}); 

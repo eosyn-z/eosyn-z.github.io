@@ -85,13 +85,87 @@ document.body.classList.add('desktop-mode');
 
 // TPOT Sites Scrolling List
 document.addEventListener('DOMContentLoaded', function() {
-  // Wait for globalSites to be available (from search.md)
-  const checkForSites = setInterval(() => {
-    if (window.globalSites) {
-      clearInterval(checkForSites);
-      populateTpotSites();
+  // Define sites data directly on this page
+  const sites = [
+    {
+        title: "Example Site",
+        description: "A dummy example site for testing the tpot tag functionality",
+        url: "https://examplelink.com",
+        tags: ["tpot", "example", "dummy"],
+    },
+    {
+        title: "CSS-Tricks",
+        description: "Tips, tricks, and techniques for CSS",
+        url: "https://css-tricks.com",
+        tags: ["personal", "tpot", "tools", "documentation", "css-learning", "tutorials", "examples", "reference", "frontend", "styling", "layout", "responsive-design"],
+    },
+    {
+        title: "Codrops",
+        description: "Creative front-end resources and inspiration",
+        url: "https://tympanus.net/codrops",
+        tags: ["personal", "tpot", "tools", "documentation", "inspiration", "experiments", "tutorials", "creative-coding", "animations", "interactions", "css-effects", "javascript-effects"],
+    },
+    {
+        title: "Can I Use",
+        description: "Browser compatibility tables",
+        url: "https://caniuse.com",
+        tags: ["tools", "personal", "tpot", "browser-support", "compatibility", "reference", "web-standards", "css", "javascript", "html", "apis"],
+    },
+    {
+        title: "CodePen",
+        description: "Frontend code playground",
+        url: "https://codepen.io",
+        tags: ["tools", "personal", "tpot", "code-editor", "frontend", "css", "javascript", "html", "inspiration", "showcase", "learning"],
+    },
+    {
+        title: "Wisk",
+        description: "Modern Notion alternative",
+        url: "https://wisk.cc",
+        tags: ["tools", "personal", "tpot", "note-taking", "project-management", "collaboration", "organization", "documentation", "databases", "templates", "knowledge-base"],
+    },
+    {
+        title: "cameronsworld",
+        description: "Web aesthetic archive and inspiration",
+        url: "https://cameronsworld.net",
+        tags: ["personal", "tpot", "tools", "inspiration", "web-aesthetics", "archive", "retro-web", "design-inspiration", "creative-coding"],
+    },
+    {
+        title: "everything2",
+        description: "Collaborative writing and knowledge base",
+        url: "https://everything2.com",
+        tags: ["personal", "tpot", "tools", "collaborative-writing", "knowledge-base", "community", "articles", "learning", "reference"],
+    },
+    {
+        title: "strwb.com",
+        description: "Personal website and portfolio",
+        url: "https://strwb.com",
+        tags: ["personal", "tpot", "tools", "portfolio", "personal-site", "inspiration", "web-design"],
+    },
+    {
+        title: "cyb3r17.space",
+        description: "Personal portfolio with ML focus",
+        url: "https://cyb3r17.space",
+        tags: ["personal", "tpot", "tools", "portfolio", "machine-learning", "personal-site", "ai", "research"],
+    },
+    {
+        title: "Archive.today",
+        description: "Web archiving service",
+        url: "https://archive.today",
+        tags: ["tools", "personal", "tpot", "archive", "web-snapshots", "research", "reference", "historical-data"],
+    },
+    {
+        title: "Hacker News",
+        description: "Social news website focusing on computer science and entrepreneurship",
+        url: "https://news.ycombinator.com",
+        tags: ["tools", "personal", "tpot", "news", "community", "programming", "technology", "discussion", "startups"],
     }
-  }, 100);
+  ];
+
+  // Make sites available globally
+  window.globalSites = sites;
+  
+  // Populate TPOT sites immediately
+  populateTpotSites();
 });
 
 function populateTpotSites() {
