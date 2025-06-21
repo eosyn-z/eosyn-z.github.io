@@ -61,6 +61,7 @@ icon: 🔍
   padding: 0.3rem 0.7rem;
   border-radius: 6px;
   font-size: 0.8rem;
+  margin: 0.2rem;
 }
 
 .bookmark-btn.bookmarked {
