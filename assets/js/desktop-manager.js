@@ -879,6 +879,16 @@ class DesktopManager {
     // Close modal
     document.querySelector('.glass-modal').remove();
   }
+
+  // Apply window theme settings from the theme editor
+  applyWindowTheme(themeSettings) {
+    console.log('Applying window theme to Desktop Manager:', themeSettings);
+    // Store the settings so new windows can use them
+    this.windowTheme = themeSettings;
+
+    // Note: This only affects new windows. 
+    // The WindowManager will handle applying themes to existing windows.
+  }
 }
 
 // Global initialization

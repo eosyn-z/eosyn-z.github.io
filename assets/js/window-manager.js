@@ -728,32 +728,16 @@ class WindowManager {
             contentDiv.innerHTML = content;
         } else {
             switch (appId) {
-                case 'portfolio':
-                    contentDiv.innerHTML = '<iframe src="/portfolio" style="width:100%;height:100%;border:none;"></iframe>';
-                    break;
-                case 'music':
-                    contentDiv.innerHTML = '<iframe src="/music" style="width:100%;height:100%;border:none;"></iframe>';
-                    break;
-                case 'search':
-                    contentDiv.innerHTML = '<iframe src="/search" style="width:100%;height:100%;border:none;"></iframe>';
-                    break;
-                case 'chat':
-                    contentDiv.innerHTML = '<iframe src="/chat" style="width:100%;height:100%;border:none;"></iframe>';
-                    break;
                 case 'sticky-notes':
-                    contentDiv.innerHTML = this.createStickyNotesContent();
+                    content = this.createStickyNotesContent();
                     break;
-                case 'games':
-                    contentDiv.innerHTML = '<iframe src="/games" style="width:100%;height:100%;border:none;"></iframe>';
-                    break;
-                case 'snake':
-                    contentDiv.innerHTML = '<iframe src="/games/snake" style="width:100%;height:100%;border:none;"></iframe>';
-                    break;
-                case 'tetris':
-                    contentDiv.innerHTML = '<iframe src="/games/tetris" style="width:100%;height:100%;border:none;"></iframe>';
+                case 'window-demo':
+                    content = this.createWindowDemoContent();
                     break;
                 default:
-                    contentDiv.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--theme-text-muted);">App content will load here</div>';
+                    // Try to load content from a page if no special case
+                    this.loadAppContent(appId, window, title);
+                    return; // Return early as loading is async
             }
         }
 
@@ -1005,6 +989,102 @@ class WindowManager {
         }
 
         // Save window states
+        this.saveWindowStates();
+    }
+
+    loadAppContent(appId, windowData, title) {
+        const appUrl = `/${appId}`; // Assumes a page exists at /<appId>
+        console.log(`Loading content for ${title} from ${appUrl}`);
+
+        fetch(appUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok for ${appUrl}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const appContent = doc.querySelector('.main-content') || doc.body;
+
+                if (appContent) {
+                    const contentDiv = windowData.element.querySelector('.window-content');
+                    contentDiv.innerHTML = ''; // Clear loading indicator
+                    contentDiv.appendChild(appContent.cloneNode(true));
+
+                    // Re-initialize any scripts within the loaded content if necessary
+                    const scripts = doc.querySelectorAll('script');
+                    scripts.forEach(script => {
+                        const newScript = document.createElement('script');
+                        if (script.src) {
+                            newScript.src = script.src;
+                        } else {
+                            newScript.textContent = script.innerHTML;
+                        }
+                        document.body.appendChild(newScript).parentNode.removeChild(newScript);
+                    });
+                } else {
+                    throw new Error('Could not find .main-content in fetched HTML');
+                }
+            })
+            .catch(error => {
+                console.error('Failed to load app content:', error);
+                const contentDiv = windowData.element.querySelector('.window-content');
+                contentDiv.innerHTML = `<p style="padding: 1rem; color: var(--text-secondary);">Error: Could not load application content for "${title}".</p>`;
+            });
+    }
+
+    // Apply theme settings to all currently open windows
+    applyThemeToAllWindows(theme) {
+        console.log('Applying theme to all windows:', theme);
+        this.windows.forEach(windowData => {
+            const windowEl = windowData.element;
+            if (!windowEl) return;
+
+            // Apply Window Shape
+            if (theme.windowShape) {
+                let borderRadius = '15px'; // default
+                if (theme.windowShape === 'square') borderRadius = '0';
+                if (theme.windowShape === 'circle') borderRadius = '50%';
+                windowEl.style.borderRadius = borderRadius;
+            }
+
+            // Apply Window Size
+            if (theme.windowSize) {
+                let width = '60vw'; // default
+                let height = '60vh';
+                if (theme.windowSize === 'small') { width = '40vw'; height = '45vh'; }
+                if (theme.windowSize === 'large') { width = '80vw'; height = '85vh'; }
+                windowEl.style.width = width;
+                windowEl.style.height = height;
+                // We should also update the internal state
+                windowData.size = { width: windowEl.offsetWidth, height: windowEl.offsetHeight };
+            }
+
+            // Apply Window Image (background)
+            if (theme.windowImage) {
+                const contentEl = windowEl.querySelector('.window-content');
+                let background = 'var(--glass-bg-heavy)'; // default
+                const imageUrls = {
+                    minimal: 'url("/assets/images/window-bgs/minimal.gif")',
+                    gradient: 'url("/assets/images/window-bgs/gradient.gif")',
+                    pattern: 'url("/assets/images/window-bgs/pattern.gif")',
+                    abstract: 'url("/assets/images/window-bgs/abstract.gif")',
+                    nature: 'url("/assets/images/window-bgs/nature.gif")',
+                };
+                if (imageUrls[theme.windowImage]) {
+                    background = imageUrls[theme.windowImage];
+                }
+                if (contentEl) {
+                    contentEl.style.backgroundImage = background;
+                    contentEl.style.backgroundSize = 'cover';
+                    contentEl.style.backgroundPosition = 'center';
+                }
+            }
+        });
+
+        // Save the state after applying changes
         this.saveWindowStates();
     }
 }

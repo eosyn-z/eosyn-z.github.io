@@ -1,6 +1,7 @@
 ---
 layout: desktop
 title: Desktop
+permalink: /desktop/
 desktop_mode: true
 ---
 

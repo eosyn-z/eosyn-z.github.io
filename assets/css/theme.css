@@ -1166,6 +1166,8 @@ div[style*="margin-bottom: 3rem"] {
   display: flex;
   flex-direction: column;
   z-index: 100;
+  border: 1px solid var(--glass-border-light); /* Add this line */
+  border-radius: 15px; /* Ensure the container has rounded corners */
   transition: all 0.3s ease;
 }
 
