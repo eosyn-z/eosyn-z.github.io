@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: nature
 title: Nature
 permalink: /nature/
 ---

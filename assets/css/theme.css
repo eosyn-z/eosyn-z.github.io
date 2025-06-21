@@ -19,6 +19,11 @@ body {
   color: var(--text-primary);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   transition: background-color 0.4s ease, color 0.4s ease;
+  overflow-x: hidden; /* Prevent horizontal scrollbars globally */
+}
+
+html {
+  overflow-x: hidden; /* Prevent horizontal scrollbars on html element */
 }
 
 /* --- Core Glass Component Style --- */
@@ -214,23 +219,64 @@ body {
   transition: all 0.3s ease;
 }
 
+/* --- Main Content Area --- */
 .main-content {
-    padding: 20px 20px 60px 20px; /* Adds space: 20px top/sides, 60px bottom */
-    box-sizing: border-box; /* Ensures padding doesn't add to the element's total size */
-    min-height: 100vh;
+  padding: 120px 20px 100px 20px;
+  min-height: 100vh;
+  width: 100%; /* Use width 100% to fill available space up to max-width */
+  max-width: 960px; /* Reduced from 1000px for a more contained look */
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Allow search page to expand beyond the container */
+body[data-page="search"] .main-content {
+  width: auto;
+  max-width: none;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 100px 15px 80px 15px;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  body[data-page="search"] .main-content {
+    min-width: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  /* Adjust playlist layout for smaller screens */
+  #playlist-buttons {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  #playlist-buttons {
+    grid-template-columns: 1fr; /* 1 column on mobile */
+  }
 }
 
 /* Glass Modal */
 .glass-modal {
-  background-color: var(--glass-bg-heavy);
-  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
-  backdrop-filter: var(--glass-blur-heavy);
-  border: 1px solid var(--glass-border-medium);
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: var(--glass-shadow-heavy);
-  max-width: 500px;
-  margin: 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 1rem;
 }
 
 /* Glass Input */
@@ -408,7 +454,7 @@ body {
 
 #playlist-buttons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-bottom: 3rem;
 }
@@ -417,6 +463,20 @@ body {
     flex-direction: column;
     gap: 0.5rem;
     text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#playlist-buttons .glass-button:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: var(--theme-accent);
+}
+
+#playlist-buttons .glass-button.active {
+  background: var(--gradient-button);
+  border-color: var(--theme-accent);
+  box-shadow: 0 0 15px var(--theme-accent);
+  color: var(--text-white);
 }
 
 #playlist-buttons .glass-button span:first-child {
@@ -515,6 +575,15 @@ p {
 #discord-status-indicator.idle { background-color: #faa61a; } /* Orange */
 #discord-status-indicator.dnd { background-color: #f04747; } /* Red */
 #discord-status-indicator.offline { background-color: var(--theme-text-secondary); } /* Grey */
+#discord-status-indicator.loading { 
+  background-color: var(--theme-accent); 
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
 
 #discord-status-details p {
   margin: 0;
@@ -575,9 +644,227 @@ p {
   border-radius: 8px;
 }
 
+/* Start Menu */
+#start-menu {
+  position: fixed;
+  bottom: 55px; /* Bar height + 15px margin */
+  left: 10px;
+  width: 280px;
+  z-index: 1002;
+  display: none; /* Hidden by default */
+  background-color: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 20px;
+  box-shadow: var(--glass-shadow-heavy);
+  padding: 1rem;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#start-menu.active {
+  display: block;
+}
+
+.start-menu-item {
+  position: relative; /* For submenu positioning */
+  margin-bottom: 0.5rem;
+}
+
+.start-menu-item:last-child {
+  margin-bottom: 0;
+}
+
+.start-menu-item > span {
+  display: block;
+  padding: 0.75rem 1rem;
+  background-color: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 12px;
+  color: var(--theme-text);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.start-menu-item > span:hover {
+  background-color: var(--glass-bg-light);
+  border-color: var(--theme-accent);
+  transform: translateX(5px);
+}
+
+.start-menu-item .submenu {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 240px;
+  display: none; /* Hide submenu by default */
+  background-color: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow-heavy);
+  padding: 0.75rem;
+  margin-left: 0.5rem;
+  animation: slideRight 0.2s ease-out;
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.start-menu-item:hover > .submenu {
+  display: block; /* Show on hover */
+}
+
+.submenu-item {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--theme-text);
+  text-decoration: none;
+  border-radius: 10px;
+  background-color: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border-light);
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.submenu-item:last-child {
+  margin-bottom: 0;
+}
+
+.submenu-item:hover {
+  background-color: var(--glass-bg-light);
+  border-color: var(--theme-accent);
+  transform: translateX(5px);
+  color: var(--theme-text);
+  text-decoration: none;
+}
+
 @media (max-width: 768px) {
   .glass-container {
     border-radius: 12px;
     padding: 15px;
+  }
+}
+
+/* Theme Editor Styles */
+.theme-variables-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.variable-group {
+  background-color: var(--glass-bg-light);
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 15px;
+  padding: 1.5rem;
+}
+
+.variable-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: var(--glass-bg-medium);
+  border-radius: 10px;
+  border: 1px solid var(--glass-border-light);
+}
+
+.variable-item:last-child {
+  margin-bottom: 0;
+}
+
+.variable-item label {
+  color: var(--theme-text);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.color-picker {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.color-picker:hover {
+  transform: scale(1.1);
+}
+
+.color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 8px;
+}
+
+.color-picker::-webkit-color-swatch {
+  border: 2px solid var(--glass-border-light);
+  border-radius: 8px;
+}
+
+/* Custom theme button styling */
+.theme-btn.custom-theme {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.theme-btn.custom-theme:hover {
+  background: linear-gradient(135deg, #ff8fab 0%, #d63384 100%);
+  transform: scale(1.1);
+}
+
+.theme-btn.custom-theme.active {
+  border-color: #ff6b9d;
+  box-shadow: 0 0 0 3px #ff6b9d;
+}
+
+@media (max-width: 768px) {
+  .theme-variables-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .variable-item {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .color-picker {
+    width: 50px;
+    height: 50px;
   }
 } 

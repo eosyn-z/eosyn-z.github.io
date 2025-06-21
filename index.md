@@ -23,4 +23,6 @@ title: eosyn
           this site is under construction.<br>if you know about this already, you're probably one of my friends.<br>thank you for checking it out so early! 
           <3</p>
   </div>
+
+  {%- include sponsorship.html -%}
 </div>

@@ -1,0 +1,108 @@
+.website-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Ensure search page can handle horizontal expansion */
+body[data-page="search"] {
+  overflow-x: auto;
+}
+
+body[data-page="search"] .main-content {
+  min-width: 1200px; /* Ensure minimum width for grid layout */
+}
+
+/* Prevent horizontal scroll on all other pages */
+body:not([data-page="search"]) {
+  overflow-x: hidden;
+}
+
+/* Ensure chat page layout is contained */
+body[data-page="chat"] .main-content {
+  overflow-x: hidden;
+}
+
+/* Responsive grid adjustments */
+@media (min-width: 1200px) {
+  .website-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on large screens */
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 900px) {
+  .website-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
+  }
+}
+
+@media (max-width: 899px) and (min-width: 600px) {
+  .website-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+  }
+}
+
+@media (max-width: 599px) {
+  .website-grid {
+    grid-template-columns: 1fr; /* 1 column on mobile */
+  }
+}
+
+.website-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.website-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.card-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.25rem;
+}
+
+.card-title a {
+  text-decoration: none;
+  color: var(--theme-text);
+  font-weight: 600;
+}
+
+.card-title a:hover {
+  text-decoration: underline;
+}
+
+.card-description {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary);
+}
+
+.card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--glass-border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.pin-button {
+  flex-shrink: 0; /* Prevents the button from shrinking if tags wrap */
+} 

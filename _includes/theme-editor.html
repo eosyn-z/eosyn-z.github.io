@@ -1,0 +1,93 @@
+<!-- Custom Theme Editor Modal -->
+<div id="theme-editor-modal" class="glass-modal" style="display: none;">
+  <div class="glass-panel" style="max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+      <h2 style="margin: 0; color: var(--theme-text);">🎨 Custom Theme Editor</h2>
+      <button class="glass-button" onclick="closeThemeEditor()" style="padding: 8px 16px; font-size: 1.2rem;">✕</button>
+    </div>
+    
+    <div class="theme-variables-grid">
+      <!-- Background Colors -->
+      <div class="variable-group">
+        <h3 style="margin-bottom: 1rem; color: var(--theme-text);">Background Colors</h3>
+        <div class="variable-item">
+          <label>Primary Background</label>
+          <input type="color" id="custom-bg-primary" class="color-picker" data-variable="--bg-primary">
+        </div>
+        <div class="variable-item">
+          <label>Secondary Background</label>
+          <input type="color" id="custom-bg-secondary" class="color-picker" data-variable="--bg-secondary">
+        </div>
+        <div class="variable-item">
+          <label>Accent Background</label>
+          <input type="color" id="custom-bg-accent" class="color-picker" data-variable="--bg-accent">
+        </div>
+      </div>
+
+      <!-- Text Colors -->
+      <div class="variable-group">
+        <h3 style="margin-bottom: 1rem; color: var(--theme-text);">Text Colors</h3>
+        <div class="variable-item">
+          <label>Primary Text</label>
+          <input type="color" id="custom-text-primary" class="color-picker" data-variable="--text-primary">
+        </div>
+        <div class="variable-item">
+          <label>Secondary Text</label>
+          <input type="color" id="custom-text-secondary" class="color-picker" data-variable="--text-secondary">
+        </div>
+        <div class="variable-item">
+          <label>Light Text</label>
+          <input type="color" id="custom-text-light" class="color-picker" data-variable="--text-light">
+        </div>
+      </div>
+
+      <!-- Theme Colors -->
+      <div class="variable-group">
+        <h3 style="margin-bottom: 1rem; color: var(--theme-text);">Theme Colors</h3>
+        <div class="variable-item">
+          <label>Primary Color</label>
+          <input type="color" id="custom-theme-primary" class="color-picker" data-variable="--theme-primary">
+        </div>
+        <div class="variable-item">
+          <label>Secondary Color</label>
+          <input type="color" id="custom-theme-secondary" class="color-picker" data-variable="--theme-secondary">
+        </div>
+        <div class="variable-item">
+          <label>Accent Color</label>
+          <input type="color" id="custom-theme-accent" class="color-picker" data-variable="--theme-accent">
+        </div>
+      </div>
+
+      <!-- Border Colors -->
+      <div class="variable-group">
+        <h3 style="margin-bottom: 1rem; color: var(--theme-text);">Border Colors</h3>
+        <div class="variable-item">
+          <label>Primary Border</label>
+          <input type="color" id="custom-border-primary" class="color-picker" data-variable="--border-primary">
+        </div>
+        <div class="variable-item">
+          <label>Accent Border</label>
+          <input type="color" id="custom-border-accent" class="color-picker" data-variable="--border-accent">
+        </div>
+      </div>
+
+      <!-- Glass Effects -->
+      <div class="variable-group">
+        <h3 style="margin-bottom: 1rem; color: var(--theme-text);">Glass Effects</h3>
+        <div class="variable-item">
+          <label>Glass Background</label>
+          <input type="color" id="custom-glass-bg" class="color-picker" data-variable="--glass-bg">
+        </div>
+        <div class="variable-item">
+          <label>Glass Border</label>
+          <input type="color" id="custom-glass-border" class="color-picker" data-variable="--glass-border">
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin-top: 2rem; justify-content: center;">
+      <button class="glass-button" onclick="resetCustomTheme()">Reset to Default</button>
+      <button class="glass-button" onclick="saveCustomTheme()">Save Theme</button>
+    </div>
+  </div>
+</div> 
