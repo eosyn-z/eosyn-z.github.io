@@ -19,6 +19,9 @@ class CustomThemeEditor {
             picker.addEventListener('input', (e) => this.updateColor(e));
         });
 
+        // Add event listeners to window theme controls
+        this.initWindowThemeControls();
+
         // Load saved custom theme on page load
         this.loadCustomTheme();
     }
@@ -50,6 +53,40 @@ class CustomThemeEditor {
                 picker.value = currentValue || '#000000';
             }
         });
+
+        // Populate window theme controls with saved values
+        this.populateWindowThemeControls();
+    }
+
+    populateWindowThemeControls() {
+        if (!window.customThemeValues) return;
+
+        // Set active window image button
+        if (window.customThemeValues.windowImage) {
+            const imageBtn = document.querySelector(`.window-image-btn[data-window-image="${window.customThemeValues.windowImage}"]`);
+            if (imageBtn) {
+                document.querySelectorAll('.window-image-btn').forEach(b => b.classList.remove('active'));
+                imageBtn.classList.add('active');
+            }
+        }
+
+        // Set active window size button
+        if (window.customThemeValues.windowSize) {
+            const sizeBtn = document.querySelector(`.window-size-btn[data-window-size="${window.customThemeValues.windowSize}"]`);
+            if (sizeBtn) {
+                document.querySelectorAll('.window-size-btn').forEach(b => b.classList.remove('active'));
+                sizeBtn.classList.add('active');
+            }
+        }
+
+        // Set active window shape button
+        if (window.customThemeValues.windowShape) {
+            const shapeBtn = document.querySelector(`.window-shape-btn[data-window-shape="${window.customThemeValues.windowShape}"]`);
+            if (shapeBtn) {
+                document.querySelectorAll('.window-shape-btn').forEach(b => b.classList.remove('active'));
+                shapeBtn.classList.add('active');
+            }
+        }
     }
 
     updateColor(event) {
@@ -158,6 +195,98 @@ class CustomThemeEditor {
                 // Clear invalid cookie
                 setCookie('custom_theme', '', -1);
             }
+        }
+    }
+
+    initWindowThemeControls() {
+        // Window image buttons
+        const windowImageBtns = document.querySelectorAll('.window-image-btn');
+        windowImageBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => this.updateWindowImage(e));
+        });
+
+        // Window size buttons
+        const windowSizeBtns = document.querySelectorAll('.window-size-btn');
+        windowSizeBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => this.updateWindowSize(e));
+        });
+
+        // Window shape buttons
+        const windowShapeBtns = document.querySelectorAll('.window-shape-btn');
+        windowShapeBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => this.updateWindowShape(e));
+        });
+    }
+
+    updateWindowImage(event) {
+        const btn = event.target;
+        const imageType = btn.getAttribute('data-window-image');
+        
+        // Remove active class from all window image buttons
+        document.querySelectorAll('.window-image-btn').forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        btn.classList.add('active');
+        
+        // Store in custom theme values
+        if (!window.customThemeValues) {
+            window.customThemeValues = {};
+        }
+        window.customThemeValues.windowImage = imageType;
+        
+        // Apply window image (this would need to be implemented in the window manager)
+        this.applyWindowTheme();
+    }
+
+    updateWindowSize(event) {
+        const btn = event.target;
+        const size = btn.getAttribute('data-window-size');
+        
+        // Remove active class from all window size buttons
+        document.querySelectorAll('.window-size-btn').forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        btn.classList.add('active');
+        
+        // Store in custom theme values
+        if (!window.customThemeValues) {
+            window.customThemeValues = {};
+        }
+        window.customThemeValues.windowSize = size;
+        
+        // Apply window theme
+        this.applyWindowTheme();
+    }
+
+    updateWindowShape(event) {
+        const btn = event.target;
+        const shape = btn.getAttribute('data-window-shape');
+        
+        // Remove active class from all window shape buttons
+        document.querySelectorAll('.window-shape-btn').forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        btn.classList.add('active');
+        
+        // Store in custom theme values
+        if (!window.customThemeValues) {
+            window.customThemeValues = {};
+        }
+        window.customThemeValues.windowShape = shape;
+        
+        // Apply window theme
+        this.applyWindowTheme();
+    }
+
+    applyWindowTheme() {
+        // Apply window theme settings to the desktop environment
+        if (window.desktopManager) {
+            window.desktopManager.applyWindowTheme(window.customThemeValues);
+        }
+        
+        // Also apply to any existing windows
+        if (window.windowManager) {
+            window.windowManager.applyThemeToAllWindows(window.customThemeValues);
         }
     }
 

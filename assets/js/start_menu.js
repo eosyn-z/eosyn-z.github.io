@@ -20,9 +20,20 @@ document.addEventListener('DOMContentLoaded', () => {
       launcher.addEventListener('click', () => {
         const appId = launcher.dataset.appId;
         const appTitle = launcher.dataset.appTitle;
-        if (appId && appTitle) {
-          windowManager.createWindow(appId, appTitle);
-          startMenu.classList.remove('active'); // Close menu after launching
+        
+        console.log(`Attempting to launch app: ${appTitle} (ID: ${appId})`);
+
+        if (window.windowManager) {
+          if (appId && appTitle) {
+            console.log('WindowManager found, creating window...');
+            window.windowManager.createWindow(appId, appTitle);
+            startMenu.classList.remove('active'); // Close menu after launching
+          } else {
+            console.error('App ID or Title is missing for this menu item.');
+          }
+        } else {
+          console.error('WindowManager is not available. Cannot create window.');
+          alert('Error: Window Manager is not loaded. Cannot open application.');
         }
       });
     });

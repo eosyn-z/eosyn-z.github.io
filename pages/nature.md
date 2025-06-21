@@ -30,6 +30,8 @@ permalink: /nature/
 
 <div id="imageContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
 
+<div id="imageCredits" class="glass-card" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1003; min-width: 220px; text-align: center; opacity: 0.92; font-size: 1rem; pointer-events: none;"></div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // PASTE YOUR IMAGE LINKS IN THESE ARRAYS! IF YOU WANT TO ADD IMAGES, THIS IS WHERE TO DO IT!

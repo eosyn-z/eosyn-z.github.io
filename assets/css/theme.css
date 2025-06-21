@@ -747,25 +747,26 @@ p {
 
 /* Start Menu */
 #start-menu {
+  display: none; /* Hide by default */
   position: fixed;
   bottom: 55px; /* Bar height + 15px margin */
   left: 10px;
-  width: 280px;
-  z-index: 1002;
-  display: none; /* Hidden by default */
+  width: 250px;
   background-color: var(--glass-bg-heavy);
   backdrop-filter: var(--glass-blur-heavy);
   border: 1px solid var(--glass-border-light);
-  border-radius: 20px;
+  border-radius: 12px;
+  z-index: 1000;
   box-shadow: var(--glass-shadow-heavy);
-  padding: 1rem;
-  animation: slideUp 0.3s ease-out;
+  padding: 10px;
+  transform-origin: bottom left;
+  animation: slideUp 0.2s ease-out;
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -774,7 +775,7 @@ p {
 }
 
 #start-menu.active {
-  display: block;
+  display: block; /* Show when active */
 }
 
 .start-menu-item {
@@ -3359,4 +3360,156 @@ body:not(.desktop-mode) .glass-nav {
 /* Show main content in website mode */
 body:not(.desktop-mode) .main-content {
   display: block;
+}
+
+/* Icon context menu styling */
+.icon-context-menu {
+  font-size: 0.9rem;
+}
+
+.icon-context-menu .menu-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  margin: 0 0.25rem;
+}
+
+.icon-context-menu .menu-item:hover {
+  background: var(--glass-bg-medium);
+}
+
+/* Form styling for icon editor */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--theme-text);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-group .glass-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--glass-border-light);
+  border-radius: 8px;
+  background: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur-medium);
+  color: var(--theme-text);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.form-group .glass-input:focus {
+  outline: none;
+  border-color: var(--theme-accent);
+  box-shadow: 0 0 0 2px rgba(var(--theme-accent-rgb), 0.2);
+}
+
+.form-group textarea.glass-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-actions {
+  border-top: 1px solid var(--glass-border-light);
+  padding-top: 1rem;
+}
+
+.glass-button.primary {
+  background: var(--theme-accent);
+  color: white;
+  border: none;
+}
+
+.glass-button.primary:hover {
+  background: var(--theme-accent-dark);
+  transform: translateY(-1px);
+}
+
+/* Icon preview styling */
+.icon-preview {
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* Window Theme Controls */
+.window-theme-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--glass-bg-medium);
+  border-radius: var(--glass-border-radius);
+  border: 1px solid var(--glass-border-light);
+}
+
+.window-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.window-controls-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.window-image-btn,
+.window-size-btn,
+.window-shape-btn {
+  transition: all 0.3s ease;
+  border: 1px solid var(--glass-border-light);
+  background: var(--glass-bg-light);
+  color: var(--theme-text);
+  font-weight: 500;
+}
+
+.window-image-btn:hover,
+.window-size-btn:hover,
+.window-shape-btn:hover {
+  background: var(--glass-bg-medium);
+  border-color: var(--glass-border-medium);
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-medium);
+}
+
+.window-image-btn.active,
+.window-size-btn.active,
+.window-shape-btn.active {
+  background: var(--gradient-button);
+  color: var(--text-white);
+  border-color: var(--theme-accent);
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px var(--glass-shadow-heavy), 0 0 15px var(--theme-accent);
+}
+
+@media (max-width: 768px) {
+  .window-theme-section {
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+  
+  .window-image-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .window-controls-section {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .window-image-btn,
+  .window-size-btn,
+  .window-shape-btn {
+    font-size: 0.9rem;
+  }
 }

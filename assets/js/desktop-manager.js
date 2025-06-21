@@ -10,12 +10,18 @@ class DesktopManager {
     this.initializeDesktop();
   }
 
-  // Load saved desktop state from localStorage
+  // Load saved desktop state from cookies
   loadDesktopState() {
     try {
-      const savedState = JSON.parse(localStorage.getItem('desktopState') || '{}');
-      this.icons = savedState.icons || this.getDefaultIcons();
-      this.currentWallpaper = savedState.wallpaper || '/assets/wallpapers/default/desktop-1.jpg';
+      const savedState = this.getCookie('desktopState');
+      if (savedState) {
+        const state = JSON.parse(savedState);
+        this.icons = state.icons || this.getDefaultIcons();
+        this.currentWallpaper = state.wallpaper || '/assets/wallpapers/default/desktop-1.jpg';
+      } else {
+        this.icons = this.getDefaultIcons();
+        this.currentWallpaper = '/assets/wallpapers/default/desktop-1.jpg';
+      }
     } catch (error) {
       console.error('Error loading desktop state:', error);
       this.icons = this.getDefaultIcons();
@@ -23,13 +29,32 @@ class DesktopManager {
     }
   }
 
-  // Save desktop state to localStorage
+  // Save desktop state to cookies
   saveDesktopState() {
     const state = {
       icons: this.icons,
       wallpaper: this.currentWallpaper
     };
-    localStorage.setItem('desktopState', JSON.stringify(state));
+    this.setCookie('desktopState', JSON.stringify(state), 365); // Save for 1 year
+  }
+
+  // Helper method to set a cookie
+  setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/`;
+  }
+
+  // Helper method to get a cookie
+  getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+    return null;
   }
 
   // Get default icons configuration
@@ -42,7 +67,10 @@ class DesktopManager {
         x: 50,
         y: 50,
         appId: 'portfolio',
-        appTitle: 'Portfolio'
+        appTitle: 'Portfolio',
+        dateCreated: '2024-01-01',
+        description: 'View my art portfolio and creative works',
+        redbubbleLink: ''
       },
       {
         id: 'music',
@@ -51,7 +79,10 @@ class DesktopManager {
         x: 50,
         y: 150,
         appId: 'music',
-        appTitle: 'Music Player'
+        appTitle: 'Music Player',
+        dateCreated: '2024-01-01',
+        description: 'Listen to music and audio content',
+        redbubbleLink: ''
       },
       {
         id: 'search',
@@ -60,7 +91,10 @@ class DesktopManager {
         x: 50,
         y: 250,
         appId: 'search',
-        appTitle: 'Search & Pin'
+        appTitle: 'Search & Pin',
+        dateCreated: '2024-01-01',
+        description: 'Search and pin your favorite content',
+        redbubbleLink: ''
       },
       {
         id: 'chat',
@@ -69,7 +103,10 @@ class DesktopManager {
         x: 50,
         y: 350,
         appId: 'chat',
-        appTitle: 'AI Chat'
+        appTitle: 'AI Chat',
+        dateCreated: '2024-01-01',
+        description: 'Chat with AI assistant',
+        redbubbleLink: ''
       },
       {
         id: 'sticky-notes',
@@ -78,7 +115,10 @@ class DesktopManager {
         x: 50,
         y: 450,
         appId: 'sticky-notes',
-        appTitle: 'Sticky Notes'
+        appTitle: 'Sticky Notes',
+        dateCreated: '2024-01-01',
+        description: 'Create and manage sticky notes',
+        redbubbleLink: ''
       },
       {
         id: 'games',
@@ -87,7 +127,10 @@ class DesktopManager {
         x: 200,
         y: 50,
         appId: 'games',
-        appTitle: 'Game Center'
+        appTitle: 'Game Center',
+        dateCreated: '2024-01-01',
+        description: 'Play games and have fun',
+        redbubbleLink: ''
       },
       {
         id: 'snake',
@@ -96,7 +139,10 @@ class DesktopManager {
         x: 200,
         y: 150,
         appId: 'snake',
-        appTitle: 'Snake'
+        appTitle: 'Snake',
+        dateCreated: '2024-01-01',
+        description: 'Classic Snake game',
+        redbubbleLink: ''
       },
       {
         id: 'tetris',
@@ -105,7 +151,10 @@ class DesktopManager {
         x: 200,
         y: 250,
         appId: 'tetris',
-        appTitle: 'Tetris'
+        appTitle: 'Tetris',
+        dateCreated: '2024-01-01',
+        description: 'Classic Tetris puzzle game',
+        redbubbleLink: ''
       }
     ];
   }
@@ -262,41 +311,64 @@ class DesktopManager {
 
   // Show icon context menu
   showIconContextMenu(e, iconData) {
+    e.preventDefault();
+    
+    // Remove existing context menu
+    const existingMenu = document.querySelector('.icon-context-menu');
+    if (existingMenu) existingMenu.remove();
+    
     const menu = document.createElement('div');
-    menu.className = 'context-menu glass-panel';
-    menu.innerHTML = `
-      <div class="menu-item" data-action="open">Open</div>
-      <div class="menu-item" data-action="rename">Rename</div>
-      <div class="menu-item" data-action="change-icon">Change Icon</div>
-      <div class="menu-item" data-action="delete">Delete</div>
+    menu.className = 'icon-context-menu glass-card';
+    menu.style.cssText = `
+      position: fixed;
+      left: ${e.clientX}px;
+      top: ${e.clientY}px;
+      z-index: 10000;
+      background: var(--glass-bg-heavy);
+      backdrop-filter: var(--glass-blur-heavy);
+      border: 1px solid var(--glass-border-light);
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      box-shadow: var(--glass-shadow-heavy);
+      min-width: 150px;
     `;
-
-    menu.style.left = `${e.clientX}px`;
-    menu.style.top = `${e.clientY}px`;
-    document.body.appendChild(menu);
-
-    // Handle menu actions
-    menu.addEventListener('click', (e) => {
-      const action = e.target.dataset.action;
-      if (action) {
+    
+    menu.innerHTML = `
+      <div class="menu-item" data-action="edit">✏️ Edit Properties</div>
+      <div class="menu-item" data-action="rename">📝 Rename</div>
+      <div class="menu-item" data-action="change-icon">🎨 Change Icon</div>
+      <div class="menu-item" data-action="delete">🗑️ Delete</div>
+    `;
+    
+    // Add click handlers
+    menu.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const action = item.dataset.action;
         this.handleIconAction(action, iconData);
-      }
-      menu.remove();
+        menu.remove();
+      });
+      
+      // Hover effects
+      item.addEventListener('mouseenter', () => {
+        item.style.background = 'var(--glass-bg-medium)';
+      });
+      
+      item.addEventListener('mouseleave', () => {
+        item.style.background = 'transparent';
+      });
     });
-
+    
     // Close menu when clicking outside
     document.addEventListener('click', () => menu.remove(), { once: true });
+    
+    document.body.appendChild(menu);
   }
 
   // Handle icon context menu actions
   handleIconAction(action, iconData) {
     switch (action) {
-      case 'open':
-        if (window.windowManager) {
-          window.windowManager.createWindow(iconData.appId, iconData.appTitle);
-        } else {
-          console.error('Window manager not found');
-        }
+      case 'edit':
+        this.editIcon(iconData);
         break;
       case 'rename':
         this.renameIcon(iconData);
@@ -305,7 +377,9 @@ class DesktopManager {
         this.showIconPicker(iconData);
         break;
       case 'delete':
-        this.deleteIcon(iconData);
+        if (confirm(`Are you sure you want to delete "${iconData.title}"?`)) {
+          this.deleteIcon(iconData.id);
+        }
         break;
     }
   }
@@ -482,19 +556,19 @@ class DesktopManager {
     this.loadCustomWallpapers();
   }
 
-  // Get custom wallpapers from localStorage
+  // Get custom wallpapers from cookies
   getCustomWallpapers() {
     try {
-      return JSON.parse(localStorage.getItem('customWallpapers') || '[]');
+      return JSON.parse(this.getCookie('customWallpapers') || '[]');
     } catch (error) {
       console.error('Error loading custom wallpapers:', error);
       return [];
     }
   }
 
-  // Save custom wallpapers to localStorage
+  // Save custom wallpapers to cookies
   saveCustomWallpapers(wallpapers) {
-    localStorage.setItem('customWallpapers', JSON.stringify(wallpapers));
+    this.setCookie('customWallpapers', JSON.stringify(wallpapers), 365); // Save for 1 year
   }
 
   // Add custom wallpaper from picker
@@ -555,11 +629,14 @@ class DesktopManager {
     const newIcon = {
       id: 'custom-' + Date.now(),
       title: 'New App',
-      icon: '/assets/icons/default/default.png',
+      icon: '📱', // Default emoji icon
       x: 50,
       y: 50 + (this.icons.length * 100),
       appId: 'portfolio', // Default app
-      appTitle: 'Portfolio'
+      appTitle: 'Portfolio',
+      dateCreated: new Date().toISOString().split('T')[0], // Current date
+      description: 'New application',
+      redbubbleLink: ''
     };
     
     this.icons.push(newIcon);
@@ -710,6 +787,97 @@ class DesktopManager {
     if (url && name) {
       this.addCustomWallpaperFromPicker(url, name);
     }
+  }
+
+  // Edit icon properties
+  editIcon(iconData) {
+    const editor = document.createElement('div');
+    editor.className = 'glass-modal';
+    editor.innerHTML = `
+      <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+          <h3>Edit Icon Properties</h3>
+          <button class="close-btn" onclick="this.closest('.glass-modal').remove()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="iconTitle">Title:</label>
+            <input type="text" id="iconTitle" value="${iconData.title}" class="glass-input">
+          </div>
+          <div class="form-group">
+            <label for="iconDescription">Description:</label>
+            <textarea id="iconDescription" class="glass-input" rows="3">${iconData.description || ''}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="iconDateCreated">Date Created:</label>
+            <input type="date" id="iconDateCreated" value="${iconData.dateCreated || ''}" class="glass-input">
+          </div>
+          <div class="form-group">
+            <label for="iconRedbubbleLink">Redbubble Link:</label>
+            <input type="url" id="iconRedbubbleLink" value="${iconData.redbubbleLink || ''}" class="glass-input" placeholder="https://www.redbubble.com/...">
+          </div>
+          <div class="form-group">
+            <label for="iconAppId">App ID:</label>
+            <select id="iconAppId" class="glass-input">
+              <option value="portfolio" ${iconData.appId === 'portfolio' ? 'selected' : ''}>Portfolio</option>
+              <option value="music" ${iconData.appId === 'music' ? 'selected' : ''}>Music</option>
+              <option value="search" ${iconData.appId === 'search' ? 'selected' : ''}>Search</option>
+              <option value="chat" ${iconData.appId === 'chat' ? 'selected' : ''}>Chat</option>
+              <option value="sticky-notes" ${iconData.appId === 'sticky-notes' ? 'selected' : ''}>Sticky Notes</option>
+              <option value="games" ${iconData.appId === 'games' ? 'selected' : ''}>Games</option>
+              <option value="snake" ${iconData.appId === 'snake' ? 'selected' : ''}>Snake</option>
+              <option value="tetris" ${iconData.appId === 'tetris' ? 'selected' : ''}>Tetris</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Icon:</label>
+            <div class="icon-preview" style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 2rem;">${iconData.icon}</span>
+              <button class="glass-button" onclick="desktopManager.showIconPicker('${iconData.id}')">Change Icon</button>
+            </div>
+          </div>
+          <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+            <button class="glass-button" onclick="this.closest('.glass-modal').remove()">Cancel</button>
+            <button class="glass-button primary" onclick="desktopManager.saveIconChanges('${iconData.id}')">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(editor);
+  }
+
+  // Save icon changes
+  saveIconChanges(iconId) {
+    const iconData = this.icons.find(icon => icon.id === iconId);
+    if (!iconData) return;
+
+    // Get values from form
+    iconData.title = document.getElementById('iconTitle').value;
+    iconData.description = document.getElementById('iconDescription').value;
+    iconData.dateCreated = document.getElementById('iconDateCreated').value;
+    iconData.redbubbleLink = document.getElementById('iconRedbubbleLink').value;
+    iconData.appId = document.getElementById('iconAppId').value;
+
+    // Update app title based on app ID
+    const appTitles = {
+      'portfolio': 'Portfolio',
+      'music': 'Music Player',
+      'search': 'Search & Pin',
+      'chat': 'AI Chat',
+      'sticky-notes': 'Sticky Notes',
+      'games': 'Game Center',
+      'snake': 'Snake',
+      'tetris': 'Tetris'
+    };
+    iconData.appTitle = appTitles[iconData.appId] || 'App';
+
+    // Re-render icons and save
+    this.renderIcons();
+    this.saveDesktopState();
+    
+    // Close modal
+    document.querySelector('.glass-modal').remove();
   }
 }
 

@@ -30,47 +30,50 @@ class WindowManager {
         this.setupWindowControls();
     }
 
-    // Load saved window states from localStorage
+    // Load saved window states from cookies
     loadWindowStates() {
         try {
-            const savedStates = JSON.parse(localStorage.getItem('windowStates') || '{}');
-            Object.keys(savedStates).forEach(windowId => {
-                const state = savedStates[windowId];
-                const windowData = this.getWindow(windowId);
-                if (windowData) {
-                    // Apply saved position and size
-                    windowData.position = state.position || { x: 0, y: 0 };
-                    windowData.size = state.size || { width: 400, height: 300 };
-                    windowData.isMinimized = state.isMinimized || false;
-                    windowData.isMaximized = state.isMaximized || false;
-                    
-                    // Apply to DOM
-                    windowData.element.style.transform = `translate(${windowData.position.x}px, ${windowData.position.y}px)`;
-                    windowData.element.style.width = `${windowData.size.width}px`;
-                    windowData.element.style.height = `${windowData.size.height}px`;
-                    
-                    if (windowData.isMinimized) {
-                        windowData.element.style.transform = 'scale(0.1)';
-                        windowData.element.style.opacity = '0';
-                        windowData.element.style.pointerEvents = 'none';
+            const savedStates = this.getCookie('windowStates');
+            if (savedStates) {
+                const states = JSON.parse(savedStates);
+                Object.keys(states).forEach(windowId => {
+                    const state = states[windowId];
+                    const windowData = this.getWindow(windowId);
+                    if (windowData) {
+                        // Apply saved position and size
+                        windowData.position = state.position || { x: 0, y: 0 };
+                        windowData.size = state.size || { width: 400, height: 300 };
+                        windowData.isMinimized = state.isMinimized || false;
+                        windowData.isMaximized = state.isMaximized || false;
+                        
+                        // Apply to DOM
+                        windowData.element.style.transform = `translate(${windowData.position.x}px, ${windowData.position.y}px)`;
+                        windowData.element.style.width = `${windowData.size.width}px`;
+                        windowData.element.style.height = `${windowData.size.height}px`;
+                        
+                        if (windowData.isMinimized) {
+                            windowData.element.style.transform = 'scale(0.1)';
+                            windowData.element.style.opacity = '0';
+                            windowData.element.style.pointerEvents = 'none';
+                        }
+                        
+                        if (windowData.isMaximized) {
+                            windowData.element.style.position = 'fixed';
+                            windowData.element.style.top = '0';
+                            windowData.element.style.left = '0';
+                            windowData.element.style.width = '100vw';
+                            windowData.element.style.height = '100vh';
+                            windowData.element.style.zIndex = '9999';
+                        }
                     }
-                    
-                    if (windowData.isMaximized) {
-                        windowData.element.style.position = 'fixed';
-                        windowData.element.style.top = '0';
-                        windowData.element.style.left = '0';
-                        windowData.element.style.width = '100vw';
-                        windowData.element.style.height = '100vh';
-                        windowData.element.style.zIndex = '9999';
-                    }
-                }
-            });
+                });
+            }
         } catch (error) {
             console.error('Error loading window states:', error);
         }
     }
 
-    // Save window states to localStorage
+    // Save window states to cookies
     saveWindowStates() {
         const states = {};
         this.windows.forEach(windowData => {
@@ -81,7 +84,26 @@ class WindowManager {
                 isMaximized: windowData.isMaximized
             };
         });
-        localStorage.setItem('windowStates', JSON.stringify(states));
+        this.setCookie('windowStates', JSON.stringify(states), 365); // Save for 1 year
+    }
+
+    // Helper method to set a cookie
+    setCookie(name, value, days) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/`;
+    }
+
+    // Helper method to get a cookie
+    getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+        return null;
     }
 
     // Save sticky notes data
@@ -111,23 +133,26 @@ class WindowManager {
             });
         });
         
-        localStorage.setItem('stickyNotes', JSON.stringify(stickyNotes));
+        this.setCookie('stickyNotes', JSON.stringify(stickyNotes), 365); // Save for 1 year
     }
 
     // Load sticky notes data
     loadStickyNotes() {
         try {
-            const savedNotes = JSON.parse(localStorage.getItem('stickyNotes') || '[]');
-            const container = document.querySelector('.sticky-notes-container');
-            
-            if (container && savedNotes.length > 0) {
-                // Clear existing notes
-                container.innerHTML = '';
+            const savedNotes = this.getCookie('stickyNotes');
+            if (savedNotes) {
+                const notes = JSON.parse(savedNotes);
+                const container = document.querySelector('.sticky-notes-container');
                 
-                // Restore saved notes
-                savedNotes.forEach(noteData => {
-                    this.createStickyNoteFromData(noteData);
-                });
+                if (container && notes.length > 0) {
+                    // Clear existing notes
+                    container.innerHTML = '';
+                    
+                    // Restore saved notes
+                    notes.forEach(noteData => {
+                        this.createStickyNoteFromData(noteData);
+                    });
+                }
             }
         } catch (error) {
             console.error('Error loading sticky notes:', error);
@@ -524,18 +549,21 @@ class WindowManager {
     }
 
     closeWindow(windowData) {
-        windowData.element.style.transform = 'scale(0.8)';
-        windowData.element.style.opacity = '0';
+        // Remove from windows array
+        this.windows = this.windows.filter(w => w.id !== windowData.id);
         
-        setTimeout(() => {
-            windowData.element.style.display = 'none';
-            // Remove from windows array
-            const index = this.windows.indexOf(windowData);
-            if (index > -1) {
-                this.windows.splice(index, 1);
-            }
-            this.saveWindowStates(); // Save after closing
-        }, 200);
+        // Remove from DOM
+        if (windowData.element && windowData.element.parentNode) {
+            windowData.element.parentNode.removeChild(windowData.element);
+        }
+        
+        // Save window states
+        this.saveWindowStates();
+        
+        // Refresh window switcher if it exists
+        if (window.windowSwitcher) {
+            window.windowSwitcher.refresh();
+        }
     }
 
     // Utility methods for external use
@@ -573,81 +601,191 @@ class WindowManager {
     // Desktop system integration methods
     createWindow(appId, title, content = null) {
         const windowId = `window-${Date.now()}`;
-        let windowContent = content;
+        const window = document.createElement('div');
+        window.className = 'window glass-card';
+        window.id = windowId;
         
-        // Generate content based on appId if no content provided
-        if (!windowContent) {
+        // Set initial position (staggered)
+        const x = 50 + (this.windows.length * 30);
+        const y = 50 + (this.windows.length * 30);
+        
+        window.style.cssText = `
+            position: absolute;
+            left: ${x}px;
+            top: ${y}px;
+            width: 600px;
+            height: 400px;
+            background: var(--glass-bg-heavy);
+            backdrop-filter: var(--glass-blur-heavy);
+            border: 1px solid var(--glass-border-light);
+            border-radius: 15px;
+            box-shadow: var(--glass-shadow-heavy);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        `;
+
+        // Create window header
+        const header = document.createElement('div');
+        header.className = 'window-header';
+        header.style.cssText = `
+            background: var(--glass-bg-heavy);
+            backdrop-filter: var(--glass-blur-heavy);
+            border-bottom: 1px solid var(--glass-border-light);
+            border-radius: 15px 15px 0 0;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+            user-select: none;
+        `;
+
+        // Window title
+        const titleElement = document.createElement('div');
+        titleElement.className = 'window-title';
+        titleElement.textContent = title;
+        titleElement.style.cssText = `
+            font-weight: 600;
+            color: var(--theme-text);
+            font-size: 1rem;
+        `;
+
+        // Window controls
+        const controls = document.createElement('div');
+        controls.className = 'window-controls';
+        controls.style.cssText = `
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        `;
+
+        const minimizeBtn = document.createElement('button');
+        minimizeBtn.innerHTML = '−';
+        minimizeBtn.className = 'window-control-btn';
+        minimizeBtn.title = 'Minimize';
+        minimizeBtn.style.cssText = `
+            background: var(--glass-bg-medium);
+            border: none;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            color: var(--theme-text);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        `;
+
+        const maximizeBtn = document.createElement('button');
+        maximizeBtn.innerHTML = '□';
+        maximizeBtn.className = 'window-control-btn';
+        maximizeBtn.title = 'Maximize';
+        maximizeBtn.style.cssText = minimizeBtn.style.cssText;
+
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '✕';
+        closeBtn.className = 'window-control-btn';
+        closeBtn.title = 'Close';
+        closeBtn.style.cssText = minimizeBtn.style.cssText;
+
+        // Add hover effects
+        [minimizeBtn, maximizeBtn, closeBtn].forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.background = 'var(--theme-accent)';
+                btn.style.color = 'white';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.background = 'var(--glass-bg-medium)';
+                btn.style.color = 'var(--theme-text)';
+            });
+        });
+
+        controls.appendChild(minimizeBtn);
+        controls.appendChild(maximizeBtn);
+        controls.appendChild(closeBtn);
+
+        header.appendChild(titleElement);
+        header.appendChild(controls);
+
+        // Create window content
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'window-content';
+        contentDiv.style.cssText = `
+            flex: 1;
+            background: var(--glass-bg-medium);
+            backdrop-filter: var(--glass-blur-medium);
+            border-radius: 0 0 15px 15px;
+            overflow: hidden;
+            position: relative;
+        `;
+
+        // Add content based on appId
+        if (content) {
+            contentDiv.innerHTML = content;
+        } else {
             switch (appId) {
-                case 'sticky-notes':
-                    windowContent = this.createStickyNotesContent();
+                case 'portfolio':
+                    contentDiv.innerHTML = '<iframe src="/portfolio" style="width:100%;height:100%;border:none;"></iframe>';
                     break;
-                case 'window-demo':
-                    windowContent = this.createWindowDemoContent();
+                case 'music':
+                    contentDiv.innerHTML = '<iframe src="/music" style="width:100%;height:100%;border:none;"></iframe>';
+                    break;
+                case 'search':
+                    contentDiv.innerHTML = '<iframe src="/search" style="width:100%;height:100%;border:none;"></iframe>';
+                    break;
+                case 'chat':
+                    contentDiv.innerHTML = '<iframe src="/chat" style="width:100%;height:100%;border:none;"></iframe>';
+                    break;
+                case 'sticky-notes':
+                    contentDiv.innerHTML = this.createStickyNotesContent();
+                    break;
+                case 'games':
+                    contentDiv.innerHTML = '<iframe src="/games" style="width:100%;height:100%;border:none;"></iframe>';
+                    break;
+                case 'snake':
+                    contentDiv.innerHTML = '<iframe src="/games/snake" style="width:100%;height:100%;border:none;"></iframe>';
+                    break;
+                case 'tetris':
+                    contentDiv.innerHTML = '<iframe src="/games/tetris" style="width:100%;height:100%;border:none;"></iframe>';
                     break;
                 default:
-                    windowContent = `<div style="padding: 2rem; text-align: center; color: var(--theme-text);">
-                        <h3>${title}</h3>
-                        <p>This is a placeholder for the ${title} application.</p>
-                    </div>`;
+                    contentDiv.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--theme-text-muted);">App content will load here</div>';
             }
         }
-        
-        // Create window element
-        const windowEl = document.createElement('div');
-        windowEl.className = 'app-window glass-container';
-        windowEl.id = windowId;
-        windowEl.style.position = 'fixed';
-        windowEl.style.top = '50px';
-        windowEl.style.left = '50px';
-        windowEl.style.zIndex = '1000';
-        windowEl.style.width = '400px';
-        windowEl.style.height = '300px';
-        
-        windowEl.innerHTML = `
-            <div class="window-header">
-                <div class="window-controls">
-                    <span class="window-control minimize"></span>
-                    <span class="window-control maximize"></span>
-                    <span class="window-control close"></span>
-                </div>
-                <div class="window-title">${title}</div>
-            </div>
-            <div class="window-content">
-                ${windowContent}
-            </div>
-        `;
-        
-        // Add to DOM
-        document.body.appendChild(windowEl);
-        
+
+        window.appendChild(header);
+        window.appendChild(contentDiv);
+        document.body.appendChild(window);
+
         // Create window data object
         const windowData = {
-            element: windowEl,
+            element: window,
             id: windowId,
-            position: { x: 50, y: 50 },
-            size: { width: 400, height: 300 },
+            position: { x, y },
+            size: { width: 600, height: 400 },
             isMinimized: false,
             isMaximized: false
         };
-        
-        // Add to windows array
+
         this.windows.push(windowData);
-        
-        // Setup window functionality
         this.setupWindowEventListeners(windowData);
         this.setupWindowControlsForWindow(windowData);
-        this.addResizeHandles(windowData);
-        
-        // Load sticky notes if this is a sticky notes window
-        if (appId === 'sticky-notes') {
-            setTimeout(() => {
-                this.loadStickyNotes();
-            }, 100);
-        }
-        
+
+        // Bring window to front
+        this.focusWindow(windowId);
+
         // Save window states
         this.saveWindowStates();
-        
+
+        // Refresh window switcher if it exists
+        if (window.windowSwitcher) {
+            window.windowSwitcher.refresh();
+        }
+
         return windowData;
     }
 
@@ -840,6 +978,34 @@ class WindowManager {
         
         // Make global function available
         window.createStickyNote = this.createStickyNote.bind(this);
+    }
+
+    // Focus a window (bring to front)
+    focusWindow(windowId) {
+        const windowData = this.getWindow(windowId);
+        if (!windowData) return;
+
+        // Remove active class from all windows
+        this.windows.forEach(w => {
+            w.element.classList.remove('active');
+            w.element.style.zIndex = '1000';
+        });
+
+        // Make this window active and bring to front
+        windowData.element.classList.add('active');
+        windowData.element.style.zIndex = '1001';
+        this.activeWindow = windowData;
+
+        // If window is minimized, restore it
+        if (windowData.isMinimized) {
+            windowData.isMinimized = false;
+            windowData.element.style.transform = 'scale(1)';
+            windowData.element.style.opacity = '1';
+            windowData.element.style.pointerEvents = 'auto';
+        }
+
+        // Save window states
+        this.saveWindowStates();
     }
 }
 

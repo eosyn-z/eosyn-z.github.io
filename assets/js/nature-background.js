@@ -5,15 +5,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // PASTE YOUR IMAGE LINKS IN THESE ARRAYS
     const forestImages = [
-        // Add forest image URLs here
+        // Example:
+        // { url: "https://example.com/forest1.jpg", credit: "Photo by Alice on Unsplash" },
     ];
 
     const flowingWaterImages = [
-        // Add flowing water image URLs here
+        // Example:
+        // { url: "https://example.com/water1.jpg", credit: "Photo by Bob on Pexels" },
     ];
 
     const oceanImages = [
-        // Add ocean image URLs here
+        // Example:
+        // { url: "https://example.com/ocean1.jpg", credit: "Photo by Carol on Pixabay" },
     ];
 
     const imageGroups = {
@@ -28,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setRandomImage(group = 'random') {
         const images = imageGroups[group];
+        const creditsContainer = document.getElementById('imageCredits');
         
         if (loadingMessage) {
             loadingMessage.style.display = 'none';
@@ -35,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!images || images.length === 0) {
             imageContainer.style.backgroundImage = 'none';
+            if (creditsContainer) creditsContainer.textContent = '';
             if (loadingMessage) {
                  loadingMessage.textContent = `Please add image links to the '${group}' category in nature.md!`;
                  loadingMessage.style.display = 'block';
@@ -43,13 +48,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const randomIndex = Math.floor(Math.random() * images.length);
-        const imageUrl = images[randomIndex];
-
+        const imageObj = images[randomIndex];
+        let imageUrl = imageObj;
+        let credit = '';
+        let creditUrl = '';
+        if (typeof imageObj === 'object' && imageObj !== null) {
+            imageUrl = imageObj.url;
+            credit = imageObj.credit || '';
+            creditUrl = imageObj.creditUrl || '';
+        }
         imageContainer.style.backgroundImage = `url('${imageUrl}')`;
         imageContainer.style.backgroundSize = 'cover';
         imageContainer.style.backgroundPosition = 'center';
         imageContainer.style.backgroundRepeat = 'no-repeat';
         imageContainer.style.transition = 'background-image 1s ease-in-out';
+        if (creditsContainer) {
+            if (credit && creditUrl) {
+                creditsContainer.innerHTML = `<a href="${creditUrl}" target="_blank" rel="noopener" style="color:var(--theme-primary);text-decoration:underline;">${credit}</a>`;
+            } else {
+                creditsContainer.textContent = credit;
+            }
+        }
     }
 
     function setActiveButton(group) {

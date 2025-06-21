@@ -4,6 +4,34 @@ title: Search
 permalink: /search/
 ---
 
+<style>
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--glass-border-light);
+  background: var(--glass-bg-medium);
+  color: var(--theme-text);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.filter-btn:hover {
+  background: var(--glass-bg-heavy);
+  transform: translateY(-1px);
+}
+
+.filter-btn.active {
+  background: var(--theme-accent);
+  color: white;
+  border-color: var(--theme-accent);
+}
+
+.filter-btn.active:hover {
+  background: var(--theme-accent-dark);
+}
+</style>
+
 <div class="main-content">
   <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
     <header class="page-header" style="margin-bottom: 0; text-align: center;">
@@ -14,6 +42,19 @@ permalink: /search/
   
   <div class="search-section" style="margin-bottom: 2rem;">
     <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px; padding: 1rem;">
+    
+    <!-- Filter Buttons -->
+    <div class="filter-buttons" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+      <button class="filter-btn glass-button active" data-filter="all">All</button>
+      <button class="filter-btn glass-button" data-filter="personal">Personal</button>
+      <button class="filter-btn glass-button" data-filter="tools">Tools</button>
+      <button class="filter-btn glass-button" data-filter="company">Company</button>
+      <button class="filter-btn glass-button" data-filter="documentation">Documentation</button>
+      <button class="filter-btn glass-button" data-filter="repository">Repository</button>
+      <button class="filter-btn glass-button" data-filter="archive">Archive</button>
+      <button class="filter-btn glass-button" data-filter="in-construction">🚧 In Construction</button>
+      <button class="filter-btn glass-button" data-filter="github-portfolio">📁 GitHub Portfolio</button>
+    </div>
   </div>
 
   <!-- Social & Forums Section -->
@@ -397,6 +438,60 @@ document.addEventListener('DOMContentLoaded', () => {
         description: "CLI tool for image conversion and markdown to PDF by @SuleDevSec",
         url: "https://github.com/Sule57/convert",
         tags: ["tools", "repository", "cli-tool", "image-conversion", "markdown", "pdf", "utilities"],
+    },
+    {
+        title: "My Portfolio (Coming Soon)",
+        description: "Personal portfolio website currently under development",
+        url: "#",
+        tags: ["personal", "tpot", "portfolio", "in-construction", "coming-soon"],
+    },
+    {
+        title: "Art Gallery Project",
+        description: "Digital art showcase platform - work in progress",
+        url: "#",
+        tags: ["personal", "tpot", "art", "gallery", "in-construction", "creative"],
+    },
+    {
+        title: "Dev Blog",
+        description: "Technical blog about web development and design - under construction",
+        url: "#",
+        tags: ["personal", "tpot", "blog", "development", "in-construction", "writing"],
+    },
+    {
+        title: "Game Development Studio",
+        description: "Indie game studio website - currently being built",
+        url: "#",
+        tags: ["personal", "tpot", "games", "studio", "in-construction", "gaming"],
+    },
+    {
+        title: "Learning Platform",
+        description: "Educational platform for coding tutorials - in development",
+        url: "#",
+        tags: ["tools", "education", "learning", "in-construction", "tutorials"],
+    },
+    {
+        title: "GitHub Portfolio Template",
+        description: "A clean GitHub portfolio template for developers",
+        url: "https://github.com/username/github-portfolio-template",
+        tags: ["tools", "repository", "github-portfolio", "template", "portfolio", "github"],
+    },
+    {
+        title: "Developer Portfolio Starter",
+        description: "Starter template for GitHub Pages portfolio",
+        url: "https://github.com/username/portfolio-starter",
+        tags: ["tools", "repository", "github-portfolio", "starter", "template", "github-pages"],
+    },
+    {
+        title: "React Portfolio Template",
+        description: "Modern React-based portfolio template",
+        url: "https://github.com/username/react-portfolio",
+        tags: ["tools", "repository", "github-portfolio", "react", "template", "portfolio"],
+    },
+    {
+        title: "Vue.js Portfolio",
+        description: "Vue.js portfolio template with animations",
+        url: "https://github.com/username/vue-portfolio",
+        tags: ["tools", "repository", "github-portfolio", "vue", "template", "animations"],
     }
   ];
 
@@ -406,6 +501,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchBar = document.getElementById('searchBar');
   const websiteGrid = document.getElementById('websiteGrid');
   let pinnedSites = JSON.parse(localStorage.getItem('pinnedSites')) || [];
+  let currentFilter = 'all';
+
+  // Filter button functionality
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Remove active class from all buttons
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      // Add active class to clicked button
+      button.classList.add('active');
+      
+      currentFilter = button.dataset.filter;
+      filterSites();
+    });
+  });
 
   // Group websites by category
   const groupWebsites = (websites) => {
@@ -415,11 +525,17 @@ document.addEventListener('DOMContentLoaded', () => {
       company: [],
       documentation: [],
       repository: [],
-      archive: []
+      archive: [],
+      'in-construction': [],
+      'github-portfolio': []
     };
 
     websites.forEach(site => {
-      if (site.tags.includes('personal')) {
+      if (site.tags.includes('in-construction')) {
+        groups['in-construction'].push(site);
+      } else if (site.tags.includes('github-portfolio')) {
+        groups['github-portfolio'].push(site);
+      } else if (site.tags.includes('personal')) {
         groups.personal.push(site);
       } else if (site.tags.includes('repository')) {
         groups.repository.push(site);
@@ -451,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const groups = groupWebsites(sitesToRender);
     
     // Define the order we want to display groups (personal first)
-    const groupOrder = ['personal', 'tools', 'company', 'documentation', 'repository', 'archive'];
+    const groupOrder = ['personal', 'tools', 'company', 'documentation', 'repository', 'archive', 'in-construction', 'github-portfolio'];
     
     groupOrder.forEach(groupName => {
       const groupSites = groups[groupName];
@@ -462,7 +578,9 @@ document.addEventListener('DOMContentLoaded', () => {
         sectionHeader.style.marginBottom = '1rem';
         sectionHeader.style.marginTop = '2rem';
         
-        const groupTitle = groupName.charAt(0).toUpperCase() + groupName.slice(1);
+        const groupTitle = groupName === 'in-construction' ? '🚧 In Construction' : 
+                          groupName === 'github-portfolio' ? '📁 GitHub Portfolio' :
+                          groupName.charAt(0).toUpperCase() + groupName.slice(1);
         sectionHeader.innerHTML = `<h2 style="margin: 0; color: var(--theme-text);">${groupTitle} Sites</h2>`;
         websiteGrid.appendChild(sectionHeader);
         
@@ -506,11 +624,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const filterSites = () => {
     const searchTerm = searchBar.value.toLowerCase();
-    const filteredSites = sites.filter(site => 
+    let filteredSites = sites.filter(site => 
       site.title.toLowerCase().includes(searchTerm) || 
       site.description.toLowerCase().includes(searchTerm) || 
       site.tags.some(tag => tag.toLowerCase().includes(searchTerm))
     );
+
+    // Apply category filter
+    if (currentFilter !== 'all') {
+      filteredSites = filteredSites.filter(site => {
+        if (currentFilter === 'in-construction') {
+          return site.tags.includes('in-construction');
+        } else if (currentFilter === 'github-portfolio') {
+          return site.tags.includes('github-portfolio');
+        } else {
+          return site.tags.includes(currentFilter);
+        }
+      });
+    }
+
     renderSites(filteredSites);
   };
   
