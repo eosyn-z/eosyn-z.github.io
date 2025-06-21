@@ -15,11 +15,19 @@
   <div class="start-menu-item">
     <span>Programs</span>
     <div class="submenu">
-      {%- assign program_pages = site.pages | where_exp: "item", "item.path contains 'pages/' and item.path != 'pages/games/' and item.path != 'pages/games'" -%}
-      {%- for program in program_pages -%}
-        <div class="submenu-item" data-app-id="{{ program.name | remove: '.md' }}" data-app-title="{{ program.title }}">
-          {%- if program.icon -%}{{ program.icon }} {%- endif -%}{{ program.title }}
-        </div>
+      {%- for page in site.pages -%}
+        {%- comment -%}
+          We want to include pages that are in the 'pages/' directory,
+          but explicitly exclude anything inside 'pages/games/'.
+        {%- endcomment -%}
+        {%- assign is_in_pages_dir = page.path | startswith: 'pages/' -%}
+        {%- assign is_in_games_dir = page.path | startswith: 'pages/games/' -%}
+
+        {%- if is_in_pages_dir and is_in_games_dir == false -%}
+          <div class="submenu-item" data-app-id="{{ page.name | remove: '.md' }}" data-app-title="{{ page.title }}">
+            {%- if page.icon -%}{{ page.icon }} {%- endif -%}{{ page.title }}
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
