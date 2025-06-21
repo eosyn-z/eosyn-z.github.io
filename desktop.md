@@ -6,40 +6,43 @@ desktop_mode: true
 ---
 
 <div id="desktop-container">
-  <!-- Desktop will be initialized here -->
+  <!-- Desktop icons and windows will be managed here -->
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Desktop page loaded, checking for managers...');
-  
-  // Small delay to ensure all scripts are loaded
+  // Use a small delay to ensure all deferred scripts have loaded
   setTimeout(() => {
-    // Initialize desktop manager with cookie support
-    if (typeof DesktopManager !== 'undefined') {
-      console.log('DesktopManager found, initializing...');
-      window.desktopManager = new DesktopManager();
-    } else {
-      console.error('DesktopManager not loaded');
-    }
-    
-    // Initialize window manager
+    console.log('Desktop page loaded, initializing managers...');
+
+    // Initialize WindowManager
     if (typeof WindowManager !== 'undefined') {
-      console.log('WindowManager found, initializing...');
       window.windowManager = new WindowManager();
+      console.log('✅ WindowManager initialized.');
+
+      // Make the test function available globally
+      window.testWindowManager = () => window.windowManager.testWindowManager();
+      console.log('✅ testWindowManager() is now available.');
+
     } else {
-      console.error('WindowManager not loaded');
+      console.error('❌ WindowManager class not found. The script might not be loaded.');
     }
-    
-    // Initialize window switcher
+
+    // Initialize DesktopManager
+    if (typeof DesktopManager !== 'undefined') {
+      window.desktopManager = new DesktopManager();
+      console.log('✅ DesktopManager initialized.');
+    } else {
+      console.error('❌ DesktopManager class not found.');
+    }
+
+    // Initialize WindowSwitcher
     if (typeof WindowSwitcher !== 'undefined') {
-      console.log('WindowSwitcher found, initializing...');
       window.windowSwitcher = new WindowSwitcher();
-      console.log('WindowSwitcher initialized successfully');
+      console.log('✅ WindowSwitcher initialized.');
     } else {
-      console.error('WindowSwitcher not loaded - checking window object...');
-      console.log('Available on window:', Object.keys(window).filter(key => key.includes('Window')));
+      console.error('❌ WindowSwitcher class not found.');
     }
-  }, 100);
+  }, 150); // Increased delay slightly for safety
 });
 </script> 

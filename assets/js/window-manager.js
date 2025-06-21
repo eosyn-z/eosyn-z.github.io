@@ -1307,23 +1307,5 @@ class WindowManager {
     }
 }
 
-// Global initialization
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize window manager globally
-    window.windowManager = new WindowManager();
-    
-    // Initialize sticky notes
-    if (window.windowManager) {
-        window.windowManager.initializeStickyNotes();
-    }
-    
-    // Add test function to global scope
-    window.testWindowManager = () => {
-        if (window.windowManager) {
-            return window.windowManager.testWindowManager();
-        } else {
-            console.error('Window manager not initialized');
-            return null;
-        }
-    };
-}); 
+// The global initialization was moved to desktop.md to prevent conflicts.
+// The test function is also initialized there. 
