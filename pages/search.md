@@ -127,27 +127,25 @@ icon: 🔍
   color: var(--theme-text-secondary);
 }
 
-/* Responsive adjustments for chat layout */
+/* Responsive adjustments for search layout */
 @media (max-width: 768px) {
-  .main-content > div:last-child {
+  .social-forums-section {
     flex-direction: column;
   }
   
-  .main-content > div:last-child > div:first-child {
+  .social-forums-section .glass-card {
+    flex: none;
     width: 100%;
-    margin-bottom: 1rem;
   }
   
-  .main-content > div:last-child > div:first-child > div {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  .filter-buttons {
+    justify-content: center;
   }
   
-  .main-content > div:last-child > div:first-child .glass-button {
-    width: auto;
+  .filter-buttons .glass-button {
     flex: 1;
     min-width: 120px;
+    text-align: center;
   }
 }
 </style>
@@ -161,21 +159,23 @@ icon: 🔍
         </header>
     </div>
     
-    <div class="search-section" style="margin-bottom: 2rem;">
-      <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px; padding: 1rem;">
-      
-      <!-- Filter Buttons -->
-      <div class="filter-buttons" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
-        <button class="filter-btn glass-button active" data-filter="all">All</button>
-        <button class="filter-btn glass-button" data-filter="personal">Personal</button>
-        <button class="filter-btn glass-button" data-filter="tools">Tools</button>
-        <button class="filter-btn glass-button" data-filter="company">Company</button>
-        <button class="filter-btn glass-button" data-filter="documentation">Documentation</button>
-        <button class="filter-btn glass-button" data-filter="repository">Repository</button>
-        <button class="filter-btn glass-button" data-filter="archive">Archive</button>
-        <button class="filter-btn glass-button" data-filter="in-construction">🚧 In Construction</button>
-        <button class="filter-btn glass-button" data-filter="github-portfolio">📁 GitHub Portfolio</button>
-        <button class="filter-btn glass-button" data-filter="bookmark">🔖 Bookmarks</button>
+    <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
+      <div class="search-section">
+        <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px; padding: 1rem;">
+        
+        <!-- Filter Buttons -->
+        <div class="filter-buttons" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+          <button class="filter-btn glass-button active" data-filter="all">All</button>
+          <button class="filter-btn glass-button" data-filter="personal">Personal</button>
+          <button class="filter-btn glass-button" data-filter="tools">Tools</button>
+          <button class="filter-btn glass-button" data-filter="company">Company</button>
+          <button class="filter-btn glass-button" data-filter="documentation">Documentation</button>
+          <button class="filter-btn glass-button" data-filter="repository">Repository</button>
+          <button class="filter-btn glass-button" data-filter="archive">Archive</button>
+          <button class="filter-btn glass-button" data-filter="in-construction">🚧 In Construction</button>
+          <button class="filter-btn glass-button" data-filter="github-portfolio">📁 GitHub Portfolio</button>
+          <button class="filter-btn glass-button" data-filter="bookmark">🔖 Bookmarks</button>
+        </div>
       </div>
     </div>
 
