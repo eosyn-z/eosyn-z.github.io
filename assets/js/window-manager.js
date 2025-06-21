@@ -973,134 +973,67 @@ class WindowManager {
     // Focus a window (bring to front)
     focusWindow(windowId) {
         const windowData = this.getWindow(windowId);
-        if (!windowData) return;
-
-        // Remove active class from all windows
-        this.windows.forEach(w => {
-            w.element.classList.remove('active');
-            w.element.style.zIndex = '1000';
-        });
-
-        // Make this window active and bring to front
-        windowData.element.classList.add('active');
-        windowData.element.style.zIndex = '1001';
-        this.activeWindow = windowData;
-
-        // If window is minimized, restore it
-        if (windowData.isMinimized) {
-            windowData.isMinimized = false;
-            windowData.element.style.transform = 'scale(1)';
-            windowData.element.style.opacity = '1';
-            windowData.element.style.pointerEvents = 'auto';
+        if (windowData) {
+            // Bring the clicked window to the front
+            this.windows.forEach(win => {
+                win.element.style.zIndex = win.id === windowId ? '999' : '998';
+            });
+            this.activeWindow = windowData;
         }
-
-        // Save window states
-        this.saveWindowStates();
     }
 
-    // Load content from a page/app
-    loadAppContent(appId, window, title) {
-        // Special handling for bookmark windows
-        if (appId === 'bookmark') {
-            const bookmarkData = this.findBookmarkData(title);
-            if (bookmarkData) {
-                const content = this.createBookmarkContent(bookmarkData);
-                window.querySelector('.window-content').innerHTML = content;
-            } else {
-                const content = this.createBookmarkErrorContent(title);
-                window.querySelector('.window-content').innerHTML = content;
-            }
+    async loadAppContent(appId, windowElement, title) {
+        const contentArea = windowElement.querySelector('.window-content');
+        if (!contentArea) {
+            console.error(`Window content area not found for app: ${appId}`);
+            contentArea.innerHTML = `<div class="error"><p>Error: Window content area is missing.</p></div>`;
             return;
         }
 
-        // For games and other apps, load the full HTML content
-        if (appId && title) {
-            // Try different URL patterns for different app types
-            let appUrl;
-            
-            // Games have trailing slash in their permalinks
-            if (['snake', 'tetris', 'pong'].includes(appId)) {
-                appUrl = `/${appId}/`;
-            } else {
-                appUrl = `/${appId}`; // Default pattern for other apps
+        contentArea.innerHTML = '<div class="loader"></div>'; // Show loader
+
+        try {
+            const pageUrl = `/pages/${appId}/`;
+            console.log(`Fetching content from URL: ${pageUrl}`);
+
+            const response = await fetch(pageUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
             
-            console.log(`Loading content for ${title} from ${appUrl}`);
+            // Extract the main content from the fetched page
+            const mainContent = doc.querySelector('.main-content'); 
 
-            fetch(appUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok for ${appUrl}`);
+            if (mainContent) {
+                // We need to re-route any relative links or image sources
+                const base = new URL(pageUrl, window.location.origin);
+                mainContent.querySelectorAll('[href]').forEach(el => {
+                    const href = el.getAttribute('href');
+                    if (href && !href.startsWith('http') && !href.startsWith('#')) {
+                        el.href = new URL(href, base).href;
                     }
-                    return response.text();
-                })
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    
-                    let appContent;
-                    
-                    // For games, we need to extract the content from the game layout
-                    if (['snake', 'tetris', 'pong'].includes(appId)) {
-                        // Look for the main-content div which contains the actual game
-                        appContent = doc.querySelector('.main-content');
-                        
-                        // If no main-content found, try to find the content directly
-                        if (!appContent) {
-                            // Look for the content that would be inside {{ content }}
-                            const body = doc.body;
-                            const gameContent = body.querySelector('.main-content') || body.querySelector('[data-page-script]');
-                            if (gameContent) {
-                                appContent = gameContent;
-                            } else {
-                                // Fallback: create a simple game container
-                                appContent = document.createElement('div');
-                                appContent.className = 'main-content';
-                                appContent.innerHTML = `
-                                    <div class="glass-panel" style="padding: 2rem; height: 100%; display: flex; flex-direction: column; align-items: center;">
-                                        <header class="page-header" style="text-align: center; margin-bottom: 1rem;">
-                                            <h1>${title}</h1>
-                                            <p>Game content loading...</p>
-                                        </header>
-                                        <div class="game-window">
-                                            <div style="text-align: center; color: var(--theme-text-secondary);">
-                                                Loading game content...
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-                            }
-                        }
-                    } else {
-                        // For non-games, use the standard approach
-                        appContent = doc.querySelector('.main-content') || doc.body;
-                    }
-
-                    if (appContent) {
-                        const contentDiv = window.querySelector('.window-content');
-                        contentDiv.innerHTML = ''; // Clear loading indicator
-                        contentDiv.appendChild(appContent.cloneNode(true));
-
-                        // Re-initialize any scripts within the loaded content if necessary
-                        const scripts = doc.querySelectorAll('script');
-                        scripts.forEach(script => {
-                            const newScript = document.createElement('script');
-                            if (script.src) {
-                                newScript.src = script.src;
-                            } else {
-                                newScript.textContent = script.innerHTML;
-                            }
-                            document.body.appendChild(newScript).parentNode.removeChild(newScript);
-                        });
-                    } else {
-                        throw new Error('Could not find content in fetched HTML');
-                    }
-                })
-                .catch(error => {
-                    console.error('Failed to load app content:', error);
-                    const contentDiv = window.querySelector('.window-content');
-                    contentDiv.innerHTML = `<p style="padding: 1rem; color: var(--text-secondary);">Error: Could not load application content for "${title}".</p>`;
                 });
+                mainContent.querySelectorAll('[src]').forEach(el => {
+                    const src = el.getAttribute('src');
+                    if (src && !src.startsWith('http')) {
+                        el.src = new URL(src, base).href;
+                    }
+                });
+
+                contentArea.innerHTML = mainContent.innerHTML;
+            } else {
+                 // Fallback for pages that might not have a .main-content div
+                contentArea.innerHTML = doc.body.innerHTML;
+                console.warn(`'.main-content' not found in fetched HTML for ${appId}. Loading full body.`);
+            }
+
+        } catch (error) {
+            console.error(`Failed to load content for app "${appId}":`, error);
+            contentArea.innerHTML = `<div class="error"><p>Could not load content for "${title}".</p><p>Please check the console for more details.</p></div>`;
         }
     }
 
