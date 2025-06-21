@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const themeButtons = document.querySelectorAll('.theme-btn');
     const body = document.body;
+    const themeImages = document.querySelectorAll('.theme-image');
 
     // Function to set the theme
     const setTheme = (theme) => {
@@ -11,6 +12,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.classList.add('active');
             }
         });
+
+        // Image switching logic
+        if (themeImages.length > 0) {
+            let imageToShow = 'c'; // Default to starfield
+            if (['a', 'e', 'n'].includes(theme)) {
+                imageToShow = theme;
+            } else if (['c', 'z', 'r'].includes(theme)) {
+                imageToShow = 'c';
+            }
+
+            themeImages.forEach(img => {
+                if (img.getAttribute('data-theme-image') === imageToShow) {
+                    img.style.display = 'inline-block';
+                } else {
+                    img.style.display = 'none';
+                }
+            });
+        }
+
         // Save theme to cookie if consent is given
         if (getCookie('cookie_consent') === 'accepted') {
             setCookie('theme', theme, 3650); // Store for 10 years

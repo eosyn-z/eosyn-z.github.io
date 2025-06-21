@@ -5,76 +5,71 @@ permalink: /search/
 ---
 
 <div class="main-content">
-  <div class="glass-container container">
-    <div class="glass-card">
-      <header class="page-header">
-        <h1>some cool or helpful websites</h1>
-        <p>Discover amazing tools, resources, and websites</p>
-      </header>
-
-      <div class="search-section">
-        <input type="text" id="searchInput" class="glass-input" placeholder="Search websites..." style="width: 100%; margin-bottom: 20px;">
-        
-        <div class="filters">
-          <div class="filter-group">
-            <input type="checkbox" id="personal" checked>
-            <label for="personal">Personal</label>
-          </div>
-          <div class="filter-group">
-            <input type="checkbox" id="professional" checked>
-            <label for="professional">Professional</label>
-          </div>
-          <div class="filter-group">
-            <input type="checkbox" id="tool" checked>
-            <label for="tool">Tool</label>
-          </div>
-          <div class="filter-group">
-            <input type="checkbox" id="other" checked>
-            <label for="other">Other</label>
-          </div>
-        </div>
+  <div class="glass-card" style="margin-bottom: 2rem;">
+    <header class="page-header" style="margin-bottom: 0; text-align: center;">
+      <h1>some cool or helpful websites</h1>
+      <p>Discover amazing tools, resources, and websites</p>
+    </header>
+  </div>
+  
+  <div class="search-section">
+    <input type="text" id="searchInput" class="glass-input" placeholder="Search websites..." style="width: 100%; margin-bottom: 20px;">
+    <div class="filters">
+      <div class="filter-group">
+        <input type="checkbox" id="personal" checked>
+        <label for="personal">Personal</label>
       </div>
-
-        <!-- Social Websites Ticker -->
-        <div class="ticker-section">
-            <h3>Social Websites</h3>
-            <div class="ticker-container">
-                <div class="ticker-track social">
-                    <a href="https://twitter.com" class="ticker-item" target="_blank">Twitter</a>
-                    <a href="https://discord.com" class="ticker-item" target="_blank">Discord</a>
-                    <a href="https://youtube.com" class="ticker-item" target="_blank">YouTube</a>
-                    <a href="https://twitch.tv" class="ticker-item" target="_blank">Twitch</a>
-                    <a href="https://github.com" class="ticker-item" target="_blank">GitHub</a>
-                    <a href="https://dev.to" class="ticker-item" target="_blank">Dev.to</a>
-                    <a href="https://dribbble.com" class="ticker-item" target="_blank">Dribbble</a>
-                    <a href="https://behance.net" class="ticker-item" target="_blank">Behance</a>
-                    <a href="https://pinterest.com" class="ticker-item" target="_blank">Pinterest</a>
-                    <a href="https://medium.com" class="ticker-item" target="_blank">Medium</a>
-                    <a href="https://hashnode.com" class="ticker-item" target="_blank">Hashnode</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Forums Ticker -->
-        <div class="ticker-section">
-            <h3>Forums & Communities</h3>
-            <div class="ticker-container">
-                <div class="ticker-track forums">
-                    <a href="https://stackoverflow.com" class="ticker-item" target="_blank">Stack Overflow</a>
-                    <a href="https://reddit.com/r/art" class="ticker-item" target="_blank">r/art</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="website-grid" id="websiteGrid">
-            <!-- Websites will be populated here -->
-        </div>
-    </div>
-
-    <div id="results" class="results-grid">
-      <!-- Results will be populated by JavaScript -->
+      <div class="filter-group">
+        <input type="checkbox" id="professional" checked>
+        <label for="professional">Professional</label>
+      </div>
+      <div class="filter-group">
+        <input type="checkbox" id="tool" checked>
+        <label for="tool">Tool</label>
+      </div>
+      <div class="filter-group">
+        <input type="checkbox" id="other" checked>
+        <label for="other">Other</label>
+      </div>
     </div>
   </div>
+    <!-- Social Websites Ticker -->
+    <div class="ticker-section">
+        <h3>Social Websites</h3>
+        <div class="ticker-container">
+            <div class="ticker-track social">
+                <a href="https://twitter.com" class="ticker-item" target="_blank">Twitter</a>
+                <a href="https://discord.com" class="ticker-item" target="_blank">Discord</a>
+                <a href="https://youtube.com" class="ticker-item" target="_blank">YouTube</a>
+                <a href="https://twitch.tv" class="ticker-item" target="_blank">Twitch</a>
+                <a href="https://github.com" class="ticker-item" target="_blank">GitHub</a>
+                <a href="https://dev.to" class="ticker-item" target="_blank">Dev.to</a>
+                <a href="https://dribbble.com" class="ticker-item" target="_blank">Dribbble</a>
+                <a href="https://behance.net" class="ticker-item" target="_blank">Behance</a>
+                <a href="https://pinterest.com" class="ticker-item" target="_blank">Pinterest</a>
+                <a href="https://medium.com" class="ticker-item" target="_blank">Medium</a>
+                <a href="https://hashnode.com" class="ticker-item" target="_blank">Hashnode</a>
+            </div>
+        </div>
+    </div>
+    <!-- Forums Ticker -->
+    <div class="ticker-section">
+        <h3>Forums & Communities</h3>
+        <div class="ticker-container">
+            <div class="ticker-track forums">
+                <a href="https://stackoverflow.com" class="ticker-item" target="_blank">Stack Overflow</a>
+                <a href="https://reddit.com/r/art" class="ticker-item" target="_blank">r/art</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="website-grid" id="websiteGrid">
+        <!-- Websites will be populated here -->
+    </div>
+</div>
+
+<div id="results" class="results-grid">
+  <!-- Results will be populated by JavaScript -->
 </div>
 
 <script type="application/json" id="websites-data">

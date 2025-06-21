@@ -15,8 +15,10 @@
 
 /* --- Base Body Style --- */
 body {
-  background: var(--bg-primary);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* --- Core Glass Component Style --- */
@@ -104,7 +106,7 @@ body {
 /* --- Theme Switcher Button Styles --- */
 .theme-buttons {
   display: flex;
-  gap: 10px;
+  gap: 20px;
   align-items: center;
 }
 
@@ -164,8 +166,8 @@ body {
   background-color: var(--glass-bg-dark);
   background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
   transform: translateY(-2px);
-  box-shadow: var(--glass-shadow-medium);
-  border-color: var(--glass-border-medium);
+  box-shadow: var(--glass-shadow-medium), 0 0 15px var(--theme-accent);
+  border-color: var(--theme-accent);
 }
 
 /* Glass Card */
@@ -199,11 +201,23 @@ body {
 /* Glass Navigation */
 .glass-nav {
   background-color: var(--glass-bg-medium);
-  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
   backdrop-filter: var(--glass-blur-medium);
   border-bottom: 1px solid var(--glass-border-light);
   padding: 16px 24px;
   box-shadow: var(--glass-shadow-light);
+}
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.main-content {
+    padding: 20px 20px 60px 20px; /* Adds space: 20px top/sides, 60px bottom */
+    box-sizing: border-box; /* Ensures padding doesn't add to the element's total size */
+    min-height: 100vh;
 }
 
 /* Glass Modal */
@@ -370,7 +384,7 @@ body {
 
 .page-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem; /* Default spacing below headers */
 }
 
 .page-header h1 {
@@ -384,6 +398,12 @@ body {
     font-size: 1.1rem;
     color: var(--theme-text-secondary);
     margin: 0;
+}
+
+.tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem; /* Adjust this to change default tile spacing */
 }
 
 #playlist-buttons {
@@ -407,14 +427,14 @@ body {
 
 #playlist-buttons .glass-button span:last-child {
     font-size: 0.9rem;
-    opacity: 0.8;
-    display: block;
+    color: var(--theme-text-secondary);
 }
 
 iframe {
     width: 100%;
     height: 100%;
     border: none;
+    border-radius: 12px;
 }
 
 .nav-container {
@@ -426,7 +446,7 @@ iframe {
 
 .nav-links-header {
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 
 .nav-right-group {
@@ -435,8 +455,129 @@ iframe {
   gap: 20px;
 }
 
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Standardized Typography */
+h1, .h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+h2, .h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+h3, .h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+p {
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 768px) {
   .glass-container {
+    padding: 15px;
+  }
+}
+
+/* Discord Status Widget */
+#discord-status-widget {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  background-color: var(--glass-bg-heavy);
+  border-radius: 15px;
+}
+
+#discord-status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+#discord-status-indicator.online { background-color: #43b581; } /* Green */
+#discord-status-indicator.idle { background-color: #faa61a; } /* Orange */
+#discord-status-indicator.dnd { background-color: #f04747; } /* Red */
+#discord-status-indicator.offline { background-color: var(--theme-text-secondary); } /* Grey */
+
+#discord-status-details p {
+  margin: 0;
+  line-height: 1.2;
+  font-size: 0.9rem;
+}
+
+#discord-status-text {
+  font-weight: 600;
+}
+
+#discord-activity-text {
+  font-size: 0.8rem;
+  color: var(--theme-text-secondary);
+}
+
+/* Bottom Start Bar */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1001; /* Ensure it's above content but below potential modals */
+  background-color: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur-heavy);
+  border-top: 1px solid var(--glass-border-light);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+}
+
+.bar-content {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  height: 40px;
+}
+
+.start-button {
+  padding: 5px 15px;
+  font-weight: 700;
+}
+
+.divider {
+  height: 80%;
+  width: 1px;
+  background-color: var(--glass-border-light);
+  margin: 0 10px;
+}
+
+.taskbar-programs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.taskbar-item {
+  padding: 5px 12px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .glass-container {
+    border-radius: 12px;
     padding: 15px;
   }
 } 

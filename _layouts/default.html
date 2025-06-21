@@ -1,4 +1,3 @@
-<!-- Forcing a rebuild to clear cache -->
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
@@ -11,19 +10,23 @@
         <a href="/" class="brand" style="color: var(--theme-text);">eosyn.net</a>
         <div class="nav-right-group">
           <nav class="nav-links-header">
+            <a href="/" class="glass-button">Home</a>
             <a href="/music/" class="glass-button">Music</a>
             <a href="/art/" class="glass-button">Art</a>
             <a href="/howtodothat/" class="glass-button">How To Do That</a>
             <a href="/nature/" class="glass-button">Nature</a>
             <a href="/search/" class="glass-button">Search</a>
           </nav>
-          <div class="theme-buttons">
-            <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
-            <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
-            <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
-            <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
-            <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
-            <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+          <div class="header-controls">
+            <div class="theme-buttons">
+              <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+              <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+              <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+              <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+              <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+              <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+            </div>
+            {%- include discord_status.html -%}
           </div>
         </div>
       </div>
@@ -44,6 +47,8 @@
     {%- endif -%}
 
     <script src="/assets/js/theme-switcher.js"></script>
+
+    {%- include bottom_bar.html -%}
 
   </body>
 

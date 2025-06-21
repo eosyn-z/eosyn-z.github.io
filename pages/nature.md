@@ -5,9 +5,7 @@ permalink: /nature/
 ---
 
 <div class="main-content">
-    <div class="glass-card">
 
-// "back to home" and "nature" buttons below
 <a href="/" class="glass-button" style="position: absolute; top: 20px; left: 20px; z-index: 10;">← Back to Home</a>
 <div class="glass-panel" style="position: absolute; top: 20px; right: 20px;">
     <h3 style="margin: 0; font-size: 16px; font-weight: 600;">🌿 Nature</h3>
@@ -15,7 +13,6 @@ permalink: /nature/
 
 
 
-// this switches between the groups of cinemagraphs I've found online. 
 <!-- Group Switcher -->
 <div id="groupSwitcher" class="glass-panel" style="position: absolute; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; gap: 12px; padding: 12px 20px;">
   <button class="glass-button primary" data-group="random">Random</button>
