@@ -34,22 +34,24 @@
   <div class="start-menu-item">
     <span>Games</span>
     <div class="submenu">
-      {%- assign game_pages = site.pages | where_exp: "item", "item.path contains 'pages/games/'" -%}
-      {%- for game in game_pages -%}
-        <div class="submenu-item" data-app-id="{{ game.name | remove: '.md' }}" data-app-title="{{ game.title }}">
-          {%- if game.icon -%}{{ game.icon }} {%- endif -%}{{ game.title }}
+      {%- for page in site.pages -%}
+        {%- if page.path contains 'pages/games/' -%}
+        <div class="submenu-item" data-app-id="{{ page.name | remove: '.md' }}" data-app-title="{{ page.title }}">
+          {%- if page.icon -%}{{ page.icon }} {%- endif -%}{{ page.title }}
         </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
   <div class="start-menu-item">
     <span>Utilities</span>
     <div class="submenu">
-      {%- assign utility_pages = site.pages | where_exp: "item", "item.tags contains 'bookmark'" -%}
-      {%- for utility in utility_pages -%}
-        <div class="submenu-item" data-app-id="{{ utility.name | remove: '.md' }}" data-app-title="{{ utility.title }}">
-          {%- if utility.icon -%}{{ utility.icon }} {%- endif -%}{{ utility.title }}
+      {%- for page in site.pages -%}
+        {%- if page.tags contains 'bookmark' -%}
+        <div class="submenu-item" data-app-id="{{ page.name | remove: '.md' }}" data-app-title="{{ page.title }}">
+          {%- if page.icon -%}{{ page.icon }} {%- endif -%}{{ page.title }}
         </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
