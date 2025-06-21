@@ -3,56 +3,61 @@
 
   {%- include head.html -%} 
 
-  <body data-theme="c" data-page="{{ page.url | replace: '/', '' | replace: '.html', '' | default: 'home' }}">
-
-    <header class="glass-nav top-nav">
-      <div class="nav-container">
-        <a href="/" class="brand" style="color: var(--theme-text);">eosyn.net</a>
-        <div class="nav-right-group">
-          <nav class="nav-links-header">
-            <a href="/" class="glass-button">Home</a>
-            <a href="/music/" class="glass-button">Music</a>
-            <a href="/portfolio/" class="glass-button">Portfolio</a>
-            <a href="/howtodothat/" class="glass-button">How To Do That</a>
-            <a href="/nature/" class="glass-button">Nature</a>
-            <a href="/search/" class="glass-button">Search</a>
-            <a href="/chat/" class="glass-button">Chat</a>
-          </nav>
-          <div class="header-controls">
-            <div class="theme-buttons">
-              <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
-              <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
-              <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
-              <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
-              <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
-              <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
-              <div class="theme-btn custom-theme" data-theme="custom" title="🎨 Custom Theme Editor">🎨</div>
+  <body data-theme="c">
+    {% if page.layout == 'desktop' or page.desktop_mode %}
+      {% layout desktop %}
+    {% else %}
+      <header class="glass-nav top-nav">
+        <div class="nav-container">
+          <a href="/" class="brand" style="color: var(--theme-text);">eosyn.net</a>
+          <div class="nav-right-group">
+            <nav class="nav-links-header">
+              <a href="/" class="glass-button">Home</a>
+              <a href="/music/" class="glass-button">Music</a>
+              <a href="/portfolio/" class="glass-button">Portfolio</a>
+              <a href="/howtodothat/" class="glass-button">How To Do That</a>
+              <a href="/nature/" class="glass-button">Nature</a>
+              <a href="/search/" class="glass-button">Search</a>
+              <a href="/chat/" class="glass-button">Chat</a>
+            </nav>
+            <div class="header-controls">
+              <!-- View Toggle -->
+              <div class="view-toggle-container">
+                <button id="view-toggle" class="view-toggle-btn glass-button" title="Toggle Desktop Mode">
+                  <span class="view-icon website">🌐</span>
+                  <span class="view-icon desktop" style="display: none;">🖥️</span>
+                </button>
+              </div>
+              <div class="theme-buttons">
+                <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+                <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+                <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+                <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+                <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+                <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+                <div class="theme-btn custom-theme" data-theme="custom" title="🎨 Custom Theme Editor">🎨</div>
+              </div>
+              {%- include discord_status.html -%}
             </div>
-            {%- include discord_status.html -%}
           </div>
         </div>
+      </header>
+      {{ content }}
+      {%- if page.url == "/" or page.url == "/index.html" or page.url == "" or page.url == nil -%}
+      <!-- Cookie Consent -->
+      <div class="cookie-consent glass-card" id="cookieConsent" style="display: none;">
+        <h3 style="margin: 0 0 10px 0; color: var(--theme-text-primary); font-size: 16px;">🍪 Cookie Notice</h3>
+        <p style="margin: 0 0 15px 0; color: var(--theme-text-secondary); font-size: 14px; line-height: 1.5;">This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
+        <div class="cookie-buttons">
+          <button class="glass-button cookie-btn reject" onclick="rejectCookies()">Reject</button>
+          <button class="glass-button cookie-btn accept" onclick="acceptCookies()">Accept</button>
+        </div>
       </div>
-    </header>
-
-    {{ content }}
-
-    {%- if page.url == "/" or page.url == "/index.html" or page.url == "" or page.url == nil -%}
-    <!-- Cookie Consent -->
-    <div class="cookie-consent glass-card" id="cookieConsent" style="display: none;">
-      <h3 style="margin: 0 0 10px 0; color: var(--theme-text-primary); font-size: 16px;">🍪 Cookie Notice</h3>
-      <p style="margin: 0 0 15px 0; color: var(--theme-text-secondary); font-size: 14px; line-height: 1.5;">This website uses cookies to save your theme preference and improve your experience. We only store your theme choice and don't track any personal information.</p>
-      <div class="cookie-buttons">
-        <button class="glass-button cookie-btn reject" onclick="rejectCookies()">Reject</button>
-        <button class="glass-button cookie-btn accept" onclick="acceptCookies()">Accept</button>
-      </div>
-    </div>
-    {%- endif -%}
-
-    <script src="/assets/js/theme-switcher.js"></script>
-
-    {%- include bottom_bar.html -%}
-    {%- include theme-editor.html -%}
-
+      {%- endif -%}
+      <script src="/assets/js/theme-switcher.js"></script>
+      {%- include bottom_bar.html -%}
+      {%- include theme-editor.html -%}
+    {% endif %}
   </body>
 
 </html> 

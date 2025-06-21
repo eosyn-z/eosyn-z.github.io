@@ -1,7 +1,7 @@
 // Custom Theme Editor
 class CustomThemeEditor {
     constructor() {
-        this.modal = document.getElementById('theme-editor-modal');
+        this.tray = document.getElementById('theme-editor-tray');
         this.colorPickers = document.querySelectorAll('.color-picker');
         this.customThemeButton = document.querySelector('.theme-btn.custom-theme');
         this.isCustomThemeActive = false;
@@ -24,13 +24,13 @@ class CustomThemeEditor {
     }
 
     openThemeEditor() {
-        this.modal.style.display = 'flex';
+        this.tray.classList.add('active');
         this.populateColorPickers();
         this.setCustomThemeActive();
     }
 
     closeThemeEditor() {
-        this.modal.style.display = 'none';
+        this.tray.classList.remove('active');
     }
 
     populateColorPickers() {
@@ -90,6 +90,11 @@ class CustomThemeEditor {
         // Save to cookie
         const themeData = JSON.stringify(window.customThemeValues);
         setCookie('custom_theme', themeData, 3650); // Store for 10 years
+        
+        // Also save the current theme setting
+        if (window.saveCurrentTheme) {
+            window.saveCurrentTheme();
+        }
         
         // Show success message
         this.showNotification('Custom theme saved! 🎨', 'success');
@@ -247,16 +252,18 @@ window.resetCustomTheme = function() {
 document.addEventListener('DOMContentLoaded', function() {
     window.themeEditor = new CustomThemeEditor();
     
-    // Close modal when clicking outside
-    document.getElementById('theme-editor-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
+    // Close tray when clicking outside
+    document.addEventListener('click', function(e) {
+        if (window.themeEditor.tray.classList.contains('active') && 
+            !window.themeEditor.tray.contains(e.target) && 
+            !e.target.closest('.theme-btn.custom-theme')) {
             window.themeEditor.closeThemeEditor();
         }
     });
     
-    // Close modal with Escape key
+    // Close tray with Escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && window.themeEditor.modal.style.display === 'flex') {
+        if (e.key === 'Escape' && window.themeEditor.tray.classList.contains('active')) {
             window.themeEditor.closeThemeEditor();
         }
     });

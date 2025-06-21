@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {%- include head.html -%}
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg-primary);
+      }
+      .desktop-back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 20000;
+        background: var(--glass-bg-heavy);
+        border: 1px solid var(--glass-border-light);
+        border-radius: 8px;
+        padding: 0.5rem 1.2rem;
+        color: var(--theme-text);
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: var(--glass-shadow-medium);
+        transition: all 0.2s ease;
+      }
+      .desktop-back-btn:hover {
+        background: var(--theme-accent);
+        color: white;
+      }
+      .desktop-window-area {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body class="desktop-mode">
+    <button class="desktop-back-btn" onclick="window.viewManager.toggleView()">← Back</button>
+    <div class="desktop-window-area">
+      {{ content }}
+    </div>
+    <script>
+      // Hide normal banner/navigation if present
+      document.addEventListener('DOMContentLoaded', function() {
+        const nav = document.querySelector('.top-nav');
+        if (nav) nav.style.display = 'none';
+        const banner = document.querySelector('.page-header');
+        if (banner) banner.style.display = 'none';
+      });
+    </script>
+  </body>
+</html> 

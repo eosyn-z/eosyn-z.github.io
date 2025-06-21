@@ -7,18 +7,25 @@ permalink: /nature/
 <div class="main-content">
 
 <a href="/" class="glass-button" style="position: absolute; top: 20px; left: 20px; z-index: 10;">← Back to Home</a>
-<div class="glass-panel" style="position: absolute; top: 20px; right: 20px;">
-    <h3 style="margin: 0; font-size: 16px; font-weight: 600;">🌿 Nature</h3>
-</div>
-
-
 
 <!-- Group Switcher -->
-<div id="groupSwitcher" class="glass-panel" style="position: absolute; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; gap: 12px; padding: 12px 20px;">
-  <button class="glass-button primary" data-group="random">Random</button>
-  <button class="glass-button" data-group="forest">Forest</button>
-  <button class="glass-button" data-group="flowingWater">Flowing Water</button>
-  <button class="glass-button" data-group="ocean">Ocean</button>
+<div id="groupSwitcher" class="glass-panel" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; flex-direction: column; gap: 12px; padding: 12px 20px;">
+  <div style="display: flex; gap: 12px;">
+    <button class="glass-button primary" data-group="random">Random</button>
+    <button class="glass-button" data-group="forest">Forest</button>
+    <button class="glass-button" data-group="flowingWater">Flowing Water</button>
+    <button class="glass-button" data-group="ocean">Ocean</button>
+  </div>
+  <!-- Theme Buttons -->
+  <div class="theme-buttons" style="justify-content: center; padding-top: 10px; border-top: 1px solid var(--glass-border-light);">
+    <div class="theme-btn active" data-theme="c" title="C - Cosmic"></div>
+    <div class="theme-btn" data-theme="a" title="A - Aurora"></div>
+    <div class="theme-btn" data-theme="r" title="R - Rainbow"></div>
+    <div class="theme-btn" data-theme="z" title="Z - Zenith"></div>
+    <div class="theme-btn" data-theme="e" title="E - Eclipse"></div>
+    <div class="theme-btn" data-theme="n" title="N - Nebula"></div>
+    <div class="theme-btn custom-theme" data-theme="custom" title="🎨 Custom Theme Editor">🎨</div>
+  </div>
 </div>
 
 <div id="imageContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>

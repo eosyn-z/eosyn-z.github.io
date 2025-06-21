@@ -7,9 +7,9 @@ permalink: /music/
 <div class="main-content">
 
   <!-- Master Music Container -->
-  <div class="glass-card" style="padding: 2rem;">
+  <div class="glass-panel">
   
-    <header class="page-header" style="margin-bottom: 2rem; text-align: center;">
+    <header class="page-header">
       <h1>Music Playlists</h1>
       <p>Curated playlists for different moods and genres.</p>
     </header>
@@ -41,24 +41,25 @@ permalink: /music/
       </button>
     </div>
 
-    <div class="glass-panel" style="min-height: 400px; position: relative;">
+    <!-- Spotify Player Container -->
+    <div class="glass-card spotify-player-container">
       <div class="spotify-player active" id="spotify-player-1">
-        <iframe src="https://open.spotify.com/embed/playlist/2FBwEzxQjsxv64JChoNuJS" allow="encrypted-media"></iframe>
+        <iframe src="https://open.spotify.com/embed/playlist/2FBwEzxQjsxv64JChoNuJS?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
       </div>
       <div class="spotify-player" id="spotify-player-2">
-        <iframe src="https://open.spotify.com/embed/playlist/6mjiGvDpxeLCG2KskJTBwi" allow="encrypted-media"></iframe>
+        <iframe src="https://open.spotify.com/embed/playlist/6mjiGvDpxeLCG2KskJTBwi?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
       </div>
       <div class="spotify-player" id="spotify-player-3">
-        <iframe src="https://open.spotify.com/embed/playlist/4QV72DSVPUqH211VrwEhcG" allow="encrypted-media"></iframe>
+        <iframe src="https://open.spotify.com/embed/playlist/4QV72DSVPUqH211VrwEhcG?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
       </div>
       <div class="spotify-player" id="spotify-player-4">
-        <iframe src="https://open.spotify.com/embed/playlist/69eDWxuTvpgFsw76XPti17" allow="encrypted-media"></iframe>
+        <iframe src="https://open.spotify.com/embed/playlist/69eDWxuTvpgFsw76XPti17?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
       </div>
       <div class="spotify-player" id="spotify-player-5">
-        <iframe src="https://open.spotify.com/embed/playlist/2YofAall8io2JBtY6eHN1q" allow="encrypted-media"></iframe>
+        <iframe src="https://open.spotify.com/embed/playlist/2YofAall8io2JBtY6eHN1q?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
       </div>
       <div class="spotify-player" id="spotify-player-6">
-        <iframe src="https://open.spotify.com/embed/playlist/1JTOk3S05pndnlDdDz1quk" allow="encrypted-media"></iframe>
+        <iframe src="https://open.spotify.com/embed/playlist/1JTOk3S05pndnlDdDz1quk?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
       </div>
     </div>
     

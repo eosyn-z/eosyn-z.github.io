@@ -109,12 +109,22 @@ permalink: /chat/
   }
 </style>
 
+<script src="{{ "/assets/js/irc-themer.js" | relative_url }}" defer></script>
 <script>
   function setChannel(channelName) {
-    const server = 'irc.libera.chat';
-    const iframe = document.getElementById('chatFrame');
-    iframe.src = `https://kiwiirc.com/nextclient/#irc://${server}/#${channelName}`;
+    console.log('Switching to channel:', channelName);
     
+    const iframe = document.getElementById('chatFrame');
+    const server = 'irc.libera.chat';
+    
+    // Construct the new URL with the correct Kiwi IRC format
+    const newUrl = `https://kiwiirc.com/nextclient/#irc://${server}/#${channelName}`;
+    
+    console.log('New URL:', newUrl);
+    
+    // Update the iframe source
+    iframe.src = newUrl;
+
     // Update active button
     document.querySelectorAll('.channel-btn').forEach(btn => {
       btn.classList.remove('active');
@@ -123,5 +133,10 @@ permalink: /chat/
     
     // Update channel title
     document.querySelector('.glass-card:last-child h3').textContent = `#${channelName}`;
+
+    // Let the themer know something happened so it can reapply theming
+    setTimeout(() => {
+      window.dispatchEvent(new Event('channelChanged'));
+    }, 100);
   }
 </script> 
