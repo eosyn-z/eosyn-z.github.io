@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const desktopToggle = document.getElementById('desktop-toggle');
+    const desktopToggle = document.getElementById('start-button');
     const body = document.body;
     const windowContainer = document.getElementById('window-container');
     const taskbarPrograms = document.getElementById('taskbar-programs');
@@ -173,26 +173,32 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function makeDraggable(el) {
         const header = el.querySelector('.window-header');
-        let offsetX, offsetY;
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-        const move = (e) => {
-            el.style.left = `${e.clientX - offsetX}px`;
-            el.style.top = `${e.clientY - offsetY}px`;
+        const dragMouseDown = (e) => {
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
         };
 
-        const addMove = (e) => {
-            offsetX = e.clientX - el.offsetLeft;
-            offsetY = e.clientY - el.offsetTop;
-            document.addEventListener('mousemove', move);
+        const elementDrag = (e) => {
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            el.style.top = (el.offsetTop - pos2) + "px";
+            el.style.left = (el.offsetLeft - pos1) + "px";
         };
 
-        const removeMove = () => {
-            document.removeEventListener('mousemove', move);
+        const closeDragElement = () => {
+            document.onmouseup = null;
+            document.onmousemove = null;
         };
 
-        header.addEventListener('mousedown', addMove);
-        header.addEventListener('mouseup', removeMove);
-        document.addEventListener('mouseup', removeMove);
+        header.onmousedown = dragMouseDown;
     }
 
     function makeResizable(el) {
@@ -227,5 +233,18 @@ document.addEventListener('DOMContentLoaded', () => {
         windowContainer.innerHTML = '';
         taskbarPrograms.innerHTML = '';
         openWindows = {};
+    }
+
+    // Pass the jekyllPages data to the DesktopManager
+    if (typeof DesktopManager !== 'undefined') {
+        window.desktopManager = new DesktopManager(window.jekyllPages || []);
+    } else {
+        console.error('DesktopManager is not defined.');
+    }
+
+    if (typeof WindowManager !== 'undefined') {
+        window.windowManager = new WindowManager();
+    } else {
+        console.error('WindowManager is not defined.');
     }
 }); 

@@ -194,11 +194,27 @@ class PongGame {
   }
 }
 
-// Automatically instantiate the game when the script is loaded
-let pongGame;
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('pongCanvas');
-    if (canvas) {
-        pongGame = new PongGame();
+// Global pong game instance
+let pongGame = null;
+
+function initializePongGame() {
+    // Check if already initialized
+    if (pongGame) {
+        return;
     }
-}); 
+    
+    const canvas = document.getElementById('pongCanvas');
+    if (!canvas) {
+        console.log('Pong canvas not found, waiting for DOM...');
+        return;
+    }
+    
+    pongGame = new PongGame();
+    console.log('Pong game initialized successfully');
+}
+
+// Automatically instantiate the game when the script is loaded
+document.addEventListener('DOMContentLoaded', initializePongGame);
+
+// Also initialize when window content is loaded
+document.addEventListener('windowContentLoaded', initializePongGame); 

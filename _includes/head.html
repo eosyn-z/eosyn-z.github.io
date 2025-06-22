@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ "/assets/css/theme.css" | relative_url }}">
   <link rel="stylesheet" href="{{ "/assets/css/themes.css" | relative_url }}">
+  <link rel="stylesheet" href="{{ "/assets/css/paint.css" | relative_url }}">
   <script src="{{ "/assets/js/theme-switcher.js" | relative_url }}" defer></script>
   <script src="{{ "/assets/js/view-manager.js" | relative_url }}" defer></script>
   <script src="{{ "/assets/js/search.js" | relative_url }}" defer></script>
@@ -24,6 +25,7 @@
   <script src="{{ "/assets/js/snake-game.js" | relative_url }}" defer></script>
   <script src="{{ "/assets/js/tetris-game.js" | relative_url }}" defer></script>
   <script src="{{ "/assets/js/pong-game.js" | relative_url }}" defer></script>
+  <script src="{{ "/assets/js/paint.js" | relative_url }}" defer></script>
   
   <!-- Page-specific Scripts -->
   <script>
@@ -39,8 +41,8 @@
     });
   </script>
 
-  <link rel="stylesheet" href="/assets/wallpaper/picker.css">
-  <script src="/assets/wallpaper/picker.js" defer></script>
+  <link rel="stylesheet" href="{{ "/assets/wallpaper/picker.css" | relative_url }}">
+  <script src="{{ "/assets/wallpaper/picker.js" | relative_url }}" defer></script>
 
   <title>{{ page.title | default: site.title }}</title>
   {%- if jekyll.environment == 'production' and site.google_analytics -%}

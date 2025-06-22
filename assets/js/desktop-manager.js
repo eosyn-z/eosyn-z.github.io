@@ -1,6 +1,7 @@
 class DesktopManager {
-  constructor() {
+  constructor(pages) {
     this.desktop = document.body;
+    this.pages = pages || []; // Store pages data
     this.icons = [];
     this.currentWallpaper = '';
     this.iconSize = 64;
@@ -14,18 +15,20 @@ class DesktopManager {
   loadDesktopState() {
     try {
       const savedState = this.getCookie('desktopState');
+      const baseUrl = window.siteBaseUrl || '';
       if (savedState) {
         const state = JSON.parse(savedState);
         this.icons = state.icons || this.getDefaultIcons();
-        this.currentWallpaper = state.wallpaper || '/assets/wallpapers/default/desktop-1.jpg';
+        this.currentWallpaper = state.wallpaper || `${baseUrl}/assets/wallpapers/default/desktop-1.jpg`;
       } else {
         this.icons = this.getDefaultIcons();
-        this.currentWallpaper = '/assets/wallpapers/default/desktop-1.jpg';
+        this.currentWallpaper = `${baseUrl}/assets/wallpapers/default/desktop-1.jpg`;
       }
     } catch (error) {
       console.error('Error loading desktop state:', error);
+      const baseUrl = window.siteBaseUrl || '';
       this.icons = this.getDefaultIcons();
-      this.currentWallpaper = '/assets/wallpapers/default/desktop-1.jpg';
+      this.currentWallpaper = `${baseUrl}/assets/wallpapers/default/desktop-1.jpg`;
     }
   }
 
@@ -59,128 +62,31 @@ class DesktopManager {
 
   // Get default icons configuration
   getDefaultIcons() {
-    return [
-      {
-        id: 'paint',
-        title: 'Paint',
-        icon: '🎨',
-        x: 50,
-        y: 50,
-        appId: 'paint',
-        appTitle: 'Paint',
-        dateCreated: '2024-01-01',
-        description: 'MS Paint-style drawing tool',
-        redbubbleLink: ''
-      },
-      {
-        id: 'nature',
-        title: 'Nature',
-        icon: '🌳',
-        x: 50,
-        y: 150,
-        appId: 'nature',
-        appTitle: "Nature's Window",
-        dateCreated: '2024-01-01',
-        description: 'Touch grass - nature imagery and filters',
-        redbubbleLink: ''
-      },
-      {
-        id: 'games',
-        title: 'Games',
-        icon: '🎮',
-        x: 50,
-        y: 250,
-        appId: 'games',
-        appTitle: 'Game Center',
-        dateCreated: '2024-01-01',
-        description: 'Play games and have fun',
-        redbubbleLink: ''
-      },
-      {
-        id: 'portfolio',
-        title: 'Portfolio',
-        icon: '🎨', // Using emoji instead of image file
-        x: 200,
-        y: 50,
-        appId: 'portfolio',
-        appTitle: 'Portfolio',
-        dateCreated: '2024-01-01',
-        description: 'View my art portfolio and creative works',
-        redbubbleLink: ''
-      },
-      {
-        id: 'music',
-        title: 'Music',
-        icon: '🎵', // Using emoji instead of image file
-        x: 200,
-        y: 150,
-        appId: 'music',
-        appTitle: 'Music Player',
-        dateCreated: '2024-01-01',
-        description: 'Listen to music and audio content',
-        redbubbleLink: ''
-      },
-      {
-        id: 'search',
-        title: 'Search',
-        icon: '🔍', // Using emoji instead of image file
-        x: 200,
-        y: 250,
-        appId: 'search',
-        appTitle: 'Search & Pin',
-        dateCreated: '2024-01-01',
-        description: 'Search and pin your favorite content',
-        redbubbleLink: ''
-      },
-      {
-        id: 'chat',
-        title: 'Chat',
-        icon: '💬', // Using emoji instead of image file
-        x: 200,
-        y: 350,
-        appId: 'chat',
-        appTitle: 'AI Chat',
-        dateCreated: '2024-01-01',
-        description: 'Chat with AI assistant',
-        redbubbleLink: ''
-      },
-      {
-        id: 'sticky-notes',
-        title: 'Sticky Notes',
-        icon: '📝', // Using emoji instead of image file
-        x: 200,
-        y: 450,
-        appId: 'sticky-notes',
-        appTitle: 'Sticky Notes',
-        dateCreated: '2024-01-01',
-        description: 'Create and manage sticky notes',
-        redbubbleLink: ''
-      },
-      {
-        id: 'snake',
-        title: 'Snake',
-        icon: '🐍', // Using emoji instead of image file
-        x: 350,
-        y: 50,
-        appId: 'snake',
-        appTitle: 'Snake',
-        dateCreated: '2024-01-01',
-        description: 'Classic Snake game',
-        redbubbleLink: ''
-      },
-      {
-        id: 'tetris',
-        title: 'Tetris',
-        icon: '🧩', // Using emoji instead of image file
-        x: 350,
-        y: 150,
-        appId: 'tetris',
-        appTitle: 'Tetris',
-        dateCreated: '2024-01-01',
-        description: 'Classic Tetris puzzle game',
-        redbubbleLink: ''
-      }
+    const defaultIconData = [
+      { title: 'Paint', icon: '🎨' },
+      { title: 'Nature', icon: '🌳' },
+      { title: 'Games', icon: '🎮' },
+      { title: 'Portfolio', icon: '🎨' },
+      { title: 'Music', icon: '🎵' },
+      { title: 'Search', icon: '🔍' },
+      { title: 'Chat', icon: '💬' },
+      { title: 'Sticky Notes', icon: '📝' },
+      { title: 'Snake', icon: '🐍' },
+      { title: 'Tetris', icon: '🧩' },
     ];
+
+    return defaultIconData.map((icon, index) => {
+      const page = this.pages.find(p => p.title === icon.title);
+      return {
+        id: page ? page.url.split('/').filter(Boolean).pop() : icon.title.toLowerCase().replace(' ', '-'),
+        title: icon.title,
+        icon: icon.icon,
+        x: 50 + (index % 3) * 120, // Simple grid layout
+        y: 50 + Math.floor(index / 3) * 120,
+        url: page ? page.url : '#', // Use page URL
+        description: page ? (page.description || `Open the ${page.title} page.`) : `A desktop shortcut.`,
+      };
+    }).filter(icon => icon.url !== '#'); // Filter out icons with no matching page
   }
 
   // Initialize desktop
@@ -260,28 +166,52 @@ class DesktopManager {
       if (!icon.classList.contains('dragging')) {
         // Use the openApp function from desktop.js if available
         if (window.openApp) {
-          // Map appId to the correct URL
+          // Map appId to the correct URL using siteBaseUrl
+          const baseUrl = window.siteBaseUrl || '';
           const appUrls = {
-            'paint': '/paint.html',
-            'nature': '/touchgrass/',
-            'games': '/games/',
-            'portfolio': '/pages/portfolio/',
-            'music': '/pages/music/',
-            'search': '/pages/search/',
-            'chat': '/pages/chat/',
-            'sticky-notes': '/sticky-notes/', // Use the existing sticky notes page
-            'snake': '/snake/',
-            'tetris': '/tetris/'
+            // Main applications
+            'paint': baseUrl + '/paint/',
+            'sticky-notes': baseUrl + '/sticky-notes/',
+            
+            // Site pages
+            'nature': baseUrl + '/nature/',
+            'music': baseUrl + '/music/',
+            'portfolio': baseUrl + '/portfolio/',
+            'search': baseUrl + '/search/',
+            'chat': baseUrl + '/chat/',
+            'projects': baseUrl + '/projects/',
+            'howtodothat': baseUrl + '/howtodothat/',
+            'art': baseUrl + '/art/',
+            
+            // Games
+            'games': baseUrl + '/games/',
+            'snake': baseUrl + '/snake/',
+            'tetris': baseUrl + '/tetris/',
+            'pong': baseUrl + '/pong/',
+            'minecraft': baseUrl + '/minecraft/',
+            
+            // Desktop utilities
+            'windowsettings': baseUrl + '/window-demo/',
+            'desktopsettings': baseUrl + '/wallpaper-demo/',
+            
+            // Art pages
+            'digital': baseUrl + '/art/digital/',
+            'traditional': baseUrl + '/art/traditional/',
+            '3d': baseUrl + '/art/3d/',
+            
+            // Additional pages that might exist
+            'index': baseUrl + '/',
+            'desktop': baseUrl + '/desktop/'
           };
           
-          const appUrl = appUrls[iconData.appId];
+          const appUrl = appUrls[iconData.id];
           if (appUrl) {
-            window.openApp(iconData.appId, appUrl, iconData.appTitle);
+            window.openApp(iconData.id, appUrl, iconData.title);
           } else {
-            console.error('No URL mapping found for appId:', iconData.appId);
+            console.error('No URL mapping found for appId:', iconData.id);
           }
         } else if (window.windowManager) {
-          window.windowManager.createWindow(iconData.appId, iconData.appTitle);
+          window.windowManager.createWindow(iconData.url, iconData.title);
         } else {
           console.error('Neither openApp nor windowManager found');
         }
@@ -427,6 +357,11 @@ class DesktopManager {
           this.deleteIcon(iconData.id);
         }
         break;
+      case 'open':
+        if (window.windowManager && iconData.url) {
+            window.windowManager.createWindow(iconData.url, iconData.title);
+        }
+        break;
     }
   }
 
@@ -531,6 +466,7 @@ class DesktopManager {
 
   // Show wallpaper picker
   showWallpaperPicker() {
+    const baseUrl = window.siteBaseUrl || '';
     const pickerHTML = `
       <div class="wallpaper-picker-overlay" id="wallpaperPickerOverlay">
         <div class="wallpaper-picker-modal">
@@ -549,16 +485,16 @@ class DesktopManager {
             <!-- Default Wallpapers Tab -->
             <div class="tab-content active" id="defaultTab">
               <div class="wallpaper-grid" id="defaultWallpaperGrid">
-                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-1.jpg">
-                  <img src="/assets/wallpapers/default/desktop-1.jpg" alt="Default Wallpaper 1">
+                <div class="wallpaper-item" data-wallpaper="${baseUrl}/assets/wallpapers/default/desktop-1.jpg">
+                  <img src="${baseUrl}/assets/wallpapers/default/desktop-1.jpg" alt="Default Wallpaper 1">
                   <span>Cosmic</span>
                 </div>
-                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-2.jpg">
-                  <img src="/assets/wallpapers/default/desktop-2.jpg" alt="Default Wallpaper 2">
+                <div class="wallpaper-item" data-wallpaper="${baseUrl}/assets/wallpapers/default/desktop-2.jpg">
+                  <img src="${baseUrl}/assets/wallpapers/default/desktop-2.jpg" alt="Default Wallpaper 2">
                   <span>Aurora</span>
                 </div>
-                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-3.jpg">
-                  <img src="/assets/wallpapers/default/desktop-3.jpg" alt="Default Wallpaper 3">
+                <div class="wallpaper-item" data-wallpaper="${baseUrl}/assets/wallpapers/default/desktop-3.jpg">
+                  <img src="${baseUrl}/assets/wallpapers/default/desktop-3.jpg" alt="Default Wallpaper 3">
                   <span>Nebula</span>
                 </div>
               </div>

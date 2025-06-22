@@ -4,17 +4,17 @@ title: Desktop
 permalink: /desktop/
 desktop_mode: true
 ---
-<div class="desktop-icon" id="icon-paint" data-app-url="/paint.html" data-app-title="Paint">
+<div class="desktop-icon" id="icon-paint" data-app-url="{{ site.baseurl | default: '' }}/paint.html" data-app-title="Paint">
     <div class="icon-image">🎨</div>
     <div class="icon-label">Paint</div>
 </div>
 
-<div class="desktop-icon" id="icon-nature" data-app-url="/touchgrass/" data-app-title="Nature's Window">
+<div class="desktop-icon" id="icon-nature" data-app-url="{{ site.baseurl | default: '' }}/nature/" data-app-title="Nature's Window">
     <div class="icon-image">🌳</div>
     <div class="icon-label">Nature</div>
 </div>
 
-<div class="desktop-icon" id="icon-games" data-app-url="/games/" data-app-title="Game Center">
+<div class="desktop-icon" id="icon-games" data-app-url="{{ site.baseurl | default: '' }}/games/" data-app-title="Game Center">
     <div class="icon-image">🎮</div>
     <div class="icon-label">Games</div>
 </div>

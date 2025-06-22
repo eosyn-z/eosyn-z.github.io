@@ -1,9 +1,27 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Global paint instance
+let paintInstance = null;
+
+function initializePaint() {
+    // Check if already initialized
+    if (paintInstance) {
+        return;
+    }
+    
     const canvas = document.getElementById('paint-canvas');
+    if (!canvas) {
+        console.log('Paint canvas not found, waiting for DOM...');
+        return;
+    }
+    
     const ctx = canvas.getContext('2d');
     const toolbar = document.querySelector('.paint-toolbar');
     const palette = document.querySelector('.paint-palette');
     const currentColorEl = document.getElementById('current-color');
+
+    if (!ctx || !toolbar || !palette || !currentColorEl) {
+        console.log('Paint elements not found, waiting for DOM...');
+        return;
+    }
 
     let currentTool = 'pencil';
     let currentColor = '#000000';
@@ -14,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Canvas Setup ---
     function resizeCanvas() {
         const canvasArea = document.querySelector('.paint-canvas-area');
+        if (!canvasArea) return;
+        
         canvas.width = canvasArea.offsetWidth - 20; // account for padding
         canvas.height = canvasArea.offsetHeight - 20;
         ctx.fillStyle = '#ffffff';
@@ -70,7 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Set pencil as active tool by default
-    document.getElementById('pencil').classList.add('active');
+    const pencilTool = document.getElementById('pencil');
+    if (pencilTool) {
+        pencilTool.classList.add('active');
+    }
 
     // --- Export Functions ---
     function saveCanvas() {
@@ -119,4 +142,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set default color
     currentColorEl.style.backgroundColor = currentColor;
-}); 
+    
+    // Mark as initialized
+    paintInstance = true;
+    console.log('Paint initialized successfully');
+}
+
+// Initialize on DOM content loaded
+document.addEventListener('DOMContentLoaded', initializePaint);
+
+// Also initialize when window content is loaded
+document.addEventListener('windowContentLoaded', initializePaint); 

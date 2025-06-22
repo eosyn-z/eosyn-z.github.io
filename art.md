@@ -2,6 +2,7 @@
 layout: default
 title: Art Gallery
 permalink: /art/
+icon: 🎨
 ---
 
 <div class="main-content">

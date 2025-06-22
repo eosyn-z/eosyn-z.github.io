@@ -1,66 +1,66 @@
 <footer class="glass-bar bottom-bar">
-  <div class="bar-content">
-    <div id="window-switcher-bar-container" style="display: flex; align-items: center; justify-content: center; margin-right: 8px;"></div>
-    <div id="start-button" class="start-button glass-button">
-      <span>★</span>
+    <div class="bar-content">
+        <div class="start-button-container">
+            <div id="start-button" class="start-button glass-button" title="Start">
+                <span>★</span>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div id="window-switcher-bar-container" class="taskbar-programs">
+            <!-- Active windows will be shown here -->
+        </div>
+        <div class="divider"></div>
+        <div class="system-tray">
+            <!-- System tray icons like volume, network, etc. can go here -->
+            <div id="discord-status-widget-tray" class="tray-icon"></div>
+        </div>
     </div>
-    <div class="divider"></div>
-    <div class="taskbar-programs">
-      <!-- Program icons will be dynamically added here -->
-    </div>
-  </div>
 </footer>
 
-<div id="start-menu">
-  <div class="start-menu-item">
-    <span>Programs</span>
-    <div class="submenu">
-      {%- for page in site.pages -%}
-        {%- comment -%}
-          We want to include pages that are in the 'pages/' directory,
-          but explicitly exclude anything inside 'pages/games/'.
-        {%- endcomment -%}
-        {%- assign is_in_pages_dir = page.path | startswith: 'pages/' -%}
-        {%- assign is_in_games_dir = page.path | startswith: 'pages/games/' -%}
+<div id="start-menu" class="glass-pane">
+    <div class="start-menu-sidebar">
+        <div class="start-menu-header">
+            <img src="/assets/images/icons/default-avatar.png" class="start-menu-avatar" alt="User">
+            <span class="start-menu-username">User</span>
+        </div>
+        <nav class="start-menu-nav">
+            <a href="#" class="start-menu-category-button active" data-category="programs">Programs</a>
+            <a href="#" class="start-menu-category-button" data-category="games">Games</a>
+            <a href="#" class="start-menu-category-button" data-category="utilities">Utilities</a>
+            <a href="#" class="start-menu-category-button" data-category="social">Social</a>
+        </nav>
+    </div>
+    <div class="start-menu-main">
+        <div class="start-menu-list-container">
+            <ul class="start-menu-list programs-list active-list"></ul>
+            <ul class="start-menu-list games-list"></ul>
+            <ul class="start-menu-list utilities-list"></ul>
+            <ul class="start-menu-list social-list"></ul>
+        </div>
+    </div>
+</div>
 
-        {%- if is_in_pages_dir and is_in_games_dir == false -%}
-          <div class="submenu-item" data-app-id="{{ page.name | remove: '.md' }}" data-app-title="{{ page.title }}">
-            {%- if page.icon -%}{{ page.icon }} {%- endif -%}{{ page.title }}
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  </div>
-  <div class="start-menu-item">
-    <span>Games</span>
-    <div class="submenu">
-      {%- for page in site.pages -%}
-        {%- if page.path contains 'pages/games/' -%}
-        <div class="submenu-item" data-app-id="{{ page.name | remove: '.md' }}" data-app-title="{{ page.title }}">
-          {%- if page.icon -%}{{ page.icon }} {%- endif -%}{{ page.title }}
-        </div>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  </div>
-  <div class="start-menu-item">
-    <span>Utilities</span>
-    <div class="submenu">
-      <div class="submenu-item" onclick="window.desktopManager.showDesktopSettings()">⚙️ Desktop Settings</div>
-      {%- for page in site.pages -%}
-        {%- if page.tags contains 'bookmark' -%}
-        <div class="submenu-item" data-app-id="{{ page.name | remove: '.md' }}" data-app-title="{{ page.title }}">
-          {%- if page.icon -%}{{ page.icon }} {%- endif -%}{{ page.title }}
-        </div>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  </div>
-  <div class="start-menu-item">
-    <span>Social Websites</span>
-    <div class="submenu">
-      <a href="https://github.com/eosyn-z" target="_blank" class="submenu-item">GitHub</a>
-      <a href="https://twitter.com/eosyn_" target="_blank" class="submenu-item">Twitter</a>
-    </div>
-  </div>
-</div> 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Handle category switching in the start menu
+        const categoryButtons = document.querySelectorAll('.start-menu-category-button');
+        const lists = document.querySelectorAll('.start-menu-list');
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const category = button.dataset.category;
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                lists.forEach(list => {
+                    list.classList.toggle('active-list', list.classList.contains(category + '-list'));
+                });
+            });
+        });
+
+        // Populate the menu
+        if (window.startMenu && window.jekyllPages) {
+            window.startMenu.populateMenu(window.jekyllPages);
+        }
+    });
+</script> 

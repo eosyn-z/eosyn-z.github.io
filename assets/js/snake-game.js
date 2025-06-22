@@ -187,11 +187,27 @@ class SnakeGame {
   }
 }
 
-// Automatically instantiate the game when the script is loaded
-let snakeGame;
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('snakeCanvas');
-    if (canvas) {
-        snakeGame = new SnakeGame();
+// Global snake game instance
+let snakeGame = null;
+
+function initializeSnakeGame() {
+    // Check if already initialized
+    if (snakeGame) {
+        return;
     }
-}); 
+    
+    const canvas = document.getElementById('snakeCanvas');
+    if (!canvas) {
+        console.log('Snake canvas not found, waiting for DOM...');
+        return;
+    }
+    
+    snakeGame = new SnakeGame();
+    console.log('Snake game initialized successfully');
+}
+
+// Automatically instantiate the game when the script is loaded
+document.addEventListener('DOMContentLoaded', initializeSnakeGame);
+
+// Also initialize when window content is loaded
+document.addEventListener('windowContentLoaded', initializeSnakeGame); 

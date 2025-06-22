@@ -720,27 +720,11 @@ class WindowManager {
         if (content) {
             contentDiv.innerHTML = content;
         } else {
-            switch (appId) {
-                case 'sticky-notes':
-                    content = this.createStickyNotesContent();
-                    break;
-                case 'window-demo':
-                    content = this.createWindowDemoContent();
-                    break;
-                case 'bookmark':
-                    // Handle bookmark windows - find the bookmark data
-                    const bookmarkData = this.findBookmarkData(title);
-                    if (bookmarkData) {
-                        content = this.createBookmarkContent(bookmarkData);
-                    } else {
-                        content = this.createBookmarkErrorContent(title);
-                    }
-                    break;
-                default:
-                    // Try to load content from a page if no special case
-                    this.loadAppContent(appId, window, title);
-                    return; // Return early as loading is async
-            }
+            // The 'appId' is now the full page URL
+            this.loadAppContent(appId, window, title);
+            // We can't return a window object here because content is loaded async
+            // The loadAppContent function now handles adding the window to the DOM
+            return;
         }
 
         window.appendChild(header);
@@ -982,10 +966,10 @@ class WindowManager {
         }
     }
 
-    async loadAppContent(appId, windowElement, title) {
+    async loadAppContent(pageUrl, windowElement, title) {
         const contentArea = windowElement.querySelector('.window-content');
         if (!contentArea) {
-            console.error(`Window content area not found for app: ${appId}`);
+            console.error(`Window content area not found for app: ${pageUrl}`);
             contentArea.innerHTML = `<div class="error"><p>Error: Window content area is missing.</p></div>`;
             return;
         }
@@ -993,10 +977,11 @@ class WindowManager {
         contentArea.innerHTML = '<div class="loader"></div>'; // Show loader
 
         try {
-            const pageUrl = `/pages/${appId}/`;
-            console.log(`Fetching content from URL: ${pageUrl}`);
+            const baseUrl = window.siteBaseUrl || '';
+            const fullPageUrl = new URL(pageUrl, baseUrl).href;
+            console.log(`Fetching content from URL: ${fullPageUrl}`);
 
-            const response = await fetch(pageUrl);
+            const response = await fetch(fullPageUrl);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -1010,7 +995,7 @@ class WindowManager {
 
             if (mainContent) {
                 // We need to re-route any relative links or image sources
-                const base = new URL(pageUrl, window.location.origin);
+                const base = new URL(fullPageUrl, window.location.origin);
                 mainContent.querySelectorAll('[href]').forEach(el => {
                     const href = el.getAttribute('href');
                     if (href && !href.startsWith('http') && !href.startsWith('#')) {
@@ -1025,15 +1010,44 @@ class WindowManager {
                 });
 
                 contentArea.innerHTML = mainContent.innerHTML;
+                
+                // Execute scripts after content is loaded
+                this.executeScriptsInWindow(contentArea, base);
             } else {
                  // Fallback for pages that might not have a .main-content div
                 contentArea.innerHTML = doc.body.innerHTML;
-                console.warn(`'.main-content' not found in fetched HTML for ${appId}. Loading full body.`);
+                console.warn(`'.main-content' not found in fetched HTML for ${pageUrl}. Loading full body.`);
+                
+                // Execute scripts after content is loaded
+                const base = new URL(fullPageUrl, window.location.origin);
+                this.executeScriptsInWindow(contentArea, base);
             }
 
         } catch (error) {
-            console.error(`Failed to load content for app "${appId}":`, error);
+            console.error(`Failed to load content for app "${pageUrl}":`, error);
             contentArea.innerHTML = `<div class="error"><p>Could not load content for "${title}".</p><p>Please check the console for more details.</p></div>`;
+        }
+
+        // Now that content is loaded, append the window to the body and manage it
+        document.body.appendChild(windowElement);
+        const windowId = windowElement.id;
+        const windowData = {
+            element: windowElement,
+            id: windowId,
+            position: { x: 50, y: 50 }, // Use a default position
+            size: { width: 600, height: 400 },
+            isMinimized: false,
+            isMaximized: false
+        };
+        
+        this.windows.push(windowData);
+        this.setupWindowEventListeners(windowData);
+        this.setupWindowControlsForWindow(windowData);
+        this.addResizeHandles(windowData);
+        this.focusWindow(windowId);
+        this.saveWindowStates();
+        if (window.windowSwitcher) {
+            window.windowSwitcher.refresh();
         }
     }
 
@@ -1068,12 +1082,13 @@ class WindowManager {
             if (theme.windowImage) {
                 const contentEl = windowEl.querySelector('.window-content');
                 let background = 'var(--glass-bg-heavy)'; // default
+                const baseUrl = window.siteBaseUrl || '';
                 const imageUrls = {
-                    minimal: 'url("/assets/images/window-bgs/minimal.gif")',
-                    gradient: 'url("/assets/images/window-bgs/gradient.gif")',
-                    pattern: 'url("/assets/images/window-bgs/pattern.gif")',
-                    abstract: 'url("/assets/images/window-bgs/abstract.gif")',
-                    nature: 'url("/assets/images/window-bgs/nature.gif")',
+                    minimal: `url("${baseUrl}/assets/images/window-bgs/minimal.gif")`,
+                    gradient: `url("${baseUrl}/assets/images/window-bgs/gradient.gif")`,
+                    pattern: `url("${baseUrl}/assets/images/window-bgs/pattern.gif")`,
+                    abstract: `url("${baseUrl}/assets/images/window-bgs/abstract.gif")`,
+                    nature: `url("${baseUrl}/assets/images/window-bgs/nature.gif")`,
                 };
                 if (imageUrls[theme.windowImage]) {
                     background = imageUrls[theme.windowImage];
@@ -1237,6 +1252,92 @@ class WindowManager {
             console.error('❌ Failed to create test window');
             return null;
         }
+    }
+
+    executeScriptsInWindow(contentArea, base) {
+        // Find all script tags in the content area
+        const scripts = contentArea.querySelectorAll('script');
+        
+        scripts.forEach(script => {
+            // Create a new script element
+            const newScript = document.createElement('script');
+            
+            // Copy all attributes from the original script
+            Array.from(script.attributes).forEach(attr => {
+                newScript.setAttribute(attr.name, attr.value);
+            });
+            
+            // Copy the script content
+            newScript.textContent = script.textContent;
+            
+            // Replace the original script with the new one
+            script.parentNode.replaceChild(newScript, script);
+        });
+        
+        // Handle CSS links
+        const cssLinks = contentArea.querySelectorAll('link[rel="stylesheet"]');
+        cssLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && !href.startsWith('http')) {
+                // Convert relative URL to absolute
+                const absoluteUrl = new URL(href, base).href;
+                
+                // Check if CSS is already loaded
+                if (!document.querySelector(`link[href="${absoluteUrl}"]`)) {
+                    const newLink = document.createElement('link');
+                    newLink.rel = 'stylesheet';
+                    newLink.href = absoluteUrl;
+                    document.head.appendChild(newLink);
+                }
+            }
+        });
+        
+        // Also check for data-page-script attribute and load those scripts
+        const pageScriptElement = contentArea.querySelector('[data-page-script]');
+        if (pageScriptElement) {
+            const scriptName = pageScriptElement.getAttribute('data-page-script');
+            const scriptUrl = `${base.origin}${base.pathname.replace(/\/$/, '')}/assets/js/${scriptName}.js`;
+            
+            // Check if script is already loaded
+            if (!document.querySelector(`script[src="${scriptUrl}"]`)) {
+                const script = document.createElement('script');
+                script.src = scriptUrl;
+                script.onload = () => {
+                    console.log(`Loaded script: ${scriptName}`);
+                    // Trigger DOMContentLoaded event for the script
+                    const event = new Event('DOMContentLoaded');
+                    document.dispatchEvent(event);
+                };
+                script.onerror = () => {
+                    console.error(`Failed to load script: ${scriptUrl}`);
+                };
+                document.head.appendChild(script);
+            } else {
+                // Script already loaded, just trigger DOMContentLoaded
+                const event = new Event('DOMContentLoaded');
+                document.dispatchEvent(event);
+            }
+        }
+        
+        // Handle any inline scripts that might need to be executed
+        const inlineScripts = contentArea.querySelectorAll('script:not([src])');
+        inlineScripts.forEach(script => {
+            try {
+                // Execute inline script content
+                const scriptContent = script.textContent;
+                if (scriptContent.trim()) {
+                    eval(scriptContent);
+                }
+            } catch (error) {
+                console.error('Error executing inline script:', error);
+            }
+        });
+        
+        // Trigger a custom event to notify that content has been loaded
+        const contentLoadedEvent = new CustomEvent('windowContentLoaded', {
+            detail: { contentArea, base }
+        });
+        document.dispatchEvent(contentLoadedEvent);
     }
 }
 

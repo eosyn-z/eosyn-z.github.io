@@ -297,11 +297,27 @@ class TetrisGame {
   }
 }
 
-// Automatically instantiate the game when the script is loaded
-let tetrisGame;
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('tetrisCanvas');
-    if (canvas) {
-        tetrisGame = new TetrisGame();
+// Global tetris game instance
+let tetrisGame = null;
+
+function initializeTetrisGame() {
+    // Check if already initialized
+    if (tetrisGame) {
+        return;
     }
-}); 
+    
+    const canvas = document.getElementById('tetrisCanvas');
+    if (!canvas) {
+        console.log('Tetris canvas not found, waiting for DOM...');
+        return;
+    }
+    
+    tetrisGame = new TetrisGame();
+    console.log('Tetris game initialized successfully');
+}
+
+// Automatically instantiate the game when the script is loaded
+document.addEventListener('DOMContentLoaded', initializeTetrisGame);
+
+// Also initialize when window content is loaded
+document.addEventListener('windowContentLoaded', initializeTetrisGame); 

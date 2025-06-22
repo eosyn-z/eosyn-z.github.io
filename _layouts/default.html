@@ -8,21 +8,21 @@
       <div class="nav-container">
         <!-- Website Mode Navigation -->
         <div class="nav-links-header">
-          <a href="/" class="glass-button">Home</a>
+          <a href="{{ "/" | relative_url }}" class="glass-button">Home</a>
           <nav class="nav-links">
-            <a href="/pages/music/" class="glass-button">Music</a>
-            <a href="/pages/portfolio/" class="glass-button">Portfolio</a>
-            <a href="/pages/howtodothat/" class="glass-button">How To Do That</a>
-            <a href="/pages/nature/" class="glass-button">Nature</a>
-            <a href="/pages/search/" class="glass-button">Search</a>
-            <a href="/pages/chat/" class="glass-button">Chat</a>
-            <a href="/desktop/" class="glass-button">🖥️ Desktop</a>
+            <a href="{{ "/music/" | relative_url }}" class="glass-button">Music</a>
+            <a href="{{ "/portfolio/" | relative_url }}" class="glass-button">Portfolio</a>
+            <a href="{{ "/howtodothat/" | relative_url }}" class="glass-button">How To Do That</a>
+            <a href="{{ "/nature/" | relative_url }}" class="glass-button">Nature</a>
+            <a href="{{ "/search/" | relative_url }}" class="glass-button">Search</a>
+            <a href="{{ "/chat/" | relative_url }}" class="glass-button">Chat</a>
+            <a href="{{ "/desktop/" | relative_url }}" class="glass-button">🖥️ Desktop</a>
           </nav>
         </div>
         
         <!-- Desktop Mode Navigation (simplified) -->
         <div class="nav-links-desktop" style="display: none;">
-          <a href="/" class="glass-button back-btn">← Back to Website</a>
+          <a href="{{ "/" | relative_url }}" class="glass-button back-btn">← Back to Website</a>
         </div>
         
         <div class="header-controls">
@@ -66,8 +66,14 @@
       </div>
     </div>
     {%- endif -%}
-    <script src="/assets/js/theme-switcher.js"></script>
-    <script src="/assets/js/desktop.js"></script>
+    <script>
+      // Pass the site's base URL to the JavaScript environment
+      window.siteBaseUrl = "{{ site.baseurl | default: '' }}";
+      // Load all site pages into a global variable for scripts to use
+      window.jekyllPages = {% include all_pages_json.html %};
+    </script>
+    <script src="{{ "/assets/js/theme-switcher.js" | relative_url }}"></script>
+    <script src="{{ "/assets/js/desktop.js" | relative_url }}"></script>
     {%- include theme-editor.html -%}
   </body>
 

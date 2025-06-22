@@ -1,0 +1,78 @@
+---
+layout: default
+title: Paint
+permalink: /paint/
+icon: 🎨
+---
+
+<div class="main-content">
+  <div class="app-window" id="paint-window">
+      <div class="window-header">
+          <div class="window-title">untitled - Paint</div>
+          <div class="window-controls">
+              <button class="window-control">-</button>
+              <button class="window-control">▫</button>
+              <button class="window-control">×</button>
+          </div>
+      </div>
+      <div class="window-content">
+          <div class="paint-menu-bar">
+              <span><u>F</u>ile</span>
+              <span><u>E</u>dit</span>
+              <span><u>V</u>iew</span>
+              <span><u>I</u>mage</span>
+              <span><u>O</u>ptions</span>
+              <span><u>H</u>elp</span>
+          </div>
+          <div class="paint-body">
+              <div class="paint-toolbar glass-panel">
+                  <div class="tool-group">
+                      <div class="tool" id="select"></div>
+                      <div class="tool" id="crop"></div>
+                      <div class="tool" id="eraser"></div>
+                      <div class="tool" id="fill"></div>
+                      <div class="tool" id="picker"></div>
+                      <div class="tool" id="zoom"></div>
+                      <div class="tool" id="pencil"></div>
+                      <div class="tool" id="brush"></div>
+                      <div class="tool" id="airbrush"></div>
+                      <div class="tool" id="text"></div>
+                      <div class="tool" id="line"></div>
+                      <div class="tool" id="curve"></div>
+                      <div class="tool" id="rectangle"></div>
+                      <div class="tool" id="polygon"></div>
+                      <div class="tool" id="ellipse"></div>
+                      <div class="tool" id="rounded-rectangle"></div>
+                  </div>
+                  <div class="tool-options">
+                      <!-- Options for tools will go here -->
+                  </div>
+              </div>
+              <div class="paint-canvas-area">
+                  <canvas id="paint-canvas"></canvas>
+              </div>
+              <div class="paint-scrollbar-y">
+                  <div class="scroll-arrow-up"></div>
+                  <div class="scroll-box-y"></div>
+                  <div class="scroll-arrow-down"></div>
+              </div>
+          </div>
+          <div class="paint-scrollbar-x">
+              <div class="scroll-arrow-left"></div>
+              <div class="scroll-box-x"></div>
+              <div class="scroll-arrow-right"></div>
+          </div>
+      </div>
+      <div class="paint-palette-area glass-panel">
+          <div class="paint-selected-colors">
+               <div id="current-color" class="color-box"></div>
+          </div>
+          <div class="paint-palette">
+              <!-- color palette will be generated here -->
+          </div>
+      </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="/assets/css/paint.css">
+<script src="/assets/js/paint.js"></script> 

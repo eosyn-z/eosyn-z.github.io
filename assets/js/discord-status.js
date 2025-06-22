@@ -1,14 +1,13 @@
-// Discord Status API Integration
+// Discord Status - Local File Reader
 class DiscordStatusChecker {
     constructor() {
-        this.userId = 'eosyn'; // Discord username
         this.statusWidget = document.getElementById('discord-status-widget');
         this.statusIndicator = document.getElementById('discord-status-indicator');
         this.statusText = document.getElementById('discord-status-text');
         this.activityText = document.getElementById('discord-activity-text');
         
-        // Discord API endpoints
-        this.discordApiUrl = 'https://discord.com/api/v10';
+        // Path to the local status file
+        this.statusFileUrl = '/discord/status.json';
         
         // Initialize the status checker
         this.init();
@@ -36,84 +35,52 @@ class DiscordStatusChecker {
 
     async updateStatus() {
         try {
-            // First, get the user ID from username
-            const userResponse = await fetch(`${this.discordApiUrl}/users/${this.userId}`, {
+            const response = await fetch(this.statusFileUrl, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                }
-            });
-
-            if (!userResponse.ok) {
-                throw new Error('User not found or API error');
-            }
-
-            const userData = await userResponse.json();
-            const userId = userData.id;
-
-            // Now get the user's presence/status
-            // Note: This requires a bot token and proper permissions
-            // For now, we'll use a public API service or fallback
-            await this.getUserPresence(userId);
-
-        } catch (error) {
-            console.error('Error updating Discord status:', error);
-            this.setStatus('offline', 'Offline', '');
-        }
-    }
-
-    async getUserPresence(userId) {
-        try {
-            // Using a public Discord presence API service
-            // You can replace this with your own bot implementation
-            const response = await fetch(`https://api.lanyard.rest/v1/users/${userId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+                },
+                // Add cache busting to ensure fresh data
+                cache: 'no-cache'
             });
 
             if (!response.ok) {
-                throw new Error('Presence API error');
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const data = await response.json();
-            const presence = data.data;
-
-            if (presence && presence.discord_status) {
-                const status = presence.discord_status;
-                const activities = presence.activities || [];
-                const currentActivity = activities.find(activity => activity.type === 0) || null;
-
-                let statusText = this.getStatusText(status);
-                let activityText = '';
-
-                if (currentActivity) {
-                    activityText = currentActivity.name;
-                    if (currentActivity.details) {
-                        activityText += ` - ${currentActivity.details}`;
-                    }
+            const statusData = await response.json();
+            
+            // Check if the status is recent (within last 5 minutes)
+            const statusAge = Date.now() - new Date(statusData.timestamp).getTime();
+            const maxAge = 5 * 60 * 1000; // 5 minutes
+            
+            if (statusAge > maxAge) {
+                console.warn('Discord status data is stale:', statusAge / 1000, 'seconds old');
+            }
+            
+            // Extract status information
+            const status = statusData.status || 'offline';
+            const statusText = statusData.statusText || 'Offline';
+            let activityText = '';
+            
+            // Get current activity if available
+            if (statusData.currentActivity) {
+                const activity = statusData.currentActivity;
+                activityText = activity.name;
+                if (activity.details) {
+                    activityText += ` - ${activity.details}`;
                 }
-
-                this.setStatus(status, statusText, activityText);
-            } else {
-                this.setStatus('offline', 'Offline', '');
+                if (activity.state) {
+                    activityText += ` (${activity.state})`;
+                }
             }
-
+            
+            this.setStatus(status, statusText, activityText);
+            
         } catch (error) {
-            console.error('Error fetching presence:', error);
-            this.setStatus('offline', 'Offline', '');
+            console.error('Error updating Discord status:', error);
+            this.setStatus('offline', 'Status unavailable', '');
         }
-    }
-
-    getStatusText(status) {
-        const statusMap = {
-            'online': 'Online',
-            'idle': 'Idle',
-            'dnd': 'Do Not Disturb',
-            'offline': 'Offline'
-        };
-        return statusMap[status] || 'Offline';
     }
 
     setStatus(status, statusText, activityText) {

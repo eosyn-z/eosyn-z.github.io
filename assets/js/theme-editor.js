@@ -5,6 +5,7 @@ class CustomThemeEditor {
         this.colorPickers = document.querySelectorAll('.color-picker');
         this.customThemeButton = document.querySelector('.theme-btn.custom-theme');
         this.isCustomThemeActive = false;
+        this.isTrayOpen = false;
         
         this.init();
     }
@@ -13,6 +14,12 @@ class CustomThemeEditor {
         // Add event listeners
         this.customThemeButton.addEventListener('click', () => this.openThemeEditor());
         
+        // Find the close button and add a listener
+        const closeButton = this.tray.querySelector('.tray-close-btn');
+        if (closeButton) {
+            closeButton.addEventListener('click', () => this.closeThemeEditor());
+        }
+
         // Add event listeners to color pickers
         this.colorPickers.forEach(picker => {
             picker.addEventListener('change', (e) => this.updateColor(e));
@@ -24,16 +31,23 @@ class CustomThemeEditor {
 
         // Load saved custom theme on page load
         this.loadCustomTheme();
+
+        // Check if the tray should be open on load
+        if (this.isTrayOpen) {
+            this.tray.classList.add('active');
+        }
     }
 
     openThemeEditor() {
         this.tray.classList.add('active');
+        this.isTrayOpen = true;
         this.populateColorPickers();
         this.setCustomThemeActive();
     }
 
     closeThemeEditor() {
         this.tray.classList.remove('active');
+        this.isTrayOpen = false;
     }
 
     populateColorPickers() {
