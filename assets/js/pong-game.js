@@ -28,7 +28,7 @@ class PongGame {
     
     this.leftScore = 0;
     this.rightScore = 0;
-    this.gameRunning = false;
+    this.gameRunning = true;
     this.paused = false;
     
     this.keys = {};
@@ -194,10 +194,11 @@ class PongGame {
   }
 }
 
-// Initialize game when page loads
+// Automatically instantiate the game when the script is loaded
 let pongGame;
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('pongCanvas')) {
-    pongGame = new PongGame();
-  }
+    const canvas = document.getElementById('pongCanvas');
+    if (canvas) {
+        pongGame = new PongGame();
+    }
 }); 

@@ -297,10 +297,11 @@ class TetrisGame {
   }
 }
 
-// Initialize game when page loads
+// Automatically instantiate the game when the script is loaded
 let tetrisGame;
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('tetrisCanvas')) {
-    tetrisGame = new TetrisGame();
-  }
+    const canvas = document.getElementById('tetrisCanvas');
+    if (canvas) {
+        tetrisGame = new TetrisGame();
+    }
 }); 

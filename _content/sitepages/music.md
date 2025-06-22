@@ -1,11 +1,15 @@
 ---
 layout: default
-title: Music Player
-permalink: /music/
+title: Music
+permalink: music
 icon: 🎵
+description: "Listen to my favorite playlists on Spotify."
 ---
-
-<div class="main-content">
+<div class="main-content glass-container">
+<div class="page-header">
+    <h1>Music Player</h1>
+    <p>A collection of my favorite Spotify playlists. Click a playlist to load it below.</p>
+</div>
 
   <!-- Master Music Container -->
   <div class="glass-panel">

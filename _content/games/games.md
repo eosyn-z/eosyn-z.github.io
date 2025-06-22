@@ -21,7 +21,7 @@ icon: 🎮
         <div class="game-controls">
           <span class="control-hint">Arrow keys to move</span>
         </div>
-        <button class="glass-button play-btn" onclick="launchGame('snake')">Play Snake</button>
+        <button class="glass-button play-btn" onclick="openApp('game-snake', '/snake/', 'Snake')">Play Snake</button>
       </div>
 
       <div class="game-card" data-game="tetris">
@@ -31,7 +31,7 @@ icon: 🎮
         <div class="game-controls">
           <span class="control-hint">Arrow keys to move/rotate</span>
         </div>
-        <button class="glass-button play-btn" onclick="launchGame('tetris')">Play Tetris</button>
+        <button class="glass-button play-btn" onclick="openApp('game-tetris', '/tetris/', 'Tetris')">Play Tetris</button>
       </div>
 
       <div class="game-card" data-game="pong">
@@ -41,7 +41,7 @@ icon: 🎮
         <div class="game-controls">
           <span class="control-hint">W/S keys for left paddle, Up/Down for right</span>
         </div>
-        <button class="glass-button play-btn" onclick="launchGame('pong')">Play Pong</button>
+        <button class="glass-button play-btn" onclick="openApp('game-pong', '/pong/', 'Pong')">Play Pong</button>
       </div>
 
       <div class="game-card" data-game="breakout">
@@ -72,6 +72,16 @@ icon: 🎮
           <span class="control-hint">Space to flap</span>
         </div>
         <button class="glass-button play-btn" onclick="launchGame('flappy')">Play Flappy Bird</button>
+      </div>
+
+      <div class="game-card" data-game="minecraft">
+        <div class="game-icon">🎮</div>
+        <h3>Minecraft</h3>
+        <p>Build and explore your own world!</p>
+        <div class="game-controls">
+          <span class="control-hint">WASD to move, Mouse to look, Click to place/break</span>
+        </div>
+        <button class="glass-button play-btn" onclick="openApp('game-minecraft', '/minecraft/', 'Minecraft')">Play Minecraft</button>
       </div>
     </div>
 

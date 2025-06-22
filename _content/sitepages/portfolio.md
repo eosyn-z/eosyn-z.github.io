@@ -1,12 +1,16 @@
 ---
 layout: default
 title: Portfolio
-permalink: /portfolio/
 icon: 🎨
+description: "A collection of my artwork and projects."
 ---
+<div class="main-content glass-container">
+<div class="page-header">
+    <h1>Art & Projects Portfolio</h1>
+    <p>A curated gallery of my digital art and creative projects.</p>
+</div>
 
-<div class="main-content" data-page-script="portfolio">
-
+<div style="margin-bottom: 3rem;">
   <!-- Master Portfolio Container -->
   <div class="glass-panel" style="padding: 2.5rem; height: 100%;">
 
@@ -63,4 +67,5 @@ icon: 🎨
 
     </div> <!-- End Two-Column Layout -->
   </div> <!-- End Master Portfolio Container -->
+</div>
 </div> 

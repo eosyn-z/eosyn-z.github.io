@@ -1,0 +1,124 @@
+/* Minimal styles for Paint application */
+
+#paint-window {
+    width: 700px;
+    height: 500px;
+}
+
+.paint-menu-bar {
+    padding: 2px 8px;
+    background: var(--glass-bg-medium);
+    border-bottom: 1px solid var(--glass-border-light);
+    display: flex;
+    gap: 15px;
+}
+
+.paint-body {
+    display: flex;
+    height: calc(100% - 68px); /* Adjust based on header/footer heights */
+}
+
+.paint-toolbar {
+    width: 62px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.tool-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+}
+
+.tool {
+    width: 26px;
+    height: 26px;
+    background-color: var(--glass-bg-light);
+    border: 1px solid var(--glass-border-light);
+    border-radius: 4px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tool:hover {
+    background-color: var(--glass-bg-heavy);
+    border-color: var(--theme-accent);
+}
+
+.tool.active {
+    background-color: var(--glass-bg-dark);
+    border-color: var(--theme-accent);
+    box-shadow: 0 0 5px var(--theme-accent);
+}
+
+.paint-canvas-area {
+    flex-grow: 1;
+    padding: 10px;
+    background-color: var(--bg-secondary);
+    overflow: auto;
+}
+
+#paint-canvas {
+    background-color: #ffffff;
+    display: block;
+    cursor: crosshair;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.paint-palette-area {
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--glass-border-light);
+}
+
+.paint-selected-colors {
+    width: 60px;
+    height: 48px;
+    margin-right: 4px;
+    padding: 2px;
+    position: relative;
+}
+
+#current-color {
+    width: 32px;
+    height: 32px;
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 4px;
+    border: 2px solid var(--glass-border-dark);
+}
+
+.paint-palette {
+    display: grid;
+    grid-template-columns: repeat(14, 1fr);
+    gap: 2px;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.color-box:hover {
+    transform: scale(1.1);
+    border-color: var(--theme-accent);
+}
+
+/* Icons for tools - using placeholder colors for now */
+#pencil { background-color: #f44336; }
+#eraser { background-color: #9e9e9e; }
+#brush { background-color: #4caf50; }
+#line { background-color: #2196f3; }
+#rectangle { background-color: #ffc107; }
+/* TODO: Replace with proper icons that fit the glass theme */ 

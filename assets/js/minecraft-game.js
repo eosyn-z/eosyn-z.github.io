@@ -437,23 +437,10 @@ class MinecraftGame {
   }
 }
 
-// Global instance
-let minecraftGame = null;
-
-// Initialize game when window loads
-function initMinecraftGame(container) {
-  if (minecraftGame) {
-    minecraftGame.destroy();
-  }
-  
-  // Prevent right-click context menu
-  container.addEventListener('contextmenu', (e) => e.preventDefault());
-  
-  minecraftGame = new MinecraftGame(container);
-  minecraftGame.createUI();
-}
-
-// Export for use in window manager
-if (typeof window !== 'undefined') {
-  window.initMinecraftGame = initMinecraftGame;
-} 
+// Automatically instantiate the game when the script is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('minecraft-container');
+    if (container) {
+        new MinecraftGame(container);
+    }
+}); 

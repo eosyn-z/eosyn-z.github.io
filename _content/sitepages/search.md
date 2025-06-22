@@ -3,6 +3,7 @@ layout: default
 title: Search & Pin
 permalink: /search/
 icon: 🔍
+description: "Search for websites, filter content, and manage your bookmarks."
 ---
 
 <style>
@@ -151,70 +152,68 @@ icon: 🔍
 }
 </style>
 
-<div class="main-content">
-  <div class="glass-container">
-    <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
-      <header class="page-header" style="margin-bottom: 0; text-align: center;">
-          <h1>some cool or helpful websites</h1>
-          <p>Discover amazing tools, resources, and websites</p>
-        </header>
+<div class="main-content glass-container">
+  <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
+    <header class="page-header" style="margin-bottom: 0; text-align: center;">
+        <h1>some cool or helpful websites</h1>
+        <p>Discover amazing tools, resources, and websites</p>
+      </header>
+  </div>
+  
+  <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
+    <div class="search-section">
+      <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px; padding: 1rem;">
+      
+      <!-- Filter Buttons -->
+      <div class="filter-buttons" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        <button class="filter-btn glass-button active" data-filter="all">All</button>
+        <button class="filter-btn glass-button" data-filter="personal">Personal</button>
+        <button class="filter-btn glass-button" data-filter="tools">Tools</button>
+        <button class="filter-btn glass-button" data-filter="company">Company</button>
+        <button class="filter-btn glass-button" data-filter="documentation">Documentation</button>
+        <button class="filter-btn glass-button" data-filter="repository">Repository</button>
+        <button class="filter-btn glass-button" data-filter="archive">Archive</button>
+        <button class="filter-btn glass-button" data-filter="in-construction">🚧 In Construction</button>
+        <button class="filter-btn glass-button" data-filter="github-portfolio">📁 GitHub Portfolio</button>
+        <button class="filter-btn glass-button" data-filter="bookmark">🔖 Bookmarks</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social & Forums Section -->
+  <div class="social-forums-section" style="display: flex; gap: 1.5rem; margin-bottom: 2rem;">
+    
+    <!-- Social Websites Container -->
+    <div class="glass-card" style="flex: 3; padding: 2rem;">
+      <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Social Websites</h3>
+      <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+        <a href="https://twitter.com" class="glass-button" target="_blank">Twitter</a>
+        <a href="https://discord.com" class="glass-button" target="_blank">Discord</a>
+        <a href="https://youtube.com" class="glass-button" target="_blank">YouTube</a>
+        <a href="https://twitch.tv" class="glass-button" target="_blank">Twitch</a>
+        <a href="https://github.com" class="glass-button" target="_blank">GitHub</a>
+        <a href="https://dev.to" class="glass-button" target="_blank">Dev.to</a>
+        <a href="https://dribbble.com" class="glass-button" target="_blank">Dribbble</a>
+        <a href="https://behance.net" class="glass-button" target="_blank">Behance</a>
+        <a href="https://pinterest.com" class="glass-button" target="_blank">Pinterest</a>
+        <a href="https://medium.com" class="glass-button" target="_blank">Medium</a>
+        <a href="https://hashnode.com" class="glass-button" target="_blank">Hashnode</a>
+      </div>
     </div>
     
-    <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
-      <div class="search-section">
-        <input type="text" id="searchBar" class="glass-input" placeholder="Search websites by name, tag, or description..." style="width: 100%; margin-bottom: 20px; padding: 1rem;">
-        
-        <!-- Filter Buttons -->
-        <div class="filter-buttons" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
-          <button class="filter-btn glass-button active" data-filter="all">All</button>
-          <button class="filter-btn glass-button" data-filter="personal">Personal</button>
-          <button class="filter-btn glass-button" data-filter="tools">Tools</button>
-          <button class="filter-btn glass-button" data-filter="company">Company</button>
-          <button class="filter-btn glass-button" data-filter="documentation">Documentation</button>
-          <button class="filter-btn glass-button" data-filter="repository">Repository</button>
-          <button class="filter-btn glass-button" data-filter="archive">Archive</button>
-          <button class="filter-btn glass-button" data-filter="in-construction">🚧 In Construction</button>
-          <button class="filter-btn glass-button" data-filter="github-portfolio">📁 GitHub Portfolio</button>
-          <button class="filter-btn glass-button" data-filter="bookmark">🔖 Bookmarks</button>
-        </div>
+    <!-- Forums & Communities Container -->
+    <div class="glass-card" style="flex: 1; padding: 2rem;">
+      <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Forums & Communities</h3>
+      <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+        <a href="https://stackoverflow.com" class="glass-button" target="_blank">Stack Overflow</a>
+        <a href="https://reddit.com/r/art" class="glass-button" target="_blank">r/art</a>
       </div>
     </div>
+  </div>
 
-    <!-- Social & Forums Section -->
-    <div class="social-forums-section" style="display: flex; gap: 1.5rem; margin-bottom: 2rem;">
-      
-      <!-- Social Websites Container -->
-      <div class="glass-card" style="flex: 3; padding: 2rem;">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Social Websites</h3>
-        <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-          <a href="https://twitter.com" class="glass-button" target="_blank">Twitter</a>
-          <a href="https://discord.com" class="glass-button" target="_blank">Discord</a>
-          <a href="https://youtube.com" class="glass-button" target="_blank">YouTube</a>
-          <a href="https://twitch.tv" class="glass-button" target="_blank">Twitch</a>
-          <a href="https://github.com" class="glass-button" target="_blank">GitHub</a>
-          <a href="https://dev.to" class="glass-button" target="_blank">Dev.to</a>
-          <a href="https://dribbble.com" class="glass-button" target="_blank">Dribbble</a>
-          <a href="https://behance.net" class="glass-button" target="_blank">Behance</a>
-          <a href="https://pinterest.com" class="glass-button" target="_blank">Pinterest</a>
-          <a href="https://medium.com" class="glass-button" target="_blank">Medium</a>
-          <a href="https://hashnode.com" class="glass-button" target="_blank">Hashnode</a>
-        </div>
-      </div>
-      
-      <!-- Forums & Communities Container -->
-      <div class="glass-card" style="flex: 1; padding: 2rem;">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Forums & Communities</h3>
-        <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-          <a href="https://stackoverflow.com" class="glass-button" target="_blank">Stack Overflow</a>
-          <a href="https://reddit.com/r/art" class="glass-button" target="_blank">r/art</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="glass-card" style="padding: 2rem;">
-      <div class="website-grid" id="websiteGrid">
-        <!-- Websites will be populated here -->
-      </div>
+  <div class="glass-card" style="padding: 2rem;">
+    <div class="website-grid" id="websiteGrid">
+      <!-- Websites will be populated here -->
     </div>
   </div>
 </div>

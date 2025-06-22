@@ -38,35 +38,35 @@ class WindowManager {
                 const states = JSON.parse(savedStates);
                 Object.keys(states).forEach(windowId => {
                     const state = states[windowId];
-                    const windowData = this.getWindow(windowId);
-                    if (windowData) {
-                        // Apply saved position and size
-                        windowData.position = state.position || { x: 0, y: 0 };
-                        windowData.size = state.size || { width: 400, height: 300 };
-                        windowData.isMinimized = state.isMinimized || false;
-                        windowData.isMaximized = state.isMaximized || false;
-                        
-                        // Apply to DOM
-                        windowData.element.style.transform = `translate(${windowData.position.x}px, ${windowData.position.y}px)`;
-                        windowData.element.style.width = `${windowData.size.width}px`;
-                        windowData.element.style.height = `${windowData.size.height}px`;
-                        
-                        if (windowData.isMinimized) {
-                            windowData.element.style.transform = 'scale(0.1)';
-                            windowData.element.style.opacity = '0';
-                            windowData.element.style.pointerEvents = 'none';
-                        }
-                        
-                        if (windowData.isMaximized) {
-                            windowData.element.style.position = 'fixed';
-                            windowData.element.style.top = '0';
-                            windowData.element.style.left = '0';
-                            windowData.element.style.width = '100vw';
-                            windowData.element.style.height = '100vh';
-                            windowData.element.style.zIndex = '9999';
-                        }
+                const windowData = this.getWindow(windowId);
+                if (windowData) {
+                    // Apply saved position and size
+                    windowData.position = state.position || { x: 0, y: 0 };
+                    windowData.size = state.size || { width: 400, height: 300 };
+                    windowData.isMinimized = state.isMinimized || false;
+                    windowData.isMaximized = state.isMaximized || false;
+                    
+                    // Apply to DOM
+                    windowData.element.style.transform = `translate(${windowData.position.x}px, ${windowData.position.y}px)`;
+                    windowData.element.style.width = `${windowData.size.width}px`;
+                    windowData.element.style.height = `${windowData.size.height}px`;
+                    
+                    if (windowData.isMinimized) {
+                        windowData.element.style.transform = 'scale(0.1)';
+                        windowData.element.style.opacity = '0';
+                        windowData.element.style.pointerEvents = 'none';
                     }
-                });
+                    
+                    if (windowData.isMaximized) {
+                        windowData.element.style.position = 'fixed';
+                        windowData.element.style.top = '0';
+                        windowData.element.style.left = '0';
+                        windowData.element.style.width = '100vw';
+                        windowData.element.style.height = '100vh';
+                        windowData.element.style.zIndex = '9999';
+                    }
+                }
+            });
             }
         } catch (error) {
             console.error('Error loading window states:', error);
@@ -142,16 +142,16 @@ class WindowManager {
             const savedNotes = this.getCookie('stickyNotes');
             if (savedNotes) {
                 const notes = JSON.parse(savedNotes);
-                const container = document.querySelector('.sticky-notes-container');
-                
+            const container = document.querySelector('.sticky-notes-container');
+            
                 if (container && notes.length > 0) {
-                    // Clear existing notes
-                    container.innerHTML = '';
-                    
-                    // Restore saved notes
+                // Clear existing notes
+                container.innerHTML = '';
+                
+                // Restore saved notes
                     notes.forEach(noteData => {
-                        this.createStickyNoteFromData(noteData);
-                    });
+                    this.createStickyNoteFromData(noteData);
+                });
                 }
             }
         } catch (error) {
@@ -541,7 +541,7 @@ class WindowManager {
     }
 
     closeWindow(windowData) {
-        // Remove from windows array
+            // Remove from windows array
         this.windows = this.windows.filter(w => w.id !== windowData.id);
         
         // Remove from DOM
@@ -746,7 +746,7 @@ class WindowManager {
         window.appendChild(header);
         window.appendChild(contentDiv);
         document.body.appendChild(window);
-
+        
         // Create window data object
         const windowData = {
             element: window,
@@ -756,15 +756,15 @@ class WindowManager {
             isMinimized: false,
             isMaximized: false
         };
-
+        
         this.windows.push(windowData);
         this.setupWindowEventListeners(windowData);
         this.setupWindowControlsForWindow(windowData);
         this.addResizeHandles(windowData);
-
+        
         // Bring window to front
         this.focusWindow(windowId);
-
+        
         // Save window states
         this.saveWindowStates();
 
@@ -772,7 +772,7 @@ class WindowManager {
         if (window.windowSwitcher) {
             window.windowSwitcher.refresh();
         }
-
+        
         return windowData;
     }
 

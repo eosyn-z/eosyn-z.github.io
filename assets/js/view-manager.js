@@ -110,8 +110,16 @@ class ViewManager {
         if (window.desktopManager) {
             // Desktop manager is already initialized in constructor
             console.log('Desktop manager found and ready');
+            window.desktopManager.renderIcons();
         } else {
-            console.log('Desktop manager not found');
+            console.log('Desktop manager not found, initializing...');
+            // Try to initialize desktop manager
+            if (typeof DesktopManager !== 'undefined') {
+                window.desktopManager = new DesktopManager();
+                console.log('Desktop manager initialized successfully');
+            } else {
+                console.error('DesktopManager class not found');
+            }
         }
         
         // Initialize window manager if it exists

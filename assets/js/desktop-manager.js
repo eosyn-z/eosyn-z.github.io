@@ -61,10 +61,46 @@ class DesktopManager {
   getDefaultIcons() {
     return [
       {
+        id: 'paint',
+        title: 'Paint',
+        icon: '🎨',
+        x: 50,
+        y: 50,
+        appId: 'paint',
+        appTitle: 'Paint',
+        dateCreated: '2024-01-01',
+        description: 'MS Paint-style drawing tool',
+        redbubbleLink: ''
+      },
+      {
+        id: 'nature',
+        title: 'Nature',
+        icon: '🌳',
+        x: 50,
+        y: 150,
+        appId: 'nature',
+        appTitle: "Nature's Window",
+        dateCreated: '2024-01-01',
+        description: 'Touch grass - nature imagery and filters',
+        redbubbleLink: ''
+      },
+      {
+        id: 'games',
+        title: 'Games',
+        icon: '🎮',
+        x: 50,
+        y: 250,
+        appId: 'games',
+        appTitle: 'Game Center',
+        dateCreated: '2024-01-01',
+        description: 'Play games and have fun',
+        redbubbleLink: ''
+      },
+      {
         id: 'portfolio',
         title: 'Portfolio',
         icon: '🎨', // Using emoji instead of image file
-        x: 50,
+        x: 200,
         y: 50,
         appId: 'portfolio',
         appTitle: 'Portfolio',
@@ -76,7 +112,7 @@ class DesktopManager {
         id: 'music',
         title: 'Music',
         icon: '🎵', // Using emoji instead of image file
-        x: 50,
+        x: 200,
         y: 150,
         appId: 'music',
         appTitle: 'Music Player',
@@ -88,7 +124,7 @@ class DesktopManager {
         id: 'search',
         title: 'Search',
         icon: '🔍', // Using emoji instead of image file
-        x: 50,
+        x: 200,
         y: 250,
         appId: 'search',
         appTitle: 'Search & Pin',
@@ -100,7 +136,7 @@ class DesktopManager {
         id: 'chat',
         title: 'Chat',
         icon: '💬', // Using emoji instead of image file
-        x: 50,
+        x: 200,
         y: 350,
         appId: 'chat',
         appTitle: 'AI Chat',
@@ -112,7 +148,7 @@ class DesktopManager {
         id: 'sticky-notes',
         title: 'Sticky Notes',
         icon: '📝', // Using emoji instead of image file
-        x: 50,
+        x: 200,
         y: 450,
         appId: 'sticky-notes',
         appTitle: 'Sticky Notes',
@@ -121,23 +157,11 @@ class DesktopManager {
         redbubbleLink: ''
       },
       {
-        id: 'games',
-        title: 'Games',
-        icon: '🎮', // Using emoji instead of image file
-        x: 200,
-        y: 50,
-        appId: 'games',
-        appTitle: 'Game Center',
-        dateCreated: '2024-01-01',
-        description: 'Play games and have fun',
-        redbubbleLink: ''
-      },
-      {
         id: 'snake',
         title: 'Snake',
         icon: '🐍', // Using emoji instead of image file
-        x: 200,
-        y: 150,
+        x: 350,
+        y: 50,
         appId: 'snake',
         appTitle: 'Snake',
         dateCreated: '2024-01-01',
@@ -148,8 +172,8 @@ class DesktopManager {
         id: 'tetris',
         title: 'Tetris',
         icon: '🧩', // Using emoji instead of image file
-        x: 200,
-        y: 250,
+        x: 350,
+        y: 150,
         appId: 'tetris',
         appTitle: 'Tetris',
         dateCreated: '2024-01-01',
@@ -235,10 +259,32 @@ class DesktopManager {
     // Add click handler to launch app
     icon.addEventListener('click', (e) => {
       if (!icon.classList.contains('dragging')) {
-        if (window.windowManager) {
+        // Use the openApp function from desktop.js if available
+        if (window.openApp) {
+          // Map appId to the correct URL
+          const appUrls = {
+            'paint': '/paint.html',
+            'nature': '/touchgrass/',
+            'games': '/games/',
+            'portfolio': '/pages/portfolio/',
+            'music': '/pages/music/',
+            'search': '/pages/search/',
+            'chat': '/pages/chat/',
+            'sticky-notes': '/sticky-notes/', // Use the existing sticky notes page
+            'snake': '/snake/',
+            'tetris': '/tetris/'
+          };
+          
+          const appUrl = appUrls[iconData.appId];
+          if (appUrl) {
+            window.openApp(iconData.appId, appUrl, iconData.appTitle);
+          } else {
+            console.error('No URL mapping found for appId:', iconData.appId);
+          }
+        } else if (window.windowManager) {
           window.windowManager.createWindow(iconData.appId, iconData.appTitle);
         } else {
-          console.error('Window manager not found');
+          console.error('Neither openApp nor windowManager found');
         }
       }
     });
@@ -402,50 +448,103 @@ class DesktopManager {
     this.desktop.appendChild(settingsBtn);
   }
 
-  // Show desktop settings modal
+  // Show desktop settings
   showDesktopSettings() {
-    const modal = document.createElement('div');
-    modal.className = 'glass-modal';
-    modal.innerHTML = `
-      <div class="modal-content" style="max-width: 800px;">
-        <div class="modal-header">
-          <h2>Desktop Settings</h2>
-          <button class="close-btn" onclick="this.closest('.glass-modal').remove()">✕</button>
+    // Create a proper window for desktop settings
+    const settingsWindow = document.createElement('div');
+    settingsWindow.className = 'app-window glass-effect';
+    settingsWindow.id = 'settings-window';
+    settingsWindow.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 500px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    `;
+
+    settingsWindow.innerHTML = `
+      <div class="window-header">
+        <div class="window-title">🖥️ Desktop Settings</div>
+        <div class="window-controls">
+          <button class="control-btn close" onclick="this.closest('.app-window').remove()">×</button>
         </div>
-        <div class="modal-body">
-          <div class="settings-section">
-            <h3>Wallpaper</h3>
-            <div class="wallpaper-picker">
-              <div class="current-wallpaper">
-                <img src="${this.currentWallpaper}" alt="Current Wallpaper" style="width: 200px; height: 120px; object-fit: cover; border-radius: 8px;">
-              </div>
-              <div class="wallpaper-options">
-                <button class="glass-button" onclick="desktopManager.showWallpaperPicker()">Change Wallpaper</button>
-                <input type="url" id="wallpaperUrl" placeholder="Or enter URL..." class="glass-input">
-                <button class="glass-button" onclick="desktopManager.setWallpaperFromUrl()">Set from URL</button>
-              </div>
+      </div>
+      <div class="window-content" style="flex: 1; overflow-y: auto; padding: 20px;">
+        <div class="settings-section">
+          <h3>🎨 Wallpaper</h3>
+          <div class="wallpaper-picker">
+            <div class="current-wallpaper">
+              <strong>Current:</strong> ${this.currentWallpaper.split('/').pop()}
+            </div>
+            <button class="glass-button" onclick="desktopManager.showWallpaperPicker()">Change Wallpaper</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>📱 Desktop Icons</h3>
+          <div class="icon-management">
+            <button class="glass-button" onclick="desktopManager.addNewIcon()">Add New Icon</button>
+            <div class="icon-list">
+              ${this.icons.map(icon => `
+                <div class="icon-item">
+                  <span>${icon.icon} ${icon.title}</span>
+                  <button class="glass-button" onclick="desktopManager.editIcon('${icon.id}')">Edit</button>
+                  <button class="glass-button" onclick="desktopManager.deleteIcon('${icon.id}')">Delete</button>
+                </div>
+              `).join('')}
             </div>
           </div>
-          <div class="settings-section">
-            <h3>Desktop Icons</h3>
-            <div class="icon-management">
-              <button class="glass-button" onclick="desktopManager.addNewIcon()">Add New Icon</button>
-              <div class="icon-list">
-                ${this.icons.map(icon => `
-                  <div class="icon-item">
-                    <img src="${icon.icon}" alt="${icon.title}" style="width: 32px; height: 32px;">
-                    <span>${icon.title}</span>
-                    <button onclick="desktopManager.deleteIcon('${icon.id}')">Delete</button>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>🎨 Window Theme</h3>
+          <div class="window-theme-section">
+            <button class="glass-button" onclick="desktopManager.showWindowThemeEditor()">Customize Window Appearance</button>
           </div>
         </div>
       </div>
     `;
-    
-    document.body.appendChild(modal);
+
+    // Make the window draggable
+    const header = settingsWindow.querySelector('.window-header');
+    let isDragging = false;
+    let startX, startY, startLeft, startTop;
+
+    header.addEventListener('mousedown', (e) => {
+      if (e.target.classList.contains('control-btn')) return;
+      
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startLeft = parseInt(settingsWindow.style.left) || 0;
+      startTop = parseInt(settingsWindow.style.top) || 0;
+      
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+      
+      settingsWindow.style.left = `${startLeft + deltaX}px`;
+      settingsWindow.style.top = `${startTop + deltaY}px`;
+      settingsWindow.style.transform = 'none';
+    };
+
+    const onMouseUp = () => {
+      isDragging = false;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.body.appendChild(settingsWindow);
   }
 
   // Show wallpaper picker
@@ -797,7 +896,7 @@ class DesktopManager {
     editor.innerHTML = `
       <div class="modal-content" style="max-width: 500px;">
         <div class="modal-header">
-          <h3>Edit Icon Properties</h3>
+          <h3> Properties</h3>
           <button class="close-btn" onclick="this.closest('.glass-modal').remove()">✕</button>
         </div>
         <div class="modal-body">
@@ -952,11 +1051,14 @@ class DesktopManager {
 
 // Global initialization
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Initializing desktop manager...');
-    try {
-        window.desktopManager = new DesktopManager();
-        console.log('Desktop manager initialized successfully');
-    } catch (error) {
-        console.error('Error initializing desktop manager:', error);
-    }
+  // Initialize when desktop mode is active or when we're on a desktop page
+  if (!document.body.classList.contains('desktop-mode') && !window.location.pathname.includes('/desktop')) return;
+
+  console.log('Initializing desktop manager...');
+  try {
+    window.desktopManager = new DesktopManager();
+    console.log('Desktop manager initialized successfully');
+  } catch (error) {
+    console.error('Error initializing desktop manager:', error);
+  }
 }); 

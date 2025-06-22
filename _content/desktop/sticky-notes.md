@@ -64,6 +64,10 @@ icon: 📝
       <button class="glass-button" onclick="createStickyNote('Empty Note', '')">
         📄 Empty Note
       </button>
+      
+      <button class="glass-button" onclick="launchRichTextNotes()" style="background: var(--theme-accent); color: white;">
+        ✨ Rich Text Editor
+      </button>
     </div>
   </div>
 
@@ -164,6 +168,16 @@ windowManager.closeAllWindowsOfType('snake');</code></pre>
 </div>
 
 <script>
+// Function to launch rich text notes app
+function launchRichTextNotes() {
+  if (window.stickyNotesApp) {
+    window.stickyNotesApp.createNoteWindow();
+  } else {
+    console.error('Rich text notes app not available');
+    alert('Rich text notes app is not available. Please refresh the page and try again.');
+  }
+}
+
 // Additional demo functions
 document.addEventListener('DOMContentLoaded', () => {
   // Create a welcome note on page load

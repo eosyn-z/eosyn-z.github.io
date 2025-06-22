@@ -187,10 +187,11 @@ class SnakeGame {
   }
 }
 
-// Initialize game when page loads
+// Automatically instantiate the game when the script is loaded
 let snakeGame;
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('snakeCanvas')) {
-    snakeGame = new SnakeGame();
-  }
+    const canvas = document.getElementById('snakeCanvas');
+    if (canvas) {
+        snakeGame = new SnakeGame();
+    }
 }); 
