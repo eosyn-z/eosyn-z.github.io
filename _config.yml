@@ -14,18 +14,20 @@ timezone: EST
 theme: null
 
 collections:
-  projects:
-    output: true
-    permalink: /projects/:name
   sitepages:
-    output: true
-    permalink: /:name/
-  games:
     output: true
     permalink: /:name/
   desktop:
     output: true
     permalink: /:name/
-  artpages:
+  games:
     output: true
     permalink: /:name/
+  artpages:
+    output: true
+    permalink: /art/:name/
+  projects:
+    output: true
+
+# Jekyll-seo-tag settings
+# ... existing code ...

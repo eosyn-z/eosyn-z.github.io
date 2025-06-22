@@ -10,7 +10,7 @@ body[data-page="search"] {
 }
 
 body[data-page="search"] .main-content {
-  min-width: 1200px; /* Ensure minimum width for grid layout */
+  min-width: 800px; /* Consistent with other pages */
 }
 
 /* Prevent horizontal scroll on all other pages */
@@ -58,7 +58,7 @@ body[data-page="chat"] .main-content {
 
 .website-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  box-shadow: var(--glass-shadow-heavy);
 }
 
 .card-content {

@@ -1,7 +1,9 @@
 ---
-layout: default
+layout: art_gallery
 title: Traditional Art
 permalink: /art/traditional/
+description: "A gallery of my traditional artwork, including ink, watercolor, and sketches."
+art_category: traditional
 ---
 
 <div class="main-content">

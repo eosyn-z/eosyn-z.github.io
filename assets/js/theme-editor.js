@@ -2,134 +2,106 @@
 class CustomThemeEditor {
     constructor() {
         this.tray = document.getElementById('theme-editor-tray');
-        this.colorPickers = document.querySelectorAll('.color-picker');
-        this.customThemeButton = document.querySelector('.theme-btn.custom-theme');
-        this.isCustomThemeActive = false;
-        this.isTrayOpen = false;
-        
+        if (!this.tray) {
+            console.error('Theme editor tray element not found.');
+            return;
+        }
+        this.editorHTML = this.tray.innerHTML;
+        // The tray itself is no longer needed after we grab its HTML
+        this.tray.remove();
         this.init();
     }
 
-    init() {
-        // Add event listeners
-        this.customThemeButton.addEventListener('click', () => this.openThemeEditor());
-        
-        // Find the close button and add a listener
-        const closeButton = this.tray.querySelector('.tray-close-btn');
-        if (closeButton) {
-            closeButton.addEventListener('click', () => this.closeThemeEditor());
+    async init() {
+        await this.loadEditorHTML();
+    }
+
+    async loadEditorHTML() {
+        try {
+            const response = await fetch('/_includes/theme-editor.html');
+            if (!response.ok) {
+                throw new Error('Failed to load theme editor HTML');
+            }
+            this.editorHTML = await response.text();
+        } catch (error) {
+            console.error('Error loading theme editor:', error);
+        }
+    }
+
+    createThemeEditorWindow() {
+        if (!window.windowManager) {
+            console.error('WindowManager is not available.');
+            return;
         }
 
-        // Add event listeners to color pickers
-        this.colorPickers.forEach(picker => {
-            picker.addEventListener('change', (e) => this.updateColor(e));
+        const windowId = 'system-settings-theme-editor';
+        const existingWindow = window.windowManager.getWindow(windowId);
+        if (existingWindow) {
+            window.windowManager.focusWindow(windowId);
+            return;
+        }
+
+        const themeWindow = window.windowManager.createWindow(
+            windowId,
+            'System Settings - Theme Editor',
+            this.editorHTML
+        );
+
+        this.setupEventListenersForWindow(themeWindow.element);
+        this.populateColorPickers(themeWindow.element);
+    }
+
+    setupEventListenersForWindow(windowElement) {
+        const colorPickers = windowElement.querySelectorAll('.color-picker');
+        colorPickers.forEach(picker => {
             picker.addEventListener('input', (e) => this.updateColor(e));
         });
 
-        // Add event listeners to window theme controls
-        this.initWindowThemeControls();
+        const saveButton = windowElement.querySelector('.tray-btn.primary');
+        if (saveButton) {
+            saveButton.onclick = () => this.saveCustomTheme();
+        }
 
-        // Load saved custom theme on page load
-        this.loadCustomTheme();
-
-        // Check if the tray should be open on load
-        if (this.isTrayOpen) {
-            this.tray.classList.add('active');
+        const resetButton = windowElement.querySelector('.tray-btn:not(.primary)');
+        if (resetButton) {
+            resetButton.onclick = () => this.resetCustomTheme();
+        }
+        
+        const closeButton = windowElement.querySelector('.tray-close-btn');
+        if (closeButton) {
+            closeButton.onclick = () => window.windowManager.closeWindow('system-settings-theme-editor');
         }
     }
 
-    openThemeEditor() {
-        this.tray.classList.add('active');
-        this.isTrayOpen = true;
-        this.populateColorPickers();
-        this.setCustomThemeActive();
-    }
-
-    closeThemeEditor() {
-        this.tray.classList.remove('active');
-        this.isTrayOpen = false;
-    }
-
-    populateColorPickers() {
-        // Get current theme values and populate color pickers
+    populateColorPickers(windowElement) {
         const computedStyle = getComputedStyle(document.documentElement);
-        
-        this.colorPickers.forEach(picker => {
+        const colorPickers = windowElement.querySelectorAll('.color-picker');
+
+        colorPickers.forEach(picker => {
             const variable = picker.getAttribute('data-variable');
             const currentValue = computedStyle.getPropertyValue(variable).trim();
-            
-            // Convert rgba to hex if needed
-            if (currentValue.startsWith('rgba')) {
-                picker.value = this.rgbaToHex(currentValue);
-            } else if (currentValue.startsWith('rgb')) {
-                picker.value = this.rgbToHex(currentValue);
-            } else {
-                picker.value = currentValue || '#000000';
-            }
+            picker.value = this.rgbaToHex(currentValue); // Simplified, assuming colors are hex/rgb
         });
-
-        // Populate window theme controls with saved values
-        this.populateWindowThemeControls();
     }
 
-    populateWindowThemeControls() {
-        if (!window.customThemeValues) return;
-
-        // Set active window image button
-        if (window.customThemeValues.windowImage) {
-            const imageBtn = document.querySelector(`.window-image-btn[data-window-image="${window.customThemeValues.windowImage}"]`);
-            if (imageBtn) {
-                document.querySelectorAll('.window-image-btn').forEach(b => b.classList.remove('active'));
-                imageBtn.classList.add('active');
-            }
-        }
-
-        // Set active window size button
-        if (window.customThemeValues.windowSize) {
-            const sizeBtn = document.querySelector(`.window-size-btn[data-window-size="${window.customThemeValues.windowSize}"]`);
-            if (sizeBtn) {
-                document.querySelectorAll('.window-size-btn').forEach(b => b.classList.remove('active'));
-                sizeBtn.classList.add('active');
-            }
-        }
-
-        // Set active window shape button
-        if (window.customThemeValues.windowShape) {
-            const shapeBtn = document.querySelector(`.window-shape-btn[data-window-shape="${window.customThemeValues.windowShape}"]`);
-            if (shapeBtn) {
-                document.querySelectorAll('.window-shape-btn').forEach(b => b.classList.remove('active'));
-                shapeBtn.classList.add('active');
-            }
-        }
+    rgbaToHex(rgba) {
+        if (!rgba.startsWith('rgba') && !rgba.startsWith('rgb')) return rgba;
+        let parts = rgba.substring(rgba.indexOf("(") + 1, rgba.lastIndexOf(")")).split(/,\s*/);
+        let r = parseInt(parts[0]), g = parseInt(parts[1]), b = parseInt(parts[2]);
+        return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).substr(0, 6);
     }
-
+    
     updateColor(event) {
         const picker = event.target;
         const variable = picker.getAttribute('data-variable');
         const color = picker.value;
         
-        // Apply the color immediately for live preview
         document.documentElement.style.setProperty(variable, color);
         
-        // Store in temporary custom theme object
         if (!window.customThemeValues) {
             window.customThemeValues = {};
         }
         window.customThemeValues[variable] = color;
-    }
-
-    setCustomThemeActive() {
-        // Remove active class from other theme buttons
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // Add active class to custom theme button
-        this.customThemeButton.classList.add('active');
-        this.isCustomThemeActive = true;
-        
-        // Set body theme to custom
-        document.body.setAttribute('data-theme', 'custom');
     }
 
     saveCustomTheme() {
@@ -138,208 +110,42 @@ class CustomThemeEditor {
             return;
         }
 
-        // Save to cookie
         const themeData = JSON.stringify(window.customThemeValues);
-        setCookie('custom_theme', themeData, 3650); // Store for 10 years
-        
-        // Also save the current theme setting
-        if (window.saveCurrentTheme) {
-            window.saveCurrentTheme();
-        }
-        
-        // Show success message
-        this.showNotification('Custom theme saved! 🎨', 'success');
-        
-        this.closeThemeEditor();
+        document.cookie = `custom_theme=${themeData};path=/;max-age=315360000`; 
+
+        alert('Custom theme saved!');
+        window.windowManager.closeWindow('system-settings-theme-editor');
     }
 
     resetCustomTheme() {
-        // Clear custom theme
-        window.customThemeValues = {};
-        
-        // Remove custom theme from cookie
-        setCookie('custom_theme', '', -1);
-        
-        // Reset to default theme (Cosmic)
-        this.resetToDefaultTheme();
-        
-        // Show notification
-        this.showNotification('Theme reset to default! 🔄', 'info');
-        
-        this.closeThemeEditor();
-    }
-
-    resetToDefaultTheme() {
-        // Remove custom theme from body
-        document.body.setAttribute('data-theme', 'c');
-        
-        // Remove active class from custom theme button
-        this.customThemeButton.classList.remove('active');
-        this.isCustomThemeActive = false;
-        
-        // Clear any custom CSS variables
-        Object.keys(window.customThemeValues || {}).forEach(variable => {
+        // This function needs to know the variables to clear.
+        const variablesToClear = Object.keys(window.customThemeValues || {});
+        variablesToClear.forEach(variable => {
             document.documentElement.style.removeProperty(variable);
         });
+
+        window.customThemeValues = {};
+        document.cookie = 'custom_theme=;path=/;max-age=-1';
+        document.body.setAttribute('data-theme', 'c');
         
-        // Set default theme button as active
-        const defaultThemeBtn = document.querySelector('.theme-btn[data-theme="c"]');
-        if (defaultThemeBtn) {
-            defaultThemeBtn.classList.add('active');
-        }
+        alert('Theme has been reset to default.');
+        window.windowManager.closeWindow('system-settings-theme-editor');
     }
 
     loadCustomTheme() {
-        const savedTheme = getCookie('custom_theme');
-        if (savedTheme) {
+        const cookieValue = document.cookie.split('; ').find(row => row.startsWith('custom_theme='));
+        if (cookieValue) {
             try {
-                const themeValues = JSON.parse(savedTheme);
-                window.customThemeValues = themeValues;
-                
-                // Apply the saved theme
-                Object.entries(themeValues).forEach(([variable, color]) => {
-                    document.documentElement.style.setProperty(variable, color);
+                const themeData = JSON.parse(decodeURIComponent(cookieValue.split('=')[1]));
+                window.customThemeValues = themeData;
+                Object.entries(themeData).forEach(([variable, value]) => {
+                    document.documentElement.style.setProperty(variable, value);
                 });
-                
-                // Set custom theme as active
-                this.setCustomThemeActive();
-                
+                document.body.setAttribute('data-theme', 'custom');
             } catch (error) {
                 console.error('Error loading custom theme:', error);
-                // Clear invalid cookie
-                setCookie('custom_theme', '', -1);
             }
         }
-    }
-
-    initWindowThemeControls() {
-        // Window image buttons
-        const windowImageBtns = document.querySelectorAll('.window-image-btn');
-        windowImageBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => this.updateWindowImage(e));
-        });
-
-        // Window size buttons
-        const windowSizeBtns = document.querySelectorAll('.window-size-btn');
-        windowSizeBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => this.updateWindowSize(e));
-        });
-
-        // Window shape buttons
-        const windowShapeBtns = document.querySelectorAll('.window-shape-btn');
-        windowShapeBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => this.updateWindowShape(e));
-        });
-    }
-
-    updateWindowImage(event) {
-        const btn = event.target;
-        const imageType = btn.getAttribute('data-window-image');
-        
-        // Remove active class from all window image buttons
-        document.querySelectorAll('.window-image-btn').forEach(b => b.classList.remove('active'));
-        
-        // Add active class to clicked button
-        btn.classList.add('active');
-        
-        // Store in custom theme values
-        if (!window.customThemeValues) {
-            window.customThemeValues = {};
-        }
-        window.customThemeValues.windowImage = imageType;
-        
-        // Apply window image (this would need to be implemented in the window manager)
-        this.applyWindowTheme();
-    }
-
-    updateWindowSize(event) {
-        const btn = event.target;
-        const size = btn.getAttribute('data-window-size');
-        
-        // Remove active class from all window size buttons
-        document.querySelectorAll('.window-size-btn').forEach(b => b.classList.remove('active'));
-        
-        // Add active class to clicked button
-        btn.classList.add('active');
-        
-        // Store in custom theme values
-        if (!window.customThemeValues) {
-            window.customThemeValues = {};
-        }
-        window.customThemeValues.windowSize = size;
-        
-        // Apply window theme
-        this.applyWindowTheme();
-    }
-
-    updateWindowShape(event) {
-        const btn = event.target;
-        const shape = btn.getAttribute('data-window-shape');
-        
-        // Remove active class from all window shape buttons
-        document.querySelectorAll('.window-shape-btn').forEach(b => b.classList.remove('active'));
-        
-        // Add active class to clicked button
-        btn.classList.add('active');
-        
-        // Store in custom theme values
-        if (!window.customThemeValues) {
-            window.customThemeValues = {};
-        }
-        window.customThemeValues.windowShape = shape;
-        
-        // Apply window theme
-        this.applyWindowTheme();
-    }
-
-    applyWindowTheme() {
-        // Apply window theme settings to the desktop environment
-        if (window.desktopManager) {
-            window.desktopManager.applyWindowTheme(window.customThemeValues);
-        }
-        
-        // Also apply to any existing windows
-        if (window.windowManager) {
-            window.windowManager.applyThemeToAllWindows(window.customThemeValues);
-        }
-    }
-
-    showNotification(message, type = 'info') {
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `theme-notification ${type}`;
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--glass-bg-heavy);
-            backdrop-filter: var(--glass-blur-heavy);
-            border: 1px solid var(--glass-border-light);
-            border-radius: 10px;
-            padding: 1rem 1.5rem;
-            color: var(--theme-text);
-            font-weight: 500;
-            z-index: 10000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            box-shadow: var(--glass-shadow-medium);
-        `;
-        
-        document.body.appendChild(notification);
-        
-        // Animate in
-        setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 100);
-        
-        // Remove after 3 seconds
-        setTimeout(() => {
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
     }
 
     // Utility functions for color conversion
@@ -368,46 +174,47 @@ class CustomThemeEditor {
 
 // Global functions for HTML onclick handlers
 window.openThemeEditor = function() {
-    if (window.themeEditor) {
-        window.themeEditor.openThemeEditor();
+    if (window.customThemeEditor) {
+        window.customThemeEditor.createThemeEditorWindow();
     }
 };
 
 window.closeThemeEditor = function() {
-    if (window.themeEditor) {
-        window.themeEditor.closeThemeEditor();
+    if (window.customThemeEditor) {
+        window.customThemeEditor.closeThemeEditor();
     }
 };
 
 window.saveCustomTheme = function() {
-    if (window.themeEditor) {
-        window.themeEditor.saveCustomTheme();
+    if (window.customThemeEditor) {
+        window.customThemeEditor.saveCustomTheme();
     }
 };
 
 window.resetCustomTheme = function() {
-    if (window.themeEditor) {
-        window.themeEditor.resetCustomTheme();
+    if (window.customThemeEditor) {
+        window.customThemeEditor.resetCustomTheme();
     }
 };
 
 // Initialize theme editor when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    window.themeEditor = new CustomThemeEditor();
+document.addEventListener('DOMContentLoaded', () => {
+    window.customThemeEditor = new CustomThemeEditor();
+    window.customThemeEditor.loadCustomTheme();
     
     // Close tray when clicking outside
     document.addEventListener('click', function(e) {
-        if (window.themeEditor.tray.classList.contains('active') && 
-            !window.themeEditor.tray.contains(e.target) && 
+        if (window.customThemeEditor.tray.classList.contains('active') && 
+            !window.customThemeEditor.tray.contains(e.target) && 
             !e.target.closest('.theme-btn.custom-theme')) {
-            window.themeEditor.closeThemeEditor();
+            window.customThemeEditor.closeThemeEditor();
         }
     });
     
     // Close tray with Escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && window.themeEditor.tray.classList.contains('active')) {
-            window.themeEditor.closeThemeEditor();
+        if (e.key === 'Escape' && window.customThemeEditor.tray.classList.contains('active')) {
+            window.customThemeEditor.closeThemeEditor();
         }
     });
 }); 

@@ -36,12 +36,12 @@ description: "A collection of my artwork and projects."
           <h2>Artwork</h2>
         </header>
         <div class="portfolio-art-grid">
-          <a href="/artpages/digital/"><div class="art-card" data-art-category="digital"><h3>Digital</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="ink"><h3>Ink</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="watercolor"><h3>Watercolor</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="sketching"><h3>Sketching</h3></div></a>
-          <a href="/artpages/3d/"><div class="art-card" data-art-category="3d_modeling"><h3>3D Modeling</h3></div></a>
-          <a href="#"><div class="art-card" data-art-category="mixed_media"><h3>Mixed Media</h3></div></a>
+          <a href="/art/digital/"><div class="art-card" data-art-category="digital"><h3>Digital</h3></div></a>
+          <a href="/art/ink/"><div class="art-card" data-art-category="ink"><h3>Ink</h3></div></a>
+          <a href="/art/watercolor/"><div class="art-card" data-art-category="watercolor"><h3>Watercolor</h3></div></a>
+          <a href="/art/sketch/"><div class="art-card" data-art-category="sketching"><h3>Sketching</h3></div></a>
+          <a href="/art/3d/"><div class="art-card" data-art-category="3d_modeling"><h3>3D Modeling</h3></div></a>
+          <a href="/art/mixed-media/"><div class="art-card" data-art-category="mixed_media"><h3>Mixed Media</h3></div></a>
         </div>
       </div>
 

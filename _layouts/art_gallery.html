@@ -1,0 +1,55 @@
+---
+layout: default
+---
+
+<div class="main-content">
+  <div class="glass-container container" style="max-width: 1400px; margin: auto;">
+    <header style="text-align: center; margin-bottom: 3rem;">
+      <div style="margin-bottom: 1rem;">
+        <a href="{{ '/portfolio/' | relative_url }}" class="glass-button" style="font-size: 0.9rem;">← Back to Portfolio</a>
+      </div>
+      <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--theme-primary); font-weight: 700;">{{ page.title }}</h1>
+      {% if page.description %}
+        <p style="font-size: 1.1rem; color: var(--theme-text-secondary); margin: 0;">{{ page.description }}</p>
+      {% endif %}
+    </header>
+
+    {% assign category_path_prefix = '_artpages/' | append: page.art_category %}
+    {% assign category_docs = site.artpages | where_exp: "item", "item.path contains category_path_prefix" %}
+
+    {% if category_docs.size == 0 %}
+      <div class="glass-panel" style="padding: 3rem; text-align: center;">
+        <h2 style="color: var(--theme-text);">Coming Soon!</h2>
+        <p style="color: var(--theme-text-secondary);">There are no pieces in this gallery yet, but new art is on the way. Check back later!</p>
+      </div>
+    {% else %}
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        {% for item in category_docs %}
+          <div class="glass-card" style="padding: 1.5rem; display: flex; flex-direction: column;">
+            {% if item.image %}
+              <img src="{{ item.image }}" alt="{{ item.title }}" style="width: 100%; height: 220px; border-radius: 10px; margin-bottom: 1rem; object-fit: cover;">
+            {% endif %}
+            
+            <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--theme-primary);">{{ item.title }}</h4>
+            
+            {% if item.description %}
+              <p style="font-size: 0.9rem; color: var(--theme-text-secondary); margin-bottom: 1rem; line-height: 1.5; flex-grow: 1;">{{ item.description }}</p>
+            {% endif %}
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.8rem; color: var(--theme-text-secondary);">
+              <span>{{ item.medium | default: "Art" }}</span>
+              <span>{{ item.date | date: "%B %-d, %Y" }}</span>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--theme-text-secondary);">
+              <span>{{ item.notes }}</span>
+              {% if item.redbubble_link %}
+                <a href="{{ item.redbubble_link }}" target="_blank" rel="noopener noreferrer" style="color: #ff6b6b; text-decoration: none; font-weight: 500;">🛍️ Redbubble</a>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div> 

@@ -63,30 +63,49 @@ class DesktopManager {
   // Get default icons configuration
   getDefaultIcons() {
     const defaultIconData = [
-      { title: 'Paint', icon: '🎨' },
-      { title: 'Nature', icon: '🌳' },
-      { title: 'Games', icon: '🎮' },
-      { title: 'Portfolio', icon: '🎨' },
-      { title: 'Music', icon: '🎵' },
-      { title: 'Search', icon: '🔍' },
-      { title: 'Chat', icon: '💬' },
-      { title: 'Sticky Notes', icon: '📝' },
-      { title: 'Snake', icon: '🐍' },
-      { title: 'Tetris', icon: '🧩' },
+      // Main applications
+      { title: 'Paint', icon: '🎨', url: '/paint.html' },
+      { title: 'Nature', icon: '🌳', url: '/nature/' },
+      { title: 'Games', icon: '🎮', url: '/games/' },
+      { title: 'Music', icon: '🎵', url: '/music/' },
+      { title: 'Portfolio', icon: '📁', url: '/portfolio/' },
+      { title: 'Search', icon: '🔍', url: '/search/' },
+      { title: 'Chat', icon: '💬', url: '/chat/' },
+      { title: 'Projects', icon: '📋', url: '/projects/' },
+      { title: 'How To Do That', icon: '❓', url: '/howtodothat/' },
+      { title: 'Art Gallery', icon: '🎭', url: '/art/' },
+      { title: 'Digital Art', icon: '💻', url: '/digital/' },
+      { title: 'Traditional Art', icon: '🖼️', url: '/traditional/' },
+      { title: '3D Art', icon: '🎪', url: '/3d/' },
+      
+      // Games
+      { title: 'Snake', icon: '🐍', url: '/snake/' },
+      { title: 'Tetris', icon: '🧩', url: '/tetris/' },
+      { title: 'Pong', icon: '🏓', url: '/pong/' },
+      { title: 'Minecraft', icon: '⛏️', url: '/minecraft/' },
+      
+      // Desktop utilities
+      { title: 'Sticky Notes', icon: '📝', url: '/sticky-notes/' },
+      { title: 'Desktop Settings', icon: '⚙️', url: '/desktopsettings/' },
+      { title: 'Window Settings', icon: '🪟', url: '/windowsettings/' },
     ];
 
+    const baseUrl = window.siteBaseUrl || '';
+    
     return defaultIconData.map((icon, index) => {
-      const page = this.pages.find(p => p.title === icon.title);
+      // Try to find matching page from jekyllPages
+      const page = this.pages ? this.pages.find(p => p.title === icon.title || p.url === icon.url) : null;
+      
       return {
-        id: page ? page.url.split('/').filter(Boolean).pop() : icon.title.toLowerCase().replace(' ', '-'),
+        id: page ? page.url.split('/').filter(Boolean).pop() : icon.title.toLowerCase().replace(/\s+/g, '-'),
         title: icon.title,
         icon: icon.icon,
-        x: 50 + (index % 3) * 120, // Simple grid layout
-        y: 50 + Math.floor(index / 3) * 120,
-        url: page ? page.url : '#', // Use page URL
-        description: page ? (page.description || `Open the ${page.title} page.`) : `A desktop shortcut.`,
+        x: 50 + (index % 4) * 120, // 4 columns layout
+        y: 50 + Math.floor(index / 4) * 120,
+        url: page ? page.url : (baseUrl + icon.url), // Use page URL or construct from icon data
+        description: page ? (page.description || `Open the ${page.title} page.`) : `Open ${icon.title}.`,
       };
-    }).filter(icon => icon.url !== '#'); // Filter out icons with no matching page
+    });
   }
 
   // Initialize desktop
@@ -166,49 +185,12 @@ class DesktopManager {
       if (!icon.classList.contains('dragging')) {
         // Use the openApp function from desktop.js if available
         if (window.openApp) {
-          // Map appId to the correct URL using siteBaseUrl
-          const baseUrl = window.siteBaseUrl || '';
-          const appUrls = {
-            // Main applications
-            'paint': baseUrl + '/paint/',
-            'sticky-notes': baseUrl + '/sticky-notes/',
-            
-            // Site pages
-            'nature': baseUrl + '/nature/',
-            'music': baseUrl + '/music/',
-            'portfolio': baseUrl + '/portfolio/',
-            'search': baseUrl + '/search/',
-            'chat': baseUrl + '/chat/',
-            'projects': baseUrl + '/projects/',
-            'howtodothat': baseUrl + '/howtodothat/',
-            'art': baseUrl + '/art/',
-            
-            // Games
-            'games': baseUrl + '/games/',
-            'snake': baseUrl + '/snake/',
-            'tetris': baseUrl + '/tetris/',
-            'pong': baseUrl + '/pong/',
-            'minecraft': baseUrl + '/minecraft/',
-            
-            // Desktop utilities
-            'windowsettings': baseUrl + '/window-demo/',
-            'desktopsettings': baseUrl + '/wallpaper-demo/',
-            
-            // Art pages
-            'digital': baseUrl + '/art/digital/',
-            'traditional': baseUrl + '/art/traditional/',
-            '3d': baseUrl + '/art/3d/',
-            
-            // Additional pages that might exist
-            'index': baseUrl + '/',
-            'desktop': baseUrl + '/desktop/'
-          };
-          
-          const appUrl = appUrls[iconData.id];
+          // Use the URL directly from iconData
+          const appUrl = iconData.url;
           if (appUrl) {
             window.openApp(iconData.id, appUrl, iconData.title);
           } else {
-            console.error('No URL mapping found for appId:', iconData.id);
+            console.error('No URL found for icon:', iconData.title);
           }
         } else if (window.windowManager) {
           window.windowManager.createWindow(iconData.url, iconData.title);
@@ -974,7 +956,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log('Initializing desktop manager...');
   try {
-    window.desktopManager = new DesktopManager();
+    window.desktopManager = new DesktopManager(window.jekyllPages || []);
     console.log('Desktop manager initialized successfully');
   } catch (error) {
     console.error('Error initializing desktop manager:', error);

@@ -14,7 +14,7 @@ icon: 🎨
   </header>
 
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-    <a href="/artpages/digital/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
+    <a href="/digital/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
       <div style="text-align: center; padding: 2rem;">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
         <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--theme-primary); font-weight: 600;">Digital Art</h2>
@@ -24,7 +24,7 @@ icon: 🎨
       </div>
     </a>
     
-    <a href="/artpages/traditional/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
+    <a href="/traditional/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
       <div style="text-align: center; padding: 2rem;">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🖌️</div>
         <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--theme-primary); font-weight: 600;">Traditional Art</h2>
@@ -34,7 +34,7 @@ icon: 🎨
       </div>
     </a>
     
-    <a href="/artpages/3d/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
+    <a href="/3d/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
       <div style="text-align: center; padding: 2rem;">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🎭</div>
         <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--theme-primary); font-weight: 600;">3D Modeling</h2>

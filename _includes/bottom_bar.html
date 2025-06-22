@@ -2,7 +2,7 @@
     <div class="bar-content">
         <div class="start-button-container">
             <div id="start-button" class="start-button glass-button" title="Start">
-                <span>★</span>
+                <span>⊞</span>
             </div>
         </div>
         <div class="divider"></div>
@@ -11,6 +11,12 @@
         </div>
         <div class="divider"></div>
         <div class="system-tray">
+            <div id="desktop-back-button" class="tray-icon glass-button" title="Exit Desktop View" onclick="window.viewManager.toggleView()">
+                <span>★</span>
+            </div>
+            <div id="theme-editor-button" class="tray-icon glass-button" title="Theme Settings" onclick="window.customThemeEditor.createThemeEditorWindow()">
+                <span>⚙️</span>
+            </div>
             <!-- System tray icons like volume, network, etc. can go here -->
             <div id="discord-status-widget-tray" class="tray-icon"></div>
         </div>

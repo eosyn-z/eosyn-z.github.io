@@ -62,10 +62,10 @@
 }
 
 #paint-canvas {
-    background-color: #ffffff;
+    background-color: var(--text-white);
     display: block;
     cursor: crosshair;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: var(--glass-shadow-light);
 }
 
 .paint-palette-area {
@@ -86,7 +86,7 @@
 #current-color {
     width: 32px;
     height: 32px;
-    background-color: black;
+    background-color: var(--text-primary);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -115,10 +115,26 @@
     border-color: var(--theme-accent);
 }
 
-/* Icons for tools - using placeholder colors for now */
-#pencil { background-color: #f44336; }
-#eraser { background-color: #9e9e9e; }
-#brush { background-color: #4caf50; }
-#line { background-color: #2196f3; }
-#rectangle { background-color: #ffc107; }
-/* TODO: Replace with proper icons that fit the glass theme */ 
+/* Icons for tools - using theme variables now */
+#pencil, #eraser, #brush, #line, #rectangle, #fill, #picker, #zoom, #airbrush, #text, #curve, #polygon, #ellipse, #rounded-rectangle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+#pencil::before { content: '✎'; }
+#eraser::before { content: '⚿'; }
+#brush::before { content: '🖌'; }
+#line::before { content: '╱'; }
+#rectangle::before { content: '□'; }
+#fill::before { content: '💧'; }
+#picker::before { content: '⌖'; }
+#zoom::before { content: '🔍'; }
+#airbrush::before { content: '💨'; }
+#text::before { content: 'T'; }
+#curve::before { content: '∿'; }
+#polygon::before { content: '⎔'; }
+#ellipse::before { content: '○'; }
+#rounded-rectangle::before { content: '▢'; } 

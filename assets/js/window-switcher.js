@@ -6,36 +6,19 @@ class WindowSwitcher {
     }
 
     init() {
-        this.createSwitcherButton();
-        this.createSwitcherPanel();
-        this.setupEventListeners();
-    }
-
-    createSwitcherButton() {
-        // Create the window switcher button
-        const button = document.createElement('button');
-        button.id = 'window-switcher-btn';
-        button.className = 'window-switcher-btn glass-button';
-        button.innerHTML = '🪟';
-        button.title = 'Window Switcher';
-
-        // Check for bar container and append button to it
-        const barContainer = document.getElementById('window-switcher-bar-container');
-        if (barContainer) {
-            // Append to the container regardless of visibility
-            barContainer.appendChild(button);
-        } else {
-            console.error('Window Switcher container not found in the bar.');
-            // Don't create the button if container doesn't exist
+        this.switcherButton = document.getElementById('window-switcher-button');
+        if (!this.switcherButton) {
+            console.error('Window Switcher button #window-switcher-button not found in the DOM.');
             return;
         }
 
-        // Click handler
-        button.addEventListener('click', () => {
+        this.createSwitcherPanel();
+        this.setupEventListeners();
+
+        // Click handler for the existing button
+        this.switcherButton.addEventListener('click', () => {
             this.toggleSwitcher();
         });
-
-        this.switcherButton = button;
     }
 
     createSwitcherPanel() {
@@ -103,6 +86,8 @@ class WindowSwitcher {
         // Close panel when clicking outside
         document.addEventListener('click', (e) => {
             if (this.isVisible && 
+                this.switcherPanel &&
+                this.switcherButton &&
                 !this.switcherPanel.contains(e.target) && 
                 !this.switcherButton.contains(e.target)) {
                 this.hideSwitcher();
@@ -134,6 +119,7 @@ class WindowSwitcher {
 
     showSwitcher() {
         this.updateWindowsList();
+        if (!this.switcherPanel) return;
         this.switcherPanel.style.display = 'block';
         this.isVisible = true;
         
@@ -148,18 +134,21 @@ class WindowSwitcher {
     }
 
     hideSwitcher() {
+        if (!this.switcherPanel) return;
         this.switcherPanel.style.transition = 'all 0.2s ease';
         this.switcherPanel.style.opacity = '0';
         this.switcherPanel.style.transform = 'translateY(-10px)';
         
         setTimeout(() => {
-            this.switcherPanel.style.display = 'none';
+            if (this.switcherPanel) {
+                this.switcherPanel.style.display = 'none';
+            }
             this.isVisible = false;
         }, 200);
     }
 
     updateWindowsList() {
-        if (!window.windowManager) return;
+        if (!window.windowManager || !this.windowsList) return;
 
         const windows = window.windowManager.windows.filter(w => !w.isMinimized);
         this.windowsList.innerHTML = '';
@@ -187,11 +176,9 @@ class WindowSwitcher {
                 border: 1px solid transparent;
             `;
 
-            // Get window title
             const titleElement = windowData.element.querySelector('.window-title');
             const title = titleElement ? titleElement.textContent : `Window ${index + 1}`;
 
-            // Get window icon (try to find an icon or use default)
             let icon = '🪟';
             const iconElement = windowData.element.querySelector('.window-icon');
             if (iconElement) {
@@ -204,7 +191,6 @@ class WindowSwitcher {
                 <button class="close-window-btn" style="background: none; border: none; color: var(--theme-text-muted); cursor: pointer; font-size: 0.9rem;">✕</button>
             `;
 
-            // Hover effects
             windowItem.addEventListener('mouseenter', () => {
                 windowItem.style.background = 'var(--glass-bg-medium)';
                 windowItem.style.borderColor = 'var(--glass-border-light)';
@@ -215,7 +201,6 @@ class WindowSwitcher {
                 windowItem.style.borderColor = 'transparent';
             });
 
-            // Click to focus window
             windowItem.addEventListener('click', (e) => {
                 if (!e.target.classList.contains('close-window-btn')) {
                     window.windowManager.focusWindow(windowData.id);
@@ -223,7 +208,6 @@ class WindowSwitcher {
                 }
             });
 
-            // Close window button
             const closeBtn = windowItem.querySelector('.close-window-btn');
             closeBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -235,7 +219,6 @@ class WindowSwitcher {
         });
     }
 
-    // Method to be called when windows are opened/closed
     refresh() {
         if (this.isVisible) {
             this.updateWindowsList();
@@ -243,23 +226,8 @@ class WindowSwitcher {
     }
 }
 
-// Global initialization
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('WindowSwitcher script loaded');
-    // Make sure the class is available globally
-    window.WindowSwitcher = WindowSwitcher;
-    
-    // Initialize if we're in desktop mode OR if we have the bottom bar available
-    const isDesktopMode = document.body.classList.contains('desktop-mode');
-    const hasBottomBar = document.getElementById('window-switcher-bar-container');
-    
-    if (isDesktopMode || hasBottomBar) {
-        console.log('Auto-initializing WindowSwitcher - Desktop mode:', isDesktopMode, 'Has bottom bar:', !!hasBottomBar);
-        // Small delay to ensure the bottom bar is rendered
-        setTimeout(() => {
-            if (!window.windowSwitcher) {
-                window.windowSwitcher = new WindowSwitcher();
-            }
-        }, 100);
+    if (document.body.classList.contains('desktop-mode')) {
+        window.windowSwitcher = new WindowSwitcher();
     }
 }); 

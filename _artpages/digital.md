@@ -1,7 +1,9 @@
 ---
-layout: default
+layout: art_gallery
 title: Digital Art
 permalink: /art/digital/
+description: "A gallery of my digital paintings, illustrations, and other creative works."
+art_category: digital
 ---
 
 <div class="main-content">

@@ -1200,146 +1200,34 @@ class WindowManager {
         });
     }
 
-    // Test method to verify window manager functionality
-    testWindowManager() {
-        console.log('🧪 Testing Window Manager...');
-        
-        // Test 1: Create a test window
-        console.log('✅ Creating test window...');
-        const testWindow = this.createWindow('test', 'Test Window', '<div style="padding: 1rem;"><h3>Test Window</h3><p>This is a test window to verify functionality.</p></div>');
-        
-        if (testWindow) {
-            console.log('✅ Test window created successfully');
-            
-            // Test 2: Verify window properties
-            console.log('✅ Window properties:', {
-                id: testWindow.id,
-                position: testWindow.position,
-                size: testWindow.size,
-                isMinimized: testWindow.isMinimized,
-                isMaximized: testWindow.isMaximized
-            });
-            
-            // Test 3: Verify DOM element
-            if (testWindow.element && testWindow.element.parentNode) {
-                console.log('✅ Window element properly attached to DOM');
-            } else {
-                console.error('❌ Window element not properly attached to DOM');
-            }
-            
-            // Test 4: Verify controls
-            const controls = testWindow.element.querySelectorAll('.window-control-btn');
-            console.log(`✅ Found ${controls.length} window controls`);
-            
-            // Test 5: Verify resize handle
-            const resizeHandle = testWindow.element.querySelector('.window-resize-handle');
-            if (resizeHandle) {
-                console.log('✅ Resize handle found');
-            } else {
-                console.error('❌ Resize handle not found');
-            }
-            
-            // Test 6: Verify draggable header
-            const header = testWindow.element.querySelector('.window-header');
-            if (header) {
-                console.log('✅ Draggable header found');
-            } else {
-                console.error('❌ Draggable header not found');
-            }
-            
-            return testWindow;
-        } else {
-            console.error('❌ Failed to create test window');
-            return null;
-        }
-    }
-
     executeScriptsInWindow(contentArea, base) {
-        // Find all script tags in the content area
-        const scripts = contentArea.querySelectorAll('script');
-        
-        scripts.forEach(script => {
-            // Create a new script element
-            const newScript = document.createElement('script');
-            
-            // Copy all attributes from the original script
-            Array.from(script.attributes).forEach(attr => {
-                newScript.setAttribute(attr.name, attr.value);
-            });
-            
-            // Copy the script content
-            newScript.textContent = script.textContent;
-            
-            // Replace the original script with the new one
-            script.parentNode.replaceChild(newScript, script);
-        });
-        
-        // Handle CSS links
-        const cssLinks = contentArea.querySelectorAll('link[rel="stylesheet"]');
-        cssLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && !href.startsWith('http')) {
-                // Convert relative URL to absolute
-                const absoluteUrl = new URL(href, base).href;
-                
-                // Check if CSS is already loaded
-                if (!document.querySelector(`link[href="${absoluteUrl}"]`)) {
-                    const newLink = document.createElement('link');
-                    newLink.rel = 'stylesheet';
-                    newLink.href = absoluteUrl;
-                    document.head.appendChild(newLink);
-                }
-            }
-        });
-        
-        // Also check for data-page-script attribute and load those scripts
-        const pageScriptElement = contentArea.querySelector('[data-page-script]');
-        if (pageScriptElement) {
-            const scriptName = pageScriptElement.getAttribute('data-page-script');
-            const scriptUrl = `${base.origin}${base.pathname.replace(/\/$/, '')}/assets/js/${scriptName}.js`;
-            
-            // Check if script is already loaded
-            if (!document.querySelector(`script[src="${scriptUrl}"]`)) {
-                const script = document.createElement('script');
-                script.src = scriptUrl;
-                script.onload = () => {
-                    console.log(`Loaded script: ${scriptName}`);
-                    // Trigger DOMContentLoaded event for the script
-                    const event = new Event('DOMContentLoaded');
-                    document.dispatchEvent(event);
-                };
-                script.onerror = () => {
-                    console.error(`Failed to load script: ${scriptUrl}`);
-                };
-                document.head.appendChild(script);
-            } else {
-                // Script already loaded, just trigger DOMContentLoaded
-                const event = new Event('DOMContentLoaded');
-                document.dispatchEvent(event);
-            }
-        }
-        
-        // Handle any inline scripts that might need to be executed
-        const inlineScripts = contentArea.querySelectorAll('script:not([src])');
-        inlineScripts.forEach(script => {
-            try {
-                // Execute inline script content
-                const scriptContent = script.textContent;
-                if (scriptContent.trim()) {
-                    eval(scriptContent);
-                }
-            } catch (error) {
-                console.error('Error executing inline script:', error);
-            }
-        });
-        
-        // Trigger a custom event to notify that content has been loaded
-        const contentLoadedEvent = new CustomEvent('windowContentLoaded', {
-            detail: { contentArea, base }
-        });
-        document.dispatchEvent(contentLoadedEvent);
+        // ... existing code ...
     }
 }
 
-// The global initialization was moved to desktop.md to prevent conflicts.
-// The test function is also initialized there. 
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if we are in desktop mode
+    if (document.body.classList.contains('desktop-mode')) {
+        // Initialize the window manager
+        if (!window.windowManager) {
+            window.windowManager = new WindowManager();
+            console.log('WindowManager initialized for desktop mode.');
+        }
+
+        // Initialize sticky notes if the container exists
+        if (document.querySelector('.sticky-notes-container')) {
+            window.windowManager.initializeStickyNotes();
+        }
+    }
+    
+    // Make a simplified sticky note creator available globally for buttons
+    // This is useful if you want a "create note" button outside the main desktop app
+    if (!window.createStickyNote) {
+        // Ensure WindowManager is initialized first if needed
+        if (!window.windowManager && !document.body.classList.contains('desktop-mode')) {
+            // A lightweight manager for non-desktop pages if needed
+            window.windowManager = new WindowManager();
+        }
+        window.createStickyNote = window.windowManager.createStickyNote.bind(window.windowManager);
+    }
+}); 

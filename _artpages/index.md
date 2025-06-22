@@ -12,8 +12,8 @@ permalink: /art/
     <p>Exploring creativity across different mediums and styles.</p>
   </header>
 
-  <div class="tile-grid" style="margin-bottom: 3rem;">
-    <a href="/art/digital/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+    <a href="/digital/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
       <div style="text-align: center; padding: 2rem;">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
         <h2>Digital Art</h2>
@@ -23,7 +23,7 @@ permalink: /art/
       </div>
     </a>
 
-    <a href="/art/traditional/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
+    <a href="/traditional/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
       <div style="text-align: center; padding: 2rem;">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🖌️</div>
         <h2>Traditional Art</h2>
@@ -33,7 +33,7 @@ permalink: /art/
       </div>
     </a>
 
-    <a href="/art/3d/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
+    <a href="/3d/" class="glass-card" style="text-decoration: none; display: block; transition: all 0.3s ease;">
       <div style="text-align: center; padding: 2rem;">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🎭</div>
         <h2>3D Modeling</h2>
