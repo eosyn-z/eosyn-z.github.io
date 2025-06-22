@@ -1,12 +1,15 @@
 [
   {%- assign all_docs = site.pages | concat: site.documents -%}
-  {%- assign all_docs_filtered = all_docs | where_exp: "item", "item.title and item.url != '/404.html'" -%}
-  {%- for p in all_docs_filtered -%}
-    {
-      "title": {{ p.title | jsonify }},
-      "url": {{ p.url | relative_url | jsonify }},
-      "icon": {{ p.icon | default: "📄" | jsonify }}
-    }
-    {%- unless forloop.last -%},{%- endunless -%}
+  {%- assign first = true -%}
+  {%- for p in all_docs -%}
+    {%- if p.title and p.url and p.url != '/404.html' -%}
+      {%- unless first -%},{%- endunless -%}
+      {
+        "title": {{ p.title | jsonify }},
+        "url": {{ p.url | relative_url | jsonify }},
+        "icon": {{ p.icon | default: "📄" | jsonify }}
+      }
+      {%- assign first = false -%}
+    {%- endif -%}
   {%- endfor -%}
 ] 
