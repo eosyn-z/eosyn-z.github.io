@@ -2,7 +2,7 @@
   <div class="bar-content">
     <div id="window-switcher-bar-container" style="display: flex; align-items: center; justify-content: center; margin-right: 8px;"></div>
     <div id="start-button" class="start-button glass-button">
-      <span>Start</span>
+      <span>★</span>
     </div>
     <div class="divider"></div>
     <div class="taskbar-programs">
@@ -46,6 +46,7 @@
   <div class="start-menu-item">
     <span>Utilities</span>
     <div class="submenu">
+      <div class="submenu-item" onclick="window.desktopManager.showDesktopSettings()">⚙️ Desktop Settings</div>
       {%- for page in site.pages -%}
         {%- if page.tags contains 'bookmark' -%}
         <div class="submenu-item" data-app-id="{{ page.name | remove: '.md' }}" data-app-title="{{ page.title }}">

@@ -188,7 +188,6 @@ class DesktopManager {
     this.setWallpaper(this.currentWallpaper);
     this.renderIcons();
     this.loadBookmarkedIcons(); // Load bookmarked sites as icons
-    this.createDesktopSettings();
   }
 
   // Set wallpaper
@@ -429,23 +428,6 @@ class DesktopManager {
         }
         break;
     }
-  }
-
-  // Create desktop settings interface
-  createDesktopSettings() {
-    const settingsBtn = document.createElement('button');
-    settingsBtn.className = 'desktop-settings-btn glass-button';
-    settingsBtn.innerHTML = '⚙️ Desktop Settings';
-    settingsBtn.style.position = 'fixed';
-    settingsBtn.style.top = '20px';
-    settingsBtn.style.right = '20px';
-    settingsBtn.style.zIndex = '1000';
-    
-    settingsBtn.addEventListener('click', () => {
-      this.showDesktopSettings();
-    });
-    
-    this.desktop.appendChild(settingsBtn);
   }
 
   // Show desktop settings

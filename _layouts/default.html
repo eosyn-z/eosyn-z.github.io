@@ -50,10 +50,7 @@
       {{ content }}
     </main>
 
-    <div id="desktop-toggle" class="glass-button">★</div>
-    <div id="taskbar" class="glass-panel">
-      <div id="taskbar-programs"></div>
-    </div>
+    {%- include bottom_bar.html -%}
 
     <div id="desktop-background"></div>
     <div id="window-container"></div>
@@ -71,7 +68,6 @@
     {%- endif -%}
     <script src="/assets/js/theme-switcher.js"></script>
     <script src="/assets/js/desktop.js"></script>
-    {%- include bottom_bar.html -%}
     {%- include theme-editor.html -%}
   </body>
 

@@ -15,9 +15,9 @@ class ViewManager {
         // Find the toggle button
         this.viewToggle = document.getElementById('view-toggle');
         
-        // Load saved view preference
-        this.loadViewPreference();
-        
+        // Force website mode on initial load
+        this.disableDesktopMode();
+
         // Add event listener to toggle button
         if (this.viewToggle) {
             this.viewToggle.addEventListener('click', () => this.toggleView());
@@ -36,26 +36,12 @@ class ViewManager {
             }, 500);
         }
         
-        // Apply initial view
-        console.log('Applying initial view, isDesktopMode:', this.isDesktopMode);
-        this.applyView();
         this.updateToggleButton();
-    }
-
-    loadViewPreference() {
-        const savedView = getCookie('view_mode');
-        this.isDesktopMode = savedView === 'desktop';
-    }
-
-    saveViewPreference() {
-        const viewMode = this.isDesktopMode ? 'desktop' : 'website';
-        setCookie('view_mode', viewMode, 3650); // Store for 10 years
     }
 
     toggleView() {
         console.log('Toggle view called! Current mode:', this.isDesktopMode ? 'desktop' : 'website');
         this.isDesktopMode = !this.isDesktopMode;
-        this.saveViewPreference();
         this.applyView();
         this.updateToggleButton();
         console.log('New mode:', this.isDesktopMode ? 'desktop' : 'website');
@@ -76,6 +62,12 @@ class ViewManager {
         console.log('enableDesktopMode: Adding desktop-mode class to body');
         // Add desktop mode class to body
         this.body.classList.add('desktop-mode');
+        
+        // Hide top nav bar
+        const topNav = document.querySelector('.top-nav');
+        if (topNav) {
+            topNav.style.display = 'none';
+        }
         
         // Show desktop elements
         const desktopElements = document.querySelectorAll('.desktop-only');
@@ -134,6 +126,12 @@ class ViewManager {
         console.log('disableDesktopMode: Removing desktop-mode class from body');
         // Remove desktop mode class from body
         this.body.classList.remove('desktop-mode');
+        
+        // Show top nav bar
+        const topNav = document.querySelector('.top-nav');
+        if (topNav) {
+            topNav.style.display = 'flex';
+        }
         
         // Hide desktop elements
         const desktopElements = document.querySelectorAll('.desktop-only');

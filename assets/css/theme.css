@@ -707,9 +707,7 @@ p {
 }
 
 .taskbar-item:hover {
-  background-color: var(--glass-bg-light);
-  transform: translateY(-2px);
-  box-shadow: var(--glass-shadow-medium);
+  background: var(--glass-bg-medium);
 }
 
 .taskbar-item.minimized {
@@ -723,8 +721,8 @@ p {
 }
 
 .taskbar-icon {
-  font-size: 20px;
-  line-height: 1;
+  width: 24px;
+  height: 24px;
 }
 
 .taskbar-title {
@@ -3612,3 +3610,37 @@ body.desktop-mode #desktop-toggle {
 #icon-paint { top: 40px; left: 40px; }
 #icon-nature { top: 40px; left: 140px; }
 #icon-games { top: 40px; left: 240px; }
+
+#start-button {
+    font-size: 1.5rem;
+    padding: 0 1rem;
+}
+
+#start-menu {
+    display: none;
+    position: fixed;
+    bottom: 50px;
+    left: 10px;
+    background: var(--glass-bg-heavy);
+    backdrop-filter: var(--glass-blur-heavy);
+    border: 1px solid var(--glass-border-light);
+    border-radius: 8px;
+    box-shadow: var(--glass-shadow-heavy);
+    z-index: 10001;
+    width: 200px;
+}
+
+.start-menu-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: var(--theme-text-primary);
+}
+
+.start-menu-item:hover {
+    background: var(--glass-bg-medium);
+}
+
+.taskbar-icon {
+  width: 24px;
+  height: 24px;
+}
