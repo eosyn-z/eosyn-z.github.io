@@ -1,0 +1,22 @@
+<div class="portfolio-grid">
+    {% assign all_items = site.portfolio | sort: 'date' | reverse %}
+    {% for item in all_items %}
+    <a href="{{ item.url | relative_url }}" class="portfolio-card glass-card">
+        {% if item.image %}
+        <div class="card-image" style="background-image: url('{{ item.image | relative_url }}');"></div>
+        {% else %}
+        <div class="card-image placeholder">
+            <span>{{ item.title | slice: 0 }}</span>
+        </div>
+        {% endif %}
+        <div class="card-content">
+            <h2 class="card-title">{{ item.title }}</h2>
+            <p class="card-date">{{ item.date | date: "%B %d, %Y" }}</p>
+            <p class="card-description">{{ item.description }}</p>
+            {% if item.category %}
+            <span class="card-category">{{ item.category }}</span>
+            {% endif %}
+        </div>
+    </a>
+    {% endfor %}
+</div> 

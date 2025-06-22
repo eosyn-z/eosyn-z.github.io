@@ -105,4 +105,118 @@ body[data-page="chat"] .main-content {
 
 .pin-button {
   flex-shrink: 0; /* Prevents the button from shrinking if tags wrap */
+}
+
+/*------------------------------------------------------------------
+  [12. Desktop Grid System]
+*/
+#desktop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    padding: 20px;
+    height: calc(100vh - 120px); /* Full height minus top/bottom bars */
+    width: 100%;
+    position: absolute;
+    top: 60px;
+}
+
+.desktop-icon {
+    position: absolute; /* Important for manual positioning */
+    width: 100px;
+    height: 100px;
+    transition: all 0.2s ease-in-out;
+}
+
+.icon-placeholder {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px dashed var(--glass-border-light);
+    border-radius: 8px;
+    width: 100px;
+    height: 100px;
+}
+
+.main-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/*------------------------------------------------------------------
+  [1. Global Styles & Variables]
+*/ 
+
+/*------------------------------------------------------------------
+  [13. Portfolio Grid]
+*/
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.portfolio-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--glass-shadow-heavy);
+}
+
+.card-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid var(--glass-border-light);
+}
+
+.card-image.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--glass-bg-medium);
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--theme-text-muted);
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--theme-text-primary);
+}
+
+.card-date {
+    font-size: 0.9rem;
+    color: var(--theme-text-secondary);
+    margin-bottom: 1rem;
+}
+
+.card-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--theme-text-secondary);
+}
+
+.card-category {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--theme-accent);
+    background-color: var(--glass-bg-light);
+    border: 1px solid var(--theme-accent);
+    border-radius: 1rem;
 } 

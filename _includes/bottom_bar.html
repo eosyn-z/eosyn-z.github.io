@@ -6,8 +6,8 @@
             </div>
         </div>
         <div class="divider"></div>
-        <div id="window-switcher-bar-container" class="taskbar-programs">
-            <!-- Active windows will be shown here -->
+        <div id="favorites-bar" class="taskbar-programs">
+            <!-- Favorited applications will be pinned here -->
         </div>
         <div class="divider"></div>
         <div class="system-tray">
@@ -46,27 +46,5 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Handle category switching in the start menu
-        const categoryButtons = document.querySelectorAll('.start-menu-category-button');
-        const lists = document.querySelectorAll('.start-menu-list');
-
-        categoryButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const category = button.dataset.category;
-                categoryButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                lists.forEach(list => {
-                    list.classList.toggle('active-list', list.classList.contains(category + '-list'));
-                });
-            });
-        });
-
-        // Populate the menu
-        if (window.startMenu && window.jekyllPages) {
-            window.startMenu.populateMenu(window.jekyllPages);
-        }
-    });
-</script> 
+// The following script is now redundant and will be removed.
+// Initialization is handled by desktop.js 

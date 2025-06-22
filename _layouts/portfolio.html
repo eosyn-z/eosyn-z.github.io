@@ -1,0 +1,24 @@
+---
+layout: default
+---
+
+<style>
+.card-category {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--theme-accent);
+    background-color: var(--glass-bg-light);
+    border: 1px solid var(--theme-accent);
+    border-radius: 1rem;
+}
+</style>
+
+<div class="page-container">
+    <h1 class="page-title">{{ page.title }}</h1>
+    <p class="page-description">{{ page.description }}</p>
+
+    {% include portfolio_grid.html %}
+</div> 

@@ -82,9 +82,31 @@ class StartMenu {
 
     addPageToList(page, listElement) {
         if (!listElement) return;
+
         const li = document.createElement('li');
-        li.innerHTML = `<span class="icon">${page.icon}</span> ${page.title}`;
-        li.addEventListener('click', () => {
+        li.className = 'start-menu-item';
+
+        const pageIcon = document.createElement('span');
+        pageIcon.className = 'icon';
+        pageIcon.innerHTML = page.icon || '📄';
+        
+        const pageTitle = document.createElement('span');
+        pageTitle.className = 'title';
+        pageTitle.textContent = page.title;
+
+        const favoriteToggle = document.createElement('span');
+        favoriteToggle.className = 'favorite-toggle';
+        favoriteToggle.innerHTML = window.favoritesManager.isFavorite(page.url) ? '★' : '☆'; // Filled/Empty star
+        favoriteToggle.title = 'Pin to taskbar';
+
+        li.appendChild(pageIcon);
+        li.appendChild(pageTitle);
+        li.appendChild(favoriteToggle);
+
+        li.addEventListener('click', (e) => {
+            // Don't launch if the favorite star was clicked
+            if (e.target === favoriteToggle) return;
+
             if (window.windowManager) {
                 window.windowManager.createWindow(page.url, page.title);
                 this.startMenu.classList.remove('active');
@@ -92,10 +114,18 @@ class StartMenu {
                 console.error('WindowManager not available.');
             }
         });
+
+        favoriteToggle.addEventListener('click', () => {
+            window.favoritesManager.toggleFavorite(page);
+            // Update the star's appearance immediately
+            favoriteToggle.innerHTML = window.favoritesManager.isFavorite(page.url) ? '★' : '☆';
+        });
+
         listElement.appendChild(li);
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    window.startMenu = new StartMenu();
-}); 
+// Initialization is now handled by desktop.js
+// document.addEventListener('DOMContentLoaded', () => {
+//     window.startMenu = new StartMenu();
+// }); 

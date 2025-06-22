@@ -735,6 +735,7 @@ class WindowManager {
         const windowData = {
             element: window,
             id: windowId,
+            pageUrl: fullPageUrl, // Store the URL for refreshing
             position: { x, y },
             size: { width: 600, height: 400 },
             isMinimized: false,
@@ -746,7 +747,11 @@ class WindowManager {
         this.setupWindowControlsForWindow(windowData);
         this.addResizeHandles(windowData);
         
-        // Bring window to front
+        // If it's a game, add a refresh button
+        if (contentArea.querySelector('[data-page-script]')) {
+            this.addRefreshButton(windowData);
+        }
+
         this.focusWindow(windowId);
         
         // Save window states
@@ -1034,6 +1039,7 @@ class WindowManager {
         const windowData = {
             element: windowElement,
             id: windowId,
+            pageUrl: fullPageUrl, // Store the URL for refreshing
             position: { x: 50, y: 50 }, // Use a default position
             size: { width: 600, height: 400 },
             isMinimized: false,
@@ -1201,7 +1207,105 @@ class WindowManager {
     }
 
     executeScriptsInWindow(contentArea, base) {
-        // ... existing code ...
+        // Handle external game scripts specified by a data attribute
+        const pageScriptElement = contentArea.querySelector('[data-page-script]');
+        if (pageScriptElement) {
+            const scriptName = pageScriptElement.dataset.pageScript;
+            if (scriptName) {
+                const script = document.createElement('script');
+                script.src = `${base || ''}/assets/js/games/${scriptName}.js`;
+                script.defer = true; // Ensure it runs after the DOM is ready
+                script.onload = () => console.log(`Loaded game script: ${scriptName}`);
+                script.onerror = () => console.error(`Failed to load game script: ${scriptName}`);
+                contentArea.appendChild(script);
+            }
+        }
+
+        // Handle any inline scripts
+        const inlineScripts = contentArea.querySelectorAll('script');
+        inlineScripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            newScript.textContent = oldScript.textContent;
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+    }
+
+    addRefreshButton(windowData) {
+        const controls = windowData.element.querySelector('.window-controls');
+        if (!controls) return;
+
+        const refreshBtn = document.createElement('button');
+        refreshBtn.innerHTML = '🔄';
+        refreshBtn.className = 'window-control-btn';
+        refreshBtn.title = 'Refresh';
+        
+        // Match existing button styles
+        const existingBtn = controls.querySelector('.window-control-btn');
+        if(existingBtn) {
+            refreshBtn.style.cssText = existingBtn.style.cssText;
+        }
+
+        refreshBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.refreshWindowContent(windowData.id);
+        });
+
+        // Add hover effects like other buttons
+        refreshBtn.addEventListener('mouseenter', () => {
+            refreshBtn.style.background = 'var(--theme-accent)';
+            refreshBtn.style.color = 'white';
+        });
+        refreshBtn.addEventListener('mouseleave', () => {
+            refreshBtn.style.background = 'var(--glass-bg-medium)';
+            refreshBtn.style.color = 'var(--theme-text)';
+        });
+
+        controls.insertBefore(refreshBtn, controls.firstChild);
+    }
+
+    async refreshWindowContent(windowId) {
+        const windowData = this.getWindow(windowId);
+        if (!windowData || !windowData.pageUrl) {
+            console.error("Cannot refresh window: data or URL missing.", windowData);
+            return;
+        }
+
+        const contentArea = windowData.element.querySelector('.window-content');
+        contentArea.innerHTML = '<div class="loader"></div>';
+
+        try {
+            const response = await fetch(windowData.pageUrl);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const mainContent = doc.querySelector('.main-content');
+
+            if (mainContent) {
+                const base = new URL(windowData.pageUrl, window.location.origin);
+                // Fix relative links and sources
+                mainContent.querySelectorAll('[href]').forEach(el => {
+                    const href = el.getAttribute('href');
+                    if (href && !href.startsWith('http') && !href.startsWith('#')) {
+                        el.href = new URL(href, base).href;
+                    }
+                });
+                mainContent.querySelectorAll('[src]').forEach(el => {
+                    const src = el.getAttribute('src');
+                    if (src && !src.startsWith('http')) {
+                        el.src = new URL(src, base).href;
+                    }
+                });
+                contentArea.innerHTML = mainContent.innerHTML;
+                this.executeScriptsInWindow(contentArea);
+            } else {
+                throw new Error("'.main-content' not found in fetched HTML.");
+            }
+        } catch (error) {
+            console.error(`Failed to refresh content for window "${windowId}":`, error);
+            contentArea.innerHTML = `<div class="error"><p>Could not reload content.</p></div>`;
+        }
     }
 }
 

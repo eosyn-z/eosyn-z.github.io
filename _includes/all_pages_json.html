@@ -2,7 +2,7 @@
   {%- assign all_docs = site.pages | concat: site.documents -%}
   {%- assign first = true -%}
   {%- for p in all_docs -%}
-    {%- if p.title and p.url and p.url != '/404.html' -%}
+    {%- if p.title and p.url and p.url != '/404.html' and p.url != '/desktop/' and p.url != '/404' and p.url != '/' and p.url != '/index.html' -%}
       {%- unless first -%},{%- endunless -%}
       {
         "title": {{ p.title | jsonify }},

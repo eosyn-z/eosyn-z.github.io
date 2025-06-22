@@ -24,12 +24,40 @@ collections:
     output: true
   projects:
     output: true
+  portfolio:
+    output: true
 
 defaults:
   - scope:
       path: ""
+      type: "pages"
     values:
       permalink: /:name/
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      permalink: /:title/
+  - scope:
+      path: "_sitepages"
+    values:
+      permalink: /:name/
+  - scope:
+      path: "_games"
+    values:
+      permalink: /:name/
+  - scope:
+      path: "_artpages"
+    values:
+      permalink: /:name/
+  - scope:
+      path: "_projects"
+    values:
+      permalink: /:name/
+  - scope:
+      path: "_portfolio"
+    values:
+      permalink: /portfolio/:title/
 
 # Jekyll-seo-tag settings
 # ... existing code ...
