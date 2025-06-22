@@ -241,11 +241,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.favoritesManager = new FavoritesManager();
     window.startMenu = new StartMenu();
     window.windowSwitcher = new WindowSwitcher();
-    window.desktopManager = new DesktopManager();
     
     // Initialize managers that need it
     window.favoritesManager.init();
-    window.desktopManager.init();
+
+    // -- Desktop-specific initialization --
+    // Only initialize the DesktopManager if the grid exists on the current page
+    const desktopGrid = document.getElementById('desktop-grid');
+    if (desktopGrid) {
+        window.desktopManager = new DesktopManager();
+        window.desktopManager.init();
+    }
 
     // Populate the Start Menu once all managers are ready
     if (window.jekyllPages && window.jekyllPages.length > 0) {
@@ -262,6 +268,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+class ViewManager {
+    constructor() {
+        this.toggleButton = document.getElementById('view-toggle');
+        this.body = document.body;
+        this.init();
+    }
+
+    init() {
+        if (!this.toggleButton) return;
+        this.toggleButton.addEventListener('click', () => this.toggleView());
+    }
+
+    toggleView() {
+        this.body.classList.toggle('desktop-mode');
+    }
+}
+
 class DesktopManager {
     constructor() {
         this.grid = document.getElementById('desktop-grid');
@@ -270,7 +293,7 @@ class DesktopManager {
             return;
         }
         this.icons = Array.from(this.grid.children);
-        this.gridCellSize = { width: 110, height: 110 }; // Based on CSS: 100px icon + 10px gap
+        this.gridCellSize = { width: 110, height: 110 };
         this.iconPositions = this.loadIconPositions();
     }
 
@@ -285,7 +308,6 @@ class DesktopManager {
             const positions = localStorage.getItem('desktopIconPositions');
             return positions ? JSON.parse(positions) : {};
         } catch (e) {
-            console.error("Error loading icon positions:", e);
             return {};
         }
     }
@@ -296,8 +318,6 @@ class DesktopManager {
 
     layoutIcons() {
         const occupiedSlots = new Set();
-
-        // First, layout saved icons and record their positions
         this.icons.forEach(icon => {
             const savedPosition = this.iconPositions[icon.id];
             if (savedPosition) {
@@ -307,7 +327,6 @@ class DesktopManager {
             }
         });
 
-        // Then, layout new icons in the first available slots
         this.icons.forEach(icon => {
             if (!this.iconPositions[icon.id]) {
                 const { gridX, gridY } = this.findNextAvailableSlot(occupiedSlots);
@@ -317,14 +336,12 @@ class DesktopManager {
                 occupiedSlots.add(`${gridX},${gridY}`);
             }
         });
-
         this.saveIconPositions();
     }
 
     findNextAvailableSlot(occupiedSlots) {
         const maxCols = Math.floor(this.grid.clientWidth / this.gridCellSize.width);
         const maxRows = Math.floor(this.grid.clientHeight / this.gridCellSize.height);
-
         for (let r = 0; r < maxRows; r++) {
             for (let c = 0; c < maxCols; c++) {
                 if (!occupiedSlots.has(`${c},${r}`)) {
@@ -332,7 +349,7 @@ class DesktopManager {
                 }
             }
         }
-        return { gridX: 0, gridY: 0 }; // Fallback
+        return { gridX: 0, gridY: 0 };
     }
 
     makeDraggable(icon) {
@@ -353,10 +370,8 @@ class DesktopManager {
             const gridRect = this.grid.getBoundingClientRect();
             let x = e.clientX - gridRect.left - offsetX;
             let y = e.clientY - gridRect.top - offsetY;
-
             x = Math.max(0, Math.min(x, gridRect.width - icon.offsetWidth));
             y = Math.max(0, Math.min(y, gridRect.height - icon.offsetHeight));
-
             icon.style.left = `${x}px`;
             icon.style.top = `${y}px`;
         });
@@ -365,13 +380,10 @@ class DesktopManager {
             if (!isDragging) return;
             isDragging = false;
             icon.style.zIndex = 'auto';
-
             const gridX = Math.round(parseFloat(icon.style.left) / this.gridCellSize.width);
             const gridY = Math.round(parseFloat(icon.style.top) / this.gridCellSize.height);
-
             icon.style.left = `${gridX * this.gridCellSize.width}px`;
             icon.style.top = `${gridY * this.gridCellSize.height}px`;
-
             this.iconPositions[icon.id] = { gridX, gridY };
             this.saveIconPositions();
         });

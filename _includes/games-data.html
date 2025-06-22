@@ -1,0 +1,12 @@
+[
+  {% for game in site.games %}
+  {
+    "id": "{{ game.name | remove: '.md' }}",
+    "title": "{{ game.title }}",
+    "icon": "{{ game.icon }}",
+    "description": "{{ game.description | default: 'A classic game to enjoy!' }}",
+    "permalink": "{{ game.permalink }}",
+    "layout": "{{ game.layout }}"
+  }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+] 
