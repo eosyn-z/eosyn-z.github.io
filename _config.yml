@@ -16,18 +16,20 @@ theme: null
 collections:
   sitepages:
     output: true
-    permalink: /:name/
   desktop:
     output: true
-    permalink: /:name/
   games:
     output: true
-    permalink: /:name/
   artpages:
     output: true
-    permalink: /art/:name/
   projects:
     output: true
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      permalink: /:name/
 
 # Jekyll-seo-tag settings
 # ... existing code ...
