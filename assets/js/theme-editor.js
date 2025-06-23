@@ -51,26 +51,46 @@ class CustomThemeEditor {
     }
 
     createThemeEditorWindow() {
-        const windowId = 'system-settings-theme-editor';
-
-        // Prevent creating multiple editor windows
-        if (document.getElementById(windowId)) {
-            window.windowManager.focusWindow(windowId);
-            return;
+        // Only one tray open at a time: close sticky notes tray if open
+        const stickyTray = document.querySelector('.sticky-notes-tray');
+        if (stickyTray && stickyTray.classList.contains('visible')) {
+            stickyTray.classList.remove('visible');
+            setTimeout(() => {
+                stickyTray.style.display = 'none';
+            }, 300);
         }
 
-        // Use the window manager to create the window
-        this.editorWindow = window.windowManager.createWindow(
-            windowId,
-            '🎨 Theme Editor',
-            '', // No content URL needed, we build it dynamically
-            '450px', // Width
-            '550px'  // Height
-        );
-        
-        this.editorWindow.querySelector('.window-content').innerHTML = this.getEditorContent();
+        // Show the theme editor tray as a side panel
+        let tray = document.getElementById('theme-editor-tray');
+        if (!tray) {
+            // If not present, create from template
+            const trayHtml = `<div id="theme-editor-tray" class="theme-editor-tray">
+                <div class="tray-header">
+                    <h2 style="margin: 0; color: var(--theme-text);">🎨 Theme Editor</h2>
+                    <button class="tray-close-btn" onclick="window.customThemeEditor.closeThemeEditorTray()">✕</button>
+                </div>
+                <div class="tray-content"></div>
+            </div>`;
+            const temp = document.createElement('div');
+            temp.innerHTML = trayHtml;
+            tray = temp.firstElementChild;
+            document.body.appendChild(tray);
+        }
+        tray.querySelector('.tray-content').innerHTML = this.getEditorContent();
+        tray.style.display = 'flex';
+        setTimeout(() => tray.classList.add('active'), 10);
         this.addEditorEventListeners();
         this.loadAndApplyCustomTheme();
+    }
+
+    closeThemeEditorTray() {
+        const tray = document.getElementById('theme-editor-tray');
+        if (tray) {
+            tray.classList.remove('active');
+            setTimeout(() => {
+                tray.style.display = 'none';
+            }, 300);
+        }
     }
     
     getEditorContent() {

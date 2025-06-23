@@ -174,18 +174,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to set the theme with advanced transitions
     const setTheme = async (theme, saveToCookie = false) => {
-        // Don't set theme if already initialized and this is a user click
-        if (themeInitialized && !isInitialLoad && !saveToCookie) {
-            return;
-        }
-        
         const oldTheme = body.getAttribute('data-theme') || 'c';
-        
-        // Execute transition if not initial load
-        if (!isInitialLoad && oldTheme !== theme) {
+        // Always allow theme switching
+        if (oldTheme !== theme) {
             await ThemeTransition.execute(oldTheme, theme);
         }
-        
         body.setAttribute('data-theme', theme);
         themeButtons.forEach(btn => {
             btn.classList.remove('active');
@@ -193,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.classList.add('active');
             }
         });
-
         // Image switching logic with fade transition
         if (themeImages.length > 0) {
             let imageToShow = 'c'; // Default to starfield
@@ -202,7 +194,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (['c', 'z', 'r'].includes(theme)) {
                 imageToShow = 'c';
             }
-
             themeImages.forEach(img => {
                 if (img.getAttribute('data-theme-image') === imageToShow) {
                     img.style.opacity = '0';
@@ -218,13 +209,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
-
         // Save theme to cookie only if explicitly requested
         if (saveToCookie && getCookie('cookie_consent') === 'accepted') {
             setCookie('theme', theme, 3650); // Store for 10 years
         }
-        
-        // Mark theme as initialized
         themeInitialized = true;
     };
 
@@ -285,21 +273,13 @@ document.addEventListener('DOMContentLoaded', function() {
     themeButtons.forEach(button => {
         button.addEventListener('click', async () => {
             const theme = button.getAttribute('data-theme');
-            
-            // Special handling for custom theme
             if (theme === 'custom') {
-                // Switch to custom theme first
-                await setTheme(theme, isInitialLoad);
-                isInitialLoad = false;
-                
-                // Then open the theme editor
+                await setTheme(theme, true);
                 if (window.customThemeEditor) {
                     window.customThemeEditor.createThemeEditorWindow();
                 }
             } else {
-                // Only save to cookie on initial load, not on user clicks
-                await setTheme(theme, isInitialLoad);
-                isInitialLoad = false;
+                await setTheme(theme, true);
             }
         });
     });

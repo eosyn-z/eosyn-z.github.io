@@ -182,15 +182,93 @@ function populateTpotSites() {
     return;
   }
 
-  // Create carousel of buttons - duplicate the list to create seamless loop
-  const duplicatedSites = [...tpotSites, ...tpotSites];
-  
-  tpotSitesCarousel.innerHTML = duplicatedSites.map(site => `
-    <a href="${site.url}" target="_blank" class="tpot-site-btn">
+  // Create carousel with single set of sites (no duplication needed for step carousel)
+  tpotSitesCarousel.innerHTML = tpotSites.map((site, index) => `
+    <a href="${site.url}" target="_blank" class="tpot-site-btn ${index === 0 ? 'active' : ''}" data-index="${index}">
       <span class="tpot-site-title">${site.title}</span>
       <span class="tpot-site-desc">${site.description}</span>
     </a>
   `).join('');
+
+  // Initialize step carousel
+  initStepCarousel(tpotSites.length);
+}
+
+function initStepCarousel(totalSites) {
+  const carousel = document.getElementById('tpotSitesCarousel');
+  const buttons = carousel.querySelectorAll('.tpot-site-btn');
+  let currentIndex = 0;
+  const displayTime = 4000; // 4 seconds per site for comfortable reading
+  
+  function showNextSite() {
+    // Remove active class from current button
+    buttons[currentIndex].classList.remove('active');
+    
+    // Move to next site
+    currentIndex = (currentIndex + 1) % totalSites;
+    
+    // Add active class to new button
+    buttons[currentIndex].classList.add('active');
+    
+    // Scroll to center the active button
+    const activeButton = buttons[currentIndex];
+    const containerWidth = carousel.offsetWidth;
+    const buttonWidth = activeButton.offsetWidth;
+    const buttonLeft = activeButton.offsetLeft;
+    const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
+    
+    carousel.scrollTo({
+      left: scrollLeft,
+      behavior: 'smooth'
+    });
+  }
+  
+  // Start the carousel
+  const interval = setInterval(showNextSite, displayTime);
+  
+  // Pause on hover
+  carousel.addEventListener('mouseenter', () => {
+    clearInterval(interval);
+  });
+  
+  // Resume on mouse leave
+  carousel.addEventListener('mouseleave', () => {
+    clearInterval(interval);
+    setInterval(showNextSite, displayTime);
+  });
+  
+  // Manual navigation with arrow keys
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      currentIndex = (currentIndex - 1 + totalSites) % totalSites;
+      buttons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === currentIndex);
+      });
+      const activeButton = buttons[currentIndex];
+      const containerWidth = carousel.offsetWidth;
+      const buttonWidth = activeButton.offsetWidth;
+      const buttonLeft = activeButton.offsetLeft;
+      const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
+      carousel.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
+    } else if (e.key === 'ArrowRight') {
+      currentIndex = (currentIndex + 1) % totalSites;
+      buttons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === currentIndex);
+      });
+      const activeButton = buttons[currentIndex];
+      const containerWidth = carousel.offsetWidth;
+      const buttonWidth = activeButton.offsetWidth;
+      const buttonLeft = activeButton.offsetLeft;
+      const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
+      carousel.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  });
 }
 </script>
 
@@ -210,21 +288,15 @@ function populateTpotSites() {
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  animation: scrollCarousel 60s linear infinite;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
   white-space: nowrap;
 }
 
-.tpot-sites-carousel:hover {
-  animation-play-state: paused;
-}
-
-@keyframes scrollCarousel {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+.tpot-sites-carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .tpot-site-btn {
@@ -237,18 +309,29 @@ function populateTpotSites() {
   border-radius: var(--glass-border-radius);
   text-decoration: none;
   color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
   backdrop-filter: var(--glass-blur-medium);
   box-shadow: var(--glass-shadow-light);
   white-space: nowrap;
   flex-shrink: 0;
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+.tpot-site-btn.active {
+  opacity: 1;
+  transform: scale(1);
+  background: var(--glass-bg-heavy);
+  border-color: var(--theme-accent);
+  box-shadow: var(--glass-shadow-medium);
 }
 
 .tpot-site-btn:hover {
   background: var(--glass-bg-heavy);
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: var(--glass-shadow-medium);
   border-color: var(--theme-accent);
+  opacity: 1;
 }
 
 .tpot-site-title {
@@ -256,6 +339,12 @@ function populateTpotSites() {
   font-size: 1rem;
   margin-bottom: 0.5rem;
   color: var(--theme-accent);
+  transition: color 0.3s ease;
+}
+
+.tpot-site-btn.active .tpot-site-title {
+  color: var(--theme-accent);
+  text-shadow: 0 0 10px rgba(var(--theme-accent-rgb, 99, 102, 241), 0.3);
 }
 
 .tpot-site-desc {
@@ -268,14 +357,27 @@ function populateTpotSites() {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  transition: color 0.3s ease;
+}
+
+.tpot-site-btn.active .tpot-site-desc {
+  color: var(--text-primary);
+}
+
+/* Carousel navigation indicators */
+.tpot-carousel-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  pointer-events: none;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .tpot-sites-carousel {
-    animation-duration: 40s;
-  }
-  
   .tpot-site-btn {
     min-width: 160px;
     padding: 0.75rem;
@@ -287,6 +389,15 @@ function populateTpotSites() {
   
   .tpot-site-desc {
     font-size: 0.8rem;
+  }
+  
+  /* Adjust display time for mobile */
+  .tpot-sites-carousel {
+    scroll-snap-type: x mandatory;
+  }
+  
+  .tpot-site-btn {
+    scroll-snap-align: center;
   }
 }
 </style>

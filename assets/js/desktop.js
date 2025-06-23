@@ -369,6 +369,92 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.startMenu) {
         window.startMenu.populate();
     }
+
+    // Global function to open settings window
+    window.openSettingsWindow = function() {
+        if (window.windowManager) {
+            window.windowManager.createWindow('settings', '⚙️ Settings', `
+                <div style="padding: 1.5rem; height: 100%; overflow-y: auto; color: var(--theme-text);">
+                    <h2 style="margin-top: 0; margin-bottom: 1.5rem;">⚙️ Desktop Settings</h2>
+                    
+                    <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
+                        <div class="glass-card" style="padding: 1.5rem; background: var(--glass-bg-light); border-radius: 12px;">
+                            <h3 style="margin-top: 0; margin-bottom: 1rem;">🎨 Theme & Appearance</h3>
+                            <p style="margin-bottom: 1rem; color: var(--theme-text-secondary);">
+                                Customize your desktop theme and appearance settings.
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap;">
+                                <button class="glass-button" onclick="window.customThemeEditor.createThemeEditorWindow()">
+                                    Open Theme Editor
+                                </button>
+                                <button class="glass-button" onclick="window.customThemeEditor.closeThemeEditorTray()">
+                                    Close Theme Editor
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-card" style="padding: 1.5rem; background: var(--glass-bg-light); border-radius: 12px;">
+                            <h3 style="margin-top: 0; margin-bottom: 1rem;">📝 Sticky Notes</h3>
+                            <p style="margin-bottom: 1rem; color: var(--theme-text-secondary);">
+                                Create and manage sticky notes on your desktop.
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap; margin-bottom: 1rem;">
+                                <button class="glass-button" onclick="window.windowManager.createWindow('sticky-notes', '📝 Sticky Notes', window.windowManager.createStickyNotesContent())">
+                                    Open Sticky Notes
+                                </button>
+                                <button class="glass-button" onclick="window.stickyNotesTray && window.stickyNotesTray.hide()">
+                                    Close Sticky Notes Tray
+                                </button>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                    <input type="checkbox" id="sticky-notes-global-toggle" style="width: 16px; height: 16px;">
+                                    <span>Sticky notes visible over main page by default</span>
+                                </label>
+                            </div>
+                            <script>
+                                // Initialize the toggle
+                                const toggle = document.getElementById('sticky-notes-global-toggle');
+                                if (toggle) {
+                                    // Set initial state
+                                    toggle.checked = window.windowManager ? window.windowManager.shouldStickyNoteBeGloballyVisible() : true;
+                                    
+                                    // Add change listener
+                                    toggle.addEventListener('change', function() {
+                                        if (window.windowManager) {
+                                            window.windowManager.setStickyNotesGlobalVisible(this.checked);
+                                        }
+                                    });
+                                }
+                            </script>
+                        </div>
+                        
+                        <div class="glass-card" style="padding: 1.5rem; background: var(--glass-bg-light); border-radius: 12px;">
+                            <h3 style="margin-top: 0; margin-bottom: 1rem;">🖥️ Desktop Options</h3>
+                            <p style="margin-bottom: 1rem; color: var(--theme-text-secondary);">
+                                Manage desktop icons and layout.
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button class="glass-button" onclick="window.windowManager.createWindow('desktop-settings', 'Desktop Settings', 'Desktop settings content here...')">
+                                    Desktop Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: var(--glass-bg-medium); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <h4 style="margin-top: 0;">💡 Quick Tips</h4>
+                        <ul style="margin: 0; padding-left: 1.5rem; color: var(--theme-text-secondary);">
+                            <li>Use the theme buttons in the header for quick theme switching</li>
+                            <li>Click the "+" button in the header to quickly create sticky notes</li>
+                            <li>Right-click on the desktop for additional options</li>
+                            <li>Use the start menu (⊞) to access all applications</li>
+                        </ul>
+                    </div>
+                </div>
+            `);
+        }
+    };
 });
 
 class ViewManager {

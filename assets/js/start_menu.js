@@ -75,6 +75,10 @@ class StartMenu {
             if (list) list.innerHTML = '';
         });
 
+        // --- Add Built-in Utilities ---
+        this.addBuiltInUtility('🎨 Theme Editor', 'theme-editor', lists.utilities);
+        this.addBuiltInUtility('📝 Sticky Notes', 'sticky-notes', lists.utilities);
+
         // --- Categorize and Populate ---
 
         // 1. Populate Games
@@ -161,6 +165,76 @@ class StartMenu {
             } else {
                 console.error('WindowManager not available.');
             }
+        });
+
+        listElement.appendChild(li);
+    }
+
+    addBuiltInUtility(title, type, listElement) {
+        if (!listElement) return;
+
+        const li = document.createElement('li');
+        li.className = 'start-menu-item';
+
+        const pageIcon = document.createElement('span');
+        pageIcon.className = 'icon';
+        pageIcon.innerHTML = title.split(' ')[0]; // Get the emoji
+        
+        const pageTitle = document.createElement('span');
+        pageTitle.className = 'title';
+        pageTitle.textContent = title;
+
+        li.appendChild(pageIcon);
+        li.appendChild(pageTitle);
+
+        li.addEventListener('click', (e) => {
+            if (e.target.classList.contains('favorite-toggle')) return;
+
+            if (type === 'theme-editor') {
+                // Open theme editor as a window
+                if (window.windowManager) {
+                    window.windowManager.createWindow('theme-editor', '🎨 Theme Editor', `
+                        <div style="padding: 1rem; height: 100%; overflow-y: auto; color: var(--theme-text);">
+                            <h2 style="margin-top: 0;">🎨 Theme Editor</h2>
+                            <p>Customize your theme colors and settings.</p>
+                            <div style="margin: 2rem 0;">
+                                <button class="glass-button" onclick="window.customThemeEditor.createThemeEditorWindow()" style="margin-right: 1rem;">
+                                    Open Theme Editor
+                                </button>
+                                <button class="glass-button" onclick="window.customThemeEditor.closeThemeEditorTray()">
+                                    Close Theme Editor
+                                </button>
+                            </div>
+                            <div style="background: var(--glass-bg-light); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                                <h3>Quick Theme Buttons</h3>
+                                <p>Use the theme buttons in the header to quickly switch between themes:</p>
+                                <ul>
+                                    <li><strong>C</strong> - Cosmic</li>
+                                    <li><strong>A</strong> - Aurora</li>
+                                    <li><strong>R</strong> - Rainbow</li>
+                                    <li><strong>Z</strong> - Zenith</li>
+                                    <li><strong>E</strong> - Eclipse</li>
+                                    <li><strong>N</strong> - Nebula</li>
+                                    <li><strong>🎨</strong> - Custom Theme Editor</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `);
+                }
+            } else if (type === 'sticky-notes') {
+                // Open sticky notes as a window
+                if (window.windowManager) {
+                    window.windowManager.createWindow('sticky-notes', '📝 Sticky Notes', window.windowManager.createStickyNotesContent());
+                    // Initialize sticky notes in the window
+                    setTimeout(() => {
+                        if (window.windowManager && typeof window.windowManager.initializeStickyNotes === 'function') {
+                            window.windowManager.initializeStickyNotes();
+                        }
+                    }, 100);
+                }
+            }
+            
+            this.toggleMenu(false);
         });
 
         listElement.appendChild(li);

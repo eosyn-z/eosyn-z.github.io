@@ -1029,15 +1029,37 @@ class WindowManager {
         const newNote = document.createElement('div');
         newNote.className = 'sticky-note';
         newNote.dataset.noteId = noteId;
-        newNote.style.cssText = `
-            position: absolute;
-            top: ${Math.random() * 100 + 50}px;
-            left: ${Math.random() * 150 + 50}px;
-            transform: rotate(${(Math.random() - 0.5) * 4}deg);
-            width: 300px;
-            height: 250px;
-            pointer-events: auto;
-        `;
+        
+        // Check if this note should be globally visible (created from header tray)
+        const isGlobalVisible = this.shouldStickyNoteBeGloballyVisible();
+        if (isGlobalVisible) {
+            newNote.dataset.globalVisible = 'true';
+            // Position the note so it's visible on the main page, not just in the window
+            newNote.style.cssText = `
+                position: fixed;
+                top: ${Math.random() * 100 + 100}px;
+                left: ${Math.random() * 150 + 100}px;
+                transform: rotate(${(Math.random() - 0.5) * 4}deg);
+                width: 300px;
+                height: 250px;
+                pointer-events: auto;
+                z-index: 1000;
+            `;
+            // Add to body instead of container for global visibility
+            document.body.appendChild(newNote);
+        } else {
+            // Normal positioning within the sticky notes container
+            newNote.style.cssText = `
+                position: absolute;
+                top: ${Math.random() * 100 + 50}px;
+                left: ${Math.random() * 150 + 50}px;
+                transform: rotate(${(Math.random() - 0.5) * 4}deg);
+                width: 300px;
+                height: 250px;
+                pointer-events: auto;
+            `;
+            stickyNotesContainer.appendChild(newNote);
+        }
         
         newNote.innerHTML = `
             <div class="note-header">
@@ -1058,8 +1080,6 @@ class WindowManager {
         this.makeStickyNoteResizable(newNote);
         this.setupStickyNoteControls(newNote);
         
-        stickyNotesContainer.appendChild(newNote);
-        
         // Setup checkboxes if content contains task lists
         if (content.includes('- [') || content.includes('- [x]')) {
             this.setupTaskCheckboxes(newNote);
@@ -1072,6 +1092,22 @@ class WindowManager {
         this.updateStickyNotesCounter();
         
         return newNote;
+    }
+
+    // Check if sticky notes should be globally visible by default
+    shouldStickyNoteBeGloballyVisible() {
+        // Check if there's a setting for this
+        const setting = localStorage.getItem('stickyNotesGlobalVisible');
+        if (setting !== null) {
+            return setting === 'true';
+        }
+        // Default to true for notes created from the header tray
+        return true;
+    }
+
+    // Set the global visibility setting for sticky notes
+    setStickyNotesGlobalVisible(enabled) {
+        localStorage.setItem('stickyNotesGlobalVisible', enabled.toString());
     }
 
     // Update sticky notes counter

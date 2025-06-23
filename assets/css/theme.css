@@ -53,6 +53,19 @@ html {
   transition: opacity 0.4s ease;
 }
 
+/* ===== RESPONSIVE PADDING UTILITY ===== */
+.responsive-padding {
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.responsive-padding-sm {
+  padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+.responsive-padding-lg {
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
 /* --- Core Delicious Button Style --- */
 .btn-delicious {
   padding: 12px 24px;
@@ -136,6 +149,35 @@ html {
     box-shadow: 0 0 0 3px var(--theme-accent);
 }
 
+.theme-btn.sticky-note-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--theme-accent), var(--theme-accent-dark));
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 2px solid var(--theme-accent);
+  margin-left: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 0;
+  padding: 0;
+}
+.theme-btn.sticky-note-btn:hover {
+  background: linear-gradient(135deg, var(--theme-accent-light, #8b5cf6), var(--theme-accent));
+  color: #fff;
+  transform: scale(1.1);
+  border-color: var(--theme-accent-light, #8b5cf6);
+}
+.theme-btn.sticky-note-btn:active {
+  transform: scale(0.97);
+}
+
 /* ===== DEFAULT GLASS CONTAINERS ===== */
 /* Easy-to-use glass container classes */
 
@@ -148,6 +190,7 @@ html {
   border-radius: 15px;
   box-shadow: var(--glass-shadow-medium);
   transition: all 0.3s ease;
+  padding: clamp(1rem, 3vw, 2rem);
 }
 
 /* Glass Button */
@@ -157,7 +200,7 @@ html {
   backdrop-filter: var(--glass-blur-medium);
   border: 1px solid var(--glass-border-light);
   border-radius: 25px;
-  padding: 0.5em 1em;
+  padding: clamp(0.5em, 2vw, 1em) clamp(1em, 3vw, 1.5em);
   color: var(--theme-text);
   font-weight: 500;
   cursor: pointer;
@@ -165,48 +208,39 @@ html {
   text-decoration: none;
   display: inline-block;
   box-shadow: var(--glass-shadow-light);
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   min-width: 0;
   width: auto;
   max-width: 100%;
 }
 
-@media (max-width: 600px) {
-  .glass-button {
-    padding: 0.4em 0.7em;
-    font-size: 0.98rem;
-  }
-}
-
 .glass-button:hover {
-  background-color: var(--glass-bg-dark);
+  background-color: var(--glass-bg-heavy);
   background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
   transform: translateY(-2px);
-  box-shadow: var(--glass-shadow-medium), 0 0 15px var(--theme-accent);
-  border-color: var(--theme-accent);
+  box-shadow: var(--glass-shadow-medium);
 }
 
 .glass-button.active {
-    background: var(--theme-accent);
-    color: white;
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-    border-color: var(--theme-accent-dark);
+  background-color: var(--theme-accent);
+  color: white;
+  box-shadow: 0 0 0 3px var(--theme-accent);
 }
 
 /* Glass Card */
 .glass-card {
-  background-color: var(--glass-bg-light);
+  background-color: var(--glass-bg-medium);
   background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
-  backdrop-filter: var(--glass-blur-light);
+  backdrop-filter: var(--glass-blur-medium);
   border: 1px solid var(--glass-border-light);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: var(--glass-shadow-light);
+  border-radius: 15px;
+  box-shadow: var(--glass-shadow-medium);
   transition: all 0.3s ease;
+  padding: clamp(1.25rem, 4vw, 2rem);
 }
 
 .glass-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-2px);
   box-shadow: var(--glass-shadow-heavy);
 }
 
@@ -215,11 +249,11 @@ html {
   background-color: var(--glass-bg-heavy);
   background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
   backdrop-filter: var(--glass-blur-heavy);
-  border: 1px solid var(--glass-border-medium);
-  border-radius: 20px;
-  padding: 32px;
+  border: 1px solid var(--glass-border-light);
+  border-radius: 18px;
   box-shadow: var(--glass-shadow-heavy);
   transition: all 0.3s ease;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
 }
 
 /* Glass Navigation */
@@ -259,9 +293,9 @@ html {
 
 /* --- Main Content Area --- */
 .main-content {
-  max-width: 1400px; /* Increased from ~1200px */
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 6rem 2rem 2rem; /* Reduced top padding from ~8rem, kept rest */
+  padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 2rem) clamp(1rem, 3vw, 2rem);
   width: 100%;
   box-sizing: border-box;
 }
@@ -269,15 +303,15 @@ html {
 /* Page-specific overflow control - removed wider widths */
 body[data-page="music"] .main-content,
 body[data-page="portfolio"] .main-content {
-  max-width: 800px; /* Same width as other pages */
+  max-width: 800px;
 }
 
 /* Allow search page to expand beyond the container */
 body[data-page="search"] .main-content {
-  max-width: 800px; /* Same width as other pages */
+  max-width: 800px;
   width: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: clamp(1rem, 4vw, 1.25rem);
+  padding-right: clamp(1rem, 4vw, 1.25rem);
 }
 
 /* Responsive adjustments */
@@ -317,7 +351,7 @@ body[data-page="search"] .main-content {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  padding: 1rem;
+  padding: clamp(0.5rem, 3vw, 1rem);
 }
 
 /* Glass Input */
@@ -327,9 +361,10 @@ body[data-page="search"] .main-content {
   backdrop-filter: var(--glass-blur-light);
   border: 1px solid var(--glass-border-light);
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.25rem);
   color: var(--theme-text);
   transition: all 0.3s ease;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 .glass-input:focus {
@@ -1687,33 +1722,32 @@ div[style*="margin-bottom: 3rem"] {
 
 .icon-option .icon-emoji {
   font-size: 32px;
-  text-align: center;
   line-height: 1;
 }
 
+/* Custom Icon Input */
 .custom-icon {
   display: flex;
-  gap: 1rem;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--glass-border-light);
 }
 
 .custom-icon input {
-  flex-grow: 1;
+  padding: 0.5rem;
+  border-radius: 4px;
 }
 
-/* Desktop Background */
+/* Desktop Mode Styles */
 body.desktop-mode {
+  overflow: hidden;
+  background: var(--bg-primary);
+  background-image: var(--desktop-wallpaper, none);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 100vh;
-  overflow: hidden;
 }
 
-/* Hide navigation in desktop mode */
 body.desktop-mode .top-nav {
   display: none;
 }
@@ -1722,121 +1756,123 @@ body.desktop-mode .main-content {
   display: none;
 }
 
-/* Ensure taskbar stays on top */
+/* Bottom Bar */
 .bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  background-color: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur-heavy);
+  border-top: 1px solid var(--glass-border-light);
 }
-
-/* ===== Games System ===== */
 
 /* Games Grid */
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 }
 
-/* Game Cards */
 .game-card {
   background: var(--glass-bg-medium);
   border: 1px solid var(--glass-border-light);
-  border-radius: 12px;
+  border-radius: 15px;
   padding: 1.5rem;
   text-align: center;
   transition: all 0.3s ease;
-  backdrop-filter: var(--glass-blur-medium);
+  cursor: pointer;
 }
 
 .game-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   box-shadow: var(--glass-shadow-heavy);
-  border-color: var(--theme-accent);
 }
 
 .game-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .game-card h3 {
   margin: 0 0 0.5rem 0;
   color: var(--theme-text);
-  font-size: 1.2rem;
 }
 
 .game-card p {
-  margin: 0 0 1rem 0;
+  margin: 0;
   color: var(--theme-text-secondary);
   font-size: 0.9rem;
   line-height: 1.4;
 }
 
 .game-controls {
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .control-hint {
-  display: inline-block;
-  background: var(--glass-bg-light);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
   font-size: 0.8rem;
   color: var(--theme-text-secondary);
-  border: 1px solid var(--glass-border-light);
+  margin-top: 0.5rem;
+  font-style: italic;
 }
 
 .play-btn {
-  width: 100%;
-  padding: 0.75rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
+  background: var(--theme-accent);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .play-btn:hover {
-  transform: scale(1.02);
-  background: var(--theme-accent);
-  color: white;
+  background: var(--theme-accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Game Windows */
 .game-window {
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--glass-bg-heavy);
+  backdrop-filter: var(--glass-blur-heavy);
+  z-index: 2000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .game-canvas {
-  border: 2px solid var(--theme-accent);
-  border-radius: 8px;
-  background: #000;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--glass-border-light);
+  border-radius: 10px;
+  box-shadow: var(--glass-shadow-heavy);
 }
 
 .game-controls-panel {
   margin-top: 1rem;
   text-align: center;
-  color: var(--theme-text);
 }
 
 .game-score {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: var(--theme-accent);
-  margin-bottom: 0.5rem;
+  color: var(--theme-text);
+  margin-bottom: 1rem;
 }
 
 .game-instructions {
-  font-size: 0.9rem;
   color: var(--theme-text-secondary);
   margin-bottom: 1rem;
+  max-width: 400px;
 }
 
 .game-buttons {
@@ -1846,2379 +1882,57 @@ body.desktop-mode .main-content {
   flex-wrap: wrap;
 }
 
-/* Responsive Games Grid */
-@media (max-width: 768px) {
-  .games-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-  
-  .game-card {
-    padding: 1rem;
-  }
-  
-  .game-icon {
-    font-size: 2.5rem;
-  }
-}
-
-/* ===== Sticky Note System ===== */
-
-.sticky-note {
-  position: absolute;
-  top: 100px;
-  left: 100px;
-  width: 300px;
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  z-index: 200; /* Higher than regular windows */
-  background-color: var(--glass-bg-light);
-  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
-  backdrop-filter: var(--glass-blur-light);
-  border: 1px solid var(--glass-border-light);
-  border-radius: 15px;
-  box-shadow: var(--glass-shadow-medium);
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.sticky-note:hover {
-  box-shadow: var(--glass-shadow-heavy);
-  transform: translateY(-2px);
-}
-
-.sticky-note .note-header {
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  background-color: var(--glass-bg-heavy);
-  border-bottom: 1px solid var(--glass-border-light);
-  cursor: move;
-  border-radius: 15px 15px 0 0;
-  backdrop-filter: var(--glass-blur-heavy);
-  flex-shrink: 0;
-}
-
-.sticky-note .note-title {
-  color: var(--theme-text);
-  font-weight: 600;
-  font-size: 14px;
-  pointer-events: none;
-  user-select: none;
-}
-
-.sticky-note .note-controls {
-  display: flex;
-  gap: 6px;
-}
-
-.sticky-note .note-controls button {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: none;
-  background-color: var(--glass-bg-medium);
-  color: var(--theme-text);
-  font-family: 'Segoe UI Symbol', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.sticky-note .note-controls button:hover {
-  background-color: var(--glass-bg-light);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
-}
-
-.sticky-note .note-controls .btn-pin:hover { 
-  background-color: #ffdd00; 
-  color: #333; 
-}
-
-.sticky-note .note-controls .btn-close:hover { 
-  background-color: #ff5555; 
-  color: white; 
-}
-
-.sticky-note .note-content {
-  flex-grow: 1;
-  padding: 16px;
-  background-color: var(--glass-bg-light);
-  backdrop-filter: var(--glass-blur-light);
-  border-radius: 0 0 15px 15px;
-  overflow-y: auto;
-  color: var(--theme-text);
-  font-size: 14px;
-  line-height: 1.5;
-  outline: none;
-  border: none;
-  resize: none;
-  font-family: inherit;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.sticky-note .note-content:focus {
-  background-color: var(--glass-bg-medium);
-  box-shadow: inset 0 0 0 2px var(--theme-accent);
-}
-
-.sticky-note .note-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sticky-note .note-content::-webkit-scrollbar-track {
-  background: var(--glass-bg-light);
-  border-radius: 3px;
-}
-
-.sticky-note .note-content::-webkit-scrollbar-thumb {
-  background: var(--glass-border-medium);
-  border-radius: 3px;
-}
-
-.sticky-note .note-content::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-accent);
-}
-
-/* Pinned state */
-.sticky-note.pinned {
-  box-shadow: var(--glass-shadow-heavy), 0 0 20px rgba(255, 221, 0, 0.3);
-}
-
-.sticky-note.pinned .note-header {
-  background-color: rgba(255, 221, 0, 0.1);
-  border-bottom-color: rgba(255, 221, 0, 0.3);
-}
-
-/* Button feedback for note creation */
-.glass-button.note-created {
-  background-color: var(--theme-accent);
-  transform: scale(1.05);
-  box-shadow: 0 0 20px var(--theme-accent);
-}
-
-/* Sticky note resize handle */
-.sticky-note .resize-handle {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 15px;
-  height: 15px;
-  cursor: se-resize;
-  z-index: 10;
-  opacity: 0.6;
-}
-
-.sticky-note .resize-handle::after {
-  content: '';
-  position: absolute;
-  bottom: 3px;
-  right: 3px;
-  width: 6px;
-  height: 6px;
-  border-right: 2px solid var(--theme-text-secondary);
-  border-bottom: 2px solid var(--theme-text-secondary);
-  transition: all 0.2s ease;
-}
-
-.sticky-note .resize-handle:hover::after {
-  border-color: var(--theme-accent);
-  opacity: 1;
-}
-
-/* Sticky note animations */
-@keyframes noteAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.8) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.sticky-note {
-  animation: noteAppear 0.3s ease-out;
-}
-
-/* Responsive adjustments for sticky notes */
-@media (max-width: 768px) {
-  .sticky-note {
-    width: 280px;
-    height: 220px;
-    min-width: 250px;
-    min-height: 180px;
-  }
-  
-  .sticky-note .note-header {
-    height: 32px;
-    padding: 0 10px;
-  }
-  
-  .sticky-note .note-title {
-    font-size: 13px;
-  }
-  
-  .sticky-note .note-controls button {
-    width: 22px;
-    height: 22px;
-    font-size: 11px;
-  }
-  
-  .sticky-note .note-content {
-    padding: 12px;
-    font-size: 13px;
-  }
-}
-
-/* Ensure sticky notes work well in desktop mode */
-body.desktop-mode .sticky-note {
-  z-index: 300; /* Higher than desktop icons */
-}
-
-/* Sticky note content styling */
-.sticky-note .note-content h1,
-.sticky-note .note-content h2,
-.sticky-note .note-content h3,
-.sticky-note .note-content h4,
-.sticky-note .note-content h5,
-.sticky-note .note-content h6 {
-  margin: 0.5em 0 0.3em 0;
-  color: var(--theme-text);
-  font-weight: 600;
-}
-
-.sticky-note .note-content p {
-  margin: 0.3em 0;
-}
-
-.sticky-note .note-content ul,
-.sticky-note .note-content ol {
-  margin: 0.3em 0;
-  padding-left: 1.5em;
-}
-
-.sticky-note .note-content li {
-  margin: 0.2em 0;
-}
-
-.sticky-note .note-content a {
-  color: var(--theme-accent);
-  text-decoration: underline;
-}
-
-.sticky-note .note-content a:hover {
-  color: var(--theme-accent-hover);
-}
-
-.sticky-note .note-content code {
-  background-color: var(--glass-bg-medium);
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9em;
-}
-
-.sticky-note .note-content pre {
-  background-color: var(--glass-bg-medium);
-  padding: 8px;
-  border-radius: 5px;
-  overflow-x: auto;
-  margin: 0.5em 0;
-}
-
-.sticky-note .note-content blockquote {
-  border-left: 3px solid var(--theme-accent);
-  margin: 0.5em 0;
-  padding-left: 1em;
-  color: var(--theme-text-secondary);
-  font-style: italic;
-}
-
-/* ===== Sticky Note Editor ===== */
-
-.sticky-note-editor {
-  width: 100%;
-  height: 100%;
-  padding: 16px;
-  background-color: var(--glass-bg-light);
-  backdrop-filter: var(--glass-blur-light);
-  border-radius: 0 0 15px 15px;
-  color: var(--theme-text);
-  font-size: 14px;
-  line-height: 1.6;
-  outline: none;
-  border: none;
-  resize: none;
-  font-family: inherit;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.sticky-note-editor:focus {
-  background-color: var(--glass-bg-medium);
-  box-shadow: inset 0 0 0 2px var(--theme-accent);
-}
-
-.sticky-note-editor::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sticky-note-editor::-webkit-scrollbar-track {
-  background: var(--glass-bg-light);
-  border-radius: 3px;
-}
-
-.sticky-note-editor::-webkit-scrollbar-thumb {
-  background: var(--glass-border-medium);
-  border-radius: 3px;
-}
-
-.sticky-note-editor::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-accent);
-}
-
-/* Rich text editor styling */
-.sticky-note-editor h1,
-.sticky-note-editor h2,
-.sticky-note-editor h3,
-.sticky-note-editor h4,
-.sticky-note-editor h5,
-.sticky-note-editor h6 {
-  margin: 0.5em 0 0.3em 0;
-  color: var(--theme-text);
-  font-weight: 600;
-}
-
-.sticky-note-editor p {
-  margin: 0.3em 0;
-}
-
-.sticky-note-editor ul,
-.sticky-note-editor ol {
-  margin: 0.3em 0;
-  padding-left: 1.5em;
-}
-
-.sticky-note-editor li {
-  margin: 0.2em 0;
-}
-
-.sticky-note-editor a {
-  color: var(--theme-accent);
-  text-decoration: underline;
-}
-
-.sticky-note-editor a:hover {
-  color: var(--theme-accent-hover);
-}
-
-.sticky-note-editor code {
-  background-color: var(--glass-bg-medium);
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9em;
-}
-
-.sticky-note-editor pre {
-  background-color: var(--glass-bg-medium);
-  padding: 8px;
-  border-radius: 5px;
-  overflow-x: auto;
-  margin: 0.5em 0;
-}
-
-.sticky-note-editor blockquote {
-  border-left: 3px solid var(--theme-accent);
-  margin: 0.5em 0;
-  padding-left: 1em;
-  color: var(--theme-text-secondary);
-  font-style: italic;
-}
-
-/* ===== Window Animation Enhancements ===== */
-
-@keyframes windowAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.8) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.app-window {
-  animation: windowAppear 0.3s ease-out;
-}
-
-/* ===== Error States ===== */
-
-.error {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: var(--theme-text-secondary);
-  font-style: italic;
-  text-align: center;
-  padding: 2rem;
-}
-
-/* ===== Responsive Taskbar ===== */
-
-@media (max-width: 768px) {
-  .taskbar-programs {
-    gap: 4px;
-    padding: 0 4px;
-  }
-  
-  .taskbar-item {
-    padding: 6px 8px;
-    min-width: 50px;
-    max-width: 60px;
-  }
-  
-  .taskbar-icon {
-    font-size: 16px;
-  }
-  
-  .taskbar-title {
-    font-size: 8px;
-  }
-}
-
-/* ===== Window Management Utilities ===== */
-
-.window-counter {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background-color: var(--glass-bg-heavy);
-  color: var(--theme-text);
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  backdrop-filter: var(--glass-blur-heavy);
-  border: 1px solid var(--glass-border-light);
-  z-index: 1000;
-}
-
-.window-counter.warning {
-  background-color: rgba(255, 165, 0, 0.2);
-  border-color: rgba(255, 165, 0, 0.5);
-  color: #ff8c00;
-}
-
-.window-counter.danger {
-  background-color: rgba(255, 0, 0, 0.2);
-  border-color: rgba(255, 0, 0, 0.5);
-  color: #ff4444;
-}
-
-/* ===== Theme Editor Tray ===== */
-
-.theme-editor-tray {
-  position: fixed;
-  top: 0;
-  right: -400px;
-  width: 380px;
-  height: 100vh;
-  background-color: var(--glass-bg-heavy);
-  backdrop-filter: var(--glass-blur-heavy);
-  border-left: 1px solid var(--glass-border-light);
-  box-shadow: var(--glass-shadow-heavy);
-  z-index: 10000;
-  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.theme-editor-tray.active {
-  right: 0;
-}
-
-.tray-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--glass-border-light);
-  background-color: var(--glass-bg-medium);
-  backdrop-filter: var(--glass-blur-medium);
-}
-
-.tray-header h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.tray-close-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  background-color: var(--glass-bg-light);
-  color: var(--theme-text);
-  font-size: 1.2rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tray-close-btn:hover {
-  background-color: var(--glass-bg-medium);
-  transform: scale(1.1);
-}
-
-.tray-content {
-  flex: 1;
-  padding: 1.5rem;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-/* Glass Effects Section */
-.glass-effects-section {
-  background-color: var(--glass-bg-light);
-  border-radius: 15px;
-  padding: 1.5rem;
-  border: 1px solid var(--glass-border-light);
-}
-
-.glass-effects-section h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.glass-effects-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-/* Theme Matrix Section */
-.theme-matrix-section {
-  background-color: var(--glass-bg-light);
-  border-radius: 15px;
-  padding: 1.5rem;
-  border: 1px solid var(--glass-border-light);
-}
-
-.theme-matrix-section h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.theme-matrix {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.matrix-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-/* Additional Colors Section */
-.additional-colors-section {
-  background-color: var(--glass-bg-light);
-  border-radius: 15px;
-  padding: 1.5rem;
-  border: 1px solid var(--glass-border-light);
-}
-
-.additional-colors-section h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.additional-colors-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-/* Variable Items */
-.variable-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.variable-item label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--theme-text);
-  text-align: center;
-}
-
-.color-picker {
-  width: 100%;
-  height: 40px;
-  border: 2px solid var(--glass-border-light);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: none;
-}
-
-.color-picker:hover {
-  border-color: var(--theme-accent);
-  transform: scale(1.02);
-}
-
-.color-picker::-webkit-color-swatch-wrapper {
-  padding: 0;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.color-picker::-webkit-color-swatch {
-  border: none;
-  border-radius: 6px;
-}
-
-/* Tray Actions */
-.tray-actions {
-  display: flex;
-  gap: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--glass-border-light);
-  margin-top: auto;
-}
-
-.tray-btn {
-  flex: 1;
-  padding: 0.75rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: center;
-}
-
-.tray-btn.primary {
-  background-color: var(--theme-accent);
-  color: white;
-}
-
-.tray-btn.primary:hover {
-  background-color: var(--theme-accent-hover);
-  transform: translateY(-2px);
-}
-
-/* Tray Scrollbar */
-.tray-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.tray-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tray-content::-webkit-scrollbar-thumb {
-  background: var(--glass-border-medium);
-  border-radius: 3px;
-}
-
-.tray-content::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-accent);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .theme-editor-tray {
-    width: 100vw;
-    right: -100vw;
-  }
-  
-  .tray-content {
-    padding: 1rem;
-    gap: 1.5rem;
-  }
-  
-  .glass-effects-grid,
-  .matrix-row,
-  .additional-colors-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .tray-actions {
-    flex-direction: column;
-  }
-}
-
-/* Animation for tray appearance */
-@keyframes traySlideIn {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes traySlideOut {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
-}
-
-/* Overlay effect when tray is open */
-.theme-editor-tray.active::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.1);
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* ===== View Toggle ===== */
-
-.view-toggle-container {
-  margin-right: 1rem;
-}
-
-.view-toggle-btn {
-  padding: 0.5rem 0.75rem;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  min-width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.view-toggle-btn:hover {
-  transform: scale(1.05);
-  box-shadow: var(--glass-shadow-medium);
-}
-
-.view-icon {
-  transition: all 0.3s ease;
-}
-
-/* ===== Desktop Mode Styles ===== */
-
-/* Hide navigation in desktop mode */
-.desktop-mode .nav-links-header {
-  display: none !important;
-}
-
-/* Hide desktop elements in website mode */
-.bottom-bar,
-#start-menu,
-.desktop-background,
-.desktop-icons {
-  display: none;
-}
-
-/* Desktop mode specific styles */
-.desktop-mode .bottom-bar,
-.desktop-mode #start-menu {
-  display: block;
-}
-
-.desktop-mode .desktop-background,
-.desktop-mode .desktop-icons {
-  display: block;
-}
-
-/* Desktop Background */
-.desktop-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: var(--bg-primary);
-  background-image: var(--desktop-wallpaper, none);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-/* Desktop Icons */
-.desktop-icons {
-  position: fixed;
-  top: 60px; /* Below header */
-  left: 20px;
-  right: 20px;
-  bottom: 80px; /* Above taskbar */
-  pointer-events: none;
-  z-index: 1;
-}
-
-.desktop-icon {
-  position: absolute;
-  width: 80px;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: all 0.2s ease;
-  border-radius: 8px;
-  padding: 8px;
-  text-align: center;
-}
-
-.desktop-icon:hover {
-  background-color: var(--glass-bg-light);
-  backdrop-filter: var(--glass-blur-light);
-  transform: scale(1.05);
-}
-
-.desktop-icon-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.desktop-icon-label {
-  font-size: 0.8rem;
-  color: var(--theme-text);
-  font-weight: 500;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-  word-wrap: break-word;
-  max-width: 100%;
-}
-
-/* Desktop mode content adjustments */
-.desktop-mode main {
-  margin-top: 0;
-  padding-top: 0;
-}
-
-/* Hide navigation in desktop mode */
-.desktop-mode .glass-nav {
-  display: none !important;
-}
-
-/* Show navigation in website mode */
-body:not(.desktop-mode) .glass-nav {
-  display: block;
-}
-
-/* Taskbar in desktop mode */
-.desktop-mode .bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: var(--glass-bg-heavy);
-  backdrop-filter: var(--glass-blur-heavy);
-  border-top: 1px solid var(--glass-border-light);
-}
-
-/* Start menu in desktop mode */
-.desktop-mode #start-menu {
-  position: fixed;
-  bottom: 60px;
-  left: 10px;
-  z-index: 1001;
-  background-color: var(--glass-bg-heavy);
-  backdrop-filter: var(--glass-blur-heavy);
-  border: 1px solid var(--glass-border-light);
-  border-radius: 10px;
-  box-shadow: var(--glass-shadow-heavy);
-  display: none;
-}
-
-.desktop-mode #start-menu.active {
-  display: block;
-}
-
-/* Responsive adjustments for desktop mode */
-@media (max-width: 768px) {
-  .desktop-mode .view-toggle-container {
-    margin-right: 0.5rem;
-  }
-  
-  .view-toggle-btn {
-    min-width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-  
-  .desktop-icons {
-    top: 50px;
-    left: 10px;
-    right: 10px;
-    bottom: 70px;
-  }
-  
-  .desktop-icon {
-    width: 70px;
-    height: 90px;
-    touch-action: manipulation;
-  }
-  
-  .desktop-icon-icon {
-    font-size: 1.5rem;
-  }
-  
-  .desktop-icon-label {
-    font-size: 0.7rem;
-    line-height: 1.1;
-  }
-  
-  /* Improve touch interactions */
-  .desktop-icon:hover {
-    transform: scale(1.02);
-  }
-  
-  /* Better spacing for mobile */
-  .desktop-icon .icon-image,
-  .desktop-icon .icon-emoji {
-    margin-bottom: 6px;
-  }
-  
-  /* Ensure proper grid spacing on mobile */
-  .desktop-grid {
-    gap: 8px;
-  }
-}
-
-/* Additional mobile improvements for very small screens */
-@media (max-width: 480px) {
-  .desktop-icons {
-    top: 60px;
-    left: 5px;
-    right: 5px;
-    bottom: 80px;
-  }
-  
-  .desktop-icon {
-    width: 60px;
-    height: 80px;
-  }
-  
-  .desktop-icon-icon {
-    font-size: 1.2rem;
-  }
-  
-  .desktop-icon-label {
-    font-size: 0.65rem;
-  }
-  
-  /* Ensure icons don't overlap on very small screens */
-  .desktop-grid {
-    gap: 5px;
-  }
-}
-
-/* ===== Window Component Styles ===== */
-
-.window-container {
-  display: flex;
-  gap: 2rem;
-  margin: 2rem 0;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.window {
-  background: var(--glass-bg-medium);
-  backdrop-filter: var(--glass-blur-medium);
-  border: 1px solid var(--glass-border-light);
-  border-radius: 12px;
-  box-shadow: var(--glass-shadow-medium);
-  overflow: hidden;
-  transition: all 0.3s ease;
-  min-width: 300px;
-  max-width: 500px;
-  flex: 1;
-}
-
-.window:hover {
-  box-shadow: var(--glass-shadow-heavy);
-  transform: translateY(-2px);
-}
-
-.window-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: var(--glass-bg-heavy);
-  border-bottom: 1px solid var(--glass-border-light);
-  backdrop-filter: var(--glass-blur-heavy);
-}
-
-.window-controls {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.window-control {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.window-control.minimize {
-  background: #ffbd2e;
-}
-
-.window-control.maximize {
-  background: #28ca42;
-}
-
-.window-control.close {
-  background: #ff5f57;
-}
-
-.window-control:hover {
-  transform: scale(1.1);
-  filter: brightness(1.2);
-}
-
-.window-title {
-  color: var(--theme-text);
-  font-weight: 600;
-  font-size: 0.9rem;
-  flex-grow: 1;
-  text-align: center;
-  margin: 0 1rem;
-}
-
-.window-content {
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-}
-
-.window-image {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 8px;
-  box-shadow: var(--glass-shadow-light);
-  transition: all 0.3s ease;
-}
-
-.window-image:hover {
-  transform: scale(1.05);
-  box-shadow: var(--glass-shadow-medium);
-}
-
-/* ===== Post-it Board Styles ===== */
-
-.post-it-board {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  min-width: 250px;
-  max-width: 350px;
-  flex: 1;
-}
-
-.post-it {
-  background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 100%);
-  border: 1px solid #e0a800;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transform: rotate(-1deg);
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.post-it:nth-child(even) {
-  transform: rotate(1deg);
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  border-color: #388e3c;
-}
-
-.post-it:nth-child(3n) {
-  transform: rotate(-0.5deg);
-  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
-  border-color: #1565c0;
-}
-
-.post-it:hover {
-  transform: rotate(0deg) scale(1.02);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-}
-
-.post-it h3 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.post-it:nth-child(even) h3,
-.post-it:nth-child(3n) h3 {
-  color: white;
-}
-
-.post-it p {
-  margin: 0;
-  color: #555;
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-
-.post-it:nth-child(even) p,
-.post-it:nth-child(3n) p {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .window-container {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .window {
-    min-width: 100%;
-    max-width: 100%;
-  }
-  
-  .post-it-board {
-    min-width: 100%;
-    max-width: 100%;
-  }
-  
-  .window-content {
-    min-height: 250px;
-  }
-}
-
-/* Theme-specific window styling */
-[data-theme="a"] .window {
-  border-color: var(--theme-accent);
-  box-shadow: 0 0 20px rgba(241, 163, 202, 0.3);
-}
-
-[data-theme="r"] .window {
-  border-color: var(--theme-accent);
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
-}
-
-[data-theme="z"] .window {
-  border-color: var(--theme-accent);
-  box-shadow: 0 0 20px rgba(174, 174, 174, 0.3);
-}
-
-[data-theme="e"] .window {
-  border-color: var(--theme-accent);
-  box-shadow: 0 0 20px rgba(46, 139, 87, 0.3);
-}
-
-[data-theme="n"] .window {
-  border-color: var(--theme-accent);
-  box-shadow: 0 0 20px rgba(77, 255, 0, 0.3);
-}
-
-/* Window resize handle styling */
-.window-resize-handle {
-  background: linear-gradient(135deg, var(--theme-accent) 0%, transparent 50%);
-  border-radius: 0 0 12px 0;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
-}
-
-.window-resize-handle:hover {
-  opacity: 1;
-  background: linear-gradient(135deg, var(--theme-accent) 0%, rgba(255, 255, 255, 0.3) 50%);
-}
-
-/* Window transition animations */
-.window {
-  transition: all 0.3s ease, transform 0.2s ease;
-}
-
-.window.minimized {
-  transform: scale(0.1) translateY(100vh);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.window.maximized {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 9999 !important;
-  border-radius: 0 !important;
-}
-
-/* Desktop mode specific window styling */
-.desktop-mode .window {
-  position: fixed !important;
-  z-index: 1000;
-}
-
-.desktop-mode .window-container {
-  position: fixed;
-  top: 60px;
-  left: 20px;
-  right: 20px;
-  bottom: 80px;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.desktop-mode .window-container .window,
-.desktop-mode .window-container .post-it-board {
-  pointer-events: auto;
-}
-
-.desktop-mode .main-content {
-  display: none !important;
-}
-
-/* Website mode styling */
-body:not(.desktop-mode) .window-container {
-  position: relative;
-  z-index: auto;
-}
-
-body:not(.desktop-mode) .window {
-  position: relative;
-  z-index: auto;
-}
-
-/* App window styling for desktop mode */
-.app-window {
-  background: var(--glass-bg-medium);
-  backdrop-filter: var(--glass-blur-medium);
-  border: 1px solid var(--glass-border-light);
-  border-radius: 12px;
-  box-shadow: var(--glass-shadow-medium);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.app-window:hover {
-  box-shadow: var(--glass-shadow-heavy);
-  transform: translateY(-2px);
-}
-
-/* Sticky notes in desktop mode */
-.sticky-notes-container {
-  position: relative;
-  min-height: 200px;
-}
-
-.sticky-notes-container .sticky-note {
-  position: absolute;
-  z-index: 10;
-  cursor: move;
-}
-
-/* Ensure sticky notes are draggable in desktop mode */
-.desktop-mode .sticky-note {
-  position: absolute !important;
-  z-index: 100;
-}
-
-/* Art Page Specific Styles - Prevent Overlap */
-.art-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem; /* Increased gap for better separation */
-  margin: 0;
-  padding: 1rem;
-  box-sizing: border-box;
-}
-
-/* Ensure art cards don't overlap and have proper spacing */
-.art-card {
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  border-radius: var(--glass-border-radius);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 1rem;
-  box-shadow: var(--glass-shadow-light);
-  transition: all 0.3s ease;
-  opacity: 1;
-  margin: 0;
-  box-sizing: border-box;
-  min-width: 0;
-}
-
-/* Ensure grid items don't overflow and maintain spacing */
-.art-grid > * {
-  min-width: 0;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* Prevent text overflow in art cards */
-.art-card h3 {
-  color: white;
-  margin: 0;
-  font-weight: 600;
-  position: relative;
-  z-index: 2;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  text-align: center;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-}
-
-/* Ensure glass cards have consistent spacing */
-.glass-card {
-  background-color: var(--glass-bg-light);
-  background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
-  backdrop-filter: var(--glass-blur-light);
-  border: 1px solid var(--glass-border-light);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: var(--glass-shadow-light);
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-  margin: 0;
-  min-width: 0;
-  max-width: 100%;
-}
-
-/* Ensure tile grids have consistent gaps */
-.tile-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem; /* Increased gap for better separation */
-  margin: 0;
-  padding: 1rem;
-  box-sizing: border-box;
-}
-
-.tile-grid > * {
-  min-width: 0;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* Ensure images don't overflow their containers */
-img {
-  max-width: 100%;
-  height: auto;
-  box-sizing: border-box;
-}
-
-/* Prevent any potential z-index issues */
-.glass-container {
-  position: relative;
-  z-index: 1;
-}
-
-.glass-card {
-  position: relative;
-  z-index: 1;
-}
-
-.glass-panel {
-  position: relative;
-  z-index: 1;
-}
-
-/* Ensure proper spacing between sections */
-div[style*="margin-bottom: 3rem"] {
-  margin-bottom: 3rem !important;
-}
-
-div[style*="margin-bottom: 2rem"] {
-  margin-bottom: 2rem !important;
-}
-
-/* Prevent horizontal overflow */
-.main-content {
-  overflow-x: hidden;
-  box-sizing: border-box;
-}
-
-.glass-container {
-  overflow-x: hidden;
-  box-sizing: border-box;
-}
-
-/* Specific spacing for art page grid layouts */
-div[style*="display: grid"] {
-  gap: 2rem !important; /* Force consistent gaps */
-}
-
-/* Ensure art page sections have proper spacing */
-div[style*="margin-bottom: 3rem"] {
-  margin-bottom: 3rem !important;
-}
-
-/* Ensure responsive behavior with consistent gaps */
-@media (max-width: 768px) {
-  .tile-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem; /* Maintain good spacing on tablets */
-  }
-  
-  .art-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1.5rem; /* Maintain good spacing on tablets */
-  }
-  
-  .glass-card {
-    padding: 1rem;
-  }
-  
-  div[style*="display: grid"] {
-    gap: 1.5rem !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .tile-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem; /* Still maintain spacing on mobile */
-  }
-  
-  .art-grid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem; /* Still maintain spacing on mobile */
-  }
-  
-  div[style*="display: grid"] {
-    gap: 1rem !important;
-  }
-}
-
-/* --- Portfolio Page Specific Styles --- */
-.page-header h2 {
-    font-size: 1.5rem;
-    color: var(--theme-primary);
-}
-
-.portfolio-art-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-}
-
-.portfolio-art-grid .art-card {
-    height: 100px;
-    padding: 0.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.portfolio-art-grid .art-card h3 {
-    font-size: 1rem;
-    margin: 0;
-}
-
-/* --- Project Grid Styles --- */
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-
-.project-card-link {
-    text-decoration: none;
-}
-
-.project-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 0;
-    overflow: hidden;
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--glass-shadow-heavy);
-}
-
-.project-card-image {
-    height: 150px;
-    background-size: cover;
-    background-position: center;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-}
-
-.project-card-content {
-    padding: 1rem;
-}
-
-.project-card-content h3 {
-    margin-top: 0;
-    font-size: 1.2rem;
-    color: var(--theme-primary);
-}
-
-.project-card-content p {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-/* --- Navigation Bar Styles --- */
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 2rem;
-}
-
-.nav-links {
-    display: flex;
-    gap: 1rem;
-}
-
-.header-controls {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.view-toggle-btn {
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    line-height: 1;
-}
-
-/* Desktop mode content adjustments */
-.desktop-mode main {
-  margin-top: 0;
-  padding-top: 0;
-}
-
-/* Hide navigation in desktop mode */
-.desktop-mode .glass-nav {
-  display: none !important;
-}
-
-/* Show navigation in website mode */
-body:not(.desktop-mode) .glass-nav {
-  display: block;
-}
-
-/* Hide main content in desktop mode */
-.desktop-mode .main-content {
-  display: none !important;
-}
-
-/* Show main content in website mode */
-body:not(.desktop-mode) .main-content {
-  display: block;
-}
-
-/* Icon context menu styling */
-.icon-context-menu {
-  font-size: 0.9rem;
-}
-
-.icon-context-menu .menu-item {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 4px;
-  margin: 0 0.25rem;
-}
-
-.icon-context-menu .menu-item:hover {
-  background: var(--glass-bg-medium);
-}
-
-/* Form styling for icon editor */
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--theme-text);
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-.form-group .glass-input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--glass-border-light);
-  border-radius: 8px;
-  background: var(--glass-bg-medium);
-  backdrop-filter: var(--glass-blur-medium);
-  color: var(--theme-text);
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-}
-
-.form-group .glass-input:focus {
-  outline: none;
-  border-color: var(--theme-accent);
-  box-shadow: 0 0 0 2px rgba(var(--theme-accent-rgb), 0.2);
-}
-
-.form-group textarea.glass-input {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.form-actions {
-  border-top: 1px solid var(--glass-border-light);
-  padding-top: 1rem;
-}
-
-.glass-button.primary {
-  background: var(--theme-accent);
-  color: white;
-  border: none;
-}
-
-.glass-button.primary:hover {
-  background: var(--theme-accent-dark);
-  transform: translateY(-1px);
-}
-
-/* Icon preview styling */
-.icon-preview {
-  background: var(--glass-bg-light);
-  border: 1px solid var(--glass-border-light);
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-/* Window Theme Controls */
-.window-theme-section {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: var(--glass-bg-medium);
-  border-radius: var(--glass-border-radius);
-  border: 1px solid var(--glass-border-light);
-}
-
-.window-image-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.window-controls-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.window-image-btn,
-.window-size-btn,
-.window-shape-btn {
-  transition: all 0.3s ease;
-  border: 1px solid var(--glass-border-light);
-  background: var(--glass-bg-light);
-  color: var(--theme-text);
-  font-weight: 500;
-}
-
-.window-image-btn:hover,
-.window-size-btn:hover,
-.window-shape-btn:hover {
-  background: var(--glass-bg-medium);
-  border-color: var(--glass-border-medium);
-  transform: translateY(-2px);
-  box-shadow: var(--glass-shadow-medium);
-}
-
-.window-image-btn.active,
-.window-size-btn.active,
-.window-shape-btn.active {
-  background: var(--gradient-button);
-  color: var(--text-white);
-  border-color: var(--theme-accent);
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px var(--glass-shadow-heavy), 0 0 15px var(--theme-accent);
-}
-
-@media (max-width: 768px) {
-  .window-theme-section {
-    margin-bottom: 1rem;
-    padding: 1rem;
-  }
-  
-  .window-image-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .window-controls-section {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-  
-  .window-image-btn,
-  .window-size-btn,
-  .window-shape-btn {
-    font-size: 0.9rem;
-  }
-}
-
-/* Desktop Toggle Button */
-#desktop-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--glass-bg-heavy);
-  backdrop-filter: var(--glass-blur-medium);
-  border: 2px solid var(--glass-border-light);
-  color: var(--theme-accent);
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 1001;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: var(--glass-shadow-medium);
-}
-
-#desktop-toggle:hover {
-  transform: scale(1.1);
-  box-shadow: var(--glass-shadow-heavy);
-  border-color: var(--theme-accent);
-}
-
-body.desktop-mode #desktop-toggle {
-  display: flex;
-}
-
-/* Positioning for icons on the desktop */
-#icon-paint { top: 40px; left: 40px; }
-#icon-nature { top: 40px; left: 140px; }
-#icon-games { top: 40px; left: 240px; }
-
-/* Desktop Settings Window */
-#settings-window {
-  background: var(--glass-bg-heavy);
-  backdrop-filter: var(--glass-blur-heavy);
-  border: 1px solid var(--glass-border-medium);
-  border-radius: 15px;
-  box-shadow: var(--glass-shadow-heavy);
-}
-
-#settings-window .window-content {
-  background: var(--glass-bg-light);
-  color: var(--theme-text);
-}
-
-#settings-window .settings-section {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: var(--glass-bg-medium);
-  border-radius: 10px;
-  border: 1px solid var(--glass-border-light);
-}
-
-#settings-window .settings-section h3 {
-  margin: 0 0 1rem 0;
-  color: var(--theme-text);
-  font-size: 1.1rem;
-}
-
-#settings-window .icon-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  background: var(--glass-bg-light);
-  border-radius: 5px;
-  border: 1px solid var(--glass-border-light);
-}
-
-#settings-window .icon-item span {
-  color: var(--theme-text);
-  font-size: 0.9rem;
-}
-
-/* Positioning for icons on the desktop */
-#icon-paint { top: 40px; left: 40px; }
-#icon-nature { top: 40px; left: 140px; }
-#icon-games { top: 40px; left: 240px; }
-
-#start-button {
-    font-size: 1.5rem;
-    padding: 0 1rem;
-}
-
-#start-menu {
-    display: none;
-    position: fixed;
-    bottom: 50px;
-    left: 10px;
-    background: var(--glass-bg-heavy);
-    backdrop-filter: var(--glass-blur-heavy);
-    border: 1px solid var(--glass-border-light);
-    border-radius: 8px;
-    box-shadow: var(--glass-shadow-heavy);
-    z-index: 10001;
-    width: 200px;
-}
-
-.start-menu-item {
-    padding: 10px 15px;
-    cursor: pointer;
-    color: var(--theme-text-primary);
-}
-
-.start-menu-item:hover {
-    background: var(--glass-bg-medium);
-}
-
-.taskbar-icon {
-  width: 24px;
-  height: 24px;
-}
-
-body.desktop-mode .glass-nav {
-  display: none !important;
-}
-
-body.desktop-mode .main-content {
-  margin-top: 0 !important;
-  padding-top: 20px !important; /* Add some space at the top */
-  height: calc(100vh - 60px); /* Full height minus taskbar */
-  overflow-y: auto;
-}
-
-/* Ensure the default view is correct */
-body:not(.desktop-mode) .main-content {
-    margin-top: 80px; /* Default top margin */
-}
-
-/* Background Animation Toggle Button Styles */
-#background-animation-toggle.active {
-    background: var(--theme-accent);
-    color: white;
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-}
-
-#background-animation-toggle.active span {
-    animation: sparkle 2s infinite;
-}
-
-@keyframes sparkle {
-    0%, 100% { transform: scale(1) rotate(0deg); }
-    25% { transform: scale(1.1) rotate(90deg); }
-    50% { transform: scale(1.2) rotate(180deg); }
-    75% { transform: scale(1.1) rotate(270deg); }
-}
-
-#now-playing-toggle.active {
-    background: var(--theme-accent);
-    color: white;
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-}
-
-#now-playing-toggle.active span {
-    animation: music-pulse 1.5s infinite;
-}
-
-@keyframes music-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-}
-
-/* Enhanced theme transitions */
-* {
-    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.sticky-note, .window, .glass-card, .glass-button {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Smooth theme switching for background animation */
-[data-theme] {
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Enhanced glass morphism effects */
-.glass-card, .glass-button, .glass-pane {
-    backdrop-filter: blur(10px) saturate(180%);
-    -webkit-backdrop-filter: blur(10px) saturate(180%);
-}
-
-.glass-card:hover, .glass-button:hover {
-    backdrop-filter: blur(15px) saturate(200%);
-    -webkit-backdrop-filter: blur(15px) saturate(200%);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* Rich text editor enhancements */
-.rich-text-toolbar {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.rich-text-btn:hover {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    transform: translateY(-1px);
-}
-
-/* Now Playing widget enhancements */
-.now-playing-widget {
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-}
-
-.now-playing-widget:hover {
-    backdrop-filter: blur(25px) saturate(250%);
-    -webkit-backdrop-filter: blur(25px) saturate(250%);
-}
-
-/* Background animation canvas enhancements */
-#background-animation {
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-/* Theme transition overlay */
-#theme-transition-overlay {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-
-/* Enhanced sticky notes with theme transitions */
-.sticky-note {
-    backdrop-filter: blur(15px) saturate(180%);
-    -webkit-backdrop-filter: blur(15px) saturate(180%);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sticky-note:hover {
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Enhanced window transitions */
-.window {
-    backdrop-filter: blur(10px) saturate(180%);
-    -webkit-backdrop-filter: blur(10px) saturate(180%);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.window:hover {
-    backdrop-filter: blur(15px) saturate(200%);
-    -webkit-backdrop-filter: blur(15px) saturate(200%);
-}
-
-/* Enhanced desktop icons */
-.desktop-icon {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.desktop-icon:hover {
-    transform: translateY(-5px) scale(1.05);
-    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
-}
-
-/* Enhanced taskbar */
-.glass-bar {
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Enhanced start menu */
-.glass-pane {
-    backdrop-filter: blur(25px) saturate(200%);
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Enhanced theme buttons */
-.theme-btn {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.theme-btn:hover {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transform: translateY(-2px) scale(1.05);
-}
-
-.theme-btn.active {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-}
-
-/* Enhanced form elements */
-input, textarea, select {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-input:focus, textarea:focus, select:focus {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-}
-
-/* Enhanced buttons */
-button {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-button:hover {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transform: translateY(-2px);
-}
-
-button:active {
-    transform: translateY(0);
-}
-
-/* Enhanced links */
-a {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-a:hover {
-    text-shadow: 0 0 10px currentColor;
-}
-
-/* Enhanced scrollbars */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--theme-accent);
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--theme-accent-secondary);
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-}
-
-/* Enhanced focus states */
-*:focus {
-    outline: 2px solid var(--theme-accent);
-    outline-offset: 2px;
-    transition: outline 0.3s ease;
-}
-
-/* Enhanced selection */
-::selection {
-    background: var(--theme-accent);
-    color: white;
-}
-
-::-moz-selection {
-    background: var(--theme-accent);
-    color: white;
-}
-
-/* Enhanced loading states */
-.loading {
-    position: relative;
-    overflow: hidden;
-}
-
-.loading::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    animation: loading-shimmer 1.5s infinite;
-}
-
-@keyframes loading-shimmer {
-    0% { left: -100%; }
-    100% { left: 100%; }
-}
-
-/* Enhanced tooltips */
-[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--glass-bg-heavy);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    color: var(--text-primary);
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 10000;
-    border: 1px solid var(--glass-border-light);
-    box-shadow: var(--glass-shadow-medium);
-    animation: tooltip-fade-in 0.3s ease;
-}
-
-@keyframes tooltip-fade-in {
-    from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-}
-
-/* Enhanced responsive design */
-@media (max-width: 768px) {
-    .glass-card, .glass-button, .glass-pane {
-        backdrop-filter: blur(8px) saturate(150%);
-        -webkit-backdrop-filter: blur(8px) saturate(150%);
-    }
-    
-    .now-playing-widget {
-        backdrop-filter: blur(15px) saturate(180%);
-        -webkit-backdrop-filter: blur(15px) saturate(180%);
-    }
-    
-    .sticky-note {
-        backdrop-filter: blur(12px) saturate(160%);
-        -webkit-backdrop-filter: blur(12px) saturate(160%);
-    }
-}
-
-/* Enhanced dark mode support */
-@media (prefers-color-scheme: dark) {
-    .glass-card, .glass-button, .glass-pane {
-        backdrop-filter: blur(15px) saturate(200%);
-        -webkit-backdrop-filter: blur(15px) saturate(200%);
-    }
-}
-
-/* Enhanced reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-    
-    .now-playing-widget.playing .music-icon,
-    #background-animation-toggle.active span,
-    #now-playing-toggle.active span {
-        animation: none;
-    }
-}
-
-/*------------------------------------------------------------------
-[Sticky Notes Tray]
-*/
-.sticky-notes-tray {
-    position: fixed;
-    top: 60px; /* Below header */
-    right: -450px; /* Start off-screen */
-    width: 420px;
-    max-width: 90vw;
-    height: calc(100vh - 70px);
-    z-index: 1050;
-    display: none;
-    flex-direction: column;
-    transition: right 0.3s ease-in-out;
-    border-left: 1px solid var(--glass-border-color);
-    padding: 0; /* Remove padding for full-height feel */
-}
-
-.sticky-notes-tray.visible {
-    right: 0;
-}
-
-.sticky-notes-tray .tray-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--glass-border-color);
-}
-
-.sticky-notes-tray .tray-header h3 {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-.sticky-notes-tray .close-tray-btn {
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    line-height: 1;
-    color: var(--text-color);
-    cursor: pointer;
-    padding: 0.2rem 0.5rem;
-}
-
-.sticky-notes-tray .tray-content {
-    padding: 1.5rem;
-    overflow-y: auto;
-    height: 100%;
-}
-
-.sticky-notes-tray .tray-content p {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    color: var(--text-color-secondary);
-}
-
-.sticky-notes-buttons-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-}
-
-/* Ensure tray buttons have consistent styling */
-.sticky-notes-buttons-grid .glass-button {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    font-size: 0.9rem;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.system-tray .tray-icon.active {
-    background-color: var(--theme-accent-alpha);
-    color: var(--theme-accent);
-    box-shadow: 0 0 5px var(--theme-accent);
-}
-
-/*------------------------------------------------------------------
-[Game Launcher Modal]
-*/
+/* Game Modal */
 .game-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
 }
 
 .game-modal-content {
-    width: 90vw;
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-    padding: 0; /* Remove padding for edge-to-edge iframe */
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
 }
 
 .game-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1.5rem;
-    border-bottom: 1px solid var(--glass-border-color);
-    flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--glass-border-color);
+  flex-shrink: 0;
 }
 
 .game-modal-header h3 {
-    margin: 0;
-    font-size: 1.2rem;
+  margin: 0;
+  font-size: 1.2rem;
 }
 
 .game-modal-header .close-btn {
-    background: none;
-    border: none;
-    font-size: 2rem;
-    line-height: 1;
-    color: var(--text-color);
-    cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--text-color);
+  cursor: pointer;
 }
 
 #game-modal-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 0 0 var(--glass-border-radius) var(--glass-border-radius);
+  width: 100%;
+  height: 100%;
+  border: none;
+  flex-grow: 1;
 }
 
 /* Start Menu Avatar Styles */
@@ -4247,3 +1961,302 @@ a:hover {
 }
 
 /* Enhanced responsive design */
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+@media (max-width: 768px) {
+  /* Main Content */
+  .main-content {
+    padding: clamp(2rem, 6vw, 4rem) clamp(0.75rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1.5rem);
+  }
+  
+  body[data-page="search"] .main-content {
+    padding-left: clamp(0.75rem, 3vw, 1rem);
+    padding-right: clamp(0.75rem, 3vw, 1rem);
+  }
+  
+  /* Glass Components */
+  .glass-container {
+    border-radius: 12px;
+    margin: clamp(0.5rem, 2vw, 1rem);
+    padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  }
+  
+  .glass-button {
+    padding: clamp(0.4em, 1.5vw, 0.8em) clamp(0.8em, 2.5vw, 1.2em);
+    border-radius: 20px;
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+  }
+  
+  .glass-card {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: 12px;
+  }
+  
+  .glass-panel {
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border-radius: 15px;
+  }
+  
+  .glass-modal {
+    padding: clamp(0.5rem, 2vw, 0.75rem);
+  }
+  
+  .glass-input {
+    padding: clamp(0.6rem, 1.5vw, 0.9rem) clamp(0.8rem, 2vw, 1.1rem);
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+  }
+  
+  /* Navigation */
+  .nav-links-header {
+    padding: clamp(0.5rem, 2vw, 1rem);
+  }
+  
+  .view-toggle-container {
+    margin-right: clamp(0.5rem, 2vw, 1rem);
+  }
+  
+  /* Theme Editor Tray */
+  .theme-editor-tray {
+    width: 100vw;
+    right: -100vw;
+  }
+  
+  .tray-content {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    gap: 1.5rem;
+  }
+  
+  .glass-effects-grid,
+  .matrix-row,
+  .additional-colors-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tray-actions {
+    flex-direction: column;
+  }
+  
+  /* Sticky Notes Tray */
+  .sticky-notes-tray {
+    width: 100vw;
+    right: -100vw;
+  }
+  
+  .sticky-notes-tray .tray-content {
+    padding: clamp(1rem, 3vw, 1.5rem);
+  }
+  
+  .sticky-notes-buttons-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+  }
+  
+  /* Desktop Mode */
+  .desktop-mode .view-toggle-container {
+    margin-right: clamp(0.25rem, 1vw, 0.5rem);
+  }
+  
+  .view-toggle-btn {
+    min-width: clamp(36px, 8vw, 44px);
+    height: clamp(36px, 8vw, 44px);
+    font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+  }
+  
+  .desktop-icons {
+    top: clamp(40px, 8vw, 50px);
+    left: clamp(5px, 2vw, 10px);
+    right: clamp(5px, 2vw, 10px);
+    bottom: clamp(60px, 10vw, 70px);
+  }
+  
+  .desktop-icon {
+    width: clamp(60px, 12vw, 80px);
+    height: clamp(80px, 16vw, 100px);
+    touch-action: manipulation;
+  }
+  
+  .desktop-icon .icon-image,
+  .desktop-icon .icon-emoji {
+    margin-bottom: clamp(4px, 1vw, 8px);
+  }
+  
+  .desktop-grid {
+    gap: clamp(4px, 1vw, 8px);
+  }
+  
+  /* Windows */
+  .window-container {
+    padding: clamp(0.5rem, 2vw, 1rem);
+  }
+  
+  .window {
+    border-radius: 12px;
+    margin-bottom: clamp(0.5rem, 2vw, 1rem);
+  }
+  
+  .window-content {
+    padding: clamp(0.75rem, 2.5vw, 1.25rem);
+  }
+  
+  /* Sticky Notes */
+  .sticky-note {
+    min-width: clamp(200px, 50vw, 300px);
+    max-width: clamp(250px, 60vw, 350px);
+    padding: clamp(0.75rem, 2.5vw, 1rem);
+  }
+  
+  .sticky-note .note-header {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+  }
+  
+  .sticky-note .note-content {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+  }
+  
+  /* Grid Layouts */
+  .tile-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(0.75rem, 2.5vw, 1.25rem);
+  }
+  
+  .art-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: clamp(0.75rem, 2.5vw, 1.25rem);
+  }
+  
+  /* Playlist Buttons */
+  #playlist-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+  }
+  
+  /* Taskbar */
+  .taskbar-programs {
+    gap: clamp(2px, 1vw, 4px);
+    padding: 0 clamp(2px, 1vw, 4px);
+  }
+  
+  .taskbar-item {
+    padding: clamp(4px, 1.5vw, 8px) clamp(6px, 2vw, 12px);
+    min-width: clamp(40px, 10vw, 60px);
+    max-width: clamp(50px, 12vw, 70px);
+  }
+  
+  .taskbar-icon {
+    font-size: clamp(14px, 3.5vw, 18px);
+  }
+  
+  .taskbar-title {
+    font-size: clamp(7px, 1.8vw, 10px);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Main Content */
+  .main-content {
+    padding: clamp(1.5rem, 5vw, 3rem) clamp(0.5rem, 2vw, 1rem) clamp(0.5rem, 1.5vw, 1rem);
+  }
+  
+  body[data-page="search"] .main-content {
+    padding-left: clamp(0.5rem, 2vw, 0.75rem);
+    padding-right: clamp(0.5rem, 2vw, 0.75rem);
+  }
+  
+  /* Glass Components */
+  .glass-container {
+    margin: clamp(0.25rem, 1vw, 0.5rem);
+    padding: clamp(0.5rem, 2vw, 1rem);
+  }
+  
+  .glass-button {
+    padding: clamp(0.35em, 1.2vw, 0.6em) clamp(0.7em, 2vw, 1em);
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+  
+  .glass-card {
+    padding: clamp(0.75rem, 2.5vw, 1.25rem);
+  }
+  
+  .glass-panel {
+    padding: clamp(1rem, 3vw, 1.5rem);
+  }
+  
+  .glass-input {
+    padding: clamp(0.5rem, 1.2vw, 0.8rem) clamp(0.7rem, 1.8vw, 1rem);
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+  
+  /* Desktop Mode */
+  .desktop-icons {
+    top: clamp(50px, 10vw, 60px);
+    left: clamp(2px, 1vw, 5px);
+    right: clamp(2px, 1vw, 5px);
+    bottom: clamp(70px, 12vw, 80px);
+  }
+  
+  .desktop-icon {
+    width: clamp(50px, 10vw, 70px);
+    height: clamp(70px, 14vw, 90px);
+  }
+  
+  .desktop-icon .icon-emoji {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  
+  .desktop-icon .icon-label {
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  }
+  
+  .desktop-grid {
+    gap: clamp(2px, 0.8vw, 5px);
+  }
+  
+  /* Grid Layouts */
+  .tile-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(0.5rem, 2vw, 1rem);
+  }
+  
+  .art-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: clamp(0.5rem, 2vw, 1rem);
+  }
+  
+  /* Playlist Buttons */
+  #playlist-buttons {
+    grid-template-columns: 1fr;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+  }
+  
+  /* Taskbar */
+  .taskbar-item {
+    padding: clamp(3px, 1vw, 6px) clamp(4px, 1.5vw, 8px);
+    min-width: clamp(35px, 8vw, 50px);
+    max-width: clamp(45px, 10vw, 60px);
+  }
+  
+  .taskbar-icon {
+    font-size: clamp(12px, 3vw, 16px);
+  }
+  
+  .taskbar-title {
+    font-size: clamp(6px, 1.5vw, 8px);
+  }
+  
+  /* Sticky Notes */
+  .sticky-note {
+    min-width: clamp(180px, 45vw, 250px);
+    max-width: clamp(220px, 55vw, 300px);
+    padding: clamp(0.5rem, 2vw, 0.75rem);
+  }
+  
+  .sticky-note .note-header {
+    padding: clamp(0.4rem, 1.2vw, 0.6rem);
+  }
+  
+  .sticky-note .note-content {
+    padding: clamp(0.4rem, 1.2vw, 0.6rem);
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+}

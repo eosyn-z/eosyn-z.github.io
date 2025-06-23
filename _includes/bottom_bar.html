@@ -14,8 +14,11 @@
             <div id="desktop-back-button" class="tray-icon glass-button" title="Exit Desktop View" onclick="window.viewManager.toggleView()">
                 <span>★</span>
             </div>
-            <div id="theme-editor-button" class="tray-icon glass-button" title="Theme Settings" onclick="window.customThemeEditor.createThemeEditorWindow()">
+            <div id="settings-button" class="tray-icon glass-button" title="Settings" onclick="openSettingsWindow()">
                 <span>⚙️</span>
+            </div>
+            <div id="theme-editor-button" class="tray-icon glass-button" title="Theme Settings" onclick="window.customThemeEditor.createThemeEditorWindow()">
+                <span>🎨</span>
             </div>
             <!-- System tray icons like volume, network, etc. can go here -->
             <div id="discord-status-widget-tray" class="tray-icon"></div>

@@ -38,6 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         _attachEventListeners() {
+            // Attach to global header button
+            const globalBtn = document.getElementById('sticky-note-tray-btn');
+            if (globalBtn) {
+                globalBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggle();
+                });
+            }
+            // Also attach to any other create note button
             this.createButton = document.getElementById('create-note-btn');
             if (this.createButton) {
                 this.createButton.addEventListener('click', (e) => {
@@ -45,18 +54,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.toggle();
                 });
             }
-
             const closeButton = this.tray.querySelector('.close-tray-btn');
             if (closeButton) {
                 closeButton.addEventListener('click', () => this.hide());
             }
-
             this.tray.querySelectorAll('.sticky-notes-buttons-grid .glass-button').forEach(button => {
                 button.addEventListener('click', () => {
                     if (window.windowManager) {
                         const type = button.dataset.type;
                         const content = button.dataset.content;
-                        window.windowManager.createStickyNote(type, content);
+                        // Create sticky note with global visibility
+                        const note = window.windowManager.createStickyNote(type, content);
+                        if (note) {
+                            note.dataset.globalVisible = 'true';
+                        }
                         this.hide(); // Hide tray after creating a note
                     } else {
                         console.error("WindowManager not found.");
@@ -64,15 +75,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             });
-
+            // Only one tray open at a time (close theme editor tray if open)
             document.addEventListener('click', (e) => {
-                if (this.tray.style.display === 'block' && !this.tray.contains(e.target) && !this.createButton.contains(e.target)) {
+                if (this.tray.style.display === 'block' && !this.tray.contains(e.target) && (!globalBtn || !globalBtn.contains(e.target))) {
                     this.hide();
                 }
             });
         }
 
         toggle() {
+            // Close theme editor tray if open
+            const themeEditorTray = document.querySelector('.theme-editor-tray');
+            if (themeEditorTray && themeEditorTray.classList.contains('active')) {
+                themeEditorTray.classList.remove('active');
+                setTimeout(() => {
+                    themeEditorTray.style.display = 'none';
+                }, 300);
+            }
             if (this.tray.style.display === 'none' || this.tray.style.display === '') {
                 this.show();
             } else {
@@ -81,14 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         show() {
-             // Ensure other trays are closed
-            const themeEditor = document.getElementById('theme-editor-tray');
-            if (themeEditor && themeEditor.classList.contains('visible')) {
-                themeEditor.classList.remove('visible');
-                 setTimeout(() => {
-                    themeEditor.style.display = 'none';
-                }, 300);
-            }
             this.tray.style.display = 'block';
             setTimeout(() => this.tray.classList.add('visible'), 10);
         }
