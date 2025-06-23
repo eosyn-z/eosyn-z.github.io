@@ -7,8 +7,9 @@ desktop_mode: true
 
 <div id="desktop-grid">
     <!-- Desktop icons are now generated dynamically -->
-    {% assign desktop_pages = site.pages | where_exp: 'p', 'p.title and p.url != "/404.html" and p.url != "/desktop/" and p.url != "/games/"' %}
+    {% assign desktop_pages = site.pages %}
     {% for page in desktop_pages %}
+        {% if page.title and page.url != "/404.html" and page.url != "/desktop/" and page.url != "/games/" %}
         <div class="desktop-icon" 
              id="icon-{{ page.title | slugify }}" 
              data-app-url="{{ page.url | relative_url }}" 
@@ -16,6 +17,7 @@ desktop_mode: true
             <div class="icon-image">{{ page.icon | default: '📄' }}</div>
             <div class="icon-label">{{ page.title }}</div>
         </div>
+        {% endif %}
     {% endfor %}
     {% assign game_pages = site.games %}
     {% for game in game_pages %}
