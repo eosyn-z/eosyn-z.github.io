@@ -17,6 +17,10 @@
   <script src="{{ "/assets/js/start_menu.js" | relative_url }}" defer></script>
   <script src="{{ "/assets/js/desktop-manager.js" | relative_url }}" defer></script>
   <script src="{{ "/assets/js/background-animation.js" | relative_url }}" defer></script>
+  <script src="{{ "/assets/js/sparkles-background.js" | relative_url }}" defer></script>
+  <script src="{{ "/assets/js/retro-terminal.js" | relative_url }}" defer></script>
+  <script src="{{ "/assets/js/window-snapper.js" | relative_url }}" defer></script>
+  <script src="{{ "/assets/js/live-theme-editor.js" | relative_url }}" defer></script>
   <script src="{{ "/assets/js/now-playing.js" | relative_url }}" defer></script>
   
   <script src="{{ "/assets/js/discord-status.js" | relative_url }}" defer></script>
@@ -51,4 +55,9 @@
   {%- endif -%}
 
   <script src="{{ "/assets/js/sticky-notes.js" | relative_url }}" defer></script>
+  
+  <!-- Games data for JavaScript -->
+  <script>
+    window.siteGames = {% include games-data.html %};
+  </script>
 </head> 

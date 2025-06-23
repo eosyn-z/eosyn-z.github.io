@@ -22,9 +22,9 @@ icon: 🤔
       <form id="quiz-form">
           <!-- Questions will be injected here by JavaScript -->
       </form>
-      <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-          <button id="prev-btn" class="glass-button">Previous</button>
-          <button id="next-btn" class="glass-button primary">Next</button>
+      <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 30px;">
+          <button id="prev-btn" class="glass-button" style="order: 1;">Previous</button>
+          <button id="next-btn" class="glass-button primary" style="order: 2;">Next</button>
       </div>
     </div>
 </div>

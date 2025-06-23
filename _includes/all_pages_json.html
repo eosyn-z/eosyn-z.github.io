@@ -1,15 +1,14 @@
 [
-  {%- assign all_docs = site.pages | concat: site.documents -%}
-  {%- assign first = true -%}
-  {%- for p in all_docs -%}
-    {%- if p.title and p.url and p.url != '/404.html' and p.url != '/desktop/' and p.url != '/404' and p.url != '/' and p.url != '/index.html' -%}
-      {%- unless first -%},{%- endunless -%}
-      {
-        "title": {{ p.title | jsonify }},
-        "url": {{ p.url | relative_url | jsonify }},
-        "icon": {{ p.icon | default: "📄" | jsonify }}
-      }
-      {%- assign first = false -%}
-    {%- endif -%}
+  {%- for p in site.pages -%}
+  {%- if p.title and p.url and p.url != '/404.html' and p.url != '/desktop/' and p.url != '/404' and p.url != '/' and p.url != '/index.html' -%}
+  {
+    "title": {{ p.title | jsonify }},
+    "url": {{ p.url | jsonify }},
+    "permalink": {{ p.permalink | jsonify }},
+    "icon": {{ p.icon | default: '📄' | jsonify }},
+    "description": {{ p.description | default: '' | jsonify }},
+    "path": {{ p.path | jsonify }}
+  }{%- unless forloop.last -%},{%- endunless -%}
+  {%- endif -%}
   {%- endfor -%}
 ] 

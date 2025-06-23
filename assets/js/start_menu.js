@@ -56,7 +56,7 @@ class StartMenu {
 
     populate() {
         const pages = window.jekyllPages || [];
-        const games = window.gamesData || [];
+        const games = (window.siteGames || window.gamesData || []).filter(g => g.title && g.title !== 'Game Center');
 
         if (pages.length === 0 && games.length === 0) {
             console.error('No pages or games data found to populate Start Menu.');
@@ -78,14 +78,13 @@ class StartMenu {
         // --- Add Built-in Utilities ---
         this.addBuiltInUtility('🎨 Theme Editor', 'theme-editor', lists.utilities);
         this.addBuiltInUtility('📝 Sticky Notes', 'sticky-notes', lists.utilities);
+        this.addBuiltInUtility('🖥️ Retro Terminal', 'retro-terminal', lists.utilities);
 
         // --- Categorize and Populate ---
 
         // 1. Populate Games
         games.forEach(game => {
-            if (game.id !== 'games') { // Exclude the launcher page itself
-                 this.addPageToList(game, lists.games);
-            }
+            this.addPageToList(game, lists.games);
         });
 
         // 2. Define keywords for other categories
@@ -232,6 +231,13 @@ class StartMenu {
                         }
                     }, 100);
                 }
+            } else if (type === 'retro-terminal') {
+                // Open retro terminal
+                if (window.retroTerminal) {
+                    window.retroTerminal.open();
+                } else {
+                    console.error('Retro Terminal not available');
+                }
             }
             
             this.toggleMenu(false);
@@ -245,8 +251,8 @@ class StartMenu {
         if (!gamesList) return;
         gamesList.innerHTML = '';
 
-        // Collect all games from site.pages (Jekyll will expose this as window.sitePages if needed)
-        let games = window.sitePages ? window.sitePages.filter(p => p.path && p.path.includes('sitepages/games/') && p.path !== 'sitepages/games/games.md') : [];
+        // Collect all games from site.games collection (Jekyll will expose this as window.siteGames if needed)
+        let games = window.siteGames ? window.siteGames.filter(p => p.title && p.title !== 'Game Center') : [];
 
         // Check if Paint is already in the games list
         const paintPage = window.sitePages ? window.sitePages.find(p => p.permalink === '/paint/' || p.url === '/paint/') : null;

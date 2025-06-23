@@ -16,11 +16,31 @@ class FavoritesManager {
         const userFavorites = this.getStoredFavorites();
         const userRemoved = this.getStoredRemoved();
         
+        // Load bookmarks from search page
+        const searchBookmarks = this.loadSearchBookmarks();
+        
+        // Load game bookmarks
+        const gameBookmarks = this.loadGameBookmarks();
+        
         // Combine defaults with user actions
         let combined = defaultFavorites.filter(p => !userRemoved.includes(p.url));
         userFavorites.forEach(uf => {
             if (!combined.some(p => p.url === uf.url)) {
                 combined.push(uf);
+            }
+        });
+        
+        // Add search bookmarks
+        searchBookmarks.forEach(bookmark => {
+            if (!combined.some(p => p.url === bookmark.url)) {
+                combined.push(bookmark);
+            }
+        });
+        
+        // Add game bookmarks
+        gameBookmarks.forEach(game => {
+            if (!combined.some(p => p.url === game.url)) {
+                combined.push(game);
             }
         });
         
@@ -69,9 +89,17 @@ class FavoritesManager {
     toggleFavorite(page) {
         if (this.isFavorite(page.url)) {
             this.favorites = this.favorites.filter(fav => fav.url !== page.url);
+            // Remove from game bookmarks if it's a game
+            if (page.type === 'game' || page.permalink?.includes('/games/')) {
+                this.removeGameBookmark(page);
+            }
         } else {
             if (!this.favorites.some(fav => fav.url === page.url)) {
                 this.favorites.push(page);
+                // Add to game bookmarks if it's a game
+                if (page.type === 'game' || page.permalink?.includes('/games/')) {
+                    this.addGameBookmark(page);
+                }
             }
         }
         this.saveFavoritesState();
@@ -111,6 +139,63 @@ class FavoritesManager {
                     this.saveFavoritesState(); // Save the new order
                 }
             });
+        }
+    }
+
+    loadSearchBookmarks() {
+        try {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            return bookmarks.map(bookmark => ({
+                title: bookmark.title,
+                url: bookmark.url,
+                icon: '🔖',
+                type: 'bookmark'
+            }));
+        } catch (e) {
+            console.error("Error loading search bookmarks:", e);
+            return [];
+        }
+    }
+
+    loadGameBookmarks() {
+        try {
+            const gameBookmarks = JSON.parse(localStorage.getItem('gameBookmarks') || '[]');
+            return gameBookmarks.map(game => ({
+                title: game.title,
+                url: game.url || game.permalink,
+                icon: game.icon || '🎮',
+                type: 'game'
+            }));
+        } catch (e) {
+            console.error("Error loading game bookmarks:", e);
+            return [];
+        }
+    }
+
+    addGameBookmark(game) {
+        try {
+            const gameBookmarks = JSON.parse(localStorage.getItem('gameBookmarks') || '[]');
+            if (!gameBookmarks.some(g => g.url === game.url)) {
+                gameBookmarks.push({
+                    title: game.title,
+                    url: game.url || game.permalink,
+                    icon: game.icon || '🎮',
+                    type: 'game'
+                });
+                localStorage.setItem('gameBookmarks', JSON.stringify(gameBookmarks));
+            }
+        } catch (e) {
+            console.error("Error adding game bookmark:", e);
+        }
+    }
+
+    removeGameBookmark(game) {
+        try {
+            const gameBookmarks = JSON.parse(localStorage.getItem('gameBookmarks') || '[]');
+            const filtered = gameBookmarks.filter(g => g.url !== game.url);
+            localStorage.setItem('gameBookmarks', JSON.stringify(filtered));
+        } catch (e) {
+            console.error("Error removing game bookmark:", e);
         }
     }
 } 

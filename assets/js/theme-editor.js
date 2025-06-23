@@ -191,6 +191,30 @@ class CustomThemeEditor {
                     <button id="reset-theme-btn" class="glass-button">Reset to Default</button>
                     <button id="save-theme-btn" class="glass-button primary">Save Theme</button>
                 </div>
+
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--glass-border-light);">
+                    <h3 style="margin-bottom: 1rem; color: var(--theme-text);">✨ Background Effects</h3>
+                    <div class="background-effects-controls" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="effect-control" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: var(--glass-bg-light); border-radius: 8px;">
+                            <div>
+                                <div style="font-weight: 600; color: var(--theme-text);">Sparkles Background</div>
+                                <div style="font-size: 0.9rem; color: var(--theme-text-secondary);">Floating sparkles behind content</div>
+                            </div>
+                            <button id="toggle-sparkles-btn" class="glass-button" style="min-width: 80px;">
+                                ${window.sparklesBackground && window.sparklesBackground.isActive ? 'Disable' : 'Enable'}
+                            </button>
+                        </div>
+                        <div class="effect-control" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: var(--glass-bg-light); border-radius: 8px;">
+                            <div>
+                                <div style="font-weight: 600; color: var(--theme-text);">Particle Background</div>
+                                <div style="font-size: 0.9rem; color: var(--theme-text-secondary);">Interactive floating particles</div>
+                            </div>
+                            <button id="toggle-particles-btn" class="glass-button" style="min-width: 80px;">
+                                ${window.backgroundAnimation && window.backgroundAnimation.isActive ? 'Disable' : 'Enable'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         `;
     }
@@ -230,6 +254,27 @@ class CustomThemeEditor {
             this.saveCustomThemeToCookie();
             this.showSaveNotification();
         });
+
+        // Background effects toggles
+        const sparklesButton = tray.querySelector('#toggle-sparkles-btn');
+        if (sparklesButton) {
+            sparklesButton.addEventListener('click', () => {
+                if (window.sparklesBackground) {
+                    window.sparklesBackground.toggle();
+                    sparklesButton.textContent = window.sparklesBackground.isActive ? 'Disable' : 'Enable';
+                }
+            });
+        }
+
+        const particlesButton = tray.querySelector('#toggle-particles-btn');
+        if (particlesButton) {
+            particlesButton.addEventListener('click', () => {
+                if (window.backgroundAnimation) {
+                    window.backgroundAnimation.toggle();
+                    particlesButton.textContent = window.backgroundAnimation.isActive ? 'Disable' : 'Enable';
+                }
+            });
+        }
     }
 
     saveCustomTheme() {

@@ -17,7 +17,7 @@ desktop_mode: true
             <div class="icon-label">{{ page.title }}</div>
         </div>
     {% endfor %}
-    {% assign game_pages = site.pages | where_exp: 'g', 'g.path contains "sitepages/games/" and g.path != "sitepages/games/games.md"' %}
+    {% assign game_pages = site.games | where_exp: 'g', 'g.title and g.title != "Game Center"' %}
     {% for game in game_pages %}
         <div class="desktop-icon" 
              id="icon-{{ game.title | slugify }}" 

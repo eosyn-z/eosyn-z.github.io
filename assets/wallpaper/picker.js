@@ -2,6 +2,7 @@
 class WallpaperPicker {
   constructor(desktopManager) {
     this.desktopManager = desktopManager;
+    this.wallpaperFolders = ['/assets/wallpapers/default/', '/assets/wallpaper/'];
   }
 
   showWallpaperPicker() {
@@ -22,28 +23,25 @@ class WallpaperPicker {
           <div class="wallpaper-picker-content">
             <!-- Default Wallpapers Tab -->
             <div class="tab-content active" id="default-tab">
-              <div class="wallpaper-grid">
-                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-1.jpg">
-                  <img src="/assets/wallpapers/default/desktop-1.jpg" alt="Default 1">
-                  <span>Default 1</span>
-                </div>
-                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-2.jpg">
-                  <img src="/assets/wallpapers/default/desktop-2.jpg" alt="Default 2">
-                  <span>Default 2</span>
-                </div>
-                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-3.jpg">
-                  <img src="/assets/wallpapers/default/desktop-3.jpg" alt="Default 3">
-                  <span>Default 3</span>
-                </div>
-                <div class="wallpaper-item" data-wallpaper="/assets/wallpapers/default/desktop-4.jpg">
-                  <img src="/assets/wallpapers/default/desktop-4.jpg" alt="Default 4">
-                  <span>Default 4</span>
-                </div>
+              <div class="tab-header">
+                <h4>Default Wallpapers</h4>
+                <button class="refresh-btn glass-button small" onclick="window.wallpaperPicker.refreshDefaultWallpapers()">
+                  🔄 Refresh
+                </button>
+              </div>
+              <div class="wallpaper-grid" id="defaultWallpaperGrid">
+                <div class="loading">Scanning for wallpapers...</div>
               </div>
             </div>
             
             <!-- Custom Wallpapers Tab -->
             <div class="tab-content" id="custom-tab">
+              <div class="tab-header">
+                <h4>Custom Wallpapers</h4>
+                <button class="save-btn glass-button small" onclick="window.wallpaperPicker.saveCustomWallpapers()">
+                  💾 Save to Cookie
+                </button>
+              </div>
               <div class="wallpaper-grid" id="customWallpaperGrid">
                 <!-- Custom wallpapers will be loaded here -->
               </div>
@@ -62,7 +60,7 @@ class WallpaperPicker {
                   <input type="text" id="wallpaperName" placeholder="My Wallpaper">
                 </div>
                 <div class="form-group">
-                  <button class="add-wallpaper-btn" onclick="window.desktopManager.addCustomWallpaper()">Add Wallpaper</button>
+                  <button class="add-wallpaper-btn glass-button" onclick="window.wallpaperPicker.addCustomWallpaper()">Add Wallpaper</button>
                 </div>
                 <div class="recommended-sources">
                   <h5>Recommended Image Sources:</h5>
@@ -89,11 +87,105 @@ class WallpaperPicker {
     // Add picker to page
     document.body.insertAdjacentHTML('beforeend', pickerHTML);
 
-    // Load custom wallpapers
+    // Make picker globally accessible
+    window.wallpaperPicker = this;
+
+    // Load wallpapers
+    this.refreshDefaultWallpapers();
     this.loadCustomWallpapers();
 
     // Add event listeners
     this.addPickerEventListeners();
+  }
+
+  async refreshDefaultWallpapers() {
+    const defaultGrid = document.getElementById('defaultWallpaperGrid');
+    if (!defaultGrid) return;
+
+    defaultGrid.innerHTML = '<div class="loading">Scanning for wallpapers...</div>';
+
+    try {
+      const wallpapers = await this.scanWallpaperFolders();
+      
+      if (wallpapers.length === 0) {
+        defaultGrid.innerHTML = `
+          <div class="no-wallpapers">
+            <p>No wallpapers found in the default folders.</p>
+            <p>Add images to <code>/assets/wallpapers/default/</code> or <code>/assets/wallpaper/</code></p>
+          </div>
+        `;
+        return;
+      }
+
+      defaultGrid.innerHTML = wallpapers.map(wallpaper => `
+        <div class="wallpaper-item" data-wallpaper="${wallpaper.url}">
+          <img src="${wallpaper.url}" alt="${wallpaper.name}" onerror="this.parentElement.remove()">
+          <span>${wallpaper.name}</span>
+        </div>
+      `).join('');
+
+      // Re-add event listeners for default wallpapers
+      this.addWallpaperEventListeners(defaultGrid);
+
+    } catch (error) {
+      console.error('Error scanning wallpapers:', error);
+      defaultGrid.innerHTML = '<div class="error">Error scanning wallpapers. Please try again.</div>';
+    }
+  }
+
+  async scanWallpaperFolders() {
+    const wallpapers = [];
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
+
+    // Try to fetch a directory listing or known wallpaper files
+    for (const folder of this.wallpaperFolders) {
+      try {
+        // Try common wallpaper filenames
+        const commonNames = [
+          'desktop-1.jpg', 'desktop-2.jpg', 'desktop-3.jpg', 'desktop-4.jpg',
+          'wallpaper-1.jpg', 'wallpaper-2.jpg', 'wallpaper-3.jpg',
+          'bg-1.jpg', 'bg-2.jpg', 'background-1.jpg', 'background-2.jpg',
+          'default.jpg', 'default.png', 'wallpaper.jpg', 'wallpaper.png'
+        ];
+
+        for (const filename of commonNames) {
+          const url = folder + filename;
+          if (await this.checkImageExists(url)) {
+            wallpapers.push({
+              url: url,
+              name: filename.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+            });
+          }
+        }
+
+        // Also try to scan for any image files (this is limited by browser security)
+        // We'll rely on the common names for now
+      } catch (error) {
+        console.warn(`Could not scan folder ${folder}:`, error);
+      }
+    }
+
+    return wallpapers;
+  }
+
+  async checkImageExists(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  }
+
+  addWallpaperEventListeners(container) {
+    const wallpaperItems = container.querySelectorAll('.wallpaper-item');
+    wallpaperItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const wallpaperUrl = item.dataset.wallpaper;
+        this.desktopManager.setWallpaper(wallpaperUrl);
+        document.getElementById('wallpaperPickerOverlay').remove();
+      });
+    });
   }
 
   addPickerEventListeners() {
@@ -119,16 +211,6 @@ class WallpaperPicker {
       });
     });
 
-    // Wallpaper selection
-    const wallpaperItems = document.querySelectorAll('.wallpaper-item');
-    wallpaperItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const wallpaperUrl = item.dataset.wallpaper;
-        this.desktopManager.setWallpaper(wallpaperUrl);
-        document.getElementById('wallpaperPickerOverlay').remove();
-      });
-    });
-
     // Close on overlay click
     const overlay = document.getElementById('wallpaperPickerOverlay');
     overlay.addEventListener('click', (e) => {
@@ -142,7 +224,7 @@ class WallpaperPicker {
     const customGrid = document.getElementById('customWallpaperGrid');
     if (!customGrid) return;
 
-    const customWallpapers = this.desktopManager.getCustomWallpapers();
+    const customWallpapers = this.getCustomWallpapers();
     
     if (customWallpapers.length === 0) {
       customGrid.innerHTML = '<p class="no-wallpapers">No custom wallpapers yet. Add some in the "Add New" tab!</p>';
@@ -153,29 +235,35 @@ class WallpaperPicker {
       <div class="wallpaper-item custom-wallpaper" data-wallpaper="${wallpaper.url}" data-id="${wallpaper.id}">
         <img src="${wallpaper.url}" alt="${wallpaper.name || 'Custom Wallpaper'}" onerror="this.parentElement.remove()">
         <span>${wallpaper.name || 'Custom'}</span>
-        <button class="remove-wallpaper-btn" onclick="window.desktopManager.removeCustomWallpaper('${wallpaper.id}')">×</button>
+        <button class="remove-wallpaper-btn" onclick="window.wallpaperPicker.removeCustomWallpaper('${wallpaper.id}')">×</button>
       </div>
     `).join('');
 
     // Re-add event listeners for custom wallpapers
-    const customItems = customGrid.querySelectorAll('.wallpaper-item');
-    customItems.forEach(item => {
-      item.addEventListener('click', (e) => {
-        if (!e.target.classList.contains('remove-wallpaper-btn')) {
-          const wallpaperUrl = item.dataset.wallpaper;
-          this.desktopManager.setWallpaper(wallpaperUrl);
-          document.getElementById('wallpaperPickerOverlay').remove();
-        }
-      });
-    });
+    this.addWallpaperEventListeners(customGrid);
   }
 
   getCustomWallpapers() {
-    return this.desktopManager.getCustomWallpapers();
+    try {
+      const saved = localStorage.getItem('customWallpapers');
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error('Error loading custom wallpapers:', error);
+      return [];
+    }
   }
 
-  saveCustomWallpapers(wallpapers) {
-    this.desktopManager.saveCustomWallpapers(wallpapers);
+  saveCustomWallpapers() {
+    const customWallpapers = this.getCustomWallpapers();
+    
+    // Also save to cookies as backup
+    try {
+      document.cookie = `customWallpapers=${JSON.stringify(customWallpapers)}; path=/; max-age=31536000`;
+      alert(`Saved ${customWallpapers.length} custom wallpapers to cookies!`);
+    } catch (error) {
+      console.error('Error saving to cookies:', error);
+      alert('Error saving to cookies. Wallpapers are still saved in browser storage.');
+    }
   }
 
   addCustomWallpaper() {
@@ -198,8 +286,30 @@ class WallpaperPicker {
       return;
     }
 
-    // Use desktop manager's method
-    this.desktopManager.addCustomWallpaperFromPicker(url, name);
+    // Add to custom wallpapers
+    const customWallpapers = this.getCustomWallpapers();
+    const newWallpaper = {
+      id: Date.now().toString(),
+      url: url,
+      name: name || 'Custom Wallpaper',
+      added: new Date().toISOString()
+    };
+
+    customWallpapers.push(newWallpaper);
+    
+    try {
+      localStorage.setItem('customWallpapers', JSON.stringify(customWallpapers));
+      urlInput.value = '';
+      nameInput.value = '';
+      
+      // Refresh custom wallpapers display
+      this.loadCustomWallpapers();
+      
+      alert('Wallpaper added successfully!');
+    } catch (error) {
+      console.error('Error saving custom wallpaper:', error);
+      alert('Error saving wallpaper. Please try again.');
+    }
   }
 
   removeCustomWallpaper(id) {
@@ -207,7 +317,15 @@ class WallpaperPicker {
       return;
     }
 
-    // Use desktop manager's method
-    this.desktopManager.removeCustomWallpaper(id);
+    const customWallpapers = this.getCustomWallpapers();
+    const filtered = customWallpapers.filter(w => w.id !== id);
+    
+    try {
+      localStorage.setItem('customWallpapers', JSON.stringify(filtered));
+      this.loadCustomWallpapers();
+    } catch (error) {
+      console.error('Error removing custom wallpaper:', error);
+      alert('Error removing wallpaper. Please try again.');
+    }
   }
 } 

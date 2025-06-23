@@ -14,7 +14,7 @@ icon: 🎮
     </header>
 
     <div class="games-grid">
-      {% assign game_pages = site.pages | where_exp: 'p', 'p.path contains "sitepages/games/" and p.path != "sitepages/games/games.md"' %}
+      {% assign game_pages = site.games | where_exp: 'g', 'g.title and g.title != "Game Center"' %}
       {% for game in game_pages %}
         <div class="game-card" data-game="{{ game.title | downcase }}">
           <div class="game-icon">{{ game.icon }}</div>
@@ -53,7 +53,7 @@ function launchGame(gameId, gameTitle) {
   // Check if we are in the desktop view
   if (window.desktopManager && document.body.classList.contains('desktop-view-active')) {
     // Desktop mode: Launch in a window
-    const url = `${window.siteBaseUrl || ''}/games/${gameId}/`;
+    const url = `${window.siteBaseUrl || ''}/${gameId}/`;
     window.desktopManager.createWindow(gameId, gameTitle, url, 'fas fa-gamepad');
   } else {
     // Site mode: Launch in a modal
@@ -62,7 +62,7 @@ function launchGame(gameId, gameTitle) {
     const title = document.getElementById('game-modal-title');
     
     title.textContent = gameTitle;
-    iframe.src = `${window.siteBaseUrl || ''}/games/${gameId}/`;
+    iframe.src = `${window.siteBaseUrl || ''}/${gameId}/`;
     modal.style.display = 'flex';
   }
 }

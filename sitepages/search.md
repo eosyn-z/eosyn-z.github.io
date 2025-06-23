@@ -766,6 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.head.appendChild(style);
 
   function renderSites(filter = 'all', searchTerm = '') {
+    console.log('renderSites called with:', { filter, searchTerm });
     grid.innerHTML = '';
     searchTerm = searchTerm.toLowerCase();
 
@@ -774,6 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (filter === 'bookmark') {
       // Show only bookmarked sites
       filteredSites = loadBookmarks();
+      console.log('Bookmark filter - found sites:', filteredSites.length);
     } else {
       // Filter from all sites
       filteredSites = sites.filter(site => {
@@ -784,6 +786,8 @@ document.addEventListener('DOMContentLoaded', () => {
                               site.tags.some(tag => tag.toLowerCase().includes(searchTerm));
         return matchesFilter && matchesSearch;
       });
+      
+      console.log('Filtered sites:', filteredSites.length, 'for filter:', filter, 'search:', searchTerm);
       
       // Also include bookmarked sites that match the search term (if not already in results)
       if (searchTerm !== '') {
@@ -796,32 +800,44 @@ document.addEventListener('DOMContentLoaded', () => {
           return matchesSearch && notAlreadyIncluded;
         });
         filteredSites = [...filteredSites, ...matchingBookmarks];
+        console.log('Added bookmarks:', matchingBookmarks.length);
       }
     }
 
     if (filteredSites.length === 0) {
       grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No sites found matching your criteria.</p>';
+      console.log('No sites found');
       return;
     }
     
-    // Group sites by tag (only for non-bookmark filters)
+    // Group sites by tag
     let groups;
     if (filter === 'bookmark') {
       groups = {
         'Bookmarked Sites': filteredSites
       };
-    } else {
+    } else if (filter === 'all') {
+      // For 'all' filter, group by categories
       groups = {
-          'Personal Sites': filteredSites.filter(s => s.tags.includes('personal')),
-          'Tools & Resources': filteredSites.filter(s => s.tags.includes('tools') && !s.tags.includes('personal')),
-          'Company & Platform': filteredSites.filter(s => s.tags.includes('company') && !s.tags.includes('tools') && !s.tags.includes('personal')),
-          'Bookmarked Sites': filteredSites.filter(s => isBookmarked(s) && !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
-          'Uncategorized': filteredSites.filter(s => !isBookmarked(s) && !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
+        'Personal Sites': filteredSites.filter(s => s.tags.includes('personal')),
+        'Tools & Resources': filteredSites.filter(s => s.tags.includes('tools') && !s.tags.includes('personal')),
+        'Company & Platform': filteredSites.filter(s => s.tags.includes('company') && !s.tags.includes('tools') && !s.tags.includes('personal')),
+        'Bookmarked Sites': filteredSites.filter(s => isBookmarked(s) && !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
+        'Other Sites': filteredSites.filter(s => !isBookmarked(s) && !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
+      };
+    } else {
+      // For specific filters, just show all matching sites in one group
+      groups = {
+        [`${filter.charAt(0).toUpperCase() + filter.slice(1)} Sites`]: filteredSites
       };
     }
 
+    console.log('Groups:', Object.keys(groups).map(key => `${key}: ${groups[key].length}`));
+
     Object.entries(groups).forEach(([groupName, sitesInGroup]) => {
         if (sitesInGroup.length === 0) return;
+
+        console.log('Creating group:', groupName, 'with', sitesInGroup.length, 'sites');
 
         // Create a container for the group
         const groupContainer = document.createElement('div');
@@ -873,6 +889,8 @@ document.addEventListener('DOMContentLoaded', () => {
         groupContainer.appendChild(groupGrid);
         grid.appendChild(groupContainer);
     });
+    
+    console.log('Render complete');
   }
 
   // Initial render

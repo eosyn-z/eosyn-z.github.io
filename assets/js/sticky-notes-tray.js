@@ -11,26 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
         _createTray() {
             const trayContainer = document.createElement('div');
             trayContainer.innerHTML = `
-                <div id="sticky-notes-tray" class="sticky-notes-tray glass-panel">
+                <div id="sticky-notes-tray" class="sticky-notes-tray slide-in-right">
                     <div class="tray-header">
-                        <h3>📝 Create a New Note</h3>
-                        <button class="close-tray-btn">&times;</button>
+                        <h2 style="margin: 0; color: var(--theme-text);">📝 Sticky Notes</h2>
+                        <button class="tray-close-btn" title="Close Sticky Notes Tray">&times;</button>
                     </div>
-                    <div class="tray-content">
-                        <p>Click any button below to create a new sticky note on your desktop.</p>
-                        <div class="sticky-notes-buttons-grid">
-                            <button class="glass-button" data-type="Quick Note" data-content="📝 Quick Note\n\nWrite your thoughts here...">📝 Quick Note</button>
-                            <button class="glass-button" data-type="Todo List" data-content="📋 Todo:\n• Task 1\n• Task 2\n• Task 3">✅ Todo List</button>
-                            <button class="glass-button" data-type="Ideas" data-content="💡 Ideas:\n• Project idea 1\n• Creative thought">💡 Ideas</button>
-                            <button class="glass-button" data-type="Reminder" data-content="⏰ Reminder:\nDon't forget to...">⏰ Reminder</button>
-                            <button class="glass-button" data-type="Code Snippet" data-content="// Code Snippet\nfunction hello() {\n  console.log('Hello World!');\n}">💻 Code Snippet</button>
-                            <button class="glass-button" data-type="Quote" data-content="> 'The best way to predict the future is to invent it.'\n\n- Alan Kay">💬 Quote</button>
-                            <button class="glass-button" data-type="Contact Info" data-content="📞 Contact:\nName: [Your Name]\nEmail: [your.email@example.com]">📞 Contact Info</button>
-                            <button class="glass-button" data-type="Shopping List" data-content="🛒 Shopping:\n• Milk\n• Bread\n• Eggs">🛒 Shopping List</button>
-                            <button class="glass-button" data-type="Meeting Notes" data-content="📅 Meeting Notes:\n\nAgenda:\n- Topic 1\n- Topic 2">📅 Meeting Notes</button>
-                            <button class="glass-button" data-type="Empty Note" data-content="">📄 Empty Note</button>
-                        </div>
-                    </div>
+                    <div class="tray-content"></div>
                 </div>
             `;
             this.tray = trayContainer.firstElementChild;
@@ -56,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
             
-            const closeButton = this.tray.querySelector('.close-tray-btn');
+            const closeButton = this.tray.querySelector('.tray-close-btn');
             if (closeButton) {
                 closeButton.addEventListener('click', () => this.hide());
             }
@@ -106,8 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         show() {
+            // Inject sticky notes manager UI into tray-content
+            if (window.windowManager && typeof window.windowManager.createStickyNotesContent === 'function') {
+                this.tray.querySelector('.tray-content').innerHTML = window.windowManager.createStickyNotesContent();
+            }
             this.tray.style.display = 'block';
             setTimeout(() => this.tray.classList.add('visible'), 10);
+            localStorage.setItem('stickyNotesTrayOpen', 'true');
         }
 
         hide() {
@@ -115,6 +106,18 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 this.tray.style.display = 'none';
             }, 300);
+            localStorage.setItem('stickyNotesTrayOpen', 'false');
+        }
+
+        // Check if tray should be restored on page load
+        checkRestoreState() {
+            const wasOpen = localStorage.getItem('stickyNotesTrayOpen') === 'true';
+            if (wasOpen) {
+                // Small delay to ensure everything is loaded
+                setTimeout(() => {
+                    this.show();
+                }, 100);
+            }
         }
     }
 
@@ -122,6 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!window.stickyNotesTray) {
         window.stickyNotesTray = new StickyNotesTray();
     }
+
+    // Check if tray should be restored
+    setTimeout(() => {
+        if (window.stickyNotesTray) {
+            window.stickyNotesTray.checkRestoreState();
+        }
+    }, 200);
 
     // Ensure plus button works in both modes
     const stickyBtn = document.getElementById('sticky-note-tray-btn') || document.getElementById('create-note-btn');

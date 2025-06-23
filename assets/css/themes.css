@@ -74,7 +74,7 @@
 
 /* from theme.css */
 [data-theme="c"] {
-  --theme-button-gradient: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+  --theme-button-gradient: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
   --theme-accent: #9fedff;
   --bg-primary: #0f1117;
   --bg-secondary: #1a202b;
@@ -87,7 +87,7 @@
   --border-primary: #4a5568;
   --border-accent: #718096;
   --shine-opacity: 0.05;
-  --gradient-button: var(--gradient-celestial);
+  --gradient-button: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
   --chromatic-color-1: #ed936d5a;
   --chromatic-color-2: #93fb976d;
   /* Post-it Colors - Celestial Theme */
@@ -102,7 +102,7 @@
 }
 
 [data-theme="a"] {
-  --theme-button-gradient: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+  --theme-button-gradient: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #e91e63) 100%);
   --theme-accent: #f1a3ca;
   --bg-primary: #907a8a;
   --bg-secondary: #ffffff;
@@ -115,7 +115,7 @@
   --border-primary: #e2e8f0;
   --border-accent: #cbd5e0;
   --shine-opacity: 0;
-  --gradient-button: var(--gradient-aurora);
+  --gradient-button: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #e91e63) 100%);
   --chromatic-color-1: #ffe3bb;
   --chromatic-color-2: #aeecf4;
   /* Glass backgrounds - vibrant pink tinted */
@@ -135,7 +135,7 @@
 }
 
 [data-theme="r"] {
-  --theme-button-gradient: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  --theme-button-gradient: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #00bcd4) 100%);
   --theme-accent: #00f2ff;
   --bg-primary: #0d0221;
   --bg-secondary: #241b3a;
@@ -148,7 +148,7 @@
   --border-primary: #3a2e58;
   --border-accent: #5b4c81;
   --shine-opacity: 0.08;
-  --gradient-button: var(--gradient-retro);
+  --gradient-button: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #00bcd4) 100%);
   --chromatic-color-1: #00f2ff;
   --chromatic-color-2: #ff00c1;
   /* Post-it Colors - Retro Theme */
@@ -163,7 +163,7 @@
 }
 
 [data-theme="z"] {
-  --theme-button-gradient: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+  --theme-button-gradient: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #4caf50) 100%);
   --theme-accent: #AEAEAE;
   --bg-primary: #F5F5F5;
   --bg-secondary: #FFFFFF;
@@ -176,7 +176,7 @@
   --border-primary: #DCDCDC;
   --border-accent: #C9C9C9;
   --shine-opacity: 0;
-  --gradient-button: var(--gradient-zen);
+  --gradient-button: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #4caf50) 100%);
   --chromatic-color-1: #AEAEAE;
   --chromatic-color-2: #9B9B9B;
   /* Post-it Colors - Zen Theme */
@@ -191,7 +191,7 @@
 }
 
 [data-theme="e"] {
-  --theme-button-gradient: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
+  --theme-button-gradient: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #006400) 100%);
   --theme-accent: #2E8B57;
   --bg-primary: #F0FFF0;
   --bg-secondary: #FFFFFF;
@@ -204,7 +204,7 @@
   --border-primary: #D4EAD4;
   --border-accent: #C2E0C2;
   --shine-opacity: 0;
-  --gradient-button: var(--gradient-eco);
+  --gradient-button: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #006400) 100%);
   --chromatic-color-1: #556B2F;
   --chromatic-color-2: #8FBC8F;
   /* Post-it Colors - Eco Theme */
@@ -219,7 +219,7 @@
 }
 
 [data-theme="n"] {
-  --theme-button-gradient: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+  --theme-button-gradient: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #00CC00) 100%);
   --theme-accent: #4DFF00;
   --bg-primary: #0A0A0A;
   --bg-secondary: #1A1A1A;
@@ -232,7 +232,7 @@
   --border-primary: #3C3C3C;
   --border-accent: #4F4F4F;
   --shine-opacity: 0.12;
-  --gradient-button: var(--gradient-neon);
+  --gradient-button: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark, #00CC00) 100%);
   --chromatic-color-1: #4DFF00;
   --chromatic-color-2: #FFD600;
   /* Post-it Colors - Neon Theme */

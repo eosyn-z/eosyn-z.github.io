@@ -44,6 +44,71 @@
   font-size: 1.1rem;
 }
 
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--glass-border-light);
+}
+
+.tab-header h4 {
+  margin: 0;
+  color: var(--theme-text);
+  font-size: 1.1rem;
+}
+
+.refresh-btn, .save-btn {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  background: var(--theme-button-gradient);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover, .save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.no-wallpapers {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+}
+
+.no-wallpapers p {
+  margin: 0.5rem 0;
+}
+
+.no-wallpapers code {
+  background: var(--glass-bg-light);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
 .custom-wallpapers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -169,5 +234,11 @@
   .source-links {
     flex-direction: column;
     gap: 0.25rem;
+  }
+  
+  .tab-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
   }
 } 

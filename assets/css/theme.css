@@ -156,7 +156,7 @@ html {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--theme-accent), var(--theme-accent-dark));
+  background: var(--theme-button-gradient);
   color: var(--text-white);
   font-size: 1.5rem;
   font-weight: bold;
@@ -170,10 +170,10 @@ html {
 }
 
 .theme-btn.sticky-note-btn:hover {
-  background: linear-gradient(135deg, var(--theme-accent-light, #8b5cf6), var(--theme-accent));
+  background: var(--theme-button-gradient);
   color: var(--text-white);
   transform: scale(1.1);
-  border-color: var(--theme-accent-light, #8b5cf6);
+  border-color: var(--theme-accent-light, var(--theme-accent));
 }
 
 .theme-btn.sticky-note-btn:active {
@@ -410,13 +410,13 @@ body[data-page="search"] .main-content {
 /* These classes apply theme colors to glass elements */
 
 .glass-button.primary {
-  background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+  background: var(--theme-button-gradient);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
 .glass-button.primary:hover {
-  background: linear-gradient(135deg, var(--theme-secondary), var(--theme-primary));
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  background: var(--theme-button-gradient);
+  box-shadow: 0 8px 20px var(--theme-primary-shadow, rgba(102, 126, 234, 0.3));
 }
 
 .glass-card.accent {
@@ -1678,7 +1678,7 @@ body.desktop-mode .main-content {
 }
 
 .play-btn {
-  background: var(--theme-accent);
+  background: var(--theme-button-gradient);
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -1689,7 +1689,7 @@ body.desktop-mode .main-content {
 }
 
 .play-btn:hover {
-  background: var(--theme-accent-dark);
+  background: var(--theme-button-gradient);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }

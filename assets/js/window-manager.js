@@ -1693,6 +1693,49 @@ class WindowManager {
         // Save the note
         this.saveStickyNotes();
     }
+
+    // --- Tamagotchi Web Pet ---
+    createPetWindow() {
+        // Only one pet window at a time
+        if (document.getElementById('pet-window')) {
+            this.focusWindow('pet-window');
+            return;
+        }
+        const petHtml = `
+            <div class="pet-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                <div class="pet-art" style="width: 120px; height: 120px; margin-bottom: 1rem;">
+                    <img src="/assets/pet/pet-placeholder.gif" alt="Web Pet" style="width: 100%; height: 100%; object-fit: contain;" id="pet-art-img">
+                </div>
+                <div class="pet-stats" style="margin-bottom: 1rem;">
+                    <span id="pet-mood">Mood: 😊</span> | <span id="pet-hunger">Hunger: 🍔🍔🍔</span>
+                </div>
+                <div class="pet-actions" style="display: flex; gap: 1rem;">
+                    <button class="glass-button" id="pet-feed">Feed</button>
+                    <button class="glass-button" id="pet-play">Play</button>
+                    <button class="glass-button" id="pet-pet">Pet</button>
+                </div>
+            </div>
+        `;
+        const win = this.createWindow('pet-window', '🐾 Web Pet', petHtml, 320, 320, true);
+        win.classList.add('always-on-top');
+        win.style.zIndex = 99999;
+        // Simple pet logic
+        let mood = 3, hunger = 3;
+        const moodSpan = win.querySelector('#pet-mood');
+        const hungerSpan = win.querySelector('#pet-hunger');
+        function updateStats() {
+            const moods = ['😢', '😐', '😊', '😄'];
+            moodSpan.textContent = `Mood: ${moods[mood]}`;
+            hungerSpan.textContent = `Hunger: ${'🍔'.repeat(hunger)}`;
+        }
+        win.querySelector('#pet-feed').onclick = () => { hunger = Math.min(3, hunger + 1); mood = Math.min(3, mood + 1); updateStats(); };
+        win.querySelector('#pet-play').onclick = () => { mood = Math.min(3, mood + 1); hunger = Math.max(0, hunger - 1); updateStats(); };
+        win.querySelector('#pet-pet').onclick = () => { mood = Math.min(3, mood + 1); updateStats(); };
+        // Mood/hunger decay
+        win.petInterval = setInterval(() => { hunger = Math.max(0, hunger - 1); if (hunger === 0) mood = Math.max(0, mood - 1); updateStats(); }, 10000);
+        win.onclose = () => { clearInterval(win.petInterval); };
+        updateStats();
+    }
 }
 
 // Initialize window manager globally
