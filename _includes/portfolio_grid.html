@@ -1,5 +1,33 @@
 <div class="portfolio-grid">
-    {% assign all_items = site.portfolio | sort: 'date' | reverse %}
+    {% comment %} Combine all items from portfolio, projects, and artpages collections {% endcomment %}
+    {% assign portfolio_items = site.portfolio | sort: 'date' | reverse %}
+    {% assign project_items = site.projects | sort: 'date' | reverse %}
+    {% assign art_items = site.artpages | sort: 'date' | reverse %}
+    
+    {% comment %} Add collection type to each item for categorization {% endcomment %}
+    {% assign all_items = '' | split: '' %}
+    
+    {% for item in portfolio_items %}
+        {% assign item_with_type = item %}
+        {% assign item_with_type.collection_type = 'portfolio' %}
+        {% assign all_items = all_items | push: item_with_type %}
+    {% endfor %}
+    
+    {% for item in project_items %}
+        {% assign item_with_type = item %}
+        {% assign item_with_type.collection_type = 'project' %}
+        {% assign all_items = all_items | push: item_with_type %}
+    {% endfor %}
+    
+    {% for item in art_items %}
+        {% assign item_with_type = item %}
+        {% assign item_with_type.collection_type = 'art' %}
+        {% assign all_items = all_items | push: item_with_type %}
+    {% endfor %}
+    
+    {% comment %} Sort all items by date {% endcomment %}
+    {% assign all_items = all_items | sort: 'date' | reverse %}
+    
     {% for item in all_items %}
     <a href="{{ item.url | relative_url }}" class="portfolio-card glass-card">
         {% if item.image %}
@@ -13,9 +41,14 @@
             <h2 class="card-title">{{ item.title }}</h2>
             <p class="card-date">{{ item.date | date: "%B %d, %Y" }}</p>
             <p class="card-description">{{ item.description }}</p>
-            {% if item.category %}
-            <span class="card-category">{{ item.category }}</span>
-            {% endif %}
+            <div class="card-tags">
+                {% if item.category %}
+                <span class="card-category">{{ item.category }}</span>
+                {% endif %}
+                {% if item.collection_type %}
+                <span class="card-category collection-type">{{ item.collection_type | capitalize }}</span>
+                {% endif %}
+            </div>
         </div>
     </a>
     {% endfor %}

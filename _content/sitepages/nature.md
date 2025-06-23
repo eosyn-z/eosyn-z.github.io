@@ -50,7 +50,7 @@ description: "Touch grass - nature imagery and filters."
     </div>
 </div>
 
-<div id="imageContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-size: cover; background-position: center; background-repeat: no-repeat; transition: background-image 1s ease-in-out;"></div>
+<div id="imageContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #000; transition: background-image 1s ease-in-out;"></div>
 
 <div id="imageCredits" class="glass-card" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1003; min-width: 220px; text-align: center; opacity: 0.92; font-size: 1rem; pointer-events: none; display: none;"></div>
 

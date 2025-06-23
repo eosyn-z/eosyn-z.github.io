@@ -7,10 +7,16 @@
       window.gamesData = {% include games-data.html %};
     </script>
     <style>
+      .games-launcher-wrapper {
+        padding: 2rem;
+      }
       .games-launcher {
         display: flex;
-        height: 100vh;
+        height: calc(100vh - 200px); /* Adjusted height */
         background: var(--glass-bg-light);
+        border: 1px solid var(--glass-border-light);
+        border-radius: 12px;
+        overflow: hidden;
       }
       
       .games-sidebar {
@@ -19,6 +25,8 @@
         border-right: 1px solid var(--glass-border-light);
         padding: 1rem;
         overflow-y: auto;
+        height: calc(100vh - 60px);
+        margin-top: 60px;
       }
       
       .games-viewer {
@@ -159,26 +167,30 @@
       </div>
     </header>
     
-    <div class="games-launcher">
-      <div class="games-sidebar">
-        <div class="games-header">
-          <h2>🎮 Classic Game Launcher</h2>
-          <p>Select a game to play</p>
-        </div>
-        <div id="games-list">
-          <!-- Games will be populated here by JavaScript -->
-        </div>
-      </div>
-      
-      <div class="games-viewer">
-        <div id="game-viewer-content" class="game-viewer-content">
-          <div class="game-placeholder">
-            <h2>Welcome to the Game Launcher!</h2>
-            <p>Select a game from the sidebar to get started.</p>
+    <main class="main-content">
+      <div class="games-launcher-wrapper">
+        <div class="games-launcher">
+          <div class="games-sidebar">
+            <div class="games-header">
+              <h2>🎮 Classic Game Launcher</h2>
+              <p>Select a game to play</p>
+            </div>
+            <div id="games-list">
+              <!-- Games will be populated here by JavaScript -->
+            </div>
+          </div>
+          
+          <div class="games-viewer">
+            <div id="game-viewer-content" class="game-viewer-content">
+              <div class="game-placeholder">
+                <h2>Welcome to the Game Launcher!</h2>
+                <p>Select a game from the sidebar to get started.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
     <script>
       let currentGame = null;
@@ -188,15 +200,18 @@
         gamesList.innerHTML = '';
 
         window.gamesData.forEach(game => {
+          // Skip the main 'games' page from the list
+          if (game.id === 'games' || !game.title) return;
+
           const gameButton = document.createElement('div');
           gameButton.className = 'game-button';
-          gameButton.onclick = () => selectGame(game);
+          gameButton.onclick = (event) => selectGame(game, event.currentTarget);
           
           gameButton.innerHTML = `
-            <div class="game-icon">${game.icon}</div>
+            <div class="game-icon">${game.icon || '🕹️'}</div>
             <div class="game-info">
               <div class="game-title">${game.title}</div>
-              <div class="game-description">${game.description}</div>
+              <div class="game-description">${game.description || 'A classic game.'}</div>
             </div>
           `;
           
@@ -204,21 +219,19 @@
         });
       }
 
-      function selectGame(game) {
-        // Update active button
+      function selectGame(game, buttonElement) {
         document.querySelectorAll('.game-button').forEach(btn => {
           btn.classList.remove('active');
         });
-        event.currentTarget.classList.add('active');
+        buttonElement.classList.add('active');
         
         currentGame = game;
         
-        // Update viewer content
         const viewerContent = document.getElementById('game-viewer-content');
         viewerContent.innerHTML = `
           <div class="game-placeholder">
-            <h2>${game.icon} ${game.title}</h2>
-            <p>${game.description}</p>
+            <h2>${game.icon || '🕹️'} ${game.title}</h2>
+            <p>${game.description || 'A classic game.'}</p>
             <button class="launch-game-btn" onclick="launchGame('${game.id}')">
               🎮 Launch ${game.title}
             </button>
@@ -227,28 +240,96 @@
       }
 
       function launchGame(gameId) {
-        if (window.windowManager) {
-          // Launch in desktop window mode
-          window.windowManager.createWindow(gameId, currentGame.title);
-        } else {
-          // Fallback: navigate to game page
-          const game = window.gamesData.find(g => g.id === gameId);
-          if (game && game.permalink) {
-            window.location.href = game.permalink;
-          }
+        const game = window.gamesData.find(g => g.id === gameId);
+        if (!game) {
+            console.error(`Game with id '${gameId}' not found.`);
+            return;
         }
+
+        // SCENARIO 1: Desktop Mode -> Launch in a new window.
+        if (document.body.classList.contains('desktop-mode') && window.windowManager) {
+          window.windowManager.createWindow(gameId, game.title, game.permalink);
+          return;
+        }
+
+        // SCENARIO 2: Website Mode -> Launch game inside the viewer panel.
+        const viewerContent = document.getElementById('game-viewer-content');
+        viewerContent.innerHTML = '<div class="game-placeholder"><h2>Loading Game...</h2></div>';
+
+        fetch(game.permalink)
+          .then(response => {
+            if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
+            return response.text();
+          })
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const gameContent = doc.querySelector('.main-content');
+            
+            if (gameContent) {
+              viewerContent.innerHTML = gameContent.innerHTML;
+              loadGameScript(gameId);
+            } else {
+              viewerContent.innerHTML = '<div class="game-placeholder"><h2>Error: Could not find game content in fetched file.</h2></div>';
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching game content:', error);
+            viewerContent.innerHTML = '<div class="game-placeholder"><h2>Could not load game content. Please check the console.</h2></div>';
+          });
       }
 
-      // Initialize when DOM is loaded
+      function loadGameScript(gameId) {
+        const oldScript = document.getElementById('active-game-script');
+        if (oldScript) oldScript.remove();
+
+        // Construct the correct script path based on the game ID
+        const scriptPath = `/assets/js/${gameId}-game.js`;
+        const script = document.createElement('script');
+        script.id = 'active-game-script';
+        script.src = scriptPath;
+
+        script.onload = function() {
+          // Construct the initialization function name
+          // Handle special case for "2048" (starts with number)
+          let initFunctionName;
+          if (gameId === '2048') {
+            initFunctionName = 'initialize2048Game';
+          } else {
+            initFunctionName = `initialize${gameId.charAt(0).toUpperCase() + gameId.slice(1)}Game`;
+          }
+          
+          // Wait a bit for the DOM to be ready, then initialize
+          setTimeout(() => {
+            if (typeof window[initFunctionName] === 'function') {
+              try {
+                  console.log(`Initializing ${gameId} game...`);
+                  window[initFunctionName]();
+              } catch (err) {
+                  console.error(`Error initializing game ${gameId}:`, err);
+                  document.getElementById('game-viewer-content').innerHTML = `<div class="game-placeholder"><h2>Error initializing game script.</h2><p>See console for details.</p></div>`;
+              }
+            } else {
+               console.warn(`Initialization function ${initFunctionName} not found for ${gameId}.`);
+               document.getElementById('game-viewer-content').innerHTML = `<div class="game-placeholder"><h2>Could not initialize game.</h2><p>Initialization function not found.</p></div>`;
+            }
+          }, 100); // Small delay to ensure DOM is ready
+        };
+
+        script.onerror = function() {
+          console.error(`Game script not found: ${scriptPath}`);
+          document.getElementById('game-viewer-content').innerHTML = `<div class="game-placeholder"><h2>Could not load game script.</h2> <p>File not found: ${scriptPath}</p></div>`;
+        };
+
+        document.head.appendChild(script);
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
         populateGamesList();
         
-        // Select first game by default
-        if (window.gamesData.length > 0) {
+        if (window.gamesData && window.gamesData.length > 1) {
           const firstGameButton = document.querySelector('.game-button');
-          if (firstGameButton) {
-            firstGameButton.click();
-          }
+          if (firstGameButton) firstGameButton.click();
         }
       });
     </script>

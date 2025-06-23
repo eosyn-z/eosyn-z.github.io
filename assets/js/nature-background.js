@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const groupSwitcher = document.getElementById('groupSwitcher');
     const loadingMessage = document.getElementById('loading');
 
+    // A default fallback image to prevent a broken appearance
+    const FALLBACK_IMAGE_URL = "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=2400&auto=format&fit=crop";
+
     function setRandomImage(group = 'random') {
         const images = imageGroups[group];
         const creditsContainer = document.getElementById('imageCredits');
@@ -38,11 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (!images || images.length === 0) {
-            imageContainer.style.backgroundImage = 'none';
-            if (creditsContainer) creditsContainer.textContent = '';
+            imageContainer.style.backgroundImage = `url('${FALLBACK_IMAGE_URL}')`;
+            if (creditsContainer) creditsContainer.textContent = 'Default image from Unsplash';
+            
             if (loadingMessage) {
-                 loadingMessage.textContent = `Please add image links to the '${group}' category in nature.md!`;
-                 loadingMessage.style.display = 'block';
+                 // The message is now for the console, not the user
+                 console.warn(`No images found for '${group}' category. Using fallback.`);
             }
             return;
         }

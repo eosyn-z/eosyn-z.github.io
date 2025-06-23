@@ -6,6 +6,8 @@ class StartMenu {
         this.gamesList = document.querySelector('.games-list');
         this.utilitiesList = document.querySelector('.utilities-list');
         this.socialList = document.querySelector('.social-list');
+        this.categoryButtons = document.querySelectorAll('.start-menu-category-button');
+        this.listsContainer = document.querySelector('.start-menu-list-container');
 
         this.init();
     }
@@ -15,19 +17,49 @@ class StartMenu {
 
         this.startButton.addEventListener('click', (event) => {
             event.stopPropagation();
-            this.startMenu.classList.toggle('active');
+            this.toggleMenu();
+        });
+        
+        this.categoryButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.switchCategory(e.target.dataset.category);
+            });
         });
 
         document.addEventListener('click', (event) => {
-            if (!this.startMenu.contains(event.target) && !this.startButton.contains(event.target)) {
-                this.startMenu.classList.remove('active');
+            if (this.startMenu.classList.contains('active') && !this.startMenu.contains(event.target) && !this.startButton.contains(event.target)) {
+                this.toggleMenu(false);
             }
         });
     }
 
-    populateMenu(pages) {
-        if (!pages || pages.length === 0) {
-            console.error('No pages data provided to populate Start Menu.');
+    toggleMenu(forceState) {
+        if (typeof forceState === 'boolean') {
+            this.startMenu.classList.toggle('active', forceState);
+        } else {
+            this.startMenu.classList.toggle('active');
+        }
+    }
+
+    switchCategory(category) {
+        // Switch active button
+        this.categoryButtons.forEach(button => {
+            button.classList.toggle('active', button.dataset.category === category);
+        });
+        // Switch active list
+        const listElements = this.listsContainer.querySelectorAll('.start-menu-list');
+        listElements.forEach(list => {
+            list.classList.toggle('active-list', list.classList.contains(`${category}-list`));
+        });
+    }
+
+    populate() {
+        const pages = window.jekyllPages || [];
+        const games = window.gamesData || [];
+
+        if (pages.length === 0 && games.length === 0) {
+            console.error('No pages or games data found to populate Start Menu.');
             return;
         }
 
@@ -43,45 +75,53 @@ class StartMenu {
             if (list) list.innerHTML = '';
         });
 
-        const categorizedPages = new Set();
-        const categories = {
-            games: ['Games', 'Snake', 'Tetris', 'Pong', 'Minecraft'],
-            utilities: ['Sticky Notes', 'Paint', 'Desktop Settings', 'Theme Editor', 'Settings', 'Wallpaper'],
-            social: ['Chat', 'Discord', 'Github']
-        };
+        // --- Categorize and Populate ---
 
-        // First pass: sort into specific categories
+        // 1. Populate Games
+        games.forEach(game => {
+            if (game.id !== 'games') { // Exclude the launcher page itself
+                 this.addPageToList(game, lists.games);
+            }
+        });
+
+        // 2. Define keywords for other categories
+        const utilityKeywords = ['settings', 'paint', 'sticky', 'editor', 'calculator'];
+        const socialKeywords = ['chat', 'discord', 'github', 'social'];
+
+        // 3. Populate Utilities and Social based on keywords
         pages.forEach(page => {
-            for (const category in categories) {
-                const keywords = categories[category];
-                if (keywords.some(keyword => page.title.includes(keyword))) {
-                    this.addPageToList(page, lists[category]);
-                    categorizedPages.add(page.url);
-                    return; // Move to next page once categorized
+            const pageTitleLower = page.title.toLowerCase();
+            if (utilityKeywords.some(kw => pageTitleLower.includes(kw))) {
+                this.addPageToList(page, lists.utilities);
+            } else if (socialKeywords.some(kw => pageTitleLower.includes(kw))) {
+                this.addPageToList(page, lists.social);
+            } else {
+                // If it's not a game or other category, add to programs
+                const isGame = games.some(g => g.permalink === page.permalink);
+                const isUtility = utilityKeywords.some(kw => pageTitleLower.includes(kw));
+                const isSocial = socialKeywords.some(kw => pageTitleLower.includes(kw));
+                if (!isGame && !isUtility && !isSocial) {
+                    this.addPageToList(page, lists.programs);
                 }
             }
         });
 
-        // Second pass: add all remaining pages to "Programs"
-        pages.forEach(page => {
-            if (!categorizedPages.has(page.url)) {
-                this.addPageToList(page, lists.programs);
-            }
-        });
-
-        // Add empty message if a list is empty
+        // --- Final Touches ---
         Object.values(lists).forEach(list => {
             if (list && list.children.length === 0) {
                 const li = document.createElement('li');
                 li.className = 'empty-category';
-                li.textContent = 'No items';
+                li.textContent = 'No items in this category.';
                 list.appendChild(li);
             }
         });
+        
+        // Activate the default category
+        this.switchCategory('programs');
     }
 
     addPageToList(page, listElement) {
-        if (!listElement) return;
+        if (!listElement || !page.title) return;
 
         const li = document.createElement('li');
         li.className = 'start-menu-item';
@@ -94,31 +134,33 @@ class StartMenu {
         pageTitle.className = 'title';
         pageTitle.textContent = page.title;
 
-        const favoriteToggle = document.createElement('span');
-        favoriteToggle.className = 'favorite-toggle';
-        favoriteToggle.innerHTML = window.favoritesManager.isFavorite(page.url) ? '★' : '☆'; // Filled/Empty star
-        favoriteToggle.title = 'Pin to taskbar';
-
         li.appendChild(pageIcon);
         li.appendChild(pageTitle);
-        li.appendChild(favoriteToggle);
+
+        if (window.favoritesManager) {
+            const favoriteToggle = document.createElement('span');
+            favoriteToggle.className = 'favorite-toggle';
+            favoriteToggle.innerHTML = window.favoritesManager.isFavorite(page.url || page.permalink) ? '★' : '☆';
+            favoriteToggle.title = 'Pin to taskbar';
+            
+            favoriteToggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent the app from launching
+                window.favoritesManager.toggleFavorite(page);
+                favoriteToggle.innerHTML = window.favoritesManager.isFavorite(page.url || page.permalink) ? '★' : '☆';
+            });
+            li.appendChild(favoriteToggle);
+        }
 
         li.addEventListener('click', (e) => {
-            // Don't launch if the favorite star was clicked
-            if (e.target === favoriteToggle) return;
+            if (e.target.classList.contains('favorite-toggle')) return;
 
             if (window.windowManager) {
-                window.windowManager.createWindow(page.url, page.title);
-                this.startMenu.classList.remove('active');
+                // Use permalink for games, url for pages
+                window.windowManager.createWindow(page.permalink || page.url, page.title);
+                this.toggleMenu(false);
             } else {
                 console.error('WindowManager not available.');
             }
-        });
-
-        favoriteToggle.addEventListener('click', () => {
-            window.favoritesManager.toggleFavorite(page);
-            // Update the star's appearance immediately
-            favoriteToggle.innerHTML = window.favoritesManager.isFavorite(page.url) ? '★' : '☆';
         });
 
         listElement.appendChild(li);

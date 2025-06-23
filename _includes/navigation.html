@@ -1,5 +1,6 @@
 <!-- Website Mode Navigation -->
 <div class="nav-links-header">
+  <a href="{{ "/desktop/" | relative_url }}" class="glass-button">⭐ Desktop</a>
   <a href="{{ "/" | relative_url }}" class="glass-button">Home</a>
   <nav class="nav-links">
     <!-- Site Pages -->
@@ -9,17 +10,9 @@
     <a href="{{ "/nature/" | relative_url }}" class="glass-button">Nature</a>
     <a href="{{ "/search/" | relative_url }}" class="glass-button">Search</a>
     <a href="{{ "/chat/" | relative_url }}" class="glass-button">Chat</a>
-    <a href="{{ "/projects/" | relative_url }}" class="glass-button">Projects</a>
-    <a href="{{ "/paint.html" | relative_url }}" class="glass-button">Paint</a>
     
     <!-- Games -->
     <a href="{{ "/games/" | relative_url }}" class="glass-button">Games</a>
-    
-    <!-- Desktop -->
-    <a href="{{ "/desktop/" | relative_url }}" class="glass-button">🖥️ Desktop</a>
-    <a href="{{ "/sticky-notes/" | relative_url }}" class="glass-button">📝 Sticky Notes</a>
-    <a href="{{ "/desktopsettings/" | relative_url }}" class="glass-button">⚙️ Desktop Settings</a>
-    <a href="{{ "/windowsettings/" | relative_url }}" class="glass-button">🪟 Window Settings</a>
   </nav>
 </div>
 
@@ -29,8 +22,8 @@
 </div>
 
 <div class="header-controls">
-  <!-- View Toggle -->
-  <div class="view-toggle-container">
+  <!-- View Toggle (Functionally replaced by Desktop button, can be hidden or repurposed) -->
+  <div class="view-toggle-container" style="display: none;">
     <button id="view-toggle" class="view-toggle-btn glass-button" title="Toggle Desktop Mode">
       <span class="view-icon website">🌐</span>
       <span class="view-icon desktop" style="display: none;">🖥️</span>

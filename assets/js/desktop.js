@@ -16,29 +16,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                const hasDesktopMode = body.classList.contains('desktop-mode');
-                if (hasDesktopMode !== isDesktopMode) {
-                    isDesktopMode = hasDesktopMode;
-                    if (isDesktopMode) {
-                        initializeDesktopMode();
-                    } else {
-                        exitDesktopMode();
-                    }
+                const isDesktopMode = body.classList.contains('desktop-mode');
+                if (mutation.oldValue !== body.className) {
+                     if (isDesktopMode) initializeDesktopMode();
+                     else exitDesktopMode();
                 }
             }
         });
     });
 
-    observer.observe(body, { attributes: true });
+    observer.observe(body, { attributes: true, attributeOldValue: true });
 
     // Star button toggle (for returning to normal mode)
     if (desktopToggle) {
         desktopToggle.addEventListener('click', () => {
-            // Trigger the view toggle to return to normal mode
-            const viewToggle = document.getElementById('view-toggle');
-            if (viewToggle) {
-                viewToggle.click();
-            }
+            // This is handled by the StartMenu class now
         });
     }
 
@@ -47,7 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainContent) {
             mainContent.style.display = 'none';
         }
-        initializeDesktopIcons();
+        // The DesktopManager now handles icon initialization
+        if (window.desktopManager) {
+            window.desktopManager.init();
+        }
     }
 
     function exitDesktopMode() {
@@ -58,15 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
         closeAllWindows();
     }
 
-    function initializeDesktopIcons() {
-        document.querySelectorAll('.desktop-icon[data-app-url]').forEach(icon => {
-            icon.onclick = () => openApp(icon.id, icon.dataset.appUrl, icon.dataset.appTitle);
-        });
-    }
-
     async function openApp(appId, appUrl, appTitle) {
-        // Allow multiple instances of games
-        if (appId.startsWith('game-')) {
+        // Allow multiple instances of games or other specified apps
+        if (appId.startsWith('game-') || appId.startsWith('sticky-note-')) {
             appId = `${appId}-${Date.now()}`;
         }
 
@@ -82,21 +71,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             
-            // Important: Find the main content of the page to inject
             const appContent = doc.querySelector('.main-content')?.innerHTML || doc.body.innerHTML;
             
             windowEl.querySelector('.window-content').innerHTML = appContent;
 
-            Array.from(doc.querySelectorAll('script')).forEach(script => {
-                const newScript = document.createElement('script');
-                newScript.async = false; // Ensure scripts execute in order
-                if (script.src) {
-                    newScript.src = script.src;
-                } else {
-                    newScript.textContent = script.textContent;
-                }
-                windowEl.querySelector('.window-content').appendChild(newScript);
-            });
+            // This script loading is problematic, better to handle scripts within the page logic itself
+            // For example, using a data-page-script attribute and initializing it after content load
+            const pageScript = doc.querySelector('[data-page-script]')?.dataset.pageScript;
+            if (pageScript && window.pageInitializers && window.pageInitializers[pageScript]) {
+                 window.pageInitializers[pageScript]();
+            }
 
         } catch (error) {
             windowEl.querySelector('.window-content').innerHTML = `<p>Error loading content for ${appTitle}.</p>`;
@@ -114,21 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="window-header">
                 <div class="window-title">${title}</div>
                 <div class="window-controls">
-                    <button class="control-btn minimize">-</button>
-                    <button class="control-btn close">×</button>
+                    <button class="control-btn minimize" title="Minimize">-</button>
+                    <button class="control-btn close" title="Close">×</button>
                 </div>
             </div>
-            <div class="window-content">
-                <p>Loading...</p>
-            </div>
-            <div class="resize-handle"></div>
-        `;
+            <div class="window-content"><p>Loading...</p></div>
+            <div class="resize-handle"></div>`;
 
         windowContainer.appendChild(windowEl);
         openWindows[appId] = { element: windowEl, minimized: false };
 
-        makeDraggable(windowEl);
-        makeResizable(windowEl);
+        makeWindowDraggable(windowEl);
+        makeWindowResizable(windowEl);
         createTaskbarIcon(appId, title);
 
         windowEl.querySelector('.close').onclick = () => closeWindow(appId);
@@ -139,9 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeWindow(appId) {
-        openWindows[appId].element.remove();
-        document.getElementById(`taskbar-${appId}`).remove();
-        delete openWindows[appId];
+        if (openWindows[appId]) {
+            openWindows[appId].element.remove();
+            const taskbarIcon = document.getElementById(`taskbar-${appId}`);
+            if (taskbarIcon) taskbarIcon.remove();
+            delete openWindows[appId];
+        }
     }
 
     function minimizeWindow(appId) {
@@ -163,20 +147,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createTaskbarIcon(appId, title) {
+        if (document.getElementById(`taskbar-${appId}`)) return; // Already exists
+
         const taskbarIcon = document.createElement('div');
         taskbarIcon.className = 'taskbar-item active';
         taskbarIcon.id = `taskbar-${appId}`;
-        taskbarIcon.textContent = title;
+        taskbarIcon.textContent = title.substring(0, 15); // Keep titles short
+        taskbarIcon.title = title;
         taskbarIcon.onclick = () => focusWindow(appId);
         taskbarPrograms.appendChild(taskbarIcon);
     }
     
-    function makeDraggable(el) {
+    function makeWindowDraggable(el) {
         const header = el.querySelector('.window-header');
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
         const dragMouseDown = (e) => {
             e.preventDefault();
+            focusWindow(el.id.replace('window-',''));
             pos3 = e.clientX;
             pos4 = e.clientY;
             document.onmouseup = closeDragElement;
@@ -194,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const closeDragElement = () => {
+            this.saveIconPositions();
             document.onmouseup = null;
             document.onmousemove = null;
         };
@@ -201,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         header.onmousedown = dragMouseDown;
     }
 
-    function makeResizable(el) {
+    function makeWindowResizable(el) {
         const handle = el.querySelector('.resize-handle');
         let startX, startY, startWidth, startHeight;
 
@@ -212,21 +201,21 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.height = `${height}px`;
         };
 
-        const addMove = (e) => {
+        const initResize = (e) => {
             startX = e.clientX;
             startY = e.clientY;
             startWidth = el.offsetWidth;
             startHeight = el.offsetHeight;
             document.addEventListener('mousemove', move);
+            document.addEventListener('mouseup', stopResize);
         };
 
-        const removeMove = () => {
+        const stopResize = () => {
             document.removeEventListener('mousemove', move);
+            document.removeEventListener('mouseup', stopResize);
         };
 
-        handle.addEventListener('mousedown', addMove);
-        handle.addEventListener('mouseup', removeMove);
-        document.addEventListener('mouseup', removeMove);
+        handle.addEventListener('mousedown', initResize);
     }
     
     function closeAllWindows() {
@@ -235,36 +224,106 @@ document.addEventListener('DOMContentLoaded', () => {
         openWindows = {};
     }
 
-    // Centralized initialization for all desktop components
-    window.viewManager = new ViewManager();
-    window.windowManager = new WindowManager();
-    window.favoritesManager = new FavoritesManager();
-    window.startMenu = new StartMenu();
-    window.windowSwitcher = new WindowSwitcher();
-    
-    // Initialize managers that need it
-    window.favoritesManager.init();
+    // --- Manager Classes ---
 
+    class ViewManager {
+        constructor() {
+            this.body = document.body;
+            this.toggleButton = document.getElementById('desktop-back-button');
+            if (this.toggleButton) {
+                this.toggleButton.addEventListener('click', () => this.toggleView());
+            }
+        }
+
+        toggleView() {
+            window.location.href = window.siteBaseUrl || '/';
+        }
+    }
+
+    class DesktopManager {
+        constructor(grid) {
+            this.grid = grid;
+            if (!this.grid) {
+                console.error("Desktop grid container not found!");
+                return;
+            }
+            this.icons = Array.from(this.grid.children);
+            this.gridSize = 80; // Icon size + gap
+        }
+
+        init() {
+            this.loadIconPositions();
+            this.icons.forEach(icon => {
+                this.makeIconDraggable(icon);
+                icon.ondblclick = () => window.openApp(icon.id, icon.dataset.appUrl, icon.dataset.appTitle);
+                icon.onclick = (e) => { e.preventDefault(); }; // Prevent single-click actions
+            });
+        }
+
+        loadIconPositions() {
+            try {
+                const positions = JSON.parse(localStorage.getItem('desktopIconPositions'));
+                if (positions) {
+                    this.icons.forEach(icon => {
+                        if (positions[icon.id]) {
+                            icon.style.top = positions[icon.id].top;
+                            icon.style.left = positions[icon.id].left;
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("Could not load icon positions:", e);
+            }
+        }
+
+        saveIconPositions() {
+            const positions = {};
+            this.icons.forEach(icon => {
+                positions[icon.id] = { top: icon.style.top, left: icon.style.left };
+            });
+            localStorage.setItem('desktopIconPositions', JSON.stringify(positions));
+        }
+        
+        makeIconDraggable(icon) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            icon.onmousedown = (e) => {
+                if (e.button === 1) e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            };
+
+            const elementDrag = (e) => {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                icon.style.top = (icon.offsetTop - pos2) + "px";
+                icon.style.left = (icon.offsetLeft - pos1) + "px";
+            };
+
+            const closeDragElement = () => {
+                this.saveIconPositions();
+                document.onmouseup = null;
+                document.onmousemove = null;
+            };
+        }
+    }
+
+    // --- Initialize Core Components ---
+    window.viewManager = new ViewManager();
+    // window.windowManager = new WindowManager(); // This is not a class, it's a set of functions
+    
     // -- Desktop-specific initialization --
-    // Only initialize the DesktopManager if the grid exists on the current page
     const desktopGrid = document.getElementById('desktop-grid');
     if (desktopGrid) {
-        window.desktopManager = new DesktopManager();
-        window.desktopManager.init();
+        window.desktopManager = new DesktopManager(desktopGrid);
     }
 
-    // Populate the Start Menu once all managers are ready
-    if (window.jekyllPages && window.jekyllPages.length > 0) {
-        window.startMenu.populateMenu(window.jekyllPages);
-    } else {
-        console.warn('Jekyll pages not found or empty. Start menu will not be populated.');
-    }
-
-    const discordWidgetTray = document.getElementById('discord-status-widget-tray');
-    if (discordWidgetTray) {
-        discordWidgetTray.innerHTML = `
-// ... existing code ...
-        `;
+    if (window.startMenu) {
+        window.startMenu.populate();
     }
 });
 
@@ -286,8 +345,8 @@ class ViewManager {
 }
 
 class DesktopManager {
-    constructor() {
-        this.grid = document.getElementById('desktop-grid');
+    constructor(grid) {
+        this.grid = grid;
         if (!this.grid) {
             console.error("Desktop grid container not found!");
             return;
@@ -300,7 +359,7 @@ class DesktopManager {
     init() {
         if (!this.grid) return;
         this.layoutIcons();
-        this.icons.forEach(icon => this.makeDraggable(icon));
+        this.icons.forEach(icon => this.makeIconDraggable(icon));
     }
 
     loadIconPositions() {
@@ -352,7 +411,7 @@ class DesktopManager {
         return { gridX: 0, gridY: 0 };
     }
 
-    makeDraggable(icon) {
+    makeIconDraggable(icon) {
         let isDragging = false;
         let offsetX, offsetY;
 

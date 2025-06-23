@@ -35,6 +35,63 @@
         color: var(--theme-text-secondary);
       }
     </style>
+    <style>
+        .game-container-2048 {
+            width: 400px;
+            background: var(--glass-bg-dark);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .header-2048 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .score-container {
+            background-color: var(--glass-bg-medium);
+            color: var(--theme-text);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .score-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        #score {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        #result {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--theme-accent);
+            height: 3rem;
+        }
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            width: 400px;
+            height: 400px;
+            background-color: var(--glass-bg-medium);
+            border-radius: 10px;
+        }
+        .grid div {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+    </style>
   </head>
   <body>
     <header class="glass-nav top-nav">
