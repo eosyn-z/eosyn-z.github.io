@@ -17,8 +17,9 @@ desktop_mode: true
             <div class="icon-label">{{ page.title }}</div>
         </div>
     {% endfor %}
-    {% assign game_pages = site.games | where_exp: 'g', 'g.title and g.title != "Game Center"' %}
+    {% assign game_pages = site.games %}
     {% for game in game_pages %}
+        {% if game.title != "Game Center" %}
         <div class="desktop-icon" 
              id="icon-{{ game.title | slugify }}" 
              data-app-url="{{ game.permalink | relative_url }}" 
@@ -26,6 +27,7 @@ desktop_mode: true
             <div class="icon-image">{{ game.icon | default: '🎮' }}</div>
             <div class="icon-label">{{ game.title }}</div>
         </div>
+        {% endif %}
     {% endfor %}
     <!-- Bookmarks will be rendered by JS -->
 </div>
