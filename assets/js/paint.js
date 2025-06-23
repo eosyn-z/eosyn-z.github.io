@@ -95,27 +95,31 @@ function initializePaint() {
         pencilTool.classList.add('active');
     }
 
-    // --- Export Functions ---
+    // --- Menu Functions ---
     function saveCanvas() {
         const link = document.createElement('a');
-        link.download = 'paint-drawing.png';
-        link.href = canvas.toDataURL();
+        link.download = `drawing-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
         link.click();
     }
 
     function clearCanvas() {
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (confirm('Are you sure you want to clear the canvas? This cannot be undone.')) {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
     }
 
-    // Add export buttons to toolbar
-    const exportButtons = document.createElement('div');
-    exportButtons.style.cssText = 'display: flex; gap: 10px; margin-left: auto;';
-    exportButtons.innerHTML = `
-        <button class="glass-button" onclick="clearCanvas()" title="Clear Canvas">🗑️ Clear</button>
-        <button class="glass-button" onclick="saveCanvas()" title="Save as PNG">💾 Save</button>
-    `;
-    toolbar.appendChild(exportButtons);
+    // Attach listeners to the file menu
+    const saveBtn = document.getElementById('paint-save');
+    const clearBtn = document.getElementById('paint-clear');
+
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveCanvas);
+    }
+    if (clearBtn) {
+        clearBtn.addEventListener('click', clearCanvas);
+    }
 
     // --- Color Palette ---
     const colors = [

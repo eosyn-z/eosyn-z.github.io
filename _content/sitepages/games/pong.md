@@ -1,9 +1,8 @@
 ---
 layout: game
 title: Pong
-icon: 🏓
 permalink: /pong/
-description: Classic paddle game - don't let the ball pass! Use W/S keys for left paddle, Up/Down for right.
+icon: 🏓
 ---
 
 <div class="main-content" data-page-script="pong-game">

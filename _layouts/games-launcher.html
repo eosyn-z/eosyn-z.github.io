@@ -200,8 +200,11 @@
         gamesList.innerHTML = '';
 
         window.gamesData.forEach(game => {
-          // Skip the main 'games' page from the list
-          if (game.id === 'games' || !game.title) return;
+          // More robustly skip any invalid game entries
+          if (!game || typeof game.id !== 'string' || game.id.trim() === '' || game.id === 'games' || !game.title) {
+            console.warn('Skipping invalid game data:', game);
+            return;
+          }
 
           const gameButton = document.createElement('div');
           gameButton.className = 'game-button';

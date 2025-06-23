@@ -1,254 +1,638 @@
-class StickyNotesApp {
-  constructor() {
-    this.notes = this.loadNotes();
-    this.currentNote = null;
-  }
+// Sticky Notes with Rich Text Editor
+class StickyNotes {
+    constructor() {
+        this.notes = [];
+        this.nextId = 1;
+        this.loadNotes();
+        this.init();
+    }
 
-  createNoteWindow() {
-    const noteWindow = document.createElement('div');
-    noteWindow.className = 'app-window glass-effect';
-    noteWindow.id = 'sticky-notes-window';
-    noteWindow.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 800px;
-      height: 600px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-    `;
-
-    noteWindow.innerHTML = `
-      <div class="window-header">
-        <div class="window-title">📝 Sticky Notes</div>
-        <div class="window-controls">
-          <button class="control-btn close" onclick="this.closest('.app-window').remove()">×</button>
-        </div>
-      </div>
-      
-      <div class="window-content" style="flex: 1; display: flex; flex-direction: column; padding: 0;">
-        <!-- Toolbar -->
-        <div class="notes-toolbar" style="padding: 10px; border-bottom: 1px solid var(--glass-border-light); background: var(--glass-bg-medium);">
-          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <button class="glass-button" onclick="stickyNotesApp.newNote()">📄 New</button>
-            <button class="glass-button" onclick="stickyNotesApp.saveNote()">💾 Save</button>
-            <button class="glass-button" onclick="stickyNotesApp.exportNote()">📤 Export</button>
-            <div style="width: 1px; height: 20px; background: var(--glass-border-light);"></div>
-            
-            <!-- Text formatting buttons -->
-            <button class="glass-button" onclick="stickyNotesApp.formatText('bold')" title="Bold">B</button>
-            <button class="glass-button" onclick="stickyNotesApp.formatText('italic')" title="Italic">I</button>
-            <button class="glass-button" onclick="stickyNotesApp.formatText('underline')" title="Underline">U</button>
-            <div style="width: 1px; height: 20px; background: var(--glass-border-light);"></div>
-            
-            <button class="glass-button" onclick="stickyNotesApp.formatText('insertUnorderedList')" title="Bullet List">•</button>
-            <button class="glass-button" onclick="stickyNotesApp.formatText('insertOrderedList')" title="Numbered List">1.</button>
-          </div>
-        </div>
+    init() {
+        // Add rich text editor styles
+        this.addRichTextStyles();
         
-        <!-- Notes list and editor -->
-        <div style="flex: 1; display: flex;">
-          <!-- Notes list sidebar -->
-          <div class="notes-sidebar" style="width: 200px; border-right: 1px solid var(--glass-border-light); background: var(--glass-bg-light); overflow-y: auto;">
-            <div style="padding: 10px;">
-              <h4 style="margin: 0 0 10px 0; color: var(--theme-text);">Notes</h4>
-              <div id="notes-list">
-                ${this.renderNotesList()}
-              </div>
+        // Create sticky notes app in desktop
+        this.createStickyNotesApp();
+        
+        // Load existing notes
+        this.renderNotes();
+        
+        // Add global event listeners
+        this.addGlobalListeners();
+    }
+
+    addRichTextStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .sticky-note {
+                position: absolute;
+                min-width: 200px;
+                min-height: 150px;
+                background: #fef3c7;
+                border: 1px solid #f59e0b;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                padding: 8px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;
+                resize: both;
+                overflow: hidden;
+                z-index: 1000;
+                transition: all 0.2s ease;
+            }
+
+            .sticky-note:hover {
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+                transform: translateY(-2px);
+            }
+
+            .sticky-note-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 8px;
+                padding-bottom: 4px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                cursor: move;
+            }
+
+            .sticky-note-title {
+                font-weight: bold;
+                font-size: 12px;
+                color: #92400e;
+                flex: 1;
+            }
+
+            .sticky-note-controls {
+                display: flex;
+                gap: 4px;
+            }
+
+            .sticky-note-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 2px;
+                border-radius: 3px;
+                font-size: 12px;
+                color: #92400e;
+                transition: all 0.2s ease;
+            }
+
+            .sticky-note-btn:hover {
+                background: rgba(0, 0, 0, 0.1);
+            }
+
+            .sticky-note-content {
+                flex: 1;
+                outline: none;
+                border: none;
+                background: transparent;
+                font-family: inherit;
+                font-size: inherit;
+                line-height: 1.4;
+                resize: none;
+                width: 100%;
+                min-height: 100px;
+            }
+
+            .sticky-note-content:focus {
+                outline: none;
+            }
+
+            /* Rich Text Editor Styles */
+            .rich-text-toolbar {
+                display: flex;
+                gap: 4px;
+                margin-bottom: 8px;
+                padding: 4px;
+                background: rgba(255, 255, 255, 0.8);
+                border-radius: 4px;
+                flex-wrap: wrap;
+            }
+
+            .rich-text-btn {
+                background: none;
+                border: 1px solid #d1d5db;
+                border-radius: 3px;
+                padding: 4px 8px;
+                cursor: pointer;
+                font-size: 11px;
+                color: #374151;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 2px;
+            }
+
+            .rich-text-btn:hover {
+                background: #f3f4f6;
+                border-color: #9ca3af;
+            }
+
+            .rich-text-btn.active {
+                background: #6366f1;
+                color: white;
+                border-color: #6366f1;
+            }
+
+            .color-picker {
+                width: 20px;
+                height: 20px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                padding: 0;
+            }
+
+            .checkbox-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 4px 0;
+                cursor: pointer;
+            }
+
+            .checkbox-item input[type="checkbox"] {
+                margin: 0;
+                cursor: pointer;
+            }
+
+            .checkbox-item.completed {
+                text-decoration: line-through;
+                opacity: 0.7;
+            }
+
+            .checkbox-item.completed input[type="checkbox"] {
+                opacity: 0.7;
+            }
+
+            /* Theme-specific colors */
+            [data-theme="c"] .sticky-note {
+                background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+                border-color: #6366f1;
+            }
+
+            [data-theme="a"] .sticky-note {
+                background: linear-gradient(135deg, #fef3c7, #fde68a);
+                border-color: #f59e0b;
+            }
+
+            [data-theme="r"] .sticky-note {
+                background: linear-gradient(135deg, #fee2e2, #fecaca);
+                border-color: #ef4444;
+            }
+
+            [data-theme="z"] .sticky-note {
+                background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+                border-color: #6b7280;
+            }
+
+            [data-theme="e"] .sticky-note {
+                background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+                border-color: #7c3aed;
+            }
+
+            [data-theme="n"] .sticky-note {
+                background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+                border-color: #0ea5e9;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    createStickyNotesApp() {
+        const desktop = document.querySelector('.desktop');
+        if (!desktop) return;
+
+        const appContainer = document.createElement('div');
+        appContainer.className = 'desktop-app sticky-notes-app';
+        appContainer.style.display = 'none';
+        appContainer.innerHTML = `
+            <div class="app-header">
+                <h3>Sticky Notes</h3>
+                <div class="app-controls">
+                    <button class="new-note-btn">New Note</button>
+                    <button class="new-task-btn">New Task List</button>
+                    <button class="close-app-btn">×</button>
+                </div>
             </div>
-          </div>
-          
-          <!-- Note editor -->
-          <div class="note-editor" style="flex: 1; display: flex; flex-direction: column;">
-            <div id="note-editor" contenteditable="true" style="flex: 1; padding: 20px; outline: none; overflow-y: auto; background: white; color: black; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; line-height: 1.5;">
-              <p>Start typing your note here...</p>
+            <div class="app-content">
+                <div class="notes-container"></div>
             </div>
-          </div>
-        </div>
-      </div>
-    `;
+        `;
 
-    // Make the window draggable
-    const header = noteWindow.querySelector('.window-header');
-    let isDragging = false;
-    let startX, startY, startLeft, startTop;
+        desktop.appendChild(appContainer);
 
-    header.addEventListener('mousedown', (e) => {
-      if (e.target.classList.contains('control-btn')) return;
-      
-      isDragging = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      startLeft = parseInt(noteWindow.style.left) || 0;
-      startTop = parseInt(noteWindow.style.top) || 0;
-      
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    });
+        // Event listeners
+        appContainer.querySelector('.new-note-btn').addEventListener('click', () => {
+            this.createNote();
+        });
 
-    const onMouseMove = (e) => {
-      if (!isDragging) return;
-      
-      const deltaX = e.clientX - startX;
-      const deltaY = e.clientY - startY;
-      
-      noteWindow.style.left = `${startLeft + deltaX}px`;
-      noteWindow.style.top = `${startTop + deltaY}px`;
-      noteWindow.style.transform = 'none';
-    };
+        appContainer.querySelector('.new-task-btn').addEventListener('click', () => {
+            this.createTaskList();
+        });
 
-    const onMouseUp = () => {
-      isDragging = false;
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    // Set up editor event listeners
-    const editor = noteWindow.querySelector('#note-editor');
-    editor.addEventListener('input', () => {
-      this.autoSave();
-    });
-
-    document.body.appendChild(noteWindow);
-    this.setupEditor();
-  }
-
-  renderNotesList() {
-    if (this.notes.length === 0) {
-      return '<p style="color: var(--theme-text-secondary); font-size: 12px;">No notes yet</p>';
+        appContainer.querySelector('.close-app-btn').addEventListener('click', () => {
+            appContainer.style.display = 'none';
+        });
     }
 
-    return this.notes.map((note, index) => `
-      <div class="note-item" onclick="stickyNotesApp.loadNote(${index})" style="padding: 8px; margin-bottom: 5px; background: var(--glass-bg-medium); border-radius: 5px; cursor: pointer; border: 1px solid transparent;">
-        <div style="font-weight: bold; font-size: 12px; color: var(--theme-text);">${note.title || 'Untitled Note'}</div>
-        <div style="font-size: 10px; color: var(--theme-text-secondary);">${note.lastModified}</div>
-      </div>
-    `).join('');
-  }
+    createNote(content = '', position = null) {
+        const note = {
+            id: this.nextId++,
+            type: 'note',
+            content: content,
+            position: position || this.getRandomPosition(),
+            size: { width: 250, height: 200 },
+            backgroundColor: this.getCurrentThemeColor(),
+            textColor: '#000000',
+            highlightColor: '#ffff00',
+            created: Date.now()
+        };
 
-  newNote() {
-    const newNote = {
-      id: Date.now(),
-      title: 'Untitled Note',
-      content: '<p>Start typing your note here...</p>',
-      created: new Date().toLocaleDateString(),
-      lastModified: new Date().toLocaleDateString()
-    };
-
-    this.notes.unshift(newNote);
-    this.currentNote = 0;
-    this.loadNote(0);
-    this.updateNotesList();
-    this.saveNotes();
-  }
-
-  loadNote(index) {
-    this.currentNote = index;
-    const note = this.notes[index];
-    const editor = document.querySelector('#note-editor');
-    
-    if (editor) {
-      editor.innerHTML = note.content;
+        this.notes.push(note);
+        this.saveNotes();
+        this.renderNote(note);
+        return note;
     }
 
-    // Update active state in notes list
-    document.querySelectorAll('.note-item').forEach((item, i) => {
-      if (i === index) {
-        item.style.borderColor = 'var(--theme-accent)';
-        item.style.background = 'var(--glass-bg-dark)';
-      } else {
-        item.style.borderColor = 'transparent';
-        item.style.background = 'var(--glass-bg-medium)';
-      }
-    });
-  }
+    createTaskList(tasks = [], position = null) {
+        const taskList = {
+            id: this.nextId++,
+            type: 'tasklist',
+            tasks: tasks.length > 0 ? tasks : [{ text: 'New task', completed: false }],
+            position: position || this.getRandomPosition(),
+            size: { width: 250, height: 200 },
+            backgroundColor: this.getCurrentThemeColor(),
+            textColor: '#000000',
+            highlightColor: '#ffff00',
+            created: Date.now()
+        };
 
-  saveNote() {
-    if (this.currentNote === null) return;
-
-    const editor = document.querySelector('#note-editor');
-    const content = editor.innerHTML;
-    
-    this.notes[this.currentNote].content = content;
-    this.notes[this.currentNote].lastModified = new Date().toLocaleDateString();
-    
-    // Update title from first line
-    const firstLine = editor.textContent.split('\n')[0].trim();
-    if (firstLine) {
-      this.notes[this.currentNote].title = firstLine.substring(0, 30) + (firstLine.length > 30 ? '...' : '');
+        this.notes.push(taskList);
+        this.saveNotes();
+        this.renderNote(taskList);
+        return taskList;
     }
 
-    this.saveNotes();
-    this.updateNotesList();
-  }
-
-  autoSave() {
-    // Debounced auto-save
-    clearTimeout(this.autoSaveTimeout);
-    this.autoSaveTimeout = setTimeout(() => {
-      this.saveNote();
-    }, 1000);
-  }
-
-  exportNote() {
-    if (this.currentNote === null) return;
-
-    const note = this.notes[this.currentNote];
-    const content = note.content;
-    
-    // Create a blob with the note content
-    const blob = new Blob([content], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    
-    // Create download link
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${note.title || 'note'}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-  formatText(command) {
-    document.execCommand(command, false, null);
-    document.querySelector('#note-editor').focus();
-  }
-
-  setupEditor() {
-    const editor = document.querySelector('#note-editor');
-    if (!editor) return;
-
-    // Load first note if available
-    if (this.notes.length > 0) {
-      this.loadNote(0);
+    getCurrentThemeColor() {
+        const theme = document.body.getAttribute('data-theme') || 'c';
+        const themeColors = {
+            'c': '#e0e7ff',
+            'a': '#fef3c7',
+            'r': '#fee2e2',
+            'z': '#f3f4f6',
+            'e': '#f3e8ff',
+            'n': '#e0f2fe'
+        };
+        return themeColors[theme] || '#e0e7ff';
     }
-  }
 
-  updateNotesList() {
-    const notesList = document.querySelector('#notes-list');
-    if (notesList) {
-      notesList.innerHTML = this.renderNotesList();
+    getRandomPosition() {
+        const desktop = document.querySelector('.desktop');
+        if (!desktop) return { x: 50, y: 50 };
+
+        const rect = desktop.getBoundingClientRect();
+        const maxX = rect.width - 300;
+        const maxY = rect.height - 250;
+
+        return {
+            x: Math.max(50, Math.min(maxX, Math.random() * maxX)),
+            y: Math.max(50, Math.min(maxY, Math.random() * maxY))
+        };
     }
-  }
 
-  loadNotes() {
-    const saved = localStorage.getItem('stickyNotes');
-    return saved ? JSON.parse(saved) : [];
-  }
+    renderNote(note) {
+        const desktop = document.querySelector('.desktop');
+        if (!desktop) return;
 
-  saveNotes() {
-    localStorage.setItem('stickyNotes', JSON.stringify(this.notes));
-  }
+        const noteElement = document.createElement('div');
+        noteElement.className = 'sticky-note';
+        noteElement.id = `sticky-note-${note.id}`;
+        noteElement.style.cssText = `
+            left: ${note.position.x}px;
+            top: ${note.position.y}px;
+            width: ${note.size.width}px;
+            height: ${note.size.height}px;
+            background: ${note.backgroundColor};
+            color: ${note.textColor};
+        `;
+
+        if (note.type === 'note') {
+            noteElement.innerHTML = `
+                <div class="sticky-note-header">
+                    <div class="sticky-note-title">Note ${note.id}</div>
+                    <div class="sticky-note-controls">
+                        <button class="sticky-note-btn format-btn" title="Format">🎨</button>
+                        <button class="sticky-note-btn delete-btn" title="Delete">🗑️</button>
+                    </div>
+                </div>
+                <div class="rich-text-toolbar" style="display: none;">
+                    <button class="rich-text-btn" data-command="bold" title="Bold">B</button>
+                    <button class="rich-text-btn" data-command="italic" title="Italic">I</button>
+                    <button class="rich-text-btn" data-command="underline" title="Underline">U</button>
+                    <button class="rich-text-btn" data-command="strikeThrough" title="Strikethrough">S</button>
+                    <input type="color" class="color-picker" data-command="foreColor" title="Text Color">
+                    <input type="color" class="color-picker" data-command="hiliteColor" title="Highlight Color">
+                    <input type="color" class="color-picker" data-command="backgroundColor" title="Background Color">
+                    <button class="rich-text-btn" data-command="insertUnorderedList" title="Bullet List">•</button>
+                    <button class="rich-text-btn" data-command="insertOrderedList" title="Numbered List">1.</button>
+                </div>
+                <div class="sticky-note-content" contenteditable="true" data-note-id="${note.id}">${note.content}</div>
+            `;
+        } else {
+            noteElement.innerHTML = `
+                <div class="sticky-note-header">
+                    <div class="sticky-note-title">Task List ${note.id}</div>
+                    <div class="sticky-note-controls">
+                        <button class="sticky-note-btn add-task-btn" title="Add Task">+</button>
+                        <button class="sticky-note-btn delete-btn" title="Delete">🗑️</button>
+                    </div>
+                </div>
+                <div class="task-list" data-note-id="${note.id}">
+                    ${note.tasks.map((task, index) => `
+                        <div class="checkbox-item ${task.completed ? 'completed' : ''}" data-task-index="${index}">
+                            <input type="checkbox" ${task.completed ? 'checked' : ''}>
+                            <span class="task-text" contenteditable="true">${task.text}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        desktop.appendChild(noteElement);
+        this.setupNoteEventListeners(noteElement, note);
+    }
+
+    setupNoteEventListeners(noteElement, note) {
+        // Make draggable
+        this.makeDraggable(noteElement, note);
+
+        // Make resizable
+        this.makeResizable(noteElement, note);
+
+        // Format button
+        const formatBtn = noteElement.querySelector('.format-btn');
+        const toolbar = noteElement.querySelector('.rich-text-toolbar');
+        if (formatBtn && toolbar) {
+            formatBtn.addEventListener('click', () => {
+                toolbar.style.display = toolbar.style.display === 'none' ? 'flex' : 'none';
+            });
+        }
+
+        // Rich text editor buttons
+        const richTextBtns = noteElement.querySelectorAll('.rich-text-btn');
+        richTextBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const command = btn.dataset.command;
+                const content = noteElement.querySelector('.sticky-note-content');
+                
+                if (content) {
+                    document.execCommand(command, false, null);
+                    content.focus();
+                }
+            });
+        });
+
+        // Color pickers
+        const colorPickers = noteElement.querySelectorAll('.color-picker');
+        colorPickers.forEach(picker => {
+            picker.addEventListener('change', (e) => {
+                const command = picker.dataset.command;
+                const color = picker.value;
+                const content = noteElement.querySelector('.sticky-note-content');
+                
+                if (content) {
+                    if (command === 'backgroundColor') {
+                        noteElement.style.background = color;
+                        note.backgroundColor = color;
+                    } else {
+                        document.execCommand(command, false, color);
+                    }
+                    content.focus();
+                    this.saveNotes();
+                }
+            });
+        });
+
+        // Content saving
+        const content = noteElement.querySelector('.sticky-note-content');
+        if (content) {
+            content.addEventListener('input', () => {
+                note.content = content.innerHTML;
+                this.saveNotes();
+            });
+        }
+
+        // Task list functionality
+        if (note.type === 'tasklist') {
+            this.setupTaskListListeners(noteElement, note);
+        }
+
+        // Delete button
+        const deleteBtn = noteElement.querySelector('.delete-btn');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                this.deleteNote(note.id);
+            });
+        }
+
+        // Add task button
+        const addTaskBtn = noteElement.querySelector('.add-task-btn');
+        if (addTaskBtn) {
+            addTaskBtn.addEventListener('click', () => {
+                this.addTask(note.id);
+            });
+        }
+    }
+
+    setupTaskListListeners(noteElement, note) {
+        const taskList = noteElement.querySelector('.task-list');
+        
+        // Checkbox functionality
+        taskList.addEventListener('change', (e) => {
+            if (e.target.type === 'checkbox') {
+                const taskItem = e.target.closest('.checkbox-item');
+                const taskIndex = parseInt(taskItem.dataset.taskIndex);
+                
+                note.tasks[taskIndex].completed = e.target.checked;
+                taskItem.classList.toggle('completed', e.target.checked);
+                this.saveNotes();
+            }
+        });
+
+        // Task text editing
+        taskList.addEventListener('input', (e) => {
+            if (e.target.classList.contains('task-text')) {
+                const taskItem = e.target.closest('.checkbox-item');
+                const taskIndex = parseInt(taskItem.dataset.taskIndex);
+                note.tasks[taskIndex].text = e.target.textContent;
+                this.saveNotes();
+            }
+        });
+
+        // Add new task on Enter
+        taskList.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.target.classList.contains('task-text')) {
+                e.preventDefault();
+                this.addTask(note.id);
+            }
+        });
+    }
+
+    addTask(noteId) {
+        const note = this.notes.find(n => n.id === noteId);
+        if (!note || note.type !== 'tasklist') return;
+
+        note.tasks.push({ text: 'New task', completed: false });
+        this.saveNotes();
+        this.renderNotes(); // Re-render to update the task list
+    }
+
+    makeDraggable(element, note) {
+        let isDragging = false;
+        let startX, startY, startLeft, startTop;
+
+        const header = element.querySelector('.sticky-note-header');
+        if (!header) return;
+
+        header.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.sticky-note-controls')) return;
+            
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = parseInt(element.style.left);
+            startTop = parseInt(element.style.top);
+            
+            element.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+
+            element.style.left = (startLeft + deltaX) + 'px';
+            element.style.top = (startTop + deltaY) + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                element.style.cursor = 'grab';
+                
+                // Save position
+                note.position = {
+                    x: parseInt(element.style.left),
+                    y: parseInt(element.style.top)
+                };
+                this.saveNotes();
+            }
+        });
+    }
+
+    makeResizable(element, note) {
+        let isResizing = false;
+        let startX, startY, startWidth, startHeight;
+
+        const handle = document.createElement('div');
+        handle.style.cssText = `
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            cursor: se-resize;
+            background: linear-gradient(-45deg, transparent 30%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.3) 70%, transparent 70%);
+        `;
+        element.appendChild(handle);
+
+        handle.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            startWidth = element.offsetWidth;
+            startHeight = element.offsetHeight;
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+
+            const newWidth = Math.max(200, startWidth + deltaX);
+            const newHeight = Math.max(150, startHeight + deltaY);
+
+            element.style.width = newWidth + 'px';
+            element.style.height = newHeight + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isResizing) {
+                isResizing = false;
+                
+                // Save size
+                note.size = {
+                    width: element.offsetWidth,
+                    height: element.offsetHeight
+                };
+                this.saveNotes();
+            }
+        });
+    }
+
+    deleteNote(id) {
+        this.notes = this.notes.filter(note => note.id !== id);
+        this.saveNotes();
+        
+        const element = document.getElementById(`sticky-note-${id}`);
+        if (element) {
+            element.remove();
+        }
+    }
+
+    renderNotes() {
+        // Clear existing notes
+        const existingNotes = document.querySelectorAll('.sticky-note');
+        existingNotes.forEach(note => note.remove());
+
+        // Render all notes
+        this.notes.forEach(note => {
+            this.renderNote(note);
+        });
+    }
+
+    loadNotes() {
+        const saved = localStorage.getItem('stickyNotes');
+        if (saved) {
+            this.notes = JSON.parse(saved);
+            this.nextId = Math.max(...this.notes.map(n => n.id), 0) + 1;
+        }
+    }
+
+    saveNotes() {
+        localStorage.setItem('stickyNotes', JSON.stringify(this.notes));
+    }
+
+    addGlobalListeners() {
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                this.createNote();
+            }
+        });
+    }
 }
 
-// Initialize sticky notes app
-let stickyNotesApp;
+// Initialize sticky notes
 document.addEventListener('DOMContentLoaded', () => {
-  stickyNotesApp = new StickyNotesApp();
-});
-
-// Make it globally accessible
-window.stickyNotesApp = stickyNotesApp; 
+    window.stickyNotes = new StickyNotes();
+}); 

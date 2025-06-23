@@ -17,7 +17,13 @@ icon: 🎨
       </div>
       <div class="window-content">
           <div class="paint-menu-bar">
-              <span><u>F</u>ile</span>
+              <div class="menu-item">
+                <span><u>F</u>ile</span>
+                <div class="dropdown-menu">
+                  <div class="menu-option" id="paint-save">Save</div>
+                  <div class="menu-option" id="paint-clear">Clear</div>
+                </div>
+              </div>
               <span><u>E</u>dit</span>
               <span><u>V</u>iew</span>
               <span><u>I</u>mage</span>

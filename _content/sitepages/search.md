@@ -223,12 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const sites = [
     {
-        title: "Example Site",
-        description: "A dummy example site for testing the tpot tag functionality",
-        url: "https://examplelink.com",
-        tags: ["tpot", "example", "dummy"],
-    },
-    {
         title: "GitHub",
         description: "The world's leading software development platform",
         url: "https://github.com",

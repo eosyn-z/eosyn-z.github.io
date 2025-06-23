@@ -3,7 +3,6 @@ layout: game
 title: Snake
 icon: 🐍
 permalink: /snake/
-description: Classic snake game - eat food and grow longer! Use arrow keys to move.
 ---
 
 <div class="main-content" data-page-script="snake-game">

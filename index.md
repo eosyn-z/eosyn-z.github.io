@@ -13,10 +13,9 @@ If this fails, rollback to:
 -->
 
 <div class="main-content">
-  <!-- TPOT Sites Scrolling List -->
-  <div class="glass-card" style="margin-bottom: 2rem;">
-    <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--theme-text);">TPOT Sites</h3>
-    <div class="tpot-sites-scroll" id="tpotSitesScroll">
+  <!-- TPOT Sites Scrolling Carousel -->
+  <div class="tpot-carousel-container">
+    <div class="tpot-sites-carousel" id="tpotSitesCarousel">
       <!-- TPOT sites will be populated here -->
     </div>
   </div>
@@ -78,16 +77,10 @@ If this fails, rollback to:
 </div>
 
 <script>
-// TPOT Sites Scrolling List
+// TPOT Sites Scrolling Carousel
 document.addEventListener('DOMContentLoaded', function() {
   // Define sites data directly on this page
   const sites = [
-    {
-        title: "Example Site",
-        description: "A dummy example site for testing the tpot tag functionality",
-        url: "https://examplelink.com",
-        tags: ["tpot", "example", "dummy"],
-    },
     {
         title: "CSS-Tricks",
         description: "Tips, tricks, and techniques for CSS",
@@ -173,14 +166,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, 1000);
   }
-
-  // Initial counter update
-  updateCounter();
 });
 
 function populateTpotSites() {
-  const tpotSitesScroll = document.getElementById('tpotSitesScroll');
-  if (!tpotSitesScroll || !window.globalSites) return;
+  const tpotSitesCarousel = document.getElementById('tpotSitesCarousel');
+  if (!tpotSitesCarousel || !window.globalSites) return;
 
   // Filter sites with "tpot" tag
   const tpotSites = window.globalSites.filter(site => 
@@ -188,12 +178,14 @@ function populateTpotSites() {
   );
 
   if (tpotSites.length === 0) {
-    tpotSitesScroll.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No TPOT sites found.</p>';
+    tpotSitesCarousel.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No TPOT sites found.</p>';
     return;
   }
 
-  // Create scrolling list of buttons
-  tpotSitesScroll.innerHTML = tpotSites.map(site => `
+  // Create carousel of buttons - duplicate the list to create seamless loop
+  const duplicatedSites = [...tpotSites, ...tpotSites];
+  
+  tpotSitesCarousel.innerHTML = duplicatedSites.map(site => `
     <a href="${site.url}" target="_blank" class="tpot-site-btn">
       <span class="tpot-site-title">${site.title}</span>
       <span class="tpot-site-desc">${site.description}</span>
@@ -203,27 +195,36 @@ function populateTpotSites() {
 </script>
 
 <style>
-/* TPOT Sites Scrolling List Styles */
-.tpot-sites-scroll {
+/* TPOT Sites Carousel Styles */
+.tpot-carousel-container {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border-light);
+  border-radius: var(--glass-border-radius);
+  backdrop-filter: var(--glass-blur-light);
+}
+
+.tpot-sites-carousel {
   display: flex;
   gap: 1rem;
-  overflow-x: auto;
-  padding: 0.5rem 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--glass-border-medium) transparent;
+  padding: 1rem;
+  animation: scrollCarousel 60s linear infinite;
+  white-space: nowrap;
 }
 
-.tpot-sites-scroll::-webkit-scrollbar {
-  height: 6px;
+.tpot-sites-carousel:hover {
+  animation-play-state: paused;
 }
 
-.tpot-sites-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tpot-sites-scroll::-webkit-scrollbar-thumb {
-  background: var(--glass-border-medium);
-  border-radius: 3px;
+@keyframes scrollCarousel {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .tpot-site-btn {
@@ -240,26 +241,27 @@ function populateTpotSites() {
   backdrop-filter: var(--glass-blur-medium);
   box-shadow: var(--glass-shadow-light);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tpot-site-btn:hover {
   background: var(--glass-bg-heavy);
-  border-color: var(--glass-border-medium);
   transform: translateY(-2px);
   box-shadow: var(--glass-shadow-medium);
+  border-color: var(--theme-accent);
 }
 
 .tpot-site-title {
   font-weight: 600;
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: var(--theme-text);
+  color: var(--theme-accent);
 }
 
 .tpot-site-desc {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.3;
   white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -270,6 +272,10 @@ function populateTpotSites() {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .tpot-sites-carousel {
+    animation-duration: 40s;
+  }
+  
   .tpot-site-btn {
     min-width: 160px;
     padding: 0.75rem;

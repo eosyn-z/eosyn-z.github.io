@@ -36,10 +36,20 @@
       window.jekyllPages = {% include all_pages_json.html %};
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+    <script src="{{ "/assets/js/app-window.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/theme-switcher.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/desktop.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/favorites.js" | relative_url }}"></script>
-    {%- include theme-editor.html -%}
+    <script src="{{ "/assets/js/start_menu.js" | relative_url }}"></script>
+    <script src="{{ "/assets/js/theme-editor.js" | relative_url }}"></script>
+    <script src="{{ "/assets/js/sticky_notes_manager.js" | relative_url }}"></script>
+    <script>
+      // Set initial view state class on body
+      const desktopUrl = '{{ "/desktop" | relative_url }}';
+      if (window.location.pathname.startsWith(desktopUrl)) {
+        document.body.classList.add('desktop-view-active');
+      }
+    </script>
   </body>
 
 </html> 

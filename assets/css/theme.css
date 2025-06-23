@@ -20,6 +20,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   transition: background-color 0.4s ease, color 0.4s ease;
   overflow-x: hidden; /* Prevent horizontal scrollbars globally */
+  overflow-y: auto; /* Ensure vertical scroll is possible if content demands it */
 }
 
 html {
@@ -175,6 +176,13 @@ html {
   border-color: var(--theme-accent);
 }
 
+.glass-button.active {
+    background: var(--theme-accent);
+    color: white;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    border-color: var(--theme-accent-dark);
+}
+
 /* Glass Card */
 .glass-card {
   background-color: var(--glass-bg-light);
@@ -198,9 +206,10 @@ html {
   background-image: linear-gradient(var(--glass-tint-color), var(--glass-tint-color));
   backdrop-filter: var(--glass-blur-heavy);
   border: 1px solid var(--glass-border-medium);
-  border-radius: 15px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 32px;
   box-shadow: var(--glass-shadow-heavy);
+  transition: all 0.3s ease;
 }
 
 /* Glass Navigation */
@@ -213,10 +222,22 @@ html {
 }
 
 .top-nav {
-  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  width: 100%;
+  position: fixed;
   top: 0;
+  left: 0;
   z-index: 1000;
-  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.nav-links-header {
+  display: flex;
+  gap: 0.5rem; /* Reduced gap for closer buttons */
+  align-items: center;
 }
 
 .view-toggle-container {
@@ -226,18 +247,13 @@ html {
   z-index: 1001; /* Above the nav bar */
 }
 
-.nav-links-header {
-  margin-left: 80px; /* Add space for the toggle button */
-}
-
 /* --- Main Content Area --- */
 .main-content {
-  padding: 120px 20px 100px 20px;
-  min-height: 100vh;
-  box-sizing: border-box;
+  max-width: 1400px; /* Increased from ~1200px */
   margin: 0 auto;
-  max-width: 800px; /* Consistent width for all pages - not too wide */
+  padding: 6rem 2rem 2rem; /* Reduced top padding from ~8rem, kept rest */
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* Page-specific overflow control - removed wider widths */
@@ -257,9 +273,7 @@ body[data-page="search"] .main-content {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .main-content {
-    padding: 100px 15px 80px 15px;
-    width: 100%;
-    max-width: 100%;
+    padding-top: 5rem;
   }
   
   body[data-page="search"] .main-content {
@@ -2765,6 +2779,7 @@ body:not(.desktop-mode) .glass-nav {
   .desktop-icon {
     width: 70px;
     height: 90px;
+    touch-action: manipulation;
   }
   
   .desktop-icon-icon {
@@ -2773,8 +2788,53 @@ body:not(.desktop-mode) .glass-nav {
   
   .desktop-icon-label {
     font-size: 0.7rem;
+    line-height: 1.1;
   }
-} 
+  
+  /* Improve touch interactions */
+  .desktop-icon:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Better spacing for mobile */
+  .desktop-icon .icon-image,
+  .desktop-icon .icon-emoji {
+    margin-bottom: 6px;
+  }
+  
+  /* Ensure proper grid spacing on mobile */
+  .desktop-grid {
+    gap: 8px;
+  }
+}
+
+/* Additional mobile improvements for very small screens */
+@media (max-width: 480px) {
+  .desktop-icons {
+    top: 60px;
+    left: 5px;
+    right: 5px;
+    bottom: 80px;
+  }
+  
+  .desktop-icon {
+    width: 60px;
+    height: 80px;
+  }
+  
+  .desktop-icon-icon {
+    font-size: 1.2rem;
+  }
+  
+  .desktop-icon-label {
+    font-size: 0.65rem;
+  }
+  
+  /* Ensure icons don't overlap on very small screens */
+  .desktop-grid {
+    gap: 5px;
+  }
+}
 
 /* ===== Window Component Styles ===== */
 
@@ -3673,4 +3733,480 @@ body.desktop-mode .main-content {
 /* Ensure the default view is correct */
 body:not(.desktop-mode) .main-content {
     margin-top: 80px; /* Default top margin */
+}
+
+/* Background Animation Toggle Button Styles */
+#background-animation-toggle.active {
+    background: var(--theme-accent);
+    color: white;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+#background-animation-toggle.active span {
+    animation: sparkle 2s infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(90deg); }
+    50% { transform: scale(1.2) rotate(180deg); }
+    75% { transform: scale(1.1) rotate(270deg); }
+}
+
+#now-playing-toggle.active {
+    background: var(--theme-accent);
+    color: white;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+#now-playing-toggle.active span {
+    animation: music-pulse 1.5s infinite;
+}
+
+@keyframes music-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* Enhanced theme transitions */
+* {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sticky-note, .window, .glass-card, .glass-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth theme switching for background animation */
+[data-theme] {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced glass morphism effects */
+.glass-card, .glass-button, .glass-pane {
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+}
+
+.glass-card:hover, .glass-button:hover {
+    backdrop-filter: blur(15px) saturate(200%);
+    -webkit-backdrop-filter: blur(15px) saturate(200%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Rich text editor enhancements */
+.rich-text-toolbar {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.rich-text-btn:hover {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform: translateY(-1px);
+}
+
+/* Now Playing widget enhancements */
+.now-playing-widget {
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+}
+
+.now-playing-widget:hover {
+    backdrop-filter: blur(25px) saturate(250%);
+    -webkit-backdrop-filter: blur(25px) saturate(250%);
+}
+
+/* Background animation canvas enhancements */
+#background-animation {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/* Theme transition overlay */
+#theme-transition-overlay {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* Enhanced sticky notes with theme transitions */
+.sticky-note {
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sticky-note:hover {
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced window transitions */
+.window {
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.window:hover {
+    backdrop-filter: blur(15px) saturate(200%);
+    -webkit-backdrop-filter: blur(15px) saturate(200%);
+}
+
+/* Enhanced desktop icons */
+.desktop-icon {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.desktop-icon:hover {
+    transform: translateY(-5px) scale(1.05);
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
+}
+
+/* Enhanced taskbar */
+.glass-bar {
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced start menu */
+.glass-pane {
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced theme buttons */
+.theme-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.theme-btn:hover {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.theme-btn.active {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+/* Enhanced form elements */
+input, textarea, select {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input:focus, textarea:focus, select:focus {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+/* Enhanced buttons */
+button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+button:hover {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Enhanced links */
+a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover {
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* Enhanced scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--theme-accent);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-accent-secondary);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+/* Enhanced focus states */
+*:focus {
+    outline: 2px solid var(--theme-accent);
+    outline-offset: 2px;
+    transition: outline 0.3s ease;
+}
+
+/* Enhanced selection */
+::selection {
+    background: var(--theme-accent);
+    color: white;
+}
+
+::-moz-selection {
+    background: var(--theme-accent);
+    color: white;
+}
+
+/* Enhanced loading states */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Enhanced tooltips */
+[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass-bg-heavy);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10000;
+    border: 1px solid var(--glass-border-light);
+    box-shadow: var(--glass-shadow-medium);
+    animation: tooltip-fade-in 0.3s ease;
+}
+
+@keyframes tooltip-fade-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Enhanced responsive design */
+@media (max-width: 768px) {
+    .glass-card, .glass-button, .glass-pane {
+        backdrop-filter: blur(8px) saturate(150%);
+        -webkit-backdrop-filter: blur(8px) saturate(150%);
+    }
+    
+    .now-playing-widget {
+        backdrop-filter: blur(15px) saturate(180%);
+        -webkit-backdrop-filter: blur(15px) saturate(180%);
+    }
+    
+    .sticky-note {
+        backdrop-filter: blur(12px) saturate(160%);
+        -webkit-backdrop-filter: blur(12px) saturate(160%);
+    }
+}
+
+/* Enhanced dark mode support */
+@media (prefers-color-scheme: dark) {
+    .glass-card, .glass-button, .glass-pane {
+        backdrop-filter: blur(15px) saturate(200%);
+        -webkit-backdrop-filter: blur(15px) saturate(200%);
+    }
+}
+
+/* Enhanced reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .now-playing-widget.playing .music-icon,
+    #background-animation-toggle.active span,
+    #now-playing-toggle.active span {
+        animation: none;
+    }
+}
+
+/*------------------------------------------------------------------
+[Sticky Notes Tray]
+*/
+.sticky-notes-tray {
+    position: fixed;
+    top: 60px; /* Below header */
+    right: -450px; /* Start off-screen */
+    width: 420px;
+    max-width: 90vw;
+    height: calc(100vh - 70px);
+    z-index: 1050;
+    display: none;
+    flex-direction: column;
+    transition: right 0.3s ease-in-out;
+    border-left: 1px solid var(--glass-border-color);
+    padding: 0; /* Remove padding for full-height feel */
+}
+
+.sticky-notes-tray.visible {
+    right: 0;
+}
+
+.sticky-notes-tray .tray-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--glass-border-color);
+}
+
+.sticky-notes-tray .tray-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.sticky-notes-tray .close-tray-btn {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+}
+
+.sticky-notes-tray .tray-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.sticky-notes-tray .tray-content p {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-color-secondary);
+}
+
+.sticky-notes-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+/* Ensure tray buttons have consistent styling */
+.sticky-notes-buttons-grid .glass-button {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.system-tray .tray-icon.active {
+    background-color: var(--theme-accent-alpha);
+    color: var(--theme-accent);
+    box-shadow: 0 0 5px var(--theme-accent);
+}
+
+/*------------------------------------------------------------------
+[Game Launcher Modal]
+*/
+.game-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(10px);
+}
+
+.game-modal-content {
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Remove padding for edge-to-edge iframe */
+}
+
+.game-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid var(--glass-border-color);
+    flex-shrink: 0;
+}
+
+.game-modal-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.game-modal-header .close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+#game-modal-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0 0 var(--glass-border-radius) var(--glass-border-radius);
 }

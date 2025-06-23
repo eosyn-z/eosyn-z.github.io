@@ -1,5 +1,5 @@
 ---
-layout: games-launcher
+layout: default
 title: Game Center
 permalink: /games/
 icon: 🎮

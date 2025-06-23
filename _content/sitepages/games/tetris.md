@@ -1,9 +1,8 @@
 ---
 layout: game
 title: Tetris
-icon: 🧩
 permalink: /tetris/
-description: Arrange falling blocks to clear lines! Use arrow keys to move and rotate pieces.
+icon: 🧩
 ---
 
 <div class="main-content" data-page-script="tetris-game">

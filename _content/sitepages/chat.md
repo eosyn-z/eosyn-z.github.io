@@ -1,13 +1,14 @@
 ---
 layout: default
 title: Chat
+permalink: /chat/
 icon: 💬
-description: "Chat with an AI assistant."
+description: "Join the conversation on IRC."
 ---
 <div class="main-content glass-container">
 <div class="page-header">
-    <h1>AI Chat</h1>
-    <p>This is a placeholder for a future AI chat interface.</p>
+    <h1>IRC Chat</h1>
+    <p>Join the conversation on the Libera.Chat network.</p>
 </div>
 
 <div class="glass-card" style="margin-bottom: 2rem;">
@@ -117,31 +118,30 @@ description: "Chat with an AI assistant."
 <script src="{{ "/assets/js/irc-themer.js" | relative_url }}" defer></script>
 <script>
   function setChannel(channelName) {
-    console.log('Switching to channel:', channelName);
-    
-    const iframe = document.getElementById('chatFrame');
-    const server = 'irc.libera.chat';
-    
-    // Construct the new URL with the correct Kiwi IRC format
-    const newUrl = `https://kiwiirc.com/nextclient/#irc://${server}/#${channelName}`;
-    
-    console.log('New URL:', newUrl);
-    
-    // Update the iframe source
-    iframe.src = newUrl;
+    // The irc-themer.js script will handle the URL creation
+    if (window.updateIrcTheme) {
+      window.updateIrcTheme(channelName);
+    } else {
+      console.error('IRC Themer is not available. Cannot switch channels.');
+      // Fallback for when themer is not loaded
+      const iframe = document.getElementById('chatFrame');
+      const server = 'irc.libera.chat';
+      iframe.src = `https://kiwiirc.com/nextclient/#irc://${server}/#${channelName}`;
+    }
 
     // Update active button
     document.querySelectorAll('.channel-btn').forEach(btn => {
       btn.classList.remove('active');
     });
-    document.querySelector(`[data-channel="${channelName}"]`).classList.add('active');
+    const newActiveButton = document.querySelector(`[data-channel="${channelName}"]`);
+    if (newActiveButton) {
+      newActiveButton.classList.add('active');
+    }
     
     // Update channel title
-    document.querySelector('.glass-card:last-child h3').textContent = `#${channelName}`;
-
-    // Let the themer know something happened so it can reapply theming
-    setTimeout(() => {
-      window.dispatchEvent(new Event('channelChanged'));
-    }, 100);
+    const titleElement = document.querySelector('.glass-card:last-child h3');
+    if (titleElement) {
+      titleElement.textContent = `#${channelName}`;
+    }
   }
 </script> 

@@ -1,7 +1,7 @@
 <!-- Website Mode Navigation -->
 <div class="nav-links-header">
-  <a href="{{ "/desktop/" | relative_url }}" class="glass-button">⭐ Desktop</a>
-  <a href="{{ "/" | relative_url }}" class="glass-button">Home</a>
+  <a href="{{ "/desktop/" | relative_url }}" class="glass-button desktop-toggle">⭐ Desktop</a>
+  <a href="{{ "/" | relative_url }}" class="glass-button home-link active">Home</a>
   <nav class="nav-links">
     <!-- Site Pages -->
     <a href="{{ "/music/" | relative_url }}" class="glass-button">Music</a>
@@ -39,4 +39,33 @@
     <div class="theme-btn custom-theme" data-theme="custom" title="🎨 Custom Theme Editor">🎨</div>
   </div>
   {%- include discord_status.html -%}
-</div> 
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-links a.glass-button');
+    const homeLink = document.querySelector('a.home-link');
+
+    let isPageActive = false;
+    navLinks.forEach(link => {
+      const linkPath = new URL(link.href).pathname;
+      if (currentPage.startsWith(linkPath) && linkPath !== '/') {
+        link.classList.add('active');
+        isPageActive = true;
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    if (!isPageActive && homeLink) {
+        if(currentPage === '/' || currentPage === '/index.html') {
+            homeLink.classList.add('active');
+        } else {
+            homeLink.classList.remove('active');
+        }
+    } else if (homeLink) {
+      homeLink.classList.remove('active');
+    }
+  });
+</script> 

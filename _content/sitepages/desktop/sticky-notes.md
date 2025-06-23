@@ -41,7 +41,7 @@ icon: 📝
         💬 Quote
       </button>
       
-      <button class="glass-button" onclick="createStickyNote('Contact Info', '📞 Contact:\nName: John Doe\nEmail: john@example.com\nPhone: (555) 123-4567')">
+      <button class="glass-button" onclick="createStickyNote('Contact Info', '📞 Contact:\nName: [Your Name]\nEmail: [your.email@example.com]\nPhone: [Your Phone]')">
         📞 Contact Info
       </button>
       
@@ -53,11 +53,11 @@ icon: 📝
         📅 Meeting Notes
       </button>
       
-      <button class="glass-button" onclick="createStickyNote('Password', '🔐 Password:\nWebsite: example.com\nUsername: myuser\nPassword: ********')">
+      <button class="glass-button" onclick="createStickyNote('Password', '🔐 Password:\nWebsite: [website.com]\nUsername: [username]\nPassword: [password]')">
         🔐 Password
       </button>
       
-      <button class="glass-button" onclick="createStickyNote('Bookmark', '🔖 Bookmark:\nTitle: Interesting Article\nURL: https://example.com\nNotes: Worth reading later')">
+      <button class="glass-button" onclick="createStickyNote('Bookmark', '🔖 Bookmark:\nTitle: [Article Title]\nURL: [https://example.com]\nNotes: [Your notes here]')">
         🔖 Bookmark
       </button>
       

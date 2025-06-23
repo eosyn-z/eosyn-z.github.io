@@ -39,14 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return hex(match[1]) + hex(match[2]) + hex(match[3]);
   };
   
-  const updateIrcTheme = () => {
+  const updateIrcTheme = (newChannel) => {
     let currentSrc = chatFrame.src;
     
-    // Extract the channel from the current URL
+    // Determine the channel to use
+    // Priority: 1. newChannel argument, 2. from current URL, 3. fallback to 'general'
     const channelMatch = currentSrc.match(/#irc:\/\/[^\/]+\/#([^?]+)/);
-    const channel = channelMatch ? channelMatch[1] : 'general';
-    
-    console.log('Updating IRC theme for channel:', channel);
+    const channel = newChannel || (channelMatch ? channelMatch[1] : 'general');
     
     const colors = getThemeColors();
     
@@ -65,24 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Construct the new URL with theme parameters
     const newSrc = `https://kiwiirc.com/nextclient/?${themeParams}#irc://irc.libera.chat/#${channel}`;
 
-    console.log('New themed URL:', newSrc);
-
     if (chatFrame.src !== newSrc) {
       chatFrame.src = newSrc;
     }
   };
 
-  // Update theme initially
-  setTimeout(updateIrcTheme, 500);
+  // Expose the function to the global window object
+  window.updateIrcTheme = updateIrcTheme;
+
+  // Update theme initially on page load
+  setTimeout(() => updateIrcTheme(), 500);
 
   // Update theme when the site's theme changes
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       // Give the CSS variables a moment to update
-      setTimeout(updateIrcTheme, 100);
+      setTimeout(() => updateIrcTheme(), 100);
     });
   });
-
-  // Also update when the channel changes
-  window.addEventListener('channelChanged', updateIrcTheme);
 }); 

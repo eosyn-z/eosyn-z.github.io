@@ -1,220 +1,276 @@
 // Custom Theme Editor
 class CustomThemeEditor {
     constructor() {
-        this.tray = document.getElementById('theme-editor-tray');
-        if (!this.tray) {
-            console.error('Theme editor tray element not found.');
-            return;
-        }
-        this.editorHTML = this.tray.innerHTML;
-        // The tray itself is no longer needed after we grab its HTML
-        this.tray.remove();
+        this.editorWindow = null;
         this.init();
+        this.loadSavedCustomThemeOnPageLoad();
     }
 
-    async init() {
-        await this.loadEditorHTML();
+    init() {
+        const themeEditorButton = document.querySelector('.theme-btn[data-theme="custom"]');
+        if (themeEditorButton) {
+            themeEditorButton.addEventListener('click', () => this.createThemeEditorWindow());
+        }
     }
 
-    async loadEditorHTML() {
-        try {
-            const response = await fetch('/_includes/theme-editor.html');
-            if (!response.ok) {
-                throw new Error('Failed to load theme editor HTML');
+    // Load and apply saved custom theme when page loads
+    loadSavedCustomThemeOnPageLoad() {
+        // Try to load from cookie first, then localStorage
+        let savedTheme = null;
+        
+        if (window.getCookie) {
+            const cookieTheme = window.getCookie('customTheme');
+            if (cookieTheme) {
+                try {
+                    savedTheme = JSON.parse(cookieTheme);
+                } catch (e) {
+                    console.error('Error parsing cookie theme:', e);
+                }
             }
-            this.editorHTML = await response.text();
-        } catch (error) {
-            console.error('Error loading theme editor:', error);
+        }
+        
+        // Fallback to localStorage
+        if (!savedTheme) {
+            const localTheme = localStorage.getItem('customTheme');
+            if (localTheme) {
+                try {
+                    savedTheme = JSON.parse(localTheme);
+                } catch (e) {
+                    console.error('Error parsing localStorage theme:', e);
+                }
+            }
+        }
+        
+        // Apply saved theme to the page
+        if (savedTheme) {
+            Object.entries(savedTheme).forEach(([variable, value]) => {
+                document.documentElement.style.setProperty(variable, value);
+            });
+            console.log('Custom theme loaded and applied from saved settings');
         }
     }
 
     createThemeEditorWindow() {
-        if (!window.windowManager) {
-            console.error('WindowManager is not available.');
-            return;
-        }
-
         const windowId = 'system-settings-theme-editor';
-        const existingWindow = window.windowManager.getWindow(windowId);
-        if (existingWindow) {
+
+        // Prevent creating multiple editor windows
+        if (document.getElementById(windowId)) {
             window.windowManager.focusWindow(windowId);
             return;
         }
 
-        const themeWindow = window.windowManager.createWindow(
+        // Use the window manager to create the window
+        this.editorWindow = window.windowManager.createWindow(
             windowId,
-            'System Settings - Theme Editor',
-            this.editorHTML
+            '🎨 Theme Editor',
+            '', // No content URL needed, we build it dynamically
+            '450px', // Width
+            '550px'  // Height
         );
-
-        this.setupEventListenersForWindow(themeWindow.element);
-        this.populateColorPickers(themeWindow.element);
-    }
-
-    setupEventListenersForWindow(windowElement) {
-        const colorPickers = windowElement.querySelectorAll('.color-picker');
-        colorPickers.forEach(picker => {
-            picker.addEventListener('input', (e) => this.updateColor(e));
-        });
-
-        const saveButton = windowElement.querySelector('.tray-btn.primary');
-        if (saveButton) {
-            saveButton.onclick = () => this.saveCustomTheme();
-        }
-
-        const resetButton = windowElement.querySelector('.tray-btn:not(.primary)');
-        if (resetButton) {
-            resetButton.onclick = () => this.resetCustomTheme();
-        }
         
-        const closeButton = windowElement.querySelector('.tray-close-btn');
-        if (closeButton) {
-            closeButton.onclick = () => window.windowManager.closeWindow('system-settings-theme-editor');
-        }
-    }
-
-    populateColorPickers(windowElement) {
-        const computedStyle = getComputedStyle(document.documentElement);
-        const colorPickers = windowElement.querySelectorAll('.color-picker');
-
-        colorPickers.forEach(picker => {
-            const variable = picker.getAttribute('data-variable');
-            const currentValue = computedStyle.getPropertyValue(variable).trim();
-            picker.value = this.rgbaToHex(currentValue); // Simplified, assuming colors are hex/rgb
-        });
-    }
-
-    rgbaToHex(rgba) {
-        if (!rgba.startsWith('rgba') && !rgba.startsWith('rgb')) return rgba;
-        let parts = rgba.substring(rgba.indexOf("(") + 1, rgba.lastIndexOf(")")).split(/,\s*/);
-        let r = parseInt(parts[0]), g = parseInt(parts[1]), b = parseInt(parts[2]);
-        return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).substr(0, 6);
+        this.editorWindow.querySelector('.window-content').innerHTML = this.getEditorContent();
+        this.addEditorEventListeners();
+        this.loadAndApplyCustomTheme();
     }
     
-    updateColor(event) {
-        const picker = event.target;
-        const variable = picker.getAttribute('data-variable');
-        const color = picker.value;
-        
-        document.documentElement.style.setProperty(variable, color);
-        
-        if (!window.customThemeValues) {
-            window.customThemeValues = {};
-        }
-        window.customThemeValues[variable] = color;
+    getEditorContent() {
+        return `
+            <div class="theme-editor-content" style="padding: 1rem; color: var(--theme-text);">
+                <p style="margin-top: 0;">Customize the 'custom' theme. Changes are saved automatically to cookies.</p>
+                
+                <div class="theme-editor-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    ${this.createColorInput('theme-primary', 'Primary')}
+                    ${this.createColorInput('theme-secondary', 'Secondary')}
+                    ${this.createColorInput('theme-accent', 'Accent')}
+                    ${this.createColorInput('theme-accent-dark', 'Accent Dark')}
+                    ${this.createColorInput('theme-text', 'Text')}
+                    ${this.createColorInput('theme-text-secondary', 'Text Secondary')}
+                    ${this.createColorInput('glass-bg-light', 'Glass BG Light')}
+                    ${this.createColorInput('glass-bg-medium', 'Glass BG Medium')}
+                    ${this.createColorInput('glass-border-light', 'Glass Border')}
+                </div>
+
+                <div class="theme-editor-buttons" style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button id="reset-theme-btn" class="glass-button">Reset to Default</button>
+                    <button id="save-theme-btn" class="glass-button primary">Save Theme</button>
+                </div>
+            </div>
+        `;
+    }
+
+    createColorInput(variable, label) {
+        return `
+            <div class="theme-editor-item" style="display: flex; flex-direction: column;">
+                <label for="${variable}" style="margin-bottom: 0.5rem; font-size: 0.9rem;">${label}</label>
+                <input type="color" id="${variable}" data-variable="--${variable}" style="width: 100%; height: 40px; border-radius: 4px; border: 1px solid var(--glass-border-light); background: var(--glass-bg-light); cursor: pointer;">
+            </div>
+        `;
+    }
+
+    addEditorEventListeners() {
+        const inputs = this.editorWindow.querySelectorAll('input[type="color"]');
+        inputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const variable = e.target.dataset.variable;
+                const value = e.target.value;
+                document.documentElement.style.setProperty(variable, value);
+                // Save to both localStorage and cookie immediately when user makes changes
+                this.saveCustomTheme();
+                this.saveCustomThemeToCookie();
+            });
+        });
+
+        const resetButton = this.editorWindow.querySelector('#reset-theme-btn');
+        resetButton.addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset your custom theme to its default values?')) {
+                this.resetAndApplyDefault();
+            }
+        });
+
+        const saveButton = this.editorWindow.querySelector('#save-theme-btn');
+        saveButton.addEventListener('click', () => {
+            this.saveCustomThemeToCookie();
+            this.showSaveNotification();
+        });
     }
 
     saveCustomTheme() {
-        if (!window.customThemeValues) {
-            alert('No changes to save!');
-            return;
-        }
-
-        const themeData = JSON.stringify(window.customThemeValues);
-        document.cookie = `custom_theme=${themeData};path=/;max-age=315360000`; 
-
-        alert('Custom theme saved!');
-        window.windowManager.closeWindow('system-settings-theme-editor');
-    }
-
-    resetCustomTheme() {
-        // This function needs to know the variables to clear.
-        const variablesToClear = Object.keys(window.customThemeValues || {});
-        variablesToClear.forEach(variable => {
-            document.documentElement.style.removeProperty(variable);
+        const theme = {};
+        const inputs = this.editorWindow.querySelectorAll('input[type="color"]');
+        inputs.forEach(input => {
+            theme[input.dataset.variable] = input.value;
         });
-
-        window.customThemeValues = {};
-        document.cookie = 'custom_theme=;path=/;max-age=-1';
-        document.body.setAttribute('data-theme', 'c');
-        
-        alert('Theme has been reset to default.');
-        window.windowManager.closeWindow('system-settings-theme-editor');
+        localStorage.setItem('customTheme', JSON.stringify(theme));
     }
 
-    loadCustomTheme() {
-        const cookieValue = document.cookie.split('; ').find(row => row.startsWith('custom_theme='));
-        if (cookieValue) {
-            try {
-                const themeData = JSON.parse(decodeURIComponent(cookieValue.split('=')[1]));
-                window.customThemeValues = themeData;
-                Object.entries(themeData).forEach(([variable, value]) => {
-                    document.documentElement.style.setProperty(variable, value);
-                });
-                document.body.setAttribute('data-theme', 'custom');
-            } catch (error) {
-                console.error('Error loading custom theme:', error);
+    saveCustomThemeToCookie() {
+        const theme = {};
+        const inputs = this.editorWindow.querySelectorAll('input[type="color"]');
+        inputs.forEach(input => {
+            theme[input.dataset.variable] = input.value;
+        });
+        
+        // Save to cookie for persistence across sessions
+        if (window.setCookie) {
+            window.setCookie('customTheme', JSON.stringify(theme), 3650); // 10 years
+        }
+        
+        // Also save to localStorage for immediate access
+        localStorage.setItem('customTheme', JSON.stringify(theme));
+    }
+
+    showSaveNotification() {
+        const notification = document.createElement('div');
+        notification.textContent = 'Theme saved to cookies! 🎨';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg-heavy);
+            backdrop-filter: var(--glass-blur-heavy);
+            border: 1px solid var(--glass-border-light);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            color: var(--theme-text);
+            font-weight: 500;
+            z-index: 10000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: var(--glass-shadow-medium);
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    loadAndApplyCustomTheme() {
+        // Try to load from cookie first, then localStorage
+        let savedTheme = null;
+        
+        if (window.getCookie) {
+            const cookieTheme = window.getCookie('customTheme');
+            if (cookieTheme) {
+                try {
+                    savedTheme = JSON.parse(cookieTheme);
+                } catch (e) {
+                    console.error('Error parsing cookie theme:', e);
+                }
             }
         }
+        
+        // Fallback to localStorage
+        if (!savedTheme) {
+            const localTheme = localStorage.getItem('customTheme');
+            if (localTheme) {
+                try {
+                    savedTheme = JSON.parse(localTheme);
+                } catch (e) {
+                    console.error('Error parsing localStorage theme:', e);
+                }
+            }
+        }
+        
+        const inputs = this.editorWindow.querySelectorAll('input[type="color"]');
+        inputs.forEach(input => {
+            const variable = input.dataset.variable;
+            if (savedTheme && savedTheme[variable]) {
+                input.value = savedTheme[variable];
+                document.documentElement.style.setProperty(variable, savedTheme[variable]);
+            }
+        });
     }
 
-    // Utility functions for color conversion
-    rgbaToHex(rgba) {
-        const rgbaMatch = rgba.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
-        if (rgbaMatch) {
-            const r = parseInt(rgbaMatch[1]);
-            const g = parseInt(rgbaMatch[2]);
-            const b = parseInt(rgbaMatch[3]);
-            return this.rgbToHex(`rgb(${r}, ${g}, ${b})`);
+    resetAndApplyDefault() {
+        localStorage.removeItem('customTheme');
+        if (window.setCookie) {
+            window.setCookie('customTheme', '', -1); // Delete cookie
         }
-        return '#000000';
-    }
-
-    rgbToHex(rgb) {
-        const rgbMatch = rgb.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-        if (rgbMatch) {
-            const r = parseInt(rgbMatch[1]);
-            const g = parseInt(rgbMatch[2]);
-            const b = parseInt(rgbMatch[3]);
-            return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-        }
-        return '#000000';
+        
+        // Reset to default theme values
+        const defaultTheme = {
+            '--theme-primary': '#6366f1',
+            '--theme-secondary': '#8b5cf6',
+            '--theme-accent': '#06b6d4',
+            '--theme-accent-dark': '#0891b2',
+            '--theme-text': '#1f2937',
+            '--theme-text-secondary': '#6b7280',
+            '--glass-bg-light': 'rgba(255, 255, 255, 0.1)',
+            '--glass-bg-medium': 'rgba(255, 255, 255, 0.2)',
+            '--glass-border-light': 'rgba(255, 255, 255, 0.3)'
+        };
+        
+        // Apply default values
+        Object.entries(defaultTheme).forEach(([variable, value]) => {
+            document.documentElement.style.setProperty(variable, value);
+        });
+        
+        // Update input values
+        const inputs = this.editorWindow.querySelectorAll('input[type="color"]');
+        inputs.forEach(input => {
+            const variable = input.dataset.variable;
+            if (defaultTheme[variable]) {
+                input.value = defaultTheme[variable];
+            }
+        });
+        
+        this.showSaveNotification();
     }
 }
 
-// Global functions for HTML onclick handlers
-window.openThemeEditor = function() {
-    if (window.customThemeEditor) {
-        window.customThemeEditor.createThemeEditorWindow();
-    }
-};
-
-window.closeThemeEditor = function() {
-    if (window.customThemeEditor) {
-        window.customThemeEditor.closeThemeEditor();
-    }
-};
-
-window.saveCustomTheme = function() {
-    if (window.customThemeEditor) {
-        window.customThemeEditor.saveCustomTheme();
-    }
-};
-
-window.resetCustomTheme = function() {
-    if (window.customThemeEditor) {
-        window.customThemeEditor.resetCustomTheme();
-    }
-};
-
-// Initialize theme editor when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.customThemeEditor = new CustomThemeEditor();
-    window.customThemeEditor.loadCustomTheme();
-    
-    // Close tray when clicking outside
-    document.addEventListener('click', function(e) {
-        if (window.customThemeEditor.tray.classList.contains('active') && 
-            !window.customThemeEditor.tray.contains(e.target) && 
-            !e.target.closest('.theme-btn.custom-theme')) {
-            window.customThemeEditor.closeThemeEditor();
-        }
-    });
-    
-    // Close tray with Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && window.customThemeEditor.tray.classList.contains('active')) {
-            window.customThemeEditor.closeThemeEditor();
-        }
-    });
 }); 

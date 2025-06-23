@@ -160,9 +160,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function makeWindowDraggable(el) {
         const header = el.querySelector('.window-header');
+        const snap_grid_size = 20;
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-        const dragMouseDown = (e) => {
+        header.onmousedown = (e) => {
             e.preventDefault();
             focusWindow(el.id.replace('window-',''));
             pos3 = e.clientX;
@@ -177,8 +178,16 @@ document.addEventListener('DOMContentLoaded', () => {
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            el.style.top = (el.offsetTop - pos2) + "px";
-            el.style.left = (el.offsetLeft - pos1) + "px";
+            
+            let newTop = el.offsetTop - pos2;
+            let newLeft = el.offsetLeft - pos1;
+
+            // Snap to grid
+            newTop = Math.round(newTop / snap_grid_size) * snap_grid_size;
+            newLeft = Math.round(newLeft / snap_grid_size) * snap_grid_size;
+            
+            el.style.top = newTop + "px";
+            el.style.left = newLeft + "px";
         };
 
         const closeDragElement = () => {
@@ -186,8 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.onmouseup = null;
             document.onmousemove = null;
         };
-
-        header.onmousedown = dragMouseDown;
     }
 
     function makeWindowResizable(el) {
@@ -243,39 +250,68 @@ document.addEventListener('DOMContentLoaded', () => {
     class DesktopManager {
         constructor(grid) {
             this.grid = grid;
-            if (!this.grid) {
-                console.error("Desktop grid container not found!");
-                return;
-            }
+            if (!this.grid) return;
             this.icons = Array.from(this.grid.children);
-            this.gridSize = 80; // Icon size + gap
         }
-
         init() {
-            this.loadIconPositions();
+            this.layoutIcons();
             this.icons.forEach(icon => {
                 this.makeIconDraggable(icon);
                 icon.ondblclick = () => window.openApp(icon.id, icon.dataset.appUrl, icon.dataset.appTitle);
-                icon.onclick = (e) => { e.preventDefault(); }; // Prevent single-click actions
+                icon.onclick = (e) => { e.preventDefault(); };
             });
         }
+        layoutIcons() {
+            const occupiedSlots = new Set();
+            // First, get all positions from icons that have already been placed and saved.
+            const savedPositions = this.loadIconPositions();
 
-        loadIconPositions() {
-            try {
-                const positions = JSON.parse(localStorage.getItem('desktopIconPositions'));
-                if (positions) {
-                    this.icons.forEach(icon => {
-                        if (positions[icon.id]) {
-                            icon.style.top = positions[icon.id].top;
-                            icon.style.left = positions[icon.id].left;
-                        }
-                    });
+            this.icons.forEach(icon => {
+                if (savedPositions[icon.id]) {
+                    icon.style.top = savedPositions[icon.id].top;
+                    icon.style.left = savedPositions[icon.id].left;
+                    occupiedSlots.add(`${savedPositions[icon.id].left},${savedPositions[icon.id].top}`);
                 }
-            } catch (e) {
-                console.error("Could not load icon positions:", e);
+            });
+
+            // Now, place any new icons that don't have a saved position.
+            this.icons.forEach(icon => {
+                if (!icon.style.top || !icon.style.left) {
+                    const { x, y } = this.findNextAvailableSlot(occupiedSlots);
+                    const top = `${y}px`;
+                    const left = `${x}px`;
+                    icon.style.top = top;
+                    icon.style.left = left;
+                    occupiedSlots.add(`${left},${top}`);
+                }
+            });
+            this.saveIconPositions(); // Save positions of newly placed icons
+        }
+        findNextAvailableSlot(occupiedSlots) {
+            const gridWidth = this.grid.offsetWidth;
+            const iconWidth = 80;
+            const iconHeight = 80;
+            const cols = Math.floor(gridWidth / iconWidth);
+
+            for (let i = 0; ; i++) {
+                const row = Math.floor(i / cols);
+                const col = i % cols;
+                const x = col * iconWidth + 10; // Add some padding
+                const y = row * iconHeight + 10;
+                const slot = `${x}px,${y}px`;
+                if (!occupiedSlots.has(slot)) {
+                    return { x, y };
+                }
             }
         }
-
+        loadIconPositions() {
+            try {
+                return JSON.parse(localStorage.getItem('desktopIconPositions') || '{}');
+            } catch (e) {
+                console.error("Could not load icon positions:", e);
+                return {};
+            }
+        }
         saveIconPositions() {
             const positions = {};
             this.icons.forEach(icon => {
@@ -283,9 +319,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             localStorage.setItem('desktopIconPositions', JSON.stringify(positions));
         }
-        
         makeIconDraggable(icon) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            const snapSize = 10; 
+
             icon.onmousedown = (e) => {
                 if (e.button === 1) e.preventDefault();
                 pos3 = e.clientX;
@@ -300,8 +337,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 pos2 = pos4 - e.clientY;
                 pos3 = e.clientX;
                 pos4 = e.clientY;
-                icon.style.top = (icon.offsetTop - pos2) + "px";
-                icon.style.left = (icon.offsetLeft - pos1) + "px";
+                
+                let newTop = icon.offsetTop - pos2;
+                let newLeft = icon.offsetLeft - pos1;
+
+                newTop = Math.round(newTop / snapSize) * snapSize;
+                newLeft = Math.round(newLeft / snapSize) * snapSize;
+
+                icon.style.top = newTop + "px";
+                icon.style.left = newLeft + "px";
             };
 
             const closeDragElement = () => {
@@ -357,9 +401,12 @@ class DesktopManager {
     }
 
     init() {
-        if (!this.grid) return;
         this.layoutIcons();
-        this.icons.forEach(icon => this.makeIconDraggable(icon));
+        this.icons.forEach(icon => {
+            this.makeIconDraggable(icon);
+            icon.ondblclick = () => window.openApp(icon.id, icon.dataset.appUrl, icon.dataset.appTitle);
+            icon.onclick = (e) => { e.preventDefault(); }; // Prevent single-click actions
+        });
     }
 
     loadIconPositions() {
@@ -367,6 +414,7 @@ class DesktopManager {
             const positions = localStorage.getItem('desktopIconPositions');
             return positions ? JSON.parse(positions) : {};
         } catch (e) {
+            console.error("Could not load icon positions:", e);
             return {};
         }
     }
@@ -378,37 +426,43 @@ class DesktopManager {
     layoutIcons() {
         const occupiedSlots = new Set();
         this.icons.forEach(icon => {
-            const savedPosition = this.iconPositions[icon.id];
-            if (savedPosition) {
-                icon.style.left = `${savedPosition.gridX * this.gridCellSize.width}px`;
-                icon.style.top = `${savedPosition.gridY * this.gridCellSize.height}px`;
-                occupiedSlots.add(`${savedPosition.gridX},${savedPosition.gridY}`);
+            // If an icon already has a saved position, respect it.
+            if (icon.style.top && icon.style.left) {
+                const slot = `${icon.style.left},${icon.style.top}`;
+                occupiedSlots.add(slot);
             }
         });
 
         this.icons.forEach(icon => {
-            if (!this.iconPositions[icon.id]) {
-                const { gridX, gridY } = this.findNextAvailableSlot(occupiedSlots);
-                icon.style.left = `${gridX * this.gridCellSize.width}px`;
-                icon.style.top = `${gridY * this.gridCellSize.height}px`;
-                this.iconPositions[icon.id] = { gridX, gridY };
-                occupiedSlots.add(`${gridX},${gridY}`);
+            // If an icon does NOT have a saved position, place it in the next available slot.
+            if (!icon.style.top || !icon.style.left) {
+                const { x, y } = this.findNextAvailableSlot(occupiedSlots);
+                icon.style.left = `${x}px`;
+                icon.style.top = `${y}px`;
+                occupiedSlots.add(`${x},${y}`);
             }
         });
-        this.saveIconPositions();
+
+        this.loadIconPositions(); // Load saved positions for icons that have them
     }
 
     findNextAvailableSlot(occupiedSlots) {
-        const maxCols = Math.floor(this.grid.clientWidth / this.gridCellSize.width);
-        const maxRows = Math.floor(this.grid.clientHeight / this.gridCellSize.height);
-        for (let r = 0; r < maxRows; r++) {
-            for (let c = 0; c < maxCols; c++) {
-                if (!occupiedSlots.has(`${c},${r}`)) {
-                    return { gridX: c, gridY: r };
-                }
+        const gridWidth = this.grid.offsetWidth;
+        const iconWidth = 80;
+        const iconHeight = 80;
+        const cols = Math.floor(gridWidth / iconWidth);
+
+        for (let i = 0; ; i++) {
+            const row = Math.floor(i / cols);
+            const col = i % cols;
+            const x = col * iconWidth;
+            const y = row * iconHeight;
+
+            const slot = `${x},${y}`;
+            if (!occupiedSlots.has(slot)) {
+                return { x, y };
             }
         }
-        return { gridX: 0, gridY: 0 };
     }
 
     makeIconDraggable(icon) {

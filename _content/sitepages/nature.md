@@ -6,6 +6,72 @@ icon: 🌳
 description: "Touch grass - nature imagery and filters."
 ---
 
+<style>
+/* Filter button active states */
+.filter-group .glass-button.active {
+  background: var(--theme-accent);
+  color: white;
+  border-color: var(--theme-accent);
+  box-shadow: 0 4px 12px rgba(var(--theme-accent-rgb, 0, 123, 255), 0.3);
+  transform: translateY(-1px);
+}
+
+.filter-group .glass-button.active:hover {
+  background: var(--theme-accent-dark, #0056b3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(var(--theme-accent-rgb, 0, 123, 255), 0.4);
+}
+
+/* Filter group styling */
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-label {
+  color: var(--theme-text);
+  font-size: 0.9rem;
+  min-width: 60px;
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filter-group {
+    gap: 6px;
+  }
+  
+  .filter-label {
+    font-size: 0.8rem;
+    min-width: 50px;
+  }
+  
+  .filter-group .glass-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-group {
+    gap: 4px;
+  }
+  
+  .filter-label {
+    font-size: 0.75rem;
+    min-width: 45px;
+  }
+  
+  .filter-group .glass-button {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}
+</style>
+
 <a href="/" class="glass-button" style="position: fixed; top: 20px; left: 20px; z-index: 1005;">← Back to Home</a>
 
 <div id="filter-container" class="glass-panel" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; flex-direction: column; gap: 12px; padding: 12px 20px; max-width: 90vw; align-items: center;">

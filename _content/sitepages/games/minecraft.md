@@ -3,7 +3,6 @@ layout: game
 title: Minecraft
 permalink: /minecraft/
 icon: 🧱
-description: A simple creative-mode clone. Use WASD to move, mouse to look, click to place/break blocks.
 ---
 
 <div class="main-content" data-page-script="minecraft-game">

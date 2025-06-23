@@ -1,0 +1,32 @@
+<script>
+    async function fetchStatus() {
+      try {
+        const res = await fetch("http://localhost:3020/status");
+        const { status } = await res.json();
+        document.getElementById("discord-status").innerText = `Discord: ${status}`;
+      } catch {
+        document.getElementById("discord-status").innerText = "Discord: offline/unavailable";
+      }
+    }
+    fetchStatus();
+    setInterval(fetchStatus, 60000);
+    </script>
+    <div id="discord-status">Discord: Loading…</div>
+  
+  
+  
+    // add this wherever you want your status to appear. 
+
+// function updateStatus() {
+    // async function updateStatus() {
+    //  try {
+    //    const res = await fetch("http://localhost:3020/status");
+    //    const { status } = await res.json();
+    //    document.getElementById("discord-status").innerText = `Discord: ${status}`;
+    //  } catch {
+    //    document.getElementById("discord-status").innerText = "Discord: offline";
+    //  }
+    //}
+   // updateStatus();
+   // setInterval(updateStatus, 60000);
+  //};

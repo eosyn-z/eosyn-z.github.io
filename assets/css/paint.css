@@ -137,4 +137,38 @@
 #curve::before { content: '∿'; }
 #polygon::before { content: '⎔'; }
 #ellipse::before { content: '○'; }
-#rounded-rectangle::before { content: '▢'; } 
+#rounded-rectangle::before { content: '▢'; }
+
+.paint-menu-bar .menu-item {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.paint-menu-bar .menu-item .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--glass-bg-light);
+    border: 1px solid var(--glass-border-color);
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 10;
+    min-width: 120px;
+}
+
+.paint-menu-bar .menu-item:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu .menu-option {
+    padding: 8px 12px;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.dropdown-menu .menu-option:hover {
+    background-color: var(--theme-accent-alpha);
+    color: var(--theme-accent);
+} 

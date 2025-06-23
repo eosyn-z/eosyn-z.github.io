@@ -7,23 +7,52 @@ class WindowManager {
         this.isResizing = false;
         this.dragOffset = { x: 0, y: 0 };
         this.resizeHandle = null;
+        this.nextWindowId = 1; // Track next available window ID
+        this.deletedWindowIds = []; // Track deleted IDs for reuse
+        this.gridSize = 20; // Grid snap size in pixels
         
         this.init();
         this.loadWindowStates();
+    }
+
+    // Get next available window ID
+    getNextWindowId() {
+        if (this.deletedWindowIds.length > 0) {
+            return this.deletedWindowIds.shift(); // Reuse deleted ID
+        }
+        return this.nextWindowId++;
+    }
+
+    // Mark window ID as available for reuse
+    releaseWindowId(id) {
+        if (!this.deletedWindowIds.includes(id)) {
+            this.deletedWindowIds.push(id);
+            this.deletedWindowIds.sort((a, b) => a - b); // Keep sorted
+        }
+    }
+
+    // Snap position to grid
+    snapToGrid(x, y) {
+        return {
+            x: Math.round(x / this.gridSize) * this.gridSize,
+            y: Math.round(y / this.gridSize) * this.gridSize
+        };
     }
 
     init() {
         // Find all windows and initialize them
         const windowElements = document.querySelectorAll('.window');
         windowElements.forEach((windowEl, index) => {
+            const windowId = windowEl.id || `window-${this.getNextWindowId()}`;
             this.windows.push({
                 element: windowEl,
-                id: windowEl.id || `window-${index}`,
+                id: windowId,
                 position: { x: 0, y: 0 },
                 size: { width: windowEl.offsetWidth, height: windowEl.offsetHeight },
                 isMinimized: false,
                 isMaximized: false
             });
+            windowEl.id = windowId; // Ensure ID is set
         });
 
         this.setupEventListeners();
@@ -38,35 +67,35 @@ class WindowManager {
                 const states = JSON.parse(savedStates);
                 Object.keys(states).forEach(windowId => {
                     const state = states[windowId];
-                const windowData = this.getWindow(windowId);
-                if (windowData) {
-                    // Apply saved position and size
-                    windowData.position = state.position || { x: 0, y: 0 };
-                    windowData.size = state.size || { width: 400, height: 300 };
-                    windowData.isMinimized = state.isMinimized || false;
-                    windowData.isMaximized = state.isMaximized || false;
-                    
-                    // Apply to DOM
-                    windowData.element.style.transform = `translate(${windowData.position.x}px, ${windowData.position.y}px)`;
-                    windowData.element.style.width = `${windowData.size.width}px`;
-                    windowData.element.style.height = `${windowData.size.height}px`;
-                    
-                    if (windowData.isMinimized) {
-                        windowData.element.style.transform = 'scale(0.1)';
-                        windowData.element.style.opacity = '0';
-                        windowData.element.style.pointerEvents = 'none';
+                    const windowData = this.getWindow(windowId);
+                    if (windowData) {
+                        // Apply saved position and size
+                        windowData.position = state.position || { x: 0, y: 0 };
+                        windowData.size = state.size || { width: 400, height: 300 };
+                        windowData.isMinimized = state.isMinimized || false;
+                        windowData.isMaximized = state.isMaximized || false;
+                        
+                        // Apply to DOM
+                        windowData.element.style.transform = `translate(${windowData.position.x}px, ${windowData.position.y}px)`;
+                        windowData.element.style.width = `${windowData.size.width}px`;
+                        windowData.element.style.height = `${windowData.size.height}px`;
+                        
+                        if (windowData.isMinimized) {
+                            windowData.element.style.transform = 'scale(0.1)';
+                            windowData.element.style.opacity = '0';
+                            windowData.element.style.pointerEvents = 'none';
+                        }
+                        
+                        if (windowData.isMaximized) {
+                            windowData.element.style.position = 'fixed';
+                            windowData.element.style.top = '0';
+                            windowData.element.style.left = '0';
+                            windowData.element.style.width = '100vw';
+                            windowData.element.style.height = '100vh';
+                            windowData.element.style.zIndex = '9999';
+                        }
                     }
-                    
-                    if (windowData.isMaximized) {
-                        windowData.element.style.position = 'fixed';
-                        windowData.element.style.top = '0';
-                        windowData.element.style.left = '0';
-                        windowData.element.style.width = '100vw';
-                        windowData.element.style.height = '100vh';
-                        windowData.element.style.zIndex = '9999';
-                    }
-                }
-            });
+                });
             }
         } catch (error) {
             console.error('Error loading window states:', error);
@@ -106,7 +135,7 @@ class WindowManager {
         return null;
     }
 
-    // Save sticky notes data
+    // Save sticky notes data with proper ID management
     saveStickyNotes() {
         const stickyNotes = [];
         const noteElements = document.querySelectorAll('.sticky-note');
@@ -117,7 +146,7 @@ class WindowManager {
             const title = noteEl.querySelector('.note-title');
             
             stickyNotes.push({
-                id: noteEl.dataset.noteId || `note-${index}`,
+                id: noteEl.dataset.noteId || `note-${this.getNextWindowId()}`,
                 position: {
                     x: rect.left,
                     y: rect.top
@@ -142,16 +171,16 @@ class WindowManager {
             const savedNotes = this.getCookie('stickyNotes');
             if (savedNotes) {
                 const notes = JSON.parse(savedNotes);
-            const container = document.querySelector('.sticky-notes-container');
-            
-                if (container && notes.length > 0) {
-                // Clear existing notes
-                container.innerHTML = '';
+                const container = document.querySelector('.sticky-notes-container');
                 
-                // Restore saved notes
+                if (container && notes.length > 0) {
+                    // Clear existing notes
+                    container.innerHTML = '';
+                    
+                    // Restore saved notes
                     notes.forEach(noteData => {
-                    this.createStickyNoteFromData(noteData);
-                });
+                        this.createStickyNoteFromData(noteData);
+                    });
                 }
             }
         } catch (error) {
@@ -200,9 +229,14 @@ class WindowManager {
         this.setupStickyNoteControls(note);
         
         container.appendChild(note);
+        
+        // Setup checkboxes if content contains task lists
+        if (noteData.content && (noteData.content.includes('- [') || noteData.content.includes('- [x]'))) {
+            this.setupTaskCheckboxes(note);
+        }
     }
 
-    // Make sticky note draggable
+    // Make sticky note draggable with grid snapping
     makeStickyNoteDraggable(note) {
         let isDragging = false;
         let startX, startY, startLeft, startTop;
@@ -249,13 +283,23 @@ class WindowManager {
         const onMouseUp = () => {
             if (isDragging) {
                 isDragging = false;
-                note.style.cursor = '';
-                note.style.zIndex = '';
+                note.style.cursor = 'grab';
+                note.style.zIndex = 'auto';
+                
+                // Snap to grid
+                const currentX = parseInt(note.style.left) || 0;
+                const currentY = parseInt(note.style.top) || 0;
+                const snapped = this.snapToGrid(currentX, currentY);
+                
+                note.style.left = `${snapped.x}px`;
+                note.style.top = `${snapped.y}px`;
+                
+                // Save sticky notes
                 this.saveStickyNotes();
+                
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
             }
-            
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
         };
 
         header.addEventListener('mousedown', onMouseDown);
@@ -327,8 +371,18 @@ class WindowManager {
         // Close button
         if (closeBtn) {
             closeBtn.addEventListener('click', () => {
+                // Release the note ID for reuse
+                const noteId = note.dataset.noteId;
+                if (noteId) {
+                    const idNumber = parseInt(noteId.replace('note-', ''));
+                    if (!isNaN(idNumber)) {
+                        this.releaseWindowId(idNumber);
+                    }
+                }
+                
                 note.remove();
                 this.saveStickyNotes();
+                this.updateStickyNotesCounter();
             });
         }
 
@@ -451,6 +505,11 @@ class WindowManager {
 
     stopDragging() {
         if (this.activeWindow) {
+            // Snap to grid when dragging stops
+            const snapped = this.snapToGrid(this.activeWindow.position.x, this.activeWindow.position.y);
+            this.activeWindow.element.style.transform = `translate(${snapped.x}px, ${snapped.y}px)`;
+            this.activeWindow.position = snapped;
+            
             this.activeWindow.element.style.cursor = '';
             this.activeWindow = null;
             this.saveWindowStates(); // Save position after dragging
@@ -485,6 +544,7 @@ class WindowManager {
         const clampedWidth = Math.max(minWidth, newWidth);
         const clampedHeight = Math.max(minHeight, newHeight);
         
+        // Don't snap size to grid - allow free resizing
         this.activeWindow.element.style.width = `${clampedWidth}px`;
         this.activeWindow.element.style.height = `${clampedHeight}px`;
         this.activeWindow.size = { width: clampedWidth, height: clampedHeight };
@@ -541,7 +601,10 @@ class WindowManager {
     }
 
     closeWindow(windowData) {
-            // Remove from windows array
+        // Release the window ID for reuse
+        this.releaseWindowId(windowData.id);
+        
+        // Remove from windows array
         this.windows = this.windows.filter(w => w.id !== windowData.id);
         
         // Remove from DOM
@@ -592,14 +655,15 @@ class WindowManager {
 
     // Desktop system integration methods
     createWindow(appId, title, content = null) {
-        const windowId = `window-${Date.now()}`;
+        const windowId = `window-${this.getNextWindowId()}`;
         const window = document.createElement('div');
         window.className = 'window glass-card';
         window.id = windowId;
         
-        // Set initial position (staggered)
-        const x = 50 + (this.windows.length * 30);
-        const y = 50 + (this.windows.length * 30);
+        // Set initial position (staggered and snapped to grid)
+        const baseX = 50 + (this.windows.length * 30);
+        const baseY = 50 + (this.windows.length * 30);
+        const snapped = this.snapToGrid(baseX, baseY);
         
         window.style.cssText = `
             position: absolute;
@@ -616,7 +680,7 @@ class WindowManager {
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transform: translate(${x}px, ${y}px);
+            transform: translate(${snapped.x}px, ${snapped.y}px);
         `;
 
         // Create window header
@@ -735,8 +799,8 @@ class WindowManager {
         const windowData = {
             element: window,
             id: windowId,
-            pageUrl: fullPageUrl, // Store the URL for refreshing
-            position: { x, y },
+            pageUrl: appId, // Store the URL for refreshing
+            position: snapped,
             size: { width: 600, height: 400 },
             isMinimized: false,
             isMaximized: false
@@ -746,9 +810,10 @@ class WindowManager {
         this.setupWindowEventListeners(windowData);
         this.setupWindowControlsForWindow(windowData);
         this.addResizeHandles(windowData);
+        this.addTilingControls(windowData);
         
         // If it's a game, add a refresh button
-        if (contentArea.querySelector('[data-page-script]')) {
+        if (contentDiv.querySelector('[data-page-script]')) {
             this.addRefreshButton(windowData);
         }
 
@@ -767,14 +832,57 @@ class WindowManager {
 
     createStickyNotesContent() {
         return `
-            <div style="padding: 1rem; height: 100%; overflow-y: auto;">
-                <div class="sticky-notes-container">
-                    <!-- Sticky notes will be loaded here -->
+            <div class="sticky-notes-app" style="padding: 1rem; height: 100%; overflow-y: auto; color: var(--theme-text);">
+                <div class="app-header" style="margin-bottom: 1.5rem;">
+                    <h2 style="margin: 0 0 0.5rem 0;">📝 Sticky Notes & Tasks</h2>
+                    <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                        Create notes and manage tasks with clickable checkboxes
+                    </p>
                 </div>
                 
-                <button class="glass-button" style="margin-top: 1rem;" onclick="window.windowManager.addNewStickyNote()">
-                    + Add New Note
-                </button>
+                <div class="app-controls" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <button class="glass-button" onclick="window.windowManager.addNewStickyNote()" style="padding: 0.75rem;">
+                        📄 New Note
+                    </button>
+                    <button class="glass-button" onclick="window.windowManager.addNewTaskList()" style="padding: 0.75rem;">
+                        ✅ New Task List
+                    </button>
+                </div>
+                
+                <div class="quick-templates" style="margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0 0 0.75rem 0; font-size: 1rem;">Quick Templates</h3>
+                    <div class="template-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem;">
+                        <button class="glass-button" onclick="window.windowManager.createStickyNote('Todo List', '📋 My Tasks:\\n\\n- [ ] Task 1\\n- [ ] Task 2\\n- [ ] Task 3')" style="padding: 0.5rem; font-size: 0.8rem;">
+                            📋 Todo List
+                        </button>
+                        <button class="glass-button" onclick="window.windowManager.createStickyNote('Shopping List', '🛒 Shopping:\\n\\n- [ ] Milk\\n- [ ] Bread\\n- [ ] Eggs\\n- [ ] Cheese')" style="padding: 0.5rem; font-size: 0.8rem;">
+                            🛒 Shopping
+                        </button>
+                        <button class="glass-button" onclick="window.windowManager.createStickyNote('Meeting Notes', '📅 Meeting Notes:\\n\\nAgenda:\\n- Topic 1\\n- Topic 2\\n\\nAction Items:\\n- [ ] Action 1\\n- [ ] Action 2')" style="padding: 0.5rem; font-size: 0.8rem;">
+                            📅 Meeting
+                        </button>
+                        <button class="glass-button" onclick="window.windowManager.createStickyNote('Ideas', '💡 Ideas:\\n\\n• Idea 1\\n• Idea 2\\n• Idea 3')" style="padding: 0.5rem; font-size: 0.8rem;">
+                            💡 Ideas
+                        </button>
+                        <button class="glass-button" onclick="window.windowManager.createStickyNote('Contact Info', '📞 Contact:\\nName: [Your Name]\\nEmail: [your.email@example.com]\\nPhone: [Your Phone]')" style="padding: 0.5rem; font-size: 0.8rem;">
+                            📞 Contact
+                        </button>
+                        <button class="glass-button" onclick="window.windowManager.createStickyNote('Empty Note', '')" style="padding: 0.5rem; font-size: 0.8rem;">
+                            📄 Empty
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="notes-container">
+                    <h3 style="margin: 0 0 0.75rem 0; font-size: 1rem;">Your Notes</h3>
+                    <div class="sticky-notes-container" style="min-height: 200px;">
+                        <!-- Sticky notes will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="app-footer" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--glass-border-light); font-size: 0.8rem; color: var(--text-secondary);">
+                    <p style="margin: 0;">💡 Tip: Click checkboxes in task lists to mark them complete!</p>
+                </div>
             </div>
         `;
     }
@@ -816,7 +924,7 @@ class WindowManager {
     addNewStickyNote() {
         const stickyNotesContainer = document.querySelector('.sticky-notes-container');
         if (stickyNotesContainer) {
-            const noteId = `note-${Date.now()}`;
+            const noteId = `note-${this.getNextWindowId()}`;
             const newNote = document.createElement('div');
             newNote.className = 'sticky-note';
             newNote.dataset.noteId = noteId;
@@ -851,8 +959,16 @@ class WindowManager {
             
             stickyNotesContainer.appendChild(newNote);
             
+            // Setup checkboxes if content contains task lists
+            if (newNote.querySelector('.note-content').innerHTML.includes('- [') || newNote.querySelector('.note-content').innerHTML.includes('- [x]')) {
+                this.setupTaskCheckboxes(newNote);
+            }
+            
             // Save sticky notes
             this.saveStickyNotes();
+            
+            // Update counter
+            this.updateStickyNotesCounter();
         }
     }
 
@@ -909,7 +1025,7 @@ class WindowManager {
             return;
         }
 
-        const noteId = `note-${Date.now()}`;
+        const noteId = `note-${this.getNextWindowId()}`;
         const newNote = document.createElement('div');
         newNote.className = 'sticky-note';
         newNote.dataset.noteId = noteId;
@@ -944,10 +1060,36 @@ class WindowManager {
         
         stickyNotesContainer.appendChild(newNote);
         
+        // Setup checkboxes if content contains task lists
+        if (content.includes('- [') || content.includes('- [x]')) {
+            this.setupTaskCheckboxes(newNote);
+        }
+        
         // Save sticky notes
         this.saveStickyNotes();
         
+        // Update counter if it exists
+        this.updateStickyNotesCounter();
+        
         return newNote;
+    }
+
+    // Update sticky notes counter
+    updateStickyNotesCounter() {
+        const counter = document.querySelector('.window-counter');
+        if (counter) {
+            const stickyNotes = document.querySelectorAll('.sticky-note');
+            const totalWindows = this.windows.length + stickyNotes.length;
+            counter.innerHTML = `Windows: ${totalWindows}/50`;
+            
+            if (totalWindows >= 45) {
+                counter.classList.add('warning');
+            } else if (totalWindows >= 50) {
+                counter.classList.add('danger');
+            } else {
+                counter.classList.remove('warning', 'danger');
+            }
+        }
     }
 
     // Initialize sticky notes on page load
@@ -957,6 +1099,9 @@ class WindowManager {
         
         // Make global function available
         window.createStickyNote = this.createStickyNote.bind(this);
+        
+        // Update counter
+        this.updateStickyNotesCounter();
     }
 
     // Focus a window (bring to front)
@@ -1050,6 +1195,7 @@ class WindowManager {
         this.setupWindowEventListeners(windowData);
         this.setupWindowControlsForWindow(windowData);
         this.addResizeHandles(windowData);
+        this.addTilingControls(windowData);
         this.focusWindow(windowId);
         this.saveWindowStates();
         if (window.windowSwitcher) {
@@ -1213,7 +1359,9 @@ class WindowManager {
             const scriptName = pageScriptElement.dataset.pageScript;
             if (scriptName) {
                 const script = document.createElement('script');
-                script.src = `${base || ''}/assets/js/games/${scriptName}.js`;
+                // Use the correct base URL for script loading - games are in assets/js/, not assets/js/games/
+                const scriptBase = base || window.location.origin;
+                script.src = `${scriptBase}/assets/js/${scriptName}.js`;
                 script.defer = true; // Ensure it runs after the DOM is ready
                 script.onload = () => console.log(`Loaded game script: ${scriptName}`);
                 script.onerror = () => console.error(`Failed to load game script: ${scriptName}`);
@@ -1298,7 +1446,7 @@ class WindowManager {
                     }
                 });
                 contentArea.innerHTML = mainContent.innerHTML;
-                this.executeScriptsInWindow(contentArea);
+                this.executeScriptsInWindow(contentArea, base);
             } else {
                 throw new Error("'.main-content' not found in fetched HTML.");
             }
@@ -1307,31 +1455,219 @@ class WindowManager {
             contentArea.innerHTML = `<div class="error"><p>Could not reload content.</p></div>`;
         }
     }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Check if we are in desktop mode
-    if (document.body.classList.contains('desktop-mode')) {
-        // Initialize the window manager
-        if (!window.windowManager) {
-            window.windowManager = new WindowManager();
-            console.log('WindowManager initialized for desktop mode.');
+    // Tiling manager methods
+    tileWindow(windowData, position) {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        switch (position) {
+            case 'left':
+                this.setWindowPosition(windowData.id, 0, 0);
+                this.setWindowSize(windowData.id, viewportWidth / 2, viewportHeight);
+                break;
+            case 'right':
+                this.setWindowPosition(windowData.id, viewportWidth / 2, 0);
+                this.setWindowSize(windowData.id, viewportWidth / 2, viewportHeight);
+                break;
+            case 'top':
+                this.setWindowPosition(windowData.id, 0, 0);
+                this.setWindowSize(windowData.id, viewportWidth, viewportHeight / 2);
+                break;
+            case 'bottom':
+                this.setWindowPosition(windowData.id, 0, viewportHeight / 2);
+                this.setWindowSize(windowData.id, viewportWidth, viewportHeight / 2);
+                break;
+            case 'fullscreen':
+                this.setWindowPosition(windowData.id, 0, 0);
+                this.setWindowSize(windowData.id, viewportWidth, viewportHeight);
+                break;
+            case 'center':
+                const centerX = (viewportWidth - windowData.size.width) / 2;
+                const centerY = (viewportHeight - windowData.size.height) / 2;
+                this.setWindowPosition(windowData.id, centerX, centerY);
+                break;
         }
+        
+        this.saveWindowStates();
+    }
 
-        // Initialize sticky notes if the container exists
-        if (document.querySelector('.sticky-notes-container')) {
-            window.windowManager.initializeStickyNotes();
+    // Add tiling indicators to window headers
+    addTilingControls(windowData) {
+        const header = windowData.element.querySelector('.window-header');
+        if (!header) return;
+        
+        // Create tiling controls container
+        const tilingControls = document.createElement('div');
+        tilingControls.className = 'tiling-controls';
+        tilingControls.style.cssText = `
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--glass-bg-heavy);
+            backdrop-filter: var(--glass-blur-heavy);
+            border: 1px solid var(--glass-border-light);
+            border-radius: 8px;
+            padding: 0.5rem;
+            z-index: 1001;
+            box-shadow: var(--glass-shadow-medium);
+        `;
+        
+        const tilingButtons = [
+            { text: '⬅️ Left', action: 'left' },
+            { text: '➡️ Right', action: 'right' },
+            { text: '⬆️ Top', action: 'top' },
+            { text: '⬇️ Bottom', action: 'bottom' },
+            { text: '⛶ Fullscreen', action: 'fullscreen' },
+            { text: '🎯 Center', action: 'center' }
+        ];
+        
+        tilingButtons.forEach(btn => {
+            const button = document.createElement('button');
+            button.textContent = btn.text;
+            button.style.cssText = `
+                display: block;
+                width: 100%;
+                padding: 0.5rem;
+                margin: 0.25rem 0;
+                background: var(--glass-bg-medium);
+                border: 1px solid var(--glass-border-light);
+                border-radius: 4px;
+                color: var(--theme-text);
+                cursor: pointer;
+                font-size: 0.8rem;
+                transition: all 0.2s ease;
+            `;
+            
+            button.addEventListener('click', () => {
+                this.tileWindow(windowData, btn.action);
+                tilingControls.style.display = 'none';
+            });
+            
+            button.addEventListener('mouseenter', () => {
+                button.style.background = 'var(--theme-accent)';
+                button.style.color = 'white';
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.background = 'var(--glass-bg-medium)';
+                button.style.color = 'var(--theme-text)';
+            });
+            
+            tilingControls.appendChild(button);
+        });
+        
+        header.appendChild(tilingControls);
+        
+        // Add tiling trigger button
+        const tileBtn = document.createElement('button');
+        tileBtn.innerHTML = '⛶';
+        tileBtn.title = 'Tile Window';
+        tileBtn.className = 'window-control-btn tile-btn';
+        tileBtn.style.cssText = `
+            background: var(--glass-bg-medium);
+            border: none;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            color: var(--theme-text);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin-left: 0.5rem;
+        `;
+        
+        tileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            tilingControls.style.display = tilingControls.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        // Add to controls container
+        const controls = header.querySelector('.window-controls');
+        if (controls) {
+            controls.appendChild(tileBtn);
+        }
+        
+        // Hide tiling controls when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!tilingControls.contains(e.target) && !tileBtn.contains(e.target)) {
+                tilingControls.style.display = 'none';
+            }
+        });
+    }
+
+    // Add new task list method
+    addNewTaskList() {
+        const taskList = this.createStickyNote('Task List', '📋 Task List:\n\n- [ ] Add your first task here\n- [ ] Click checkboxes to complete tasks\n- [ ] Tasks are saved automatically');
+        
+        // Add click handlers for checkboxes
+        if (taskList) {
+            this.setupTaskCheckboxes(taskList);
         }
     }
-    
-    // Make a simplified sticky note creator available globally for buttons
-    // This is useful if you want a "create note" button outside the main desktop app
-    if (!window.createStickyNote) {
-        // Ensure WindowManager is initialized first if needed
-        if (!window.windowManager && !document.body.classList.contains('desktop-mode')) {
-            // A lightweight manager for non-desktop pages if needed
-            window.windowManager = new WindowManager();
+
+    // Setup clickable checkboxes for task lists
+    setupTaskCheckboxes(note) {
+        const content = note.querySelector('.note-content');
+        if (!content) return;
+        
+        // Convert markdown-style checkboxes to clickable ones
+        this.convertCheckboxesToClickable(content);
+        
+        // Listen for new content to convert new checkboxes
+        const observer = new MutationObserver(() => {
+            this.convertCheckboxesToClickable(content);
+        });
+        
+        observer.observe(content, { childList: true, subtree: true });
+    }
+
+    // Convert markdown checkboxes to clickable buttons
+    convertCheckboxesToClickable(content) {
+        const text = content.innerHTML;
+        const checkboxRegex = /- \[([ x])\] /g;
+        
+        if (checkboxRegex.test(text)) {
+            const newText = text.replace(checkboxRegex, (match, checked) => {
+                const isChecked = checked === 'x';
+                return `- <button class="task-checkbox ${isChecked ? 'checked' : ''}" onclick="window.windowManager.toggleTaskCheckbox(this)">${isChecked ? '☑️' : '☐'}</button> `;
+            });
+            
+            if (newText !== text) {
+                content.innerHTML = newText;
+            }
         }
-        window.createStickyNote = window.windowManager.createStickyNote.bind(window.windowManager);
+    }
+
+    // Toggle task checkbox
+    toggleTaskCheckbox(checkbox) {
+        const isChecked = checkbox.classList.contains('checked');
+        
+        if (isChecked) {
+            checkbox.classList.remove('checked');
+            checkbox.innerHTML = '☐';
+        } else {
+            checkbox.classList.add('checked');
+            checkbox.innerHTML = '☑️';
+        }
+        
+        // Save the note
+        this.saveStickyNotes();
+    }
+}
+
+// Initialize window manager globally
+document.addEventListener('DOMContentLoaded', () => {
+    if (!window.windowManager) {
+        window.windowManager = new WindowManager();
+    }
+    
+    // Ensure sticky notes are initialized
+    if (window.windowManager && typeof window.windowManager.initializeStickyNotes === 'function') {
+        window.windowManager.initializeStickyNotes();
     }
 }); 
