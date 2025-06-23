@@ -3,7 +3,6 @@ layout: default
 title: "Sample Portfolio Piece"
 date: 2024-01-10
 category: "Design"
-image: "/assets/images/placeholder.png"
 description: "A sample portfolio piece showcasing creative design work."
 ---
 

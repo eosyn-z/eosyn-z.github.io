@@ -4,7 +4,6 @@ title: "Art Piece Title"
 date: YYYY-MM-DD
 author: "Your Name"
 category: "Digital"
-image: "/assets/images/art/placeholder.png"
 description: "A brief description of the art piece."
 favorite: false
 

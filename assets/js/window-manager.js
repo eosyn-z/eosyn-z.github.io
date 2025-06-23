@@ -1230,21 +1230,24 @@ class WindowManager {
                 windowData.size = { width: windowEl.offsetWidth, height: windowEl.offsetHeight };
             }
 
-            // Apply Window Image (background)
+            // Apply Window Image (background) - Use CSS patterns instead of images
             if (theme.windowImage) {
                 const contentEl = windowEl.querySelector('.window-content');
                 let background = 'var(--glass-bg-heavy)'; // default
-                const baseUrl = window.siteBaseUrl || '';
-                const imageUrls = {
-                    minimal: `url("${baseUrl}/assets/images/window-bgs/minimal.gif")`,
-                    gradient: `url("${baseUrl}/assets/images/window-bgs/gradient.gif")`,
-                    pattern: `url("${baseUrl}/assets/images/window-bgs/pattern.gif")`,
-                    abstract: `url("${baseUrl}/assets/images/window-bgs/abstract.gif")`,
-                    nature: `url("${baseUrl}/assets/images/window-bgs/nature.gif")`,
+                
+                // Use CSS patterns and gradients instead of image files
+                const backgroundPatterns = {
+                    minimal: 'linear-gradient(135deg, var(--glass-bg-heavy) 0%, var(--glass-bg-medium) 100%)',
+                    gradient: 'linear-gradient(45deg, var(--theme-accent) 0%, var(--theme-accent-light) 50%, var(--theme-accent) 100%)',
+                    pattern: 'repeating-linear-gradient(45deg, var(--glass-bg-medium) 0px, var(--glass-bg-medium) 2px, var(--glass-bg-heavy) 2px, var(--glass-bg-heavy) 4px)',
+                    abstract: 'radial-gradient(circle at 30% 20%, var(--theme-accent) 0%, var(--theme-accent-light) 30%, var(--glass-bg-medium) 70%, var(--glass-bg-heavy) 100%)',
+                    nature: 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 25%, #CDDC39 50%, #FFEB3B 75%, #FF9800 100%)'
                 };
-                if (imageUrls[theme.windowImage]) {
-                    background = imageUrls[theme.windowImage];
+                
+                if (backgroundPatterns[theme.windowImage]) {
+                    background = backgroundPatterns[theme.windowImage];
                 }
+                
                 if (contentEl) {
                     contentEl.style.backgroundImage = background;
                     contentEl.style.backgroundSize = 'cover';

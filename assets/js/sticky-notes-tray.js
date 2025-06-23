@@ -53,14 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             this.tray.querySelectorAll('.sticky-notes-buttons-grid .glass-button').forEach(button => {
                 button.addEventListener('click', () => {
-                    if (window.desktopManager) {
+                    if (window.windowManager) {
                         const type = button.dataset.type;
                         const content = button.dataset.content;
-                        window.desktopManager.createStickyNote(type, content);
+                        window.windowManager.createStickyNote(type, content);
                         this.hide(); // Hide tray after creating a note
                     } else {
-                        console.error("DesktopManager not found.");
-                        alert("Error: Cannot create sticky note. Desktop Manager is not loaded.");
+                        console.error("WindowManager not found.");
+                        alert("Error: Cannot create sticky note. Window Manager is not loaded.");
                     }
                 });
             });

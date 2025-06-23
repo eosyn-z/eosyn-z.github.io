@@ -3,7 +3,6 @@ layout: default
 title: "Sample Web Project"
 date: 2024-01-15
 description: "A sample web development project showcasing modern design and functionality."
-image: "/assets/images/projects/placeholder.png"
 category: "Web Development"
 ---
 

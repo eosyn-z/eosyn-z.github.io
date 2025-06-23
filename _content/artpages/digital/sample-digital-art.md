@@ -3,7 +3,7 @@ layout: default
 title: "Digital Landscape"
 date: 2024-01-20
 category: "Digital Art"
-image: "/assets/images/art/digital-landscape.png"
+image: "https://via.placeholder.com/400x300/4CAF50/FFFFFF?text=Digital+Landscape"
 description: "A digital painting of a serene landscape created with modern digital tools."
 ---
 
