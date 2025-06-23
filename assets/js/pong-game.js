@@ -134,11 +134,11 @@ class PongGame {
   
   draw() {
     // Clear canvas
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = 'var(--bg-primary)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
     // Draw center line
-    this.ctx.strokeStyle = '#fff';
+    this.ctx.strokeStyle = 'var(--theme-text-secondary)';
     this.ctx.setLineDash([5, 15]);
     this.ctx.beginPath();
     this.ctx.moveTo(this.canvas.width / 2, 0);
@@ -146,15 +146,15 @@ class PongGame {
     this.ctx.stroke();
     this.ctx.setLineDash([]);
     
-    // Draw left paddle
-    this.ctx.fillStyle = '#fff';
+    // Draw left paddle with bright primary color
+    this.ctx.fillStyle = 'var(--theme-primary)';
     this.ctx.fillRect(0, this.leftPaddle.y, this.paddleWidth, this.paddleHeight);
     
-    // Draw right paddle
+    // Draw right paddle with bright primary color
     this.ctx.fillRect(this.canvas.width - this.paddleWidth, this.rightPaddle.y, this.paddleWidth, this.paddleHeight);
     
-    // Draw ball
-    this.ctx.fillStyle = '#fff';
+    // Draw ball with bright accent color
+    this.ctx.fillStyle = 'var(--theme-accent)';
     this.ctx.fillRect(this.ball.x, this.ball.y, this.ballSize, this.ballSize);
   }
   

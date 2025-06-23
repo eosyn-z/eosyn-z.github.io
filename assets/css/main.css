@@ -6,11 +6,13 @@
 
 /* Ensure search page can handle horizontal expansion */
 body[data-page="search"] {
-  overflow-x: auto;
+  overflow-x: hidden; /* Prevent horizontal scrollbars */
 }
 
 body[data-page="search"] .main-content {
   min-width: 800px; /* Consistent with other pages */
+  max-width: 100%; /* Ensure it doesn't overflow */
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Prevent horizontal scroll on all other pages */
@@ -239,6 +241,16 @@ body[data-page="chat"] .main-content {
 
 .task-checkbox.checked {
     color: var(--theme-accent);
+}
+
+.task-checkbox.warning {
+  border-color: var(--warning-color, #f59e0b);
+  color: var(--warning-color, #f59e0b);
+}
+
+.task-checkbox.error {
+  border-color: var(--error-color, #ef4444);
+  color: var(--error-color, #ef4444);
 }
 
 /* Tiling controls styles */

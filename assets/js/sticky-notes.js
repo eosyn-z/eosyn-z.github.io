@@ -28,8 +28,8 @@ class StickyNotes {
                 position: absolute;
                 min-width: 200px;
                 min-height: 150px;
-                background: #fef3c7;
-                border: 1px solid #f59e0b;
+                background: var(--postit-bg-color, #fef3c7);
+                border: 1px solid var(--postit-border-color, #f59e0b);
                 border-radius: 8px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 padding: 8px;
@@ -59,7 +59,7 @@ class StickyNotes {
             .sticky-note-title {
                 font-weight: bold;
                 font-size: 12px;
-                color: #92400e;
+                color: var(--postit-text-color, #92400e);
                 flex: 1;
             }
 
@@ -75,7 +75,7 @@ class StickyNotes {
                 padding: 2px;
                 border-radius: 3px;
                 font-size: 12px;
-                color: #92400e;
+                color: var(--postit-text-color, #92400e);
                 transition: all 0.2s ease;
             }
 
@@ -113,27 +113,54 @@ class StickyNotes {
 
             .rich-text-btn {
                 background: none;
-                border: 1px solid #d1d5db;
-                border-radius: 3px;
-                padding: 4px 8px;
-                cursor: pointer;
-                font-size: 11px;
-                color: #374151;
+                border: 1px solid var(--border-accent, #d1d5db);
+                border-radius: 4px;
+                padding: 8px 12px;
+                color: var(--theme-text, #374151);
+                background: var(--bg-accent, #f3f4f6);
+                border-color: var(--theme-text-secondary, #9ca3af);
                 transition: all 0.2s ease;
-                display: flex;
-                align-items: center;
-                gap: 2px;
             }
 
             .rich-text-btn:hover {
-                background: #f3f4f6;
-                border-color: #9ca3af;
+                background: var(--theme-primary, #6366f1);
+                color: var(--text-white, #ffffff);
+                border-color: var(--theme-primary, #6366f1);
             }
 
             .rich-text-btn.active {
-                background: #6366f1;
-                color: white;
-                border-color: #6366f1;
+                background: linear-gradient(135deg, var(--theme-primary-light, #e0e7ff), var(--theme-primary-lighter, #c7d2fe));
+                border-color: var(--theme-primary, #6366f1);
+            }
+
+            .rich-text-btn.theme-c {
+                background: linear-gradient(135deg, var(--theme-primary-light, #e0e7ff), var(--theme-primary-lighter, #c7d2fe));
+                border-color: var(--theme-primary, #6366f1);
+            }
+
+            .rich-text-btn.theme-a {
+                background: linear-gradient(135deg, var(--postit-bg-color, #fef3c7), var(--postit-border-color, #fde68a));
+                border-color: var(--postit-border-color, #f59e0b);
+            }
+
+            .rich-text-btn.theme-r {
+                background: linear-gradient(135deg, var(--warning-color, #fee2e2), var(--error-color, #fecaca));
+                border-color: var(--error-color, #ef4444);
+            }
+
+            .rich-text-btn.theme-z {
+                background: linear-gradient(135deg, var(--bg-accent, #f3f4f6), var(--border-primary, #e5e7eb));
+                border-color: var(--theme-text-secondary, #6b7280);
+            }
+
+            .rich-text-btn.theme-e {
+                background: linear-gradient(135deg, var(--theme-secondary-light, #f3e8ff), var(--theme-secondary-lighter, #e9d5ff));
+                border-color: var(--theme-secondary, #7c3aed);
+            }
+
+            .rich-text-btn.theme-n {
+                background: linear-gradient(135deg, var(--theme-accent-light, #e0f2fe), var(--theme-accent-lighter, #bae6fd));
+                border-color: var(--theme-accent, #0ea5e9);
             }
 
             .color-picker {
@@ -169,33 +196,33 @@ class StickyNotes {
 
             /* Theme-specific colors */
             [data-theme="c"] .sticky-note {
-                background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
-                border-color: #6366f1;
+                background: linear-gradient(135deg, var(--theme-primary-light, #e0e7ff), var(--theme-primary-lighter, #c7d2fe));
+                border-color: var(--theme-primary, #6366f1);
             }
 
             [data-theme="a"] .sticky-note {
-                background: linear-gradient(135deg, #fef3c7, #fde68a);
-                border-color: #f59e0b;
+                background: linear-gradient(135deg, var(--postit-bg-color, #fef3c7), var(--postit-border-color, #fde68a));
+                border-color: var(--postit-border-color, #f59e0b);
             }
 
             [data-theme="r"] .sticky-note {
-                background: linear-gradient(135deg, #fee2e2, #fecaca);
-                border-color: #ef4444;
+                background: linear-gradient(135deg, var(--warning-color, #fee2e2), var(--error-color, #fecaca));
+                border-color: var(--error-color, #ef4444);
             }
 
             [data-theme="z"] .sticky-note {
-                background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-                border-color: #6b7280;
+                background: linear-gradient(135deg, var(--bg-accent, #f3f4f6), var(--border-primary, #e5e7eb));
+                border-color: var(--theme-text-secondary, #6b7280);
             }
 
             [data-theme="e"] .sticky-note {
-                background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
-                border-color: #7c3aed;
+                background: linear-gradient(135deg, var(--theme-secondary-light, #f3e8ff), var(--theme-secondary-lighter, #e9d5ff));
+                border-color: var(--theme-secondary, #7c3aed);
             }
 
             [data-theme="n"] .sticky-note {
-                background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-                border-color: #0ea5e9;
+                background: linear-gradient(135deg, var(--theme-accent-light, #e0f2fe), var(--theme-accent-lighter, #bae6fd));
+                border-color: var(--theme-accent, #0ea5e9);
             }
         `;
         document.head.appendChild(style);
@@ -246,8 +273,8 @@ class StickyNotes {
             position: position || this.getRandomPosition(),
             size: { width: 250, height: 200 },
             backgroundColor: this.getCurrentThemeColor(),
-            textColor: '#000000',
-            highlightColor: '#ffff00',
+            textColor: 'var(--theme-text, #000000)',
+            highlightColor: 'var(--theme-accent, #ffff00)',
             created: Date.now()
         };
 
@@ -265,8 +292,8 @@ class StickyNotes {
             position: position || this.getRandomPosition(),
             size: { width: 250, height: 200 },
             backgroundColor: this.getCurrentThemeColor(),
-            textColor: '#000000',
-            highlightColor: '#ffff00',
+            textColor: 'var(--theme-text, #000000)',
+            highlightColor: 'var(--theme-accent, #ffff00)',
             created: Date.now()
         };
 
@@ -279,14 +306,14 @@ class StickyNotes {
     getCurrentThemeColor() {
         const theme = document.body.getAttribute('data-theme') || 'c';
         const themeColors = {
-            'c': '#e0e7ff',
-            'a': '#fef3c7',
-            'r': '#fee2e2',
-            'z': '#f3f4f6',
-            'e': '#f3e8ff',
-            'n': '#e0f2fe'
+            'c': 'var(--theme-primary-light, #e0e7ff)',
+            'a': 'var(--postit-bg-color, #fef3c7)',
+            'r': 'var(--warning-color, #fee2e2)',
+            'z': 'var(--bg-accent, #f3f4f6)',
+            'e': 'var(--theme-secondary-light, #f3e8ff)',
+            'n': 'var(--theme-accent-light, #e0f2fe)'
         };
-        return themeColors[theme] || '#e0e7ff';
+        return themeColors[theme] || 'var(--theme-primary-light, #e0e7ff)';
     }
 
     getRandomPosition() {

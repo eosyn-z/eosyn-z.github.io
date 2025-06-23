@@ -32,7 +32,7 @@ class MinecraftGame {
   init() {
     // Create scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x87ceeb); // Sky blue
+    this.scene.background = new THREE.Color(0x87ceeb); // Sky blue - will be overridden by theme
 
     // Create camera
     this.camera = new THREE.PerspectiveCamera(75, this.container.clientWidth / this.container.clientHeight, 0.1, 1000);
@@ -44,6 +44,9 @@ class MinecraftGame {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.container.appendChild(this.renderer.domElement);
+
+    // Update sky color based on theme
+    this.updateThemeColors();
 
     // Add lighting
     this.setupLighting();
@@ -59,6 +62,34 @@ class MinecraftGame {
 
     // Start game loop
     this.animate();
+  }
+
+  updateThemeColors() {
+    // Get theme colors from CSS variables
+    const style = getComputedStyle(document.documentElement);
+    const primaryColor = style.getPropertyValue('--theme-primary').trim();
+    const accentColor = style.getPropertyValue('--theme-accent').trim();
+    const secondaryColor = style.getPropertyValue('--theme-secondary').trim();
+    
+    // Convert hex string to hex number for Three.js
+    const hexToHex = (hex) => {
+      return parseInt(hex.replace('#', ''), 16);
+    };
+
+    // Update sky color based on theme
+    const skyColor = hexToHex(accentColor);
+    this.scene.background = new THREE.Color(skyColor);
+
+    // Update block colors to use theme colors
+    this.blockTypes = {
+      0: { name: 'air', color: 0x000000 },
+      1: { name: 'grass', color: hexToHex(primaryColor), topColor: hexToHex(accentColor) },
+      2: { name: 'stone', color: hexToHex(secondaryColor) },
+      3: { name: 'wood', color: 0x8d6e63 },
+      4: { name: 'leaves', color: hexToHex(accentColor) },
+      5: { name: 'dirt', color: 0x8d6e63 },
+      6: { name: 'sand', color: hexToHex(secondaryColor) }
+    };
   }
 
   setupLighting() {

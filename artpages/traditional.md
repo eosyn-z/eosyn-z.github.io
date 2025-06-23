@@ -1,7 +1,7 @@
 ---
 layout: art_gallery
 title: Traditional Art
-permalink: /art/traditional/
+permalink: /portfolio/art/traditional/
 description: "A gallery of my traditional artwork, including ink, watercolor, and sketches."
 art_category: traditional
 ---
@@ -11,7 +11,7 @@ art_category: traditional
     <div class="glass-card">
       <header style="text-align: center; margin-bottom: 3rem;">
         <div style="margin-bottom: 1rem;">
-          <a href="/art/" class="glass-button" style="font-size: 0.9rem;">← Back to Art Gallery</a>
+          <a href="/portfolio/art/" class="glass-button" style="font-size: 0.9rem;">← Back to Art Gallery</a>
         </div>
         <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--theme-primary); font-weight: 700;">Traditional Art</h1>
         <p style="font-size: 1.1rem; color: var(--theme-text-secondary); margin: 0;">Watercolor, charcoal, mixed media, and physical mediums</p>

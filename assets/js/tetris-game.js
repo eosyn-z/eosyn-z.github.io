@@ -33,7 +33,15 @@ class TetrisGame {
       [[0, 0, 1], [1, 1, 1]]
     ];
     
-    this.colors = ['#00f0f0', '#f0f000', '#a000f0', '#00f000', '#f00000', '#0000f0', '#f0a000'];
+    this.colors = [
+      'var(--theme-accent)',
+      'var(--theme-secondary)',
+      'var(--theme-primary)',
+      'var(--theme-accent-dark)',
+      'var(--theme-primary-shadow)',
+      'var(--theme-secondary-shadow)',
+      'var(--theme-accent-light)'
+    ];
     
     this.bindControls();
     this.start();
@@ -187,8 +195,8 @@ class TetrisGame {
   }
   
   draw() {
-    // Clear canvas
-    this.ctx.fillStyle = '#000';
+    // Clear the canvas
+    this.ctx.fillStyle = 'var(--bg-primary)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
     // Draw board
@@ -216,7 +224,7 @@ class TetrisGame {
     }
     
     // Draw grid
-    this.ctx.strokeStyle = '#333';
+    this.ctx.strokeStyle = 'var(--theme-text-secondary)';
     this.ctx.lineWidth = 1;
     for (let i = 0; i <= this.cols; i++) {
       this.ctx.beginPath();
@@ -285,7 +293,7 @@ class TetrisGame {
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
-    this.ctx.fillStyle = '#fff';
+    this.ctx.fillStyle = 'var(--theme-text)';
     this.ctx.font = '30px Arial';
     this.ctx.textAlign = 'center';
     this.ctx.fillText('Game Over!', this.canvas.width / 2, this.canvas.height / 2 - 20);

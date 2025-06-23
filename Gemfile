@@ -10,5 +10,10 @@ gem "jekyll-readme-index"
 gem "jekyll-default-layout"
 gem "jekyll-titles-from-headings"
 
+# Additional plugins referenced in _config.yml
+gem "jekyll-seo-tag"
+gem "jekyll-sitemap"
+gem "jekyll-remote-theme"
+
 # Kramdown for markdown parsing
 gem "kramdown-parser-gfm"

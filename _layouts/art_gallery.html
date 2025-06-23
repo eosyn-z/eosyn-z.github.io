@@ -44,7 +44,7 @@ layout: default
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--theme-text-secondary);">
               <span>{{ item.notes }}</span>
               {% if item.redbubble_link %}
-                <a href="{{ item.redbubble_link }}" target="_blank" rel="noopener noreferrer" style="color: #ff6b6b; text-decoration: none; font-weight: 500;">🛍️ Redbubble</a>
+                <a href="{{ item.redbubble_link }}" target="_blank" rel="noopener noreferrer" style="color: var(--redbubble-link-color, #ff6b6b); text-decoration: none; font-weight: 500;">🛍️ Redbubble</a>
               {% endif %}
             </div>
           </div>

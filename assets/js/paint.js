@@ -24,7 +24,7 @@ function initializePaint() {
     }
 
     let currentTool = 'pencil';
-    let currentColor = '#000000';
+    let currentColor = 'var(--theme-text, #000000)';
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
@@ -36,7 +36,7 @@ function initializePaint() {
         
         canvas.width = canvasArea.offsetWidth - 20; // account for padding
         canvas.height = canvasArea.offsetHeight - 20;
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = 'var(--bg-secondary)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
@@ -105,7 +105,7 @@ function initializePaint() {
 
     function clearCanvas() {
         if (confirm('Are you sure you want to clear the canvas? This cannot be undone.')) {
-            ctx.fillStyle = '#ffffff';
+            ctx.fillStyle = 'var(--bg-secondary)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
     }
@@ -123,17 +123,36 @@ function initializePaint() {
 
     // --- Color Palette ---
     const colors = [
+        // Theme colors first - we'll convert these to actual values
+        'var(--theme-primary)',
+        'var(--theme-accent)',
+        'var(--theme-secondary)',
+        'var(--theme-accent-light)',
+        'var(--theme-accent-dark)',
+        'var(--theme-primary-shadow)',
+        'var(--theme-secondary-shadow)',
+        // Standard colors (keep some for variety)
         '#000000', '#808080', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080',
         '#c0c0c0', '#ffffff', '#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff',
         '#f5deb3', '#d2b48c', '#a0522d', '#8b4513', '#654321', '#ffb6c1', '#ff69b4', '#db7093',
         '#c71585', '#ff1493', '#ff00ff', '#ee82ee',
     ];
 
+    // Function to convert CSS variable to actual color value
+    function getComputedColor(cssVar) {
+        if (cssVar.startsWith('var(--')) {
+            const varName = cssVar.match(/var\(--([^)]+)\)/)[1];
+            return getComputedStyle(document.documentElement).getPropertyValue(`--${varName}`).trim();
+        }
+        return cssVar;
+    }
+
     colors.forEach(color => {
         const colorBox = document.createElement('div');
         colorBox.classList.add('color-box');
-        colorBox.style.backgroundColor = color;
-        colorBox.dataset.color = color;
+        const actualColor = getComputedColor(color);
+        colorBox.style.backgroundColor = actualColor;
+        colorBox.dataset.color = actualColor;
         palette.appendChild(colorBox);
     });
 
@@ -145,7 +164,9 @@ function initializePaint() {
     });
 
     // Set default color
-    currentColorEl.style.backgroundColor = currentColor;
+    const defaultColor = getComputedColor(currentColor);
+    currentColor = defaultColor;
+    currentColorEl.style.backgroundColor = defaultColor;
     
     // Mark as initialized
     paintInstance = true;

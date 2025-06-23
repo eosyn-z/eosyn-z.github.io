@@ -216,20 +216,56 @@ function initialize2048Game() {
   function addColours() {
     for (let i=0; i < squares.length; i++) {
       const value = squares[i].innerHTML
-      let color = '#afa192' // for 0
-      if (value == 2) color = '#eee4da'
-      else if (value == 4) color = '#ede0c8' 
-      else if (value == 8) color = '#f2b179' 
-      else if (value == 16) color = '#ffcea4' 
-      else if (value == 32) color = '#e8c064' 
-      else if (value == 64) color = '#ffab6e' 
-      else if (value == 128) color = '#fd9982' 
-      else if (value == 256) color = '#ead79c' 
-      else if (value == 512) color = '#76daff' 
-      else if (value == 1024) color = '#beeaa5' 
-      else if (value == 2048) color = '#d7d4f0' 
+      let color = 'var(--glass-bg-medium)' // for 0
+      let textColor = 'var(--theme-text-secondary)'
+      
+      if (value == 2) {
+        color = 'var(--theme-accent-light)'
+        textColor = 'var(--theme-text)'
+      }
+      else if (value == 4) {
+        color = 'var(--theme-accent)'
+        textColor = 'var(--text-white)'
+      }
+      else if (value == 8) {
+        color = 'var(--theme-primary)'
+        textColor = 'var(--text-white)'
+      }
+      else if (value == 16) {
+        color = 'var(--theme-secondary)'
+        textColor = 'var(--text-white)'
+      }
+      else if (value == 32) {
+        color = 'var(--theme-accent-dark)'
+        textColor = 'var(--text-white)'
+      }
+      else if (value == 64) {
+        color = 'var(--theme-primary-shadow)'
+        textColor = 'var(--text-white)'
+      }
+      else if (value == 128) {
+        color = 'var(--theme-secondary-shadow)'
+        textColor = 'var(--text-white)'
+      }
+      else if (value == 256) {
+        color = 'var(--theme-accent-light)'
+        textColor = 'var(--theme-text)'
+      }
+      else if (value == 512) {
+        color = 'var(--theme-accent)'
+        textColor = 'var(--text-white)'
+      }
+      else if (value == 1024) {
+        color = 'var(--theme-primary)'
+        textColor = 'var(--text-white)'
+      }
+      else if (value == 2048) {
+        color = 'var(--theme-secondary)'
+        textColor = 'var(--text-white)'
+      }
+      
       squares[i].style.backgroundColor = color
-      squares[i].style.color = (value > 4) ? '#fff' : '#776e65'
+      squares[i].style.color = textColor
     }
   }
 

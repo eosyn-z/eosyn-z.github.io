@@ -24,7 +24,6 @@ If this fails, rollback to:
         <h1>
           hi, i'm eosyn!
 
-
           this page is currently vibe coded, doesn't have any 
           hand-written content yet. please be advised!! i am
           not claiming to have made anything here yet! <33

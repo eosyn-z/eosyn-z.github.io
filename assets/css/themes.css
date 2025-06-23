@@ -41,6 +41,17 @@
   /* Missing Variables */
   --text-white: #ffffff;
   --shadow-medium: rgba(0, 0, 0, 0.15);
+  --text-secondary: #718096;
+  --theme-error: #ef4444;
+  --theme-primary-light: #e0e7ff;
+  --theme-primary-lighter: #c7d2fe;
+  --theme-secondary-light: #f3e8ff;
+  --theme-secondary-lighter: #e9d5ff;
+  --theme-accent-light: #e0f2fe;
+  --theme-accent-lighter: #bae6fd;
+  --theme-accent-dark: #0891b2;
+  --theme-primary-shadow: #4f46e5;
+  --theme-secondary-shadow: #7c3aed;
   
   /* Gradient Definitions */
   --gradient-celestial: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
@@ -49,6 +60,16 @@
   --gradient-zen: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
   --gradient-eco: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
   --gradient-neon: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+  
+  /* Default Post-it Colors (fallback) */
+  --postit-1-bg: linear-gradient(135deg, #ffeb3b, #fdd835);
+  --postit-1-border: #fbc02d;
+  --postit-2-bg: linear-gradient(135deg, #4caf50, #45a049);
+  --postit-2-border: #388e3c;
+  --postit-3-bg: linear-gradient(135deg, #2196f3, #1e88e5);
+  --postit-3-border: #1976d2;
+  --postit-4-bg: linear-gradient(135deg, #ff9800, #f57c00);
+  --postit-4-border: #ef6c00;
 }
 
 /* from theme.css */
@@ -69,6 +90,15 @@
   --gradient-button: var(--gradient-celestial);
   --chromatic-color-1: #ed936d5a;
   --chromatic-color-2: #93fb976d;
+  /* Post-it Colors - Celestial Theme */
+  --postit-1-bg: linear-gradient(135deg, #667eea, #5a67d8);
+  --postit-1-border: #4c51bf;
+  --postit-2-bg: linear-gradient(135deg, #f093fb, #e91e63);
+  --postit-2-border: #c2185b;
+  --postit-3-bg: linear-gradient(135deg, #9fedff, #00bcd4);
+  --postit-3-border: #0097a7;
+  --postit-4-bg: linear-gradient(135deg, #ffd54f, #ffb300);
+  --postit-4-border: #ff8f00;
 }
 
 [data-theme="a"] {
@@ -88,6 +118,15 @@
   --gradient-button: var(--gradient-aurora);
   --chromatic-color-1: #ffe3bb;
   --chromatic-color-2: #aeecf4;
+  /* Post-it Colors - Aurora Theme */
+  --postit-1-bg: linear-gradient(135deg, #ff6b6b, #ff5252);
+  --postit-1-border: #d32f2f;
+  --postit-2-bg: linear-gradient(135deg, #ffa726, #ff9800);
+  --postit-2-border: #f57c00;
+  --postit-3-bg: linear-gradient(135deg, #f1a3ca, #e91e63);
+  --postit-3-border: #c2185b;
+  --postit-4-bg: linear-gradient(135deg, #ffe3bb, #ffcc02);
+  --postit-4-border: #f9a825;
 }
 
 [data-theme="r"] {
@@ -107,6 +146,15 @@
   --gradient-button: var(--gradient-retro);
   --chromatic-color-1: #00f2ff;
   --chromatic-color-2: #ff00c1;
+  /* Post-it Colors - Retro Theme */
+  --postit-1-bg: linear-gradient(135deg, #4fc3f7, #29b6f6);
+  --postit-1-border: #0288d1;
+  --postit-2-bg: linear-gradient(135deg, #00f2ff, #00bcd4);
+  --postit-2-border: #0097a7;
+  --postit-3-bg: linear-gradient(135deg, #ff00c1, #e91e63);
+  --postit-3-border: #c2185b;
+  --postit-4-bg: linear-gradient(135deg, #9c27b0, #7b1fa2);
+  --postit-4-border: #6a1b9a;
 }
 
 [data-theme="z"] {
@@ -126,6 +174,15 @@
   --gradient-button: var(--gradient-zen);
   --chromatic-color-1: #AEAEAE;
   --chromatic-color-2: #9B9B9B;
+  /* Post-it Colors - Zen Theme */
+  --postit-1-bg: linear-gradient(135deg, #66bb6a, #4caf50);
+  --postit-1-border: #388e3c;
+  --postit-2-bg: linear-gradient(135deg, #81c784, #66bb6a);
+  --postit-2-border: #4caf50;
+  --postit-3-bg: linear-gradient(135deg, #a5d6a7, #81c784);
+  --postit-3-border: #66bb6a;
+  --postit-4-bg: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+  --postit-4-border: #81c784;
 }
 
 [data-theme="e"] {
@@ -145,6 +202,15 @@
   --gradient-button: var(--gradient-eco);
   --chromatic-color-1: #556B2F;
   --chromatic-color-2: #8FBC8F;
+  /* Post-it Colors - Eco Theme */
+  --postit-1-bg: linear-gradient(135deg, #2E8B57, #228B22);
+  --postit-1-border: #006400;
+  --postit-2-bg: linear-gradient(135deg, #556B2F, #6B8E23);
+  --postit-2-border: #556B2F;
+  --postit-3-bg: linear-gradient(135deg, #8FBC8F, #90EE90);
+  --postit-3-border: #32CD32;
+  --postit-4-bg: linear-gradient(135deg, #98FB98, #90EE90);
+  --postit-4-border: #32CD32;
 }
 
 [data-theme="n"] {
@@ -164,4 +230,13 @@
   --gradient-button: var(--gradient-neon);
   --chromatic-color-1: #4DFF00;
   --chromatic-color-2: #FFD600;
+  /* Post-it Colors - Neon Theme */
+  --postit-1-bg: linear-gradient(135deg, #4DFF00, #00FF00);
+  --postit-1-border: #00CC00;
+  --postit-2-bg: linear-gradient(135deg, #FFD600, #FFEB3B);
+  --postit-2-border: #FBC02D;
+  --postit-3-bg: linear-gradient(135deg, #ff5722, #ff7043);
+  --postit-3-border: #e64a19;
+  --postit-4-bg: linear-gradient(135deg, #ff9800, #ffb74d);
+  --postit-4-border: #f57c00;
 }

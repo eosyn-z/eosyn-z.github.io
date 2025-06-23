@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span style="opacity: 0.8;">${artwork.medium}</span>
           <span style="opacity: 0.8;">${formatDate(artwork.dateCreated)}</span>
         </div>
-        ${artwork.redbubbleLink ? `<a href="${artwork.redbubbleLink}" target="_blank" style="color: #ff6b6b; text-decoration: none; font-weight: 500;">🛍️ Available on Redbubble</a>` : ''}
+        ${artwork.redbubbleLink ? `<a href="${artwork.redbubbleLink}" target="_blank" style="color: var(--redbubble-link-color, #ff6b6b); text-decoration: none; font-weight: 500;">🛍️ Available on Redbubble</a>` : ''}
       `;
 
       card.appendChild(overlay);

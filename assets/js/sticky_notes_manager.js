@@ -97,7 +97,7 @@ class StickyNotesManager {
 
         const content = noteWindow.querySelector('.window-content');
         content.innerHTML = `
-            <textarea class="sticky-note-textarea" style="width: 100%; height: 100%; border: none; background: #FFFACD; color: #333; font-family: 'Comic Sans MS', cursive, sans-serif; padding: 10px; resize: none; outline: none;">${noteData.content}</textarea>
+            <textarea class="sticky-note-textarea" style="width: 100%; height: 100%; border: none; background: var(--postit-bg-color, #FFFACD); color: var(--postit-text-color, #333); font-family: 'Comic Sans MS', cursive, sans-serif; padding: 10px; resize: none; outline: none;">${noteData.content}</textarea>
         `;
         
         const textarea = content.querySelector('textarea');

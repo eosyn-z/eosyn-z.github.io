@@ -39,7 +39,7 @@ permalink: /portfolio/
       
       <div class="art-categories">
         <!-- 3D Art -->
-        <div class="art-category-card glass-card" onclick="window.location.href='/art/3d/'">
+        <div class="art-category-card glass-card" onclick="window.location.href='/portfolio/art/3d/'">
           <div class="art-preview">
             <div class="art-placeholder">🎭</div>
           </div>
@@ -51,7 +51,7 @@ permalink: /portfolio/
         </div>
 
         <!-- Digital Art -->
-        <div class="art-category-card glass-card" onclick="window.location.href='/art/digital/'">
+        <div class="art-category-card glass-card" onclick="window.location.href='/portfolio/art/digital/'">
           <div class="art-preview">
             <div class="art-placeholder">🎨</div>
           </div>
@@ -63,7 +63,7 @@ permalink: /portfolio/
         </div>
 
         <!-- Traditional Art -->
-        <div class="art-category-card glass-card" onclick="window.location.href='/art/traditional/'">
+        <div class="art-category-card glass-card" onclick="window.location.href='/portfolio/art/traditional/'">
           <div class="art-preview">
             <div class="art-placeholder">🖌️</div>
           </div>
@@ -75,7 +75,7 @@ permalink: /portfolio/
         </div>
 
         <!-- Oil/Acrylic -->
-        <div class="art-category-card glass-card" onclick="window.location.href='/art/oil-acrylic/'">
+        <div class="art-category-card glass-card" onclick="window.location.href='/portfolio/art/oil-acrylic/'">
           <div class="art-preview">
             <div class="art-placeholder">🖼️</div>
           </div>
@@ -87,7 +87,7 @@ permalink: /portfolio/
         </div>
 
         <!-- Ink Art -->
-        <div class="art-category-card glass-card" onclick="window.location.href='/art/ink/'">
+        <div class="art-category-card glass-card" onclick="window.location.href='/portfolio/art/ink/'">
           <div class="art-preview">
             <div class="art-placeholder">✒️</div>
           </div>
@@ -99,7 +99,7 @@ permalink: /portfolio/
         </div>
 
         <!-- Mixed Media -->
-        <div class="art-category-card glass-card" onclick="window.location.href='/art/mixed-media/'">
+        <div class="art-category-card glass-card" onclick="window.location.href='/portfolio/art/mixed-media/'">
           <div class="art-preview">
             <div class="art-placeholder">🔗</div>
           </div>
@@ -111,7 +111,7 @@ permalink: /portfolio/
         </div>
 
         <!-- Sketch -->
-        <div class="art-category-card glass-card" onclick="window.location.href='/art/sketch/'">
+        <div class="art-category-card glass-card" onclick="window.location.href='/portfolio/art/sketch/'">
           <div class="art-preview">
             <div class="art-placeholder">✏️</div>
           </div>
@@ -123,7 +123,7 @@ permalink: /portfolio/
         </div>
 
         <!-- Watercolor -->
-        <div class="art-category-card glass-card" onclick="window.location.href='/art/watercolor/'">
+        <div class="art-category-card glass-card" onclick="window.location.href='/portfolio/art/watercolor/'">
           <div class="art-preview">
             <div class="art-placeholder">💧</div>
           </div>

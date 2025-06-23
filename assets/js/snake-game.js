@@ -100,27 +100,27 @@ class SnakeGame {
   
   draw() {
     // Clear canvas
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = 'var(--bg-primary)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
     // Draw snake
-    this.ctx.fillStyle = '#00ff00';
     this.snake.forEach((segment, index) => {
       if (index === 0) {
-        // Draw head with different color
-        this.ctx.fillStyle = '#00cc00';
+        // Draw head with bright primary color
+        this.ctx.fillStyle = 'var(--theme-primary)';
       } else {
-        this.ctx.fillStyle = '#00ff00';
+        // Draw body with slightly darker primary
+        this.ctx.fillStyle = 'var(--theme-primary-shadow)';
       }
       this.ctx.fillRect(segment.x * this.gridSize, segment.y * this.gridSize, this.gridSize - 2, this.gridSize - 2);
     });
     
-    // Draw food
-    this.ctx.fillStyle = '#ff0000';
+    // Draw food with bright accent color
+    this.ctx.fillStyle = 'var(--theme-accent)';
     this.ctx.fillRect(this.food.x * this.gridSize, this.food.y * this.gridSize, this.gridSize - 2, this.gridSize - 2);
     
     // Draw grid (optional)
-    this.ctx.strokeStyle = '#333';
+    this.ctx.strokeStyle = 'var(--theme-text-secondary)';
     this.ctx.lineWidth = 1;
     for (let i = 0; i <= this.tileCount; i++) {
       this.ctx.beginPath();
@@ -173,10 +173,10 @@ class SnakeGame {
     this.gameRunning = false;
     
     // Draw game over screen
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    this.ctx.fillStyle = 'var(--glass-bg-dark)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
-    this.ctx.fillStyle = '#fff';
+    this.ctx.fillStyle = 'var(--theme-text)';
     this.ctx.font = '30px Arial';
     this.ctx.textAlign = 'center';
     this.ctx.fillText('Game Over!', this.canvas.width / 2, this.canvas.height / 2 - 20);

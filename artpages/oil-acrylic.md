@@ -1,7 +1,7 @@
 ---
 layout: art_gallery
 title: Oil & Acrylic Art
-permalink: /art/oil-acrylic/
+permalink: /portfolio/art/oil-acrylic/
 description: "A collection of oil and acrylic paintings on canvas."
 art_category: oil-acrylic
 ---

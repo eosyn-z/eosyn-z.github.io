@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: games-launcher
 title: Game Center
 permalink: /games/
 icon: 🎮
@@ -21,7 +21,7 @@ icon: 🎮
         <div class="game-controls">
           <span class="control-hint">Arrow keys to move</span>
         </div>
-        <button class="glass-button play-btn" onclick="openApp('game-snake', window.siteBaseUrl + '/snake/', 'Snake')">Play Snake</button>
+        <button class="glass-button play-btn" onclick="launchGame('snake', 'Snake')">Play Snake</button>
       </div>
 
       <div class="game-card" data-game="tetris">
@@ -31,7 +31,7 @@ icon: 🎮
         <div class="game-controls">
           <span class="control-hint">Arrow keys to move/rotate</span>
         </div>
-        <button class="glass-button play-btn" onclick="openApp('game-tetris', window.siteBaseUrl + '/tetris/', 'Tetris')">Play Tetris</button>
+        <button class="glass-button play-btn" onclick="launchGame('tetris', 'Tetris')">Play Tetris</button>
       </div>
 
       <div class="game-card" data-game="pong">
@@ -41,17 +41,7 @@ icon: 🎮
         <div class="game-controls">
           <span class="control-hint">W/S keys for left paddle, Up/Down for right</span>
         </div>
-        <button class="glass-button play-btn" onclick="openApp('game-pong', window.siteBaseUrl + '/pong/', 'Pong')">Play Pong</button>
-      </div>
-
-      <div class="game-card" data-game="breakout">
-        <div class="game-icon">🧱</div>
-        <h3>Breakout</h3>
-        <p>Break all the blocks with your paddle!</p>
-        <div class="game-controls">
-          <span class="control-hint">Arrow keys to move paddle</span>
-        </div>
-        <button class="glass-button play-btn" onclick="launchGame('breakout')">Play Breakout</button>
+        <button class="glass-button play-btn" onclick="launchGame('pong', 'Pong')">Play Pong</button>
       </div>
 
       <div class="game-card" data-game="2048">
@@ -61,17 +51,7 @@ icon: 🎮
         <div class="game-controls">
           <span class="control-hint">Arrow keys to slide tiles</span>
         </div>
-        <button class="glass-button play-btn" onclick="launchGame('2048')">Play 2048</button>
-      </div>
-
-      <div class="game-card" data-game="flappy">
-        <div class="game-icon">🐦</div>
-        <h3>Flappy Bird</h3>
-        <p>Navigate through pipes!</p>
-        <div class="game-controls">
-          <span class="control-hint">Space to flap</span>
-        </div>
-        <button class="glass-button play-btn" onclick="launchGame('flappy')">Play Flappy Bird</button>
+        <button class="glass-button play-btn" onclick="launchGame('2048', '2048')">Play 2048</button>
       </div>
 
       <div class="game-card" data-game="minecraft">
@@ -81,7 +61,7 @@ icon: 🎮
         <div class="game-controls">
           <span class="control-hint">WASD to move, Mouse to look, Click to place/break</span>
         </div>
-        <button class="glass-button play-btn" onclick="openApp('game-minecraft', window.siteBaseUrl + '/minecraft/', 'Minecraft')">Play Minecraft</button>
+        <button class="glass-button play-btn" onclick="launchGame('minecraft', 'Minecraft')">Play Minecraft</button>
       </div>
     </div>
 
@@ -94,16 +74,46 @@ icon: 🎮
   </div>
 </div>
 
+<!-- Modal for Site Mode Game Launch -->
+<div id="game-modal" class="game-modal-overlay" style="display: none;">
+  <div class="game-modal-content glass-panel">
+    <div class="game-modal-header">
+      <h3 id="game-modal-title"></h3>
+      <button id="game-modal-close" class="close-btn">&times;</button>
+    </div>
+    <iframe id="game-modal-iframe" src="about:blank" frameborder="0"></iframe>
+  </div>
+</div>
+
 <script>
-function launchGame(gameName) {
-  // Launch the specific game in a new window using the enhanced window manager
-  if (windowManager) {
-    windowManager.createGameWindow(gameName);
+function launchGame(gameId, gameTitle) {
+  // Check if we are in the desktop view
+  if (window.desktopManager && document.body.classList.contains('desktop-view-active')) {
+    // Desktop mode: Launch in a window
+    const url = `${window.siteBaseUrl || ''}/games/${gameId}/`;
+    window.desktopManager.createWindow(gameId, gameTitle, url, 'fas fa-gamepad');
+  } else {
+    // Site mode: Launch in a modal
+    const modal = document.getElementById('game-modal');
+    const iframe = document.getElementById('game-modal-iframe');
+    const title = document.getElementById('game-modal-title');
+    
+    title.textContent = gameTitle;
+    iframe.src = `${window.siteBaseUrl || ''}/games/${gameId}/`;
+    modal.style.display = 'flex';
   }
 }
 
-// Add some interactive features
 document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('game-modal');
+  const closeModalBtn = document.getElementById('game-modal-close');
+
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      document.getElementById('game-modal-iframe').src = 'about:blank'; // Stop game
+    });
+  }
   // Add hover effects to game cards
   const gameCards = document.querySelectorAll('.game-card');
   gameCards.forEach(card => {
