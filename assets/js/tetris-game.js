@@ -289,16 +289,15 @@ class TetrisGame {
   gameOver() {
     this.gameRunning = false;
     
-    // Draw game over screen
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    // Game over overlay
+    this.ctx.fillStyle = 'var(--glass-bg-dark)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
     this.ctx.fillStyle = 'var(--theme-text)';
-    this.ctx.font = '30px Arial';
+    this.ctx.font = '24px Arial';
     this.ctx.textAlign = 'center';
     this.ctx.fillText('Game Over!', this.canvas.width / 2, this.canvas.height / 2 - 20);
-    
-    this.ctx.font = '20px Arial';
+    this.ctx.font = '16px Arial';
     this.ctx.fillText(`Final Score: ${this.score}`, this.canvas.width / 2, this.canvas.height / 2 + 20);
     this.ctx.fillText(`Lines Cleared: ${this.lines}`, this.canvas.width / 2, this.canvas.height / 2 + 50);
     this.ctx.fillText('Press Restart to play again', this.canvas.width / 2, this.canvas.height / 2 + 80);

@@ -30,7 +30,7 @@ If this fails, rollback to:
         </h1>
         
         <!-- Window Component -->
-        <div class="window-container">
+        <div class="window-container" data-theme="a">
           <div class="window" id="main-window">
             <div class="window-header">
               <div class="window-controls">
@@ -40,31 +40,31 @@ If this fails, rollback to:
               </div>
               <div class="window-title">Welcome to eosyn's World</div>
             </div>
-            <div class="window-content">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="theme-image window-image" data-theme-image="c" style="display: inline-block;">
-              <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="theme-image window-image" data-theme-image="a" style="display: none;">
-              <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="theme-image window-image" data-theme-image="e" style="display: none;">
-              <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="theme-image window-image" data-theme-image="n" style="display: none;">
-            </div>
-          </div>
-          
-          <!-- Post-it Board -->
-          <div class="post-it-board">
-            <div class="post-it">
-              <h3>About Me</h3>
-              <p>Hi! I'm eosyn, a creative developer who loves building beautiful digital experiences.</p>
-            </div>
-            <div class="post-it">
-              <h3>Current Status</h3>
-              <p>🚧 Site under construction 🚧<br>More content coming soon!</p>
-            </div>
-            <div class="post-it">
-              <h3>Theme Controls</h3>
-              <p>Try the theme buttons above to change the window's appearance!</p>
-            </div>
-            <div class="post-it">
-              <h3>Desktop Mode</h3>
-              <p>Click the 🌐/🖥️ button to switch between website and desktop modes!</p>
+            <div class="window-content" style="display: flex; flex-direction: row; align-items: flex-start; gap: 2rem;">
+              <div style="flex: 1; min-width: 220px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Starfield Simulation" class="theme-image window-image" data-theme-image="c" style="display: inline-block; border-radius: 12px; width: 100%; max-width: 340px;">
+                <img src="https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif" alt="Animated GIF" class="theme-image window-image" data-theme-image="a" style="display: none; border-radius: 12px; width: 100%; max-width: 340px;">
+                <img src="https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif" alt="Animated GIF" class="theme-image window-image" data-theme-image="e" style="display: none; border-radius: 12px; width: 100%; max-width: 340px;">
+                <img src="https://i.gifer.com/23dZ.gif" alt="Animated GIF" class="theme-image window-image" data-theme-image="n" style="display: none; border-radius: 12px; width: 100%; max-width: 340px;">
+              </div>
+              <div class="post-it-board" style="display: flex; flex-direction: column; gap: 1.25rem; min-width: 220px;">
+                <div class="post-it">
+                  <h3>About Me</h3>
+                  <p>Hi! I'm eosyn, a creative developer who loves building beautiful digital experiences.</p>
+                </div>
+                <div class="post-it">
+                  <h3>Current Status</h3>
+                  <p>🚧 Site under construction 🚧<br>More content coming soon!</p>
+                </div>
+                <div class="post-it">
+                  <h3>Theme Controls</h3>
+                  <p>Try the theme buttons above to change the window's appearance!</p>
+                </div>
+                <div class="post-it">
+                  <h3>Desktop Mode</h3>
+                  <p>Click the 🌐/🖥️ button to switch between website and desktop modes!</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

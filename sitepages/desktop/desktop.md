@@ -7,46 +7,36 @@ desktop_mode: true
 
 <div id="desktop-grid">
     <!-- Desktop icons are now generated dynamically -->
-    
-    {% for page in site.pages %}
-        {% if page.title and page.url != '/404.html' and page.url != '/desktop/' %}
-            <div class="desktop-icon" 
-                 id="icon-{{ page.title | slugify }}" 
-                 data-app-url="{{ page.url | relative_url }}" 
-                 data-app-title="{{ page.title }}">
-                <div class="icon-image">{{ page.icon | default: '📄' }}</div>
-                <div class="icon-label">{{ page.title }}</div>
-            </div>
-        {% endif %}
+    {% assign desktop_pages = site.pages | where_exp: 'p', 'p.title and p.url != "/404.html" and p.url != "/desktop/" and p.url != "/games/"' %}
+    {% for page in desktop_pages %}
+        <div class="desktop-icon" 
+             id="icon-{{ page.title | slugify }}" 
+             data-app-url="{{ page.url | relative_url }}" 
+             data-app-title="{{ page.title }}">
+            <div class="icon-image">{{ page.icon | default: '📄' }}</div>
+            <div class="icon-label">{{ page.title }}</div>
+        </div>
     {% endfor %}
-
-    {% for game in site.games %}
-        {% if game.title and game.id != 'games' %}
-             <div class="desktop-icon" 
-                 id="icon-{{ game.title | slugify }}" 
-                 data-app-url="{{ game.permalink | relative_url }}" 
-                 data-app-title="{{ game.title }}">
-                <div class="icon-image">{{ game.icon | default: '🎮' }}</div>
-                <div class="icon-label">{{ game.title }}</div>
-            </div>
-        {% endif %}
+    {% assign game_pages = site.pages | where_exp: 'g', 'g.path contains "sitepages/games/" and g.path != "sitepages/games/games.md"' %}
+    {% for game in game_pages %}
+        <div class="desktop-icon" 
+             id="icon-{{ game.title | slugify }}" 
+             data-app-url="{{ game.permalink | relative_url }}" 
+             data-app-title="{{ game.title }}">
+            <div class="icon-image">{{ game.icon | default: '🎮' }}</div>
+            <div class="icon-label">{{ game.title }}</div>
+        </div>
     {% endfor %}
+    <!-- Bookmarks will be rendered by JS -->
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize desktop manager
-  if (typeof DesktopManager !== 'undefined') {
-    window.desktopManager = new DesktopManager();
-  } else {
-    console.error('DesktopManager not loaded');
+  if (window.DesktopManager) {
+    window.desktopManager = new DesktopManager(document.getElementById('desktop-grid'));
   }
-  
-  // Initialize window manager
-  if (typeof WindowManager !== 'undefined') {
+  if (window.WindowManager) {
     window.windowManager = new WindowManager();
-  } else {
-    console.error('WindowManager not loaded');
   }
 });
 </script>

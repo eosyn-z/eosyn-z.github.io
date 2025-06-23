@@ -42,15 +42,12 @@ class ViewManager {
         this.body.classList.add('desktop-mode');
         const topNav = document.querySelector('.top-nav');
         if (topNav) topNav.style.display = 'none';
-        
         const mainContent = document.querySelector('.main-content');
         if (mainContent) mainContent.style.display = 'none';
-
-        const desktopOnlyElements = document.querySelectorAll('.desktop-only, .bottom-bar, #desktop-background, #window-container');
+        const desktopOnlyElements = document.querySelectorAll('.desktop-only, .bottom-bar, #desktop-background, #window-container, #start-menu');
         desktopOnlyElements.forEach(el => { if(el) el.style.display = 'block'; });
-
         if (window.desktopManager) {
-            window.desktopManager.renderIcons();
+            window.desktopManager.renderIcons && window.desktopManager.renderIcons();
         }
     }
 
@@ -58,15 +55,12 @@ class ViewManager {
         this.body.classList.remove('desktop-mode');
         const topNav = document.querySelector('.top-nav');
         if (topNav) topNav.style.display = 'flex';
-
         const mainContent = document.querySelector('.main-content');
         if (mainContent) mainContent.style.display = 'block';
-
         const desktopOnlyElements = document.querySelectorAll('.desktop-only, .bottom-bar, #desktop-background, #window-container, #start-menu');
         desktopOnlyElements.forEach(el => { if(el) el.style.display = 'none'; });
-
         if (window.windowManager) {
-            window.windowManager.closeAllWindows();
+            window.windowManager.closeAllWindows && window.windowManager.closeAllWindows();
         }
     }
 

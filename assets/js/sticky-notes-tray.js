@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="tray-content">
                         <p>Click any button below to create a new sticky note on your desktop.</p>
                         <div class="sticky-notes-buttons-grid">
-                            <button class="glass-button" data-type="Quick Note" data-content="E">📝 Quick Note</button>
+                            <button class="glass-button" data-type="Quick Note" data-content="📝 Quick Note\n\nWrite your thoughts here...">📝 Quick Note</button>
                             <button class="glass-button" data-type="Todo List" data-content="📋 Todo:\n• Task 1\n• Task 2\n• Task 3">✅ Todo List</button>
                             <button class="glass-button" data-type="Ideas" data-content="💡 Ideas:\n• Project idea 1\n• Creative thought">💡 Ideas</button>
                             <button class="glass-button" data-type="Reminder" data-content="⏰ Reminder:\nDon't forget to...">⏰ Reminder</button>
-                            <button class="glass-button" data-type="Code Snippet" data-content="&#x60;&#x60;&#x60;javascript\nfunction hello() {\n  console.log(\"Hello World!\");\n}&#x60;&#x60;&#x60;">💻 Code Snippet</button>
-                            <button class="glass-button" data-type="Quote" data-content="> &quot;The best way to predict the future is to invent it.&quot;\n\n- Alan Kay">💬 Quote</button>
+                            <button class="glass-button" data-type="Code Snippet" data-content="// Code Snippet\nfunction hello() {\n  console.log('Hello World!');\n}">💻 Code Snippet</button>
+                            <button class="glass-button" data-type="Quote" data-content="> 'The best way to predict the future is to invent it.'\n\n- Alan Kay">💬 Quote</button>
                             <button class="glass-button" data-type="Contact Info" data-content="📞 Contact:\nName: [Your Name]\nEmail: [your.email@example.com]">📞 Contact Info</button>
                             <button class="glass-button" data-type="Shopping List" data-content="🛒 Shopping:\n• Milk\n• Bread\n• Eggs">🛒 Shopping List</button>
                             <button class="glass-button" data-type="Meeting Notes" data-content="📅 Meeting Notes:\n\nAgenda:\n- Topic 1\n- Topic 2">📅 Meeting Notes</button>
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         _attachEventListeners() {
-            // Attach to global header button
+            // Attach to global header button (for site mode)
             const globalBtn = document.getElementById('sticky-note-tray-btn');
             if (globalBtn) {
                 globalBtn.addEventListener('click', (e) => {
@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.toggle();
                 });
             }
-            // Also attach to any other create note button
+            
+            // Attach to desktop plus button
             this.createButton = document.getElementById('create-note-btn');
             if (this.createButton) {
                 this.createButton.addEventListener('click', (e) => {
@@ -54,10 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.toggle();
                 });
             }
+            
             const closeButton = this.tray.querySelector('.close-tray-btn');
             if (closeButton) {
                 closeButton.addEventListener('click', () => this.hide());
             }
+            
             this.tray.querySelectorAll('.sticky-notes-buttons-grid .glass-button').forEach(button => {
                 button.addEventListener('click', () => {
                     if (window.windowManager) {
@@ -75,9 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             });
+            
             // Only one tray open at a time (close theme editor tray if open)
             document.addEventListener('click', (e) => {
-                if (this.tray.style.display === 'block' && !this.tray.contains(e.target) && (!globalBtn || !globalBtn.contains(e.target))) {
+                if (this.tray.style.display === 'block' && !this.tray.contains(e.target) && 
+                    (!globalBtn || !globalBtn.contains(e.target)) && 
+                    (!this.createButton || !this.createButton.contains(e.target))) {
                     this.hide();
                 }
             });
@@ -115,5 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Expose to global scope if not already present
     if (!window.stickyNotesTray) {
         window.stickyNotesTray = new StickyNotesTray();
+    }
+
+    // Ensure plus button works in both modes
+    const stickyBtn = document.getElementById('sticky-note-tray-btn') || document.getElementById('create-note-btn');
+    if (stickyBtn && window.stickyNotesTray) {
+        stickyBtn.onclick = (e) => {
+            e.preventDefault();
+            window.stickyNotesTray.show();
+        };
     }
 }); 

@@ -14,55 +14,18 @@ icon: 🎮
     </header>
 
     <div class="games-grid">
-      <div class="game-card" data-game="snake">
-        <div class="game-icon">🐍</div>
-        <h3>Snake</h3>
-        <p>Classic snake game - eat food and grow longer!</p>
-        <div class="game-controls">
-          <span class="control-hint">Arrow keys to move</span>
+      {% assign game_pages = site.pages | where_exp: 'p', 'p.path contains "sitepages/games/" and p.path != "sitepages/games/games.md"' %}
+      {% for game in game_pages %}
+        <div class="game-card" data-game="{{ game.title | downcase }}">
+          <div class="game-icon">{{ game.icon }}</div>
+          <h3>{{ game.title }}</h3>
+          <p>{{ game.description }}</p>
+          <div class="game-controls">
+            <span class="control-hint">{{ game.instructions }}</span>
+          </div>
+          <button class="glass-button play-btn" onclick="launchGame('{{ game.title | downcase }}', '{{ game.title }}')">Play {{ game.title }}</button>
         </div>
-        <button class="glass-button play-btn" onclick="launchGame('snake', 'Snake')">Play Snake</button>
-      </div>
-
-      <div class="game-card" data-game="tetris">
-        <div class="game-icon">🧩</div>
-        <h3>Tetris</h3>
-        <p>Arrange falling blocks to clear lines!</p>
-        <div class="game-controls">
-          <span class="control-hint">Arrow keys to move/rotate</span>
-        </div>
-        <button class="glass-button play-btn" onclick="launchGame('tetris', 'Tetris')">Play Tetris</button>
-      </div>
-
-      <div class="game-card" data-game="pong">
-        <div class="game-icon">🏓</div>
-        <h3>Pong</h3>
-        <p>Classic paddle game - don't let the ball pass!</p>
-        <div class="game-controls">
-          <span class="control-hint">W/S keys for left paddle, Up/Down for right</span>
-        </div>
-        <button class="glass-button play-btn" onclick="launchGame('pong', 'Pong')">Play Pong</button>
-      </div>
-
-      <div class="game-card" data-game="2048">
-        <div class="game-icon">🔢</div>
-        <h3>2048</h3>
-        <p>Slide tiles to reach 2048!</p>
-        <div class="game-controls">
-          <span class="control-hint">Arrow keys to slide tiles</span>
-        </div>
-        <button class="glass-button play-btn" onclick="launchGame('2048', '2048')">Play 2048</button>
-      </div>
-
-      <div class="game-card" data-game="minecraft">
-        <div class="game-icon">🎮</div>
-        <h3>Minecraft</h3>
-        <p>Build and explore your own world!</p>
-        <div class="game-controls">
-          <span class="control-hint">WASD to move, Mouse to look, Click to place/break</span>
-        </div>
-        <button class="glass-button play-btn" onclick="launchGame('minecraft', 'Minecraft')">Play Minecraft</button>
-      </div>
+      {% endfor %}
     </div>
 
     <div class="game-info" style="margin-top: 2rem; text-align: center;">

@@ -239,6 +239,31 @@ class StartMenu {
 
         listElement.appendChild(li);
     }
+
+    populateGamesList() {
+        const gamesList = document.querySelector('.games-list');
+        if (!gamesList) return;
+        gamesList.innerHTML = '';
+
+        // Collect all games from site.pages (Jekyll will expose this as window.sitePages if needed)
+        let games = window.sitePages ? window.sitePages.filter(p => p.path && p.path.includes('sitepages/games/') && p.path !== 'sitepages/games/games.md') : [];
+
+        // Check if Paint is already in the games list
+        const paintPage = window.sitePages ? window.sitePages.find(p => p.permalink === '/paint/' || p.url === '/paint/') : null;
+        const paintInGames = games.some(g => (g.permalink === '/paint/' || g.url === '/paint/'));
+        if (paintPage && !paintInGames) {
+            games.push({
+                title: paintPage.title || 'Paint',
+                icon: paintPage.icon || '🎨',
+                permalink: paintPage.permalink || '/paint/',
+                description: paintPage.description || 'Draw and doodle freely!'
+            });
+        }
+
+        games.forEach(game => {
+            this.addPageToList(game, gamesList);
+        });
+    }
 }
 
 // Initialization is now handled by desktop.js

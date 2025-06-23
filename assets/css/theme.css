@@ -1239,267 +1239,93 @@ div[style*="margin-bottom: 3rem"] {
 
 .app-window {
   position: absolute;
-  top: 10%;
-  left: 15%;
-  width: 70vw;
-  max-width: 900px;
-  min-width: 350px;
-  height: 60vh;
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-  border: 1px solid var(--glass-border-light); /* Add this line */
-  border-radius: 15px; /* Ensure the container has rounded corners */
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-webkit-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-border-radius);
+  box-shadow: var(--glass-box-shadow);
+  min-width: 300px;
+  min-height: 200px;
+  resize: both;
+  overflow: hidden;
+  z-index: 1000;
   transition: all 0.3s ease;
 }
 
 .app-window.minimized {
-  display: none;
+  transform: scale(0.1);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .app-window.favorited {
-  box-shadow: var(--glass-shadow-heavy), 0 0 20px rgba(255, 221, 0, 0.3);
+  border-color: var(--theme-accent);
 }
 
 .app-window.favorited .window-header {
-  background-color: rgba(255, 221, 0, 0.1);
-  border-bottom-color: rgba(255, 221, 0, 0.3);
+  background: var(--theme-accent);
 }
 
 .app-window .window-header {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  background-color: var(--glass-bg-heavy);
+  background: var(--glass-bg-medium);
+  padding: 8px 12px;
   border-bottom: 1px solid var(--glass-border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   cursor: move;
-  border-radius: 15px 15px 0 0;
-  backdrop-filter: var(--glass-blur-heavy);
+  user-select: none;
 }
 
 .app-window .window-title {
-  color: var(--theme-text);
   font-weight: 600;
-  padding-left: 10px;
-  pointer-events: none; /* Make sure text doesn't interfere with dragging */
+  color: var(--theme-text);
+  font-size: 0.9rem;
+  margin: 0;
 }
 
 .app-window .window-controls {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .app-window .window-controls button {
-  width: 28px;
-  height: 28px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   border: none;
-  background-color: var(--glass-bg-medium);
-  color: var(--theme-text);
-  font-family: 'Segoe UI Symbol', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+  cursor: pointer;
+  font-size: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   transition: all 0.2s ease;
+  background: var(--glass-bg-light);
+  color: var(--theme-text);
 }
 
 .app-window .window-controls button:hover {
-  background-color: var(--glass-bg-light);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
 }
 
 .app-window .window-controls .btn-fav:hover { 
-  background-color: var(--window-fav-hover, #ffdd00); 
-  color: var(--window-fav-text, #333); 
+  background: var(--window-fav-hover, #ffdd00);
 }
 
 .app-window .window-controls .btn-min:hover { 
-  background-color: var(--window-min-hover, #55aaff); 
+  background: var(--window-min-hover, #55aaff);
 }
 
 .app-window .window-controls .btn-close:hover { 
-  background-color: var(--window-close-hover, #ff5555); 
-  color: var(--text-white); 
+  background: var(--window-close-hover, #ff5555);
 }
 
 .app-window .window-content {
-  flex-grow: 1;
-  padding: 0; /* Remove padding to allow content to fill space */
-  background-color: var(--glass-bg-medium);
-  backdrop-filter: var(--glass-blur-medium);
-  border-radius: 0 0 15px 15px;
-  overflow-y: hidden; /* Prevent vertical scrollbars */
-  overflow-x: hidden; /* Prevent horizontal scrollbars */
-}
-
-.app-window .window-content > .main-content {
-  padding: 1.5rem; /* Add padding back to the injected content */
-  height: 100%;
-  box-sizing: border-box;
-}
-
-/* Ensure proper spacing for windowed app content */
-.app-window .art-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 0;
-  padding: 1rem;
-}
-
-.app-window .art-card {
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  border-radius: var(--glass-border-radius);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 1rem;
-  box-shadow: var(--glass-shadow-light);
-  transition: all 0.3s ease;
-  opacity: 1;
-  margin: 0;
-}
-
-.app-window .glass-panel {
-  padding: 1.5rem;
-  margin: 0;
-}
-
-.app-window .glass-card {
-  padding: 1.5rem;
-  margin: 0;
-}
-
-.app-window .page-header {
-  margin-bottom: 1.5rem;
-}
-
-.app-window .page-header:last-child {
-  margin-bottom: 0;
-}
-
-.app-window .glass-button {
-  margin: 0.5rem;
-}
-
-/* Music page specific spacing in windows */
-.app-window #playlist-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.app-window #playlist-buttons .glass-button {
-  margin: 0;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  min-height: 80px;
-}
-
-.app-window .spotify-player-container {
-  padding: 1.5rem;
-  margin: 0;
-}
-
-.app-window .spotify-player {
-  display: none;
-  width: 100%;
-  height: 400px;
-}
-
-.app-window .spotify-player.active {
-  display: block;
-}
-
-/* Search page specific spacing in windows */
-.app-window .search-section {
-  margin-bottom: 1.5rem;
-}
-
-.app-window .social-forums-section {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
-.app-window .link-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.app-window .website-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-
-.app-window .website-card {
-  padding: 1.5rem;
-  margin: 0;
-}
-
-.resize-handle {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 18px;
-  height: 18px;
-  cursor: se-resize;
-  z-index: 10; /* Ensure it's clickable */
-  opacity: 0.6;
-}
-
-.resize-handle::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid var(--theme-text-secondary);
-  border-bottom: 2px solid var(--theme-text-secondary);
-  transition: all 0.2s ease;
-}
-
-.resize-handle:hover::after {
-  border-color: var(--theme-accent);
-}
-
-/* Loader animation for window content */
-.loader {
-  border: 4px solid var(--glass-border-light);
-  border-top: 4px solid var(--theme-accent);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  padding: 16px;
+  height: calc(100% - 40px);
+  overflow: auto;
+  background: var(--glass-bg-light);
 }
 
 /* ===== DESKTOP ENVIRONMENT - ROLLBACK POINT ===== */
@@ -1770,12 +1596,12 @@ div[style*="margin-bottom: 3rem"] {
 
 /* Desktop Mode Styles */
 body.desktop-mode {
-  overflow: hidden;
   background: var(--bg-primary);
-  background-image: var(--desktop-wallpaper, none);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
 }
 
 body.desktop-mode .top-nav {
@@ -1783,7 +1609,9 @@ body.desktop-mode .top-nav {
 }
 
 body.desktop-mode .main-content {
-  display: none;
+  padding: 0;
+  margin: 0;
+  max-width: none;
 }
 
 /* Bottom Bar */

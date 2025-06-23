@@ -432,8 +432,15 @@ class CustomThemeEditor {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    window.customThemeEditor = new CustomThemeEditor();
-    window.customThemeEditor.init();
-    window.customThemeEditor.loadSavedCustomThemeOnPageLoad();
+document.addEventListener('DOMContentLoaded', function() {
+  // Palette button (theme editor)
+  const themeEditorBtn = document.getElementById('theme-editor-button') || document.querySelector('.theme-btn[data-theme="custom"]');
+  if (themeEditorBtn) {
+    themeEditorBtn.onclick = (e) => {
+      e.preventDefault();
+      if (window.customThemeEditor) {
+        window.customThemeEditor.createThemeEditorWindow();
+      }
+    };
+  }
 }); 

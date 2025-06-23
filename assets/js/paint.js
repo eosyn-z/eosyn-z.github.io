@@ -171,6 +171,49 @@ function initializePaint() {
     // Mark as initialized
     paintInstance = true;
     console.log('Paint initialized successfully');
+
+    // Add Save and Load buttons only if not already present
+    if (!document.getElementById('paint-save-btn')) {
+      const controls = document.createElement('div');
+      controls.style.display = 'flex';
+      controls.style.gap = '0.5rem';
+      controls.style.margin = '1rem 0';
+      const saveBtn = document.createElement('button');
+      saveBtn.textContent = 'Save';
+      saveBtn.className = 'glass-button';
+      saveBtn.id = 'paint-save-btn';
+      const loadBtn = document.createElement('button');
+      loadBtn.textContent = 'Load';
+      loadBtn.className = 'glass-button';
+      loadBtn.id = 'paint-load-btn';
+      controls.appendChild(saveBtn);
+      controls.appendChild(loadBtn);
+      paintContainer.insertBefore(controls, paintContainer.firstChild);
+
+      saveBtn.onclick = function() {
+        // Save as PNG
+        const dataURL = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'paint-drawing.png';
+        link.click();
+        // Save to localStorage
+        localStorage.setItem('paint-saved', dataURL);
+      };
+      loadBtn.onclick = function() {
+        const dataURL = localStorage.getItem('paint-saved');
+        if (dataURL) {
+          const img = new window.Image();
+          img.onload = function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          };
+          img.src = dataURL;
+        } else {
+          alert('No saved drawing found!');
+        }
+      };
+    }
 }
 
 // Initialize on DOM content loaded

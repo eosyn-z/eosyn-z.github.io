@@ -11,16 +11,18 @@
         </div>
         <div class="divider"></div>
         <div class="system-tray">
-            <div id="sticky-notes-persistence-toggle" class="tray-icon glass-button" title="Toggle Note Persistence (Global)">
-                <i class="fas fa-thumbtack"></i>
-            </div>
-            <div id="create-note-btn" class="tray-icon glass-button" title="Create a New Note">
+            <!-- Only show plus button in desktop mode -->
+            <div id="create-note-btn" class="tray-icon glass-button" title="Create a New Note" style="display: none;">
                 <i class="fas fa-plus"></i>
             </div>
-            <div id="theme-editor-button" class="tray-icon glass-button" title="Theme Settings" onclick="window.customThemeEditor.createThemeEditorWindow()">
+            <!-- Hide these in desktop mode -->
+            <div id="sticky-notes-persistence-toggle" class="tray-icon glass-button desktop-hidden" title="Toggle Note Persistence (Global)">
+                <i class="fas fa-thumbtack"></i>
+            </div>
+            <div id="theme-editor-button" class="tray-icon glass-button desktop-hidden" title="Theme Settings" onclick="window.customThemeEditor.createThemeEditorWindow()">
                 <i class="fas fa-palette"></i>
             </div>
-            <div id="status-icons">
+            <div id="status-icons" class="desktop-hidden">
                 <div id="window-counter" class="tray-icon" title="Open Windows">0/50</div>
                 <div id="discord-status" class="tray-icon" title="Discord Status">Offline</div>
             </div>
@@ -50,6 +52,18 @@
         </div>
     </div>
 </div>
+
+<style>
+/* Hide non-desktop elements in desktop mode */
+body.desktop-mode .desktop-hidden {
+    display: none !important;
+}
+
+/* Show plus button in desktop mode */
+body.desktop-mode #create-note-btn {
+    display: flex !important;
+}
+</style>
 
 <script src="{{ "/assets/js/sticky-notes-tray.js" | relative_url }}"></script>
 </body>

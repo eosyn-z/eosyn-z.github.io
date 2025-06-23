@@ -36,14 +36,38 @@
         left: 0;
         overflow: hidden;
       }
+      
+      /* Hide non-desktop elements in desktop mode */
+      body.desktop-mode .nav-links-header,
+      body.desktop-mode .header-controls .theme-buttons,
+      body.desktop-mode .header-controls .view-toggle-container,
+      body.desktop-mode #discord-status-widget {
+        display: none !important;
+      }
+      
+      /* Show only essential desktop controls */
+      body.desktop-mode .nav-links-desktop {
+        display: flex !important;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 20000;
+      }
+      
+      /* Ensure plus button works in desktop mode */
+      body.desktop-mode #create-note-btn {
+        display: flex !important;
+      }
     </style>
   </head>
   <body class="desktop-mode" style="overflow: hidden;">
+    {%- include navigation.html -%}
+    
     <div class="desktop-window-area">
       {{ content }}
     </div>
 
-    {%- include bottom_bar.html -%}
+    {%- include bottom_bar_new.html -%}
     
     <script>
       // Hide normal banner/navigation if present
@@ -52,6 +76,17 @@
         if (nav) nav.style.display = 'none';
         const banner = document.querySelector('.page-header');
         if (banner) banner.style.display = 'none';
+        
+        // Ensure sticky notes tray works in desktop mode
+        if (window.stickyNotesTray) {
+          const createNoteBtn = document.getElementById('create-note-btn');
+          if (createNoteBtn) {
+            createNoteBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              window.stickyNotesTray.show();
+            });
+          }
+        }
       });
     </script>
   </body>

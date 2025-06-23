@@ -656,178 +656,173 @@ class WindowManager {
     // Desktop system integration methods
     createWindow(appId, title, content = null) {
         const windowId = `window-${this.getNextWindowId()}`;
-        const window = document.createElement('div');
-        window.className = 'window glass-card';
-        window.id = windowId;
         
-        // Set initial position (staggered and snapped to grid)
-        const baseX = 50 + (this.windows.length * 30);
-        const baseY = 50 + (this.windows.length * 30);
-        const snapped = this.snapToGrid(baseX, baseY);
+        // Create window container
+        const windowContainer = document.createElement('div');
+        windowContainer.className = 'app-window';
+        windowContainer.id = windowId;
+        windowContainer.style.position = 'absolute';
+        windowContainer.style.top = '10%';
+        windowContainer.style.left = '15%';
+        windowContainer.style.width = '70vw';
+        windowContainer.style.maxWidth = '900px';
+        windowContainer.style.minWidth = '350px';
+        windowContainer.style.height = '60vh';
+        windowContainer.style.minHeight = '400px';
+        windowContainer.style.display = 'flex';
+        windowContainer.style.flexDirection = 'column';
+        windowContainer.style.zIndex = '100';
+        windowContainer.style.border = '1px solid var(--glass-border-light)';
+        windowContainer.style.borderRadius = '15px';
+        windowContainer.style.transition = 'all 0.3s ease';
+        windowContainer.style.background = 'var(--glass-bg)';
+        windowContainer.style.backdropFilter = 'var(--glass-backdrop-filter)';
+        windowContainer.style.webkitBackdropFilter = 'var(--glass-webkit-backdrop-filter)';
+        windowContainer.style.boxShadow = 'var(--glass-box-shadow)';
         
-        window.style.cssText = `
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 600px;
-            height: 400px;
-            background: var(--glass-bg-heavy);
-            backdrop-filter: var(--glass-blur-heavy);
-            border: 1px solid var(--glass-border-light);
-            border-radius: 15px;
-            box-shadow: var(--glass-shadow-heavy);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: translate(${snapped.x}px, ${snapped.y}px);
-        `;
-
         // Create window header
-        const header = document.createElement('div');
-        header.className = 'window-header';
-        header.style.cssText = `
-            background: var(--glass-bg-heavy);
-            backdrop-filter: var(--glass-blur-heavy);
-            border-bottom: 1px solid var(--glass-border-light);
-            border-radius: 15px 15px 0 0;
-            padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: move;
-            user-select: none;
-        `;
-
-        // Window title
-        const titleElement = document.createElement('div');
-        titleElement.className = 'window-title';
-        titleElement.textContent = title;
-        titleElement.style.cssText = `
-            font-weight: 600;
-            color: var(--theme-text);
-            font-size: 1rem;
-        `;
-
-        // Window controls
-        const controls = document.createElement('div');
-        controls.className = 'window-controls';
-        controls.style.cssText = `
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        `;
-
-        const minimizeBtn = document.createElement('button');
-        minimizeBtn.innerHTML = '−';
-        minimizeBtn.className = 'window-control-btn';
-        minimizeBtn.title = 'Minimize';
-        minimizeBtn.style.cssText = `
-            background: var(--glass-bg-medium);
-            border: none;
-            border-radius: 4px;
-            width: 24px;
-            height: 24px;
-            color: var(--theme-text);
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        `;
-
-        const maximizeBtn = document.createElement('button');
-        maximizeBtn.innerHTML = '□';
-        maximizeBtn.className = 'window-control-btn';
-        maximizeBtn.title = 'Maximize';
-        maximizeBtn.style.cssText = minimizeBtn.style.cssText;
-
+        const windowHeader = document.createElement('div');
+        windowHeader.className = 'window-header';
+        windowHeader.style.height = '40px';
+        windowHeader.style.display = 'flex';
+        windowHeader.style.alignItems = 'center';
+        windowHeader.style.justifyContent = 'space-between';
+        windowHeader.style.padding = '0 10px';
+        windowHeader.style.background = 'var(--glass-bg-medium)';
+        windowHeader.style.borderBottom = '1px solid var(--glass-border-light)';
+        windowHeader.style.cursor = 'move';
+        windowHeader.style.borderRadius = '15px 15px 0 0';
+        windowHeader.style.backdropFilter = 'var(--glass-blur-medium)';
+        
+        // Create window title
+        const windowTitle = document.createElement('h3');
+        windowTitle.className = 'window-title';
+        windowTitle.textContent = title;
+        windowTitle.style.color = 'var(--theme-text)';
+        windowTitle.style.fontWeight = '600';
+        windowTitle.style.paddingLeft = '10px';
+        windowTitle.style.pointerEvents = 'none';
+        windowTitle.style.margin = '0';
+        
+        // Create window controls
+        const windowControls = document.createElement('div');
+        windowControls.className = 'window-controls';
+        windowControls.style.display = 'flex';
+        windowControls.style.gap = '8px';
+        
+        // Create control buttons
+        const favBtn = document.createElement('button');
+        favBtn.className = 'btn-fav';
+        favBtn.innerHTML = '★';
+        favBtn.title = 'Favorite';
+        favBtn.style.width = '28px';
+        favBtn.style.height = '28px';
+        favBtn.style.borderRadius = '50%';
+        favBtn.style.border = 'none';
+        favBtn.style.background = 'var(--glass-bg-light)';
+        favBtn.style.color = 'var(--theme-text)';
+        favBtn.style.fontFamily = "'Segoe UI Symbol', sans-serif";
+        favBtn.style.fontSize = '14px';
+        favBtn.style.fontWeight = '700';
+        favBtn.style.display = 'flex';
+        favBtn.style.alignItems = 'center';
+        favBtn.style.justifyContent = 'center';
+        favBtn.style.cursor = 'pointer';
+        favBtn.style.transition = 'all 0.2s ease';
+        
+        const minBtn = document.createElement('button');
+        minBtn.className = 'btn-min';
+        minBtn.innerHTML = '−';
+        minBtn.title = 'Minimize';
+        minBtn.style.width = '28px';
+        minBtn.style.height = '28px';
+        minBtn.style.borderRadius = '50%';
+        minBtn.style.border = 'none';
+        minBtn.style.background = 'var(--glass-bg-light)';
+        minBtn.style.color = 'var(--theme-text)';
+        minBtn.style.fontFamily = "'Segoe UI Symbol', sans-serif";
+        minBtn.style.fontSize = '14px';
+        minBtn.style.fontWeight = '700';
+        minBtn.style.display = 'flex';
+        minBtn.style.alignItems = 'center';
+        minBtn.style.justifyContent = 'center';
+        minBtn.style.cursor = 'pointer';
+        minBtn.style.transition = 'all 0.2s ease';
+        
         const closeBtn = document.createElement('button');
-        closeBtn.innerHTML = '✕';
-        closeBtn.className = 'window-control-btn';
+        closeBtn.className = 'btn-close';
+        closeBtn.innerHTML = '×';
         closeBtn.title = 'Close';
-        closeBtn.style.cssText = minimizeBtn.style.cssText;
-
-        // Add hover effects
-        [minimizeBtn, maximizeBtn, closeBtn].forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-                btn.style.background = 'var(--theme-accent)';
-                btn.style.color = 'white';
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.background = 'var(--glass-bg-medium)';
-                btn.style.color = 'var(--theme-text)';
-            });
-        });
-
-        controls.appendChild(minimizeBtn);
-        controls.appendChild(maximizeBtn);
-        controls.appendChild(closeBtn);
-
-        header.appendChild(titleElement);
-        header.appendChild(controls);
-
-        // Create window content
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'window-content';
-        contentDiv.style.cssText = `
-            flex: 1;
-            background: var(--glass-bg-medium);
-            backdrop-filter: var(--glass-blur-medium);
-            border-radius: 0 0 15px 15px;
-            overflow: hidden;
-            position: relative;
-        `;
-
-        // Add content based on appId
-        if (content) {
-            contentDiv.innerHTML = content;
-        } else {
-            // The 'appId' is now the full page URL
-            this.loadAppContent(appId, window, title);
-            // We can't return a window object here because content is loaded async
-            // The loadAppContent function now handles adding the window to the DOM
-            return;
-        }
-
-        window.appendChild(header);
-        window.appendChild(contentDiv);
-        document.body.appendChild(window);
+        closeBtn.style.width = '28px';
+        closeBtn.style.height = '28px';
+        closeBtn.style.borderRadius = '50%';
+        closeBtn.style.border = 'none';
+        closeBtn.style.background = 'var(--glass-bg-light)';
+        closeBtn.style.color = 'var(--theme-text)';
+        closeBtn.style.fontFamily = "'Segoe UI Symbol', sans-serif";
+        closeBtn.style.fontSize = '14px';
+        closeBtn.style.fontWeight = '700';
+        closeBtn.style.display = 'flex';
+        closeBtn.style.alignItems = 'center';
+        closeBtn.style.justifyContent = 'center';
+        closeBtn.style.cursor = 'pointer';
+        closeBtn.style.transition = 'all 0.2s ease';
+        
+        // Create window content area
+        const windowContent = document.createElement('div');
+        windowContent.className = 'window-content';
+        windowContent.style.flexGrow = '1';
+        windowContent.style.padding = '0';
+        windowContent.style.background = 'var(--glass-bg-medium)';
+        windowContent.style.backdropFilter = 'var(--glass-blur-medium)';
+        windowContent.style.borderRadius = '0 0 15px 15px';
+        windowContent.style.overflowY = 'hidden';
+        windowContent.style.overflowX = 'hidden';
+        
+        // Assemble window
+        windowHeader.appendChild(windowTitle);
+        windowControls.appendChild(favBtn);
+        windowControls.appendChild(minBtn);
+        windowControls.appendChild(closeBtn);
+        windowHeader.appendChild(windowControls);
+        windowContainer.appendChild(windowHeader);
+        windowContainer.appendChild(windowContent);
+        
+        // Add to DOM
+        document.body.appendChild(windowContainer);
         
         // Create window data object
         const windowData = {
-            element: window,
+            element: windowContainer,
             id: windowId,
-            pageUrl: appId, // Store the URL for refreshing
-            position: snapped,
-            size: { width: 600, height: 400 },
+            appId: appId,
+            position: { x: 0, y: 0 },
+            size: { width: windowContainer.offsetWidth, height: windowContainer.offsetHeight },
             isMinimized: false,
             isMaximized: false
         };
         
         this.windows.push(windowData);
+        
+        // Setup event listeners and controls
         this.setupWindowEventListeners(windowData);
         this.setupWindowControlsForWindow(windowData);
-        this.addResizeHandles(windowData);
-        this.addTilingControls(windowData);
         
-        // If it's a game, add a refresh button
-        if (contentDiv.querySelector('[data-page-script]')) {
-            this.addRefreshButton(windowData);
+        // Load content if provided
+        if (content) {
+            windowContent.innerHTML = content;
+        } else if (appId) {
+            // Load app content based on appId
+            this.loadAppContent(appId, windowContent, title);
         }
-
-        this.focusWindow(windowId);
+        
+        // Add refresh button
+        this.addRefreshButton(windowData);
         
         // Save window states
         this.saveWindowStates();
-
-        // Refresh window switcher if it exists
-        if (window.windowSwitcher) {
-            window.windowSwitcher.refresh();
-        }
         
-        return windowData;
+        return windowId;
     }
 
     createStickyNotesContent() {
@@ -985,23 +980,59 @@ class WindowManager {
     }
 
     setupWindowControlsForWindow(windowData) {
-        const windowEl = windowData.element;
-        const controls = windowEl.querySelectorAll('.window-control-btn');
+        const window = windowData.element;
+        const favBtn = window.querySelector('.btn-fav');
+        const minBtn = window.querySelector('.btn-min');
+        const closeBtn = window.querySelector('.btn-close');
         
-        controls.forEach((control, index) => {
-            control.addEventListener('click', (e) => {
-                e.stopPropagation();
-                
-                // Determine which control was clicked based on index or content
-                if (control.innerHTML === '−' || index === 0) {
-                    this.minimizeWindow(windowData);
-                } else if (control.innerHTML === '□' || index === 1) {
-                    this.maximizeWindow(windowData);
-                } else if (control.innerHTML === '✕' || index === 2) {
-                    this.closeWindow(windowData);
-                }
+        if (favBtn) {
+            favBtn.addEventListener('click', () => {
+                window.classList.toggle('favorited');
+                this.saveWindowStates();
             });
-        });
+            
+            favBtn.addEventListener('mouseenter', () => {
+                favBtn.style.background = 'var(--window-fav-hover, #ffdd00)';
+                favBtn.style.color = 'var(--window-fav-text, #333)';
+            });
+            
+            favBtn.addEventListener('mouseleave', () => {
+                favBtn.style.background = 'var(--glass-bg-light)';
+                favBtn.style.color = 'var(--theme-text)';
+            });
+        }
+        
+        if (minBtn) {
+            minBtn.addEventListener('click', () => {
+                this.minimizeWindow(windowData);
+            });
+            
+            minBtn.addEventListener('mouseenter', () => {
+                minBtn.style.background = 'var(--window-min-hover, #55aaff)';
+                minBtn.style.color = 'white';
+            });
+            
+            minBtn.addEventListener('mouseleave', () => {
+                minBtn.style.background = 'var(--glass-bg-light)';
+                minBtn.style.color = 'var(--theme-text)';
+            });
+        }
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                this.closeWindow(windowData);
+            });
+            
+            closeBtn.addEventListener('mouseenter', () => {
+                closeBtn.style.background = 'var(--window-close-hover, #ff5555)';
+                closeBtn.style.color = 'var(--text-white)';
+            });
+            
+            closeBtn.addEventListener('mouseleave', () => {
+                closeBtn.style.background = 'var(--glass-bg-light)';
+                closeBtn.style.color = 'var(--theme-text)';
+            });
+        }
     }
 
     closeAllWindows() {
@@ -1418,35 +1449,47 @@ class WindowManager {
     }
 
     addRefreshButton(windowData) {
-        const controls = windowData.element.querySelector('.window-controls');
-        if (!controls) return;
-
-        const refreshBtn = document.createElement('button');
-        refreshBtn.innerHTML = '🔄';
-        refreshBtn.className = 'window-control-btn';
-        refreshBtn.title = 'Refresh';
+        const window = windowData.element;
+        const header = window.querySelector('.window-header');
+        const controls = window.querySelector('.window-controls');
         
-        // Match existing button styles
-        const existingBtn = controls.querySelector('.window-control-btn');
-        if(existingBtn) {
-            refreshBtn.style.cssText = existingBtn.style.cssText;
-        }
-
-        refreshBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
+        if (!header || !controls) return;
+        
+        const refreshBtn = document.createElement('button');
+        refreshBtn.className = 'btn-refresh';
+        refreshBtn.innerHTML = '↻';
+        refreshBtn.title = 'Refresh';
+        refreshBtn.style.width = '28px';
+        refreshBtn.style.height = '28px';
+        refreshBtn.style.borderRadius = '50%';
+        refreshBtn.style.border = 'none';
+        refreshBtn.style.background = 'var(--glass-bg-light)';
+        refreshBtn.style.color = 'var(--theme-text)';
+        refreshBtn.style.fontFamily = "'Segoe UI Symbol', sans-serif";
+        refreshBtn.style.fontSize = '14px';
+        refreshBtn.style.fontWeight = '700';
+        refreshBtn.style.display = 'flex';
+        refreshBtn.style.alignItems = 'center';
+        refreshBtn.style.justifyContent = 'center';
+        refreshBtn.style.cursor = 'pointer';
+        refreshBtn.style.transition = 'all 0.2s ease';
+        refreshBtn.style.marginRight = '8px';
+        
+        refreshBtn.addEventListener('click', () => {
             this.refreshWindowContent(windowData.id);
         });
-
-        // Add hover effects like other buttons
+        
         refreshBtn.addEventListener('mouseenter', () => {
             refreshBtn.style.background = 'var(--theme-accent)';
             refreshBtn.style.color = 'white';
         });
+        
         refreshBtn.addEventListener('mouseleave', () => {
-            refreshBtn.style.background = 'var(--glass-bg-medium)';
+            refreshBtn.style.background = 'var(--glass-bg-light)';
             refreshBtn.style.color = 'var(--theme-text)';
         });
-
+        
+        // Insert before the first control button
         controls.insertBefore(refreshBtn, controls.firstChild);
     }
 
@@ -1533,110 +1576,63 @@ class WindowManager {
 
     // Add tiling indicators to window headers
     addTilingControls(windowData) {
-        const header = windowData.element.querySelector('.window-header');
-        if (!header) return;
+        const window = windowData.element;
+        const header = window.querySelector('.window-header');
+        const controls = window.querySelector('.window-controls');
         
-        // Create tiling controls container
-        const tilingControls = document.createElement('div');
-        tilingControls.className = 'tiling-controls';
-        tilingControls.style.cssText = `
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: var(--glass-bg-heavy);
-            backdrop-filter: var(--glass-blur-heavy);
-            border: 1px solid var(--glass-border-light);
-            border-radius: 8px;
-            padding: 0.5rem;
-            z-index: 1001;
-            box-shadow: var(--glass-shadow-medium);
-        `;
+        if (!header || !controls) return;
         
-        const tilingButtons = [
-            { text: '⬅️ Left', action: 'left' },
-            { text: '➡️ Right', action: 'right' },
-            { text: '⬆️ Top', action: 'top' },
-            { text: '⬇️ Bottom', action: 'bottom' },
-            { text: '⛶ Fullscreen', action: 'fullscreen' },
-            { text: '🎯 Center', action: 'center' }
-        ];
-        
-        tilingButtons.forEach(btn => {
-            const button = document.createElement('button');
-            button.textContent = btn.text;
-            button.style.cssText = `
-                display: block;
-                width: 100%;
-                padding: 0.5rem;
-                margin: 0.25rem 0;
-                background: var(--glass-bg-medium);
-                border: 1px solid var(--glass-border-light);
-                border-radius: 4px;
-                color: var(--theme-text);
-                cursor: pointer;
-                font-size: 0.8rem;
-                transition: all 0.2s ease;
-            `;
-            
-            button.addEventListener('click', () => {
-                this.tileWindow(windowData, btn.action);
-                tilingControls.style.display = 'none';
-            });
-            
-            button.addEventListener('mouseenter', () => {
-                button.style.background = 'var(--theme-accent)';
-                button.style.color = 'white';
-            });
-            
-            button.addEventListener('mouseleave', () => {
-                button.style.background = 'var(--glass-bg-medium)';
-                button.style.color = 'var(--theme-text)';
-            });
-            
-            tilingControls.appendChild(button);
-        });
-        
-        header.appendChild(tilingControls);
-        
-        // Add tiling trigger button
         const tileBtn = document.createElement('button');
-        tileBtn.innerHTML = '⛶';
+        tileBtn.className = 'btn-tile';
+        tileBtn.innerHTML = '⊞';
         tileBtn.title = 'Tile Window';
-        tileBtn.className = 'window-control-btn tile-btn';
-        tileBtn.style.cssText = `
-            background: var(--glass-bg-medium);
-            border: none;
-            border-radius: 4px;
-            width: 24px;
-            height: 24px;
-            color: var(--theme-text);
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            margin-left: 0.5rem;
-        `;
+        tileBtn.style.width = '28px';
+        tileBtn.style.height = '28px';
+        tileBtn.style.borderRadius = '50%';
+        tileBtn.style.border = 'none';
+        tileBtn.style.background = 'var(--glass-bg-light)';
+        tileBtn.style.color = 'var(--theme-text)';
+        tileBtn.style.fontFamily = "'Segoe UI Symbol', sans-serif";
+        tileBtn.style.fontSize = '14px';
+        tileBtn.style.fontWeight = '700';
+        tileBtn.style.display = 'flex';
+        tileBtn.style.alignItems = 'center';
+        tileBtn.style.justifyContent = 'center';
+        tileBtn.style.cursor = 'pointer';
+        tileBtn.style.transition = 'all 0.2s ease';
+        tileBtn.style.marginRight = '8px';
         
-        tileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            tilingControls.style.display = tilingControls.style.display === 'none' ? 'block' : 'none';
+        tileBtn.addEventListener('click', () => {
+            const positions = [
+                { x: 0, y: 0, width: '50%', height: '50%' },
+                { x: '50%', y: 0, width: '50%', height: '50%' },
+                { x: 0, y: '50%', width: '50%', height: '50%' },
+                { x: '50%', y: '50%', width: '50%', height: '50%' }
+            ];
+            
+            const currentIndex = this.windows.indexOf(windowData);
+            const position = positions[currentIndex % positions.length];
+            
+            this.tileWindow(windowData, position);
         });
         
-        // Add to controls container
-        const controls = header.querySelector('.window-controls');
-        if (controls) {
-            controls.appendChild(tileBtn);
+        tileBtn.addEventListener('mouseenter', () => {
+            tileBtn.style.background = 'var(--theme-accent)';
+            tileBtn.style.color = 'white';
+        });
+        
+        tileBtn.addEventListener('mouseleave', () => {
+            tileBtn.style.background = 'var(--glass-bg-light)';
+            tileBtn.style.color = 'var(--theme-text)';
+        });
+        
+        // Insert after refresh button
+        const refreshBtn = controls.querySelector('.btn-refresh');
+        if (refreshBtn) {
+            controls.insertBefore(tileBtn, refreshBtn.nextSibling);
+        } else {
+            controls.insertBefore(tileBtn, controls.firstChild);
         }
-        
-        // Hide tiling controls when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!tilingControls.contains(e.target) && !tileBtn.contains(e.target)) {
-                tilingControls.style.display = 'none';
-            }
-        });
     }
 
     // Add new task list method
