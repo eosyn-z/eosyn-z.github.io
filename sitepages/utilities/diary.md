@@ -1,7 +1,7 @@
 ---
 layout: utility
 title: Diary
-icon: 4dd
+icon: 📖
 permalink: /diary/
 description: "Write and save diary entries with rich formatting, tags, and colors!"
 ---
@@ -9,7 +9,7 @@ description: "Write and save diary entries with rich formatting, tags, and color
 <div class="main-content" data-page-script="diary-utility">
   <div class="glass-panel" style="padding: 2rem; height: 100%; display: flex; flex-direction: column; align-items: center;">
     <header class="page-header" style="text-align: center; margin-bottom: 1rem;">
-      <h1>4dd Diary</h1>
+      <h1>📖 Diary</h1>
       <p>Write and save diary entries with rich formatting, tags, and colors!</p>
     </header>
     <form id="diary-form" style="width:100%;max-width:600px;display:flex;flex-direction:column;gap:1rem;">

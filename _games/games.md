@@ -14,8 +14,9 @@ icon: 🎮
     </header>
 
     <div class="games-grid">
-      {% assign game_pages = site.games | where_exp: 'g', 'g.title and g.title != "Game Center"' %}
+      {% assign game_pages = site.games %}
       {% for game in game_pages %}
+        {% if game.title != "Game Center" %}
         <div class="game-card" data-game="{{ game.title | downcase }}">
           <div class="game-icon">{{ game.icon }}</div>
           <h3>{{ game.title }}</h3>
@@ -25,6 +26,7 @@ icon: 🎮
           </div>
           <button class="glass-button play-btn" onclick="launchGame('{{ game.title | downcase }}', '{{ game.title }}')">Play {{ game.title }}</button>
         </div>
+        {% endif %}
       {% endfor %}
     </div>
 

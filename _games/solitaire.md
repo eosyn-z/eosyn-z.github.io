@@ -1,7 +1,7 @@
 ---
 layout: game
 title: Solitaire
-icon: 0cf
+icon: 🃏
 permalink: /solitaire/
 description: "Classic Klondike Solitaire. Stack cards in order!"
 ---
@@ -9,7 +9,7 @@ description: "Classic Klondike Solitaire. Stack cards in order!"
 <div class="main-content" data-page-script="solitaire-game">
   <div class="glass-panel" style="padding: 2rem; height: 100%; display: flex; flex-direction: column; align-items: center;">
     <header class="page-header" style="text-align: center; margin-bottom: 1rem;">
-      <h1>0cf Solitaire</h1>
+      <h1>🃏 Solitaire</h1>
       <p>Stack cards in order by suit. Try to clear the board!</p>
     </header>
     <div id="solitaire-container"></div>
