@@ -455,6 +455,140 @@ document.addEventListener('DOMContentLoaded', () => {
             `);
         }
     };
+
+    // === Custom Context Menu for Desktop Icons ===
+
+    // Remove any existing context menu
+    function removeContextMenu() {
+        const existingMenu = document.querySelector('.context-menu');
+        if (existingMenu) existingMenu.remove();
+    }
+
+    // === Icon Editor Modal ===
+    function removeIconEditor() {
+        const existing = document.getElementById('icon-editor-modal');
+        if (existing) existing.remove();
+    }
+
+    function showIconEditor(icon) {
+        removeIconEditor();
+        const modal = document.createElement('div');
+        modal.id = 'icon-editor-modal';
+        modal.style.position = 'fixed';
+        modal.style.left = '50%';
+        modal.style.top = '50%';
+        modal.style.transform = 'translate(-50%, -50%)';
+        modal.style.zIndex = '9999';
+        modal.style.background = 'var(--glass-bg-heavy, #222)';
+        modal.style.border = '1px solid var(--glass-border-light, #888)';
+        modal.style.borderRadius = '16px';
+        modal.style.padding = '2rem';
+        modal.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)';
+        modal.innerHTML = `
+            <h2 style="margin-top:0; color:var(--theme-text)">Edit Icon</h2>
+            <label style="color:var(--theme-text)">Icon (emoji or image URL):</label><br>
+            <input id="icon-image-input" type="text" value="${icon.querySelector('.icon-image').textContent || ''}" style="width:80px; font-size:2rem; text-align:center; margin-bottom:1rem;"><br>
+            <label style="color:var(--theme-text)">Label:</label><br>
+            <input id="icon-label-input" type="text" value="${icon.querySelector('.icon-label').textContent}" style="width:160px; margin-bottom:1rem;"><br>
+            <button id="icon-editor-save" class="glass-button" style="margin-right:1rem;">Save</button>
+            <button id="icon-editor-cancel" class="glass-button">Cancel</button>
+        `;
+        document.body.appendChild(modal);
+
+        // Live preview for icon
+        const iconImageInput = modal.querySelector('#icon-image-input');
+        iconImageInput.addEventListener('input', () => {
+            const val = iconImageInput.value.trim();
+            if (val.startsWith('http')) {
+                icon.querySelector('.icon-image').innerHTML = `<img src='${val}' style='width:48px;height:48px;object-fit:contain;'>`;
+            } else {
+                icon.querySelector('.icon-image').textContent = val;
+            }
+        });
+        // Live preview for label
+        const iconLabelInput = modal.querySelector('#icon-label-input');
+        iconLabelInput.addEventListener('input', () => {
+            icon.querySelector('.icon-label').textContent = iconLabelInput.value;
+            icon.dataset.appTitle = iconLabelInput.value;
+        });
+        // Save
+        modal.querySelector('#icon-editor-save').onclick = () => {
+            removeIconEditor();
+        };
+        // Cancel
+        modal.querySelector('#icon-editor-cancel').onclick = () => {
+            removeIconEditor();
+        };
+        // Remove on outside click
+        setTimeout(() => {
+            document.addEventListener('mousedown', function handler(e) {
+                if (!modal.contains(e.target)) {
+                    removeIconEditor();
+                    document.removeEventListener('mousedown', handler);
+                }
+            });
+        }, 0);
+    }
+
+    // Show context menu for a desktop icon
+    function showIconContextMenu(icon, x, y) {
+        removeContextMenu();
+        const menu = document.createElement('div');
+        menu.className = 'context-menu';
+        menu.style.left = x + 'px';
+        menu.style.top = y + 'px';
+        menu.innerHTML = `
+            <div class="menu-item" data-action="edit">Edit Icon...</div>
+            <div class="menu-item" data-action="rename">Rename</div>
+            <div class="menu-item" data-action="delete">Delete</div>
+        `;
+        document.body.appendChild(menu);
+        menu.addEventListener('click', (e) => {
+            if (e.target.classList.contains('menu-item')) {
+                const action = e.target.dataset.action;
+                if (action === 'edit') {
+                    showIconEditor(icon);
+                } else if (action === 'rename') {
+                    const newName = prompt('Enter new name for this icon:', icon.dataset.appTitle);
+                    if (newName) {
+                        icon.querySelector('.icon-label').textContent = newName;
+                        icon.dataset.appTitle = newName;
+                    }
+                } else if (action === 'delete') {
+                    if (confirm('Delete this icon?')) {
+                        icon.remove();
+                    }
+                }
+                removeContextMenu();
+            }
+        });
+        setTimeout(() => {
+            document.addEventListener('mousedown', removeContextMenu, { once: true });
+        }, 0);
+    }
+
+    // Attach context menu to all desktop icons after they are rendered
+    function attachIconContextMenus() {
+        document.querySelectorAll('.desktop-icon').forEach(icon => {
+            icon.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showIconContextMenu(icon, e.clientX, e.clientY);
+            });
+        });
+    }
+
+    // Call this after icons are rendered/updated
+    if (window.desktopManager) {
+        const origInit = window.desktopManager.init.bind(window.desktopManager);
+        window.desktopManager.init = function() {
+            origInit();
+            attachIconContextMenus();
+        };
+        window.desktopManager.init();
+    } else {
+        // Fallback: attach on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', attachIconContextMenus);
+    }
 });
 
 class ViewManager {

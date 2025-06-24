@@ -35,7 +35,7 @@ class RetroTerminal {
         // Create terminal window
         this.terminal = document.createElement('div');
         this.terminal.id = 'retro-terminal';
-        this.terminal.className = 'retro-terminal-window';
+        this.terminal.className = 'retro-terminal-window glass-effect app-window';
         this.terminal.style.cssText = `
             position: fixed;
             top: 50%;
@@ -43,16 +43,19 @@ class RetroTerminal {
             transform: translate(-50%, -50%);
             width: 600px;
             height: 400px;
-            background: #000;
-            border: 2px solid #00ff00;
-            border-radius: 8px;
+            background: var(--glass-bg, rgba(255,255,255,0.15));
+            border: 1px solid var(--glass-border, rgba(255,255,255,0.2));
+            border-radius: var(--glass-border-radius, 18px);
+            box-shadow: var(--glass-box-shadow, 0 8px 32px rgba(0,0,0,0.2));
+            backdrop-filter: var(--glass-backdrop-filter, blur(18px) saturate(140%));
+            -webkit-backdrop-filter: var(--glass-webkit-backdrop-filter, blur(18px) saturate(140%));
             font-family: 'Courier New', monospace;
             font-size: 14px;
             color: #00ff00;
             z-index: 99999;
             display: none;
             flex-direction: column;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            overflow: hidden;
         `;
 
         // Restore position from localStorage
@@ -61,18 +64,20 @@ class RetroTerminal {
         // Terminal header
         const header = document.createElement('div');
         header.style.cssText = `
-            background: #00ff00;
-            color: #000;
+            background: var(--glass-bg-medium, rgba(255,255,255,0.15));
+            color: var(--theme-text, #00ff00);
             padding: 8px;
             font-weight: bold;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: move;
+            border-bottom: 1px solid var(--glass-border-light, rgba(255,255,255,0.2));
+            backdrop-filter: var(--glass-blur-medium, blur(10px));
         `;
         header.innerHTML = `
             <span>🖥️ Retro Terminal v1.0</span>
-            <button id="terminal-close" style="background: none; border: none; color: #000; cursor: pointer; font-size: 16px;">×</button>
+            <button id="terminal-close" style="background: none; border: none; color: var(--theme-text, #00ff00); cursor: pointer; font-size: 16px;">×</button>
         `;
 
         // Terminal output area
@@ -81,8 +86,8 @@ class RetroTerminal {
             flex: 1;
             padding: 10px;
             overflow-y: auto;
-            background: #000;
-            border-bottom: 1px solid #00ff00;
+            background: transparent;
+            border-bottom: 1px solid var(--glass-border-light, rgba(255,255,255,0.2));
         `;
 
         // Terminal input area
@@ -91,7 +96,7 @@ class RetroTerminal {
             padding: 10px;
             display: flex;
             align-items: center;
-            background: #000;
+            background: transparent;
         `;
 
         const prompt = document.createElement('span');

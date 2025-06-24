@@ -34,6 +34,8 @@ desktop_mode: true
     <!-- Bookmarks will be rendered by JS -->
 </div>
 
+<div id="window-container"></div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   if (window.DesktopManager) {

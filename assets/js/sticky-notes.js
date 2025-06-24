@@ -37,7 +37,7 @@ class StickyNotes {
                 font-size: 14px;
                 resize: both;
                 overflow: hidden;
-                z-index: 1000;
+                z-index: 2000;
                 transition: all 0.2s ease;
             }
 

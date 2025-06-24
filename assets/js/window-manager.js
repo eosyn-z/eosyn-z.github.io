@@ -476,6 +476,9 @@ class WindowManager {
         this.isDragging = true;
         this.activeWindow = windowData;
         
+        // Focus this window (bring to front)
+        this.focusWindow(windowData.id);
+        
         const rect = windowData.element.getBoundingClientRect();
         this.dragOffset = {
             x: e.clientX - rect.left,
@@ -1175,23 +1178,35 @@ class WindowManager {
     focusWindow(windowId) {
         const windowData = this.getWindow(windowId);
         if (windowData) {
-            // Bring the clicked window to the front
+            // Find the highest z-index currently used by windows
+            let maxZIndex = 100;
             this.windows.forEach(win => {
-                win.element.style.zIndex = win.id === windowId ? '999' : '998';
+                const currentZ = parseInt(win.element.style.zIndex) || 100;
+                maxZIndex = Math.max(maxZIndex, currentZ);
             });
+            
+            // Set all windows to lower z-index, then bring focused window to top
+            this.windows.forEach(win => {
+                if (win.id === windowId) {
+                    win.element.style.zIndex = (maxZIndex + 1).toString();
+                } else {
+                    win.element.style.zIndex = '100';
+                }
+            });
+            
             this.activeWindow = windowData;
         }
     }
 
     async loadAppContent(pageUrl, windowElement, title) {
-        const contentArea = windowElement.querySelector('.window-content');
-        if (!contentArea) {
+        const contentAreaEl = windowElement.querySelector('.window-content');
+        if (!contentAreaEl) {
             console.error(`Window content area not found for app: ${pageUrl}`);
-            contentArea.innerHTML = `<div class="error"><p>Error: Window content area is missing.</p></div>`;
+            contentAreaEl.innerHTML = `<div class="error"><p>Error: Window content area is missing.</p></div>`;
             return;
         }
 
-        contentArea.innerHTML = '<div class="loader"></div>'; // Show loader
+        contentAreaEl.innerHTML = '<div class="loader"></div>'; // Show loader
 
         try {
             const baseUrl = window.siteBaseUrl || '';
@@ -1226,23 +1241,23 @@ class WindowManager {
                     }
                 });
 
-                contentArea.innerHTML = mainContent.innerHTML;
+                contentAreaEl.innerHTML = mainContent.innerHTML;
                 
                 // Execute scripts after content is loaded
-                this.executeScriptsInWindow(contentArea, base);
+                this.executeScriptsInWindow(contentAreaEl, base);
             } else {
                  // Fallback for pages that might not have a .main-content div
-                contentArea.innerHTML = doc.body.innerHTML;
+                contentAreaEl.innerHTML = doc.body.innerHTML;
                 console.warn(`'.main-content' not found in fetched HTML for ${pageUrl}. Loading full body.`);
                 
                 // Execute scripts after content is loaded
                 const base = new URL(fullPageUrl, window.location.origin);
-                this.executeScriptsInWindow(contentArea, base);
+                this.executeScriptsInWindow(contentAreaEl, base);
             }
 
         } catch (error) {
             console.error(`Failed to load content for app "${pageUrl}":`, error);
-            contentArea.innerHTML = `<div class="error"><p>Could not load content for "${title}".</p><p>Please check the console for more details.</p></div>`;
+            contentAreaEl.innerHTML = `<div class="error"><p>Could not load content for "${title}".</p><p>Please check the console for more details.</p></div>`;
         }
 
         // Now that content is loaded, append the window to the body and manage it
@@ -1257,6 +1272,30 @@ class WindowManager {
             isMinimized: false,
             isMaximized: false
         };
+        
+        // Ensure glass theme is applied
+        windowElement.style.zIndex = '1000';
+        windowElement.style.border = '1px solid var(--glass-border-light)';
+        windowElement.style.borderRadius = '15px';
+        windowElement.style.background = 'var(--glass-bg)';
+        windowElement.style.backdropFilter = 'var(--glass-backdrop-filter)';
+        windowElement.style.webkitBackdropFilter = 'var(--glass-webkit-backdrop-filter)';
+        windowElement.style.boxShadow = 'var(--glass-box-shadow)';
+        
+        // Ensure header has glass theme
+        const header = windowElement.querySelector('.window-header');
+        if (header) {
+            header.style.background = 'var(--glass-bg-medium)';
+            header.style.borderBottom = '1px solid var(--glass-border-light)';
+            header.style.backdropFilter = 'var(--glass-blur-medium)';
+        }
+        
+        // Ensure content area has glass theme
+        const contentAreaTheme = windowElement.querySelector('.window-content');
+        if (contentAreaTheme) {
+            contentAreaTheme.style.background = 'var(--glass-bg-medium)';
+            contentAreaTheme.style.backdropFilter = 'var(--glass-blur-medium)';
+        }
         
         this.windows.push(windowData);
         this.setupWindowEventListeners(windowData);
@@ -1500,21 +1539,22 @@ class WindowManager {
             return;
         }
 
-        const contentArea = windowData.element.querySelector('.window-content');
-        contentArea.innerHTML = '<div class="loader"></div>';
+        const contentAreaRefresh = windowData.element.querySelector('.window-content');
+        contentAreaRefresh.innerHTML = '<div class="loader"></div>';
 
         try {
             const response = await fetch(windowData.pageUrl);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
             const html = await response.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
+            
             const mainContent = doc.querySelector('.main-content');
-
             if (mainContent) {
                 const base = new URL(windowData.pageUrl, window.location.origin);
-                // Fix relative links and sources
                 mainContent.querySelectorAll('[href]').forEach(el => {
                     const href = el.getAttribute('href');
                     if (href && !href.startsWith('http') && !href.startsWith('#')) {
@@ -1527,14 +1567,14 @@ class WindowManager {
                         el.src = new URL(src, base).href;
                     }
                 });
-                contentArea.innerHTML = mainContent.innerHTML;
-                this.executeScriptsInWindow(contentArea, base);
+                contentAreaRefresh.innerHTML = mainContent.innerHTML;
+                this.executeScriptsInWindow(contentAreaRefresh, base);
             } else {
                 throw new Error("'.main-content' not found in fetched HTML.");
             }
         } catch (error) {
             console.error(`Failed to refresh content for window "${windowId}":`, error);
-            contentArea.innerHTML = `<div class="error"><p>Could not reload content.</p></div>`;
+            contentAreaRefresh.innerHTML = `<div class="error"><p>Could not reload content.</p></div>`;
         }
     }
 

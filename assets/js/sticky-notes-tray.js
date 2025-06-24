@@ -141,4 +141,25 @@ document.addEventListener('DOMContentLoaded', () => {
             window.stickyNotesTray.show();
         };
     }
+
+    // Ensure sticky notes container is always on top and persistent
+    function ensureStickyNotesContainer() {
+        let container = document.querySelector('.sticky-notes-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'sticky-notes-container';
+            container.style.position = 'fixed';
+            container.style.top = '0';
+            container.style.left = '0';
+            container.style.width = '100vw';
+            container.style.height = '100vh';
+            container.style.pointerEvents = 'none';
+            container.style.zIndex = '99999';
+            document.body.appendChild(container);
+        }
+        return container;
+    }
+
+    // Call this on DOMContentLoaded and after mode switches
+    ensureStickyNotesContainer();
 }); 

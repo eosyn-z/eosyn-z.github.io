@@ -982,6 +982,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // Add JS to sort all cards alphabetically by default and filter as user types
+  function sortAndFilterSites() {
+    const sites = document.querySelectorAll('.website-card');
+    const sortedSites = Array.from(sites).sort((a, b) => {
+      const titleA = a.querySelector('h4 a').textContent.toLowerCase();
+      const titleB = b.querySelector('h4 a').textContent.toLowerCase();
+      return titleA.localeCompare(titleB);
+    });
+    grid.innerHTML = '';
+    sortedSites.forEach(site => grid.appendChild(site));
+  }
+
+  sortAndFilterSites();
+
+  searchBar.addEventListener('input', sortAndFilterSites);
+
 });
 </script>
 

@@ -230,31 +230,29 @@ class CustomThemeEditor {
 
     addEditorEventListeners() {
         const tray = document.getElementById('theme-editor-tray');
-        const inputs = tray.querySelectorAll('input[type="color"]');
-        inputs.forEach(input => {
+        if (!tray) return;
+        // Live update on color input change
+        tray.querySelectorAll('input[type="color"]').forEach(input => {
             input.addEventListener('input', (e) => {
-                const variable = e.target.dataset.variable;
-                const value = e.target.value;
-                document.documentElement.style.setProperty(variable, value);
-                // Save to both localStorage and cookie immediately when user makes changes
-                this.saveCustomTheme();
-                this.saveCustomThemeToCookie();
+                const variable = input.dataset.variable;
+                document.documentElement.style.setProperty(variable, input.value);
             });
         });
-
-        const resetButton = tray.querySelector('#reset-theme-btn');
-        resetButton.addEventListener('click', () => {
-            if (confirm('Are you sure you want to reset your custom theme to its default values?')) {
+        // Save Theme button
+        const saveBtn = tray.querySelector('#save-theme-btn');
+        if (saveBtn) {
+            saveBtn.onclick = () => {
+                this.saveCustomThemeToCookie();
+                this.loadAndApplyCustomTheme(); // Ensure all changes are applied
+            };
+        }
+        // Reset button
+        const resetBtn = tray.querySelector('#reset-theme-btn');
+        if (resetBtn) {
+            resetBtn.onclick = () => {
                 this.resetAndApplyDefault();
-            }
-        });
-
-        const saveButton = tray.querySelector('#save-theme-btn');
-        saveButton.addEventListener('click', () => {
-            this.saveCustomThemeToCookie();
-            this.showSaveNotification();
-        });
-
+            };
+        }
         // Background effects toggles
         const sparklesButton = tray.querySelector('#toggle-sparkles-btn');
         if (sparklesButton) {
