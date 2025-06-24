@@ -119,17 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isTransitioning) return;
             isTransitioning = true;
             
-            // Create overlay
-            const overlay = ThemeTransition.createOverlay();
-            overlay.style.opacity = '1';
-            
             // Create particles
             const particles = ThemeTransition.createMorphParticles();
-            
-            // Start particle animation
-            setTimeout(() => {
-                ThemeTransition.animateParticles(particles, oldTheme, newTheme);
-            }, 100);
             
             // Transition colors
             ThemeTransition.transitionColors(oldTheme, newTheme);
@@ -141,19 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Clean up after transition
             setTimeout(() => {
-                overlay.style.opacity = '0';
-                particles.forEach(particle => {
-                    if (document.body.contains(particle)) {
-                        particle.remove();
-                    }
-                });
-                
-                setTimeout(() => {
-                    if (document.body.contains(overlay)) {
-                        overlay.remove();
-                    }
-                    isTransitioning = false;
-                }, 300);
+                isTransitioning = false;
             }, ThemeTransition.duration);
         }
     };

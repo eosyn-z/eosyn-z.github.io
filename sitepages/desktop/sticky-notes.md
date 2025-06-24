@@ -189,11 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const demoButtons = document.querySelectorAll('.glass-button');
   demoButtons.forEach(button => {
     button.addEventListener('click', () => {
-      // Add a subtle animation effect
-      button.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        button.style.transform = '';
-      }, 150);
+      // Animation removed: no transform or setTimeout
     });
   });
   

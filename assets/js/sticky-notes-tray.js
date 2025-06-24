@@ -97,15 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.tray.querySelector('.tray-content').innerHTML = window.windowManager.createStickyNotesContent();
             }
             this.tray.style.display = 'block';
-            setTimeout(() => this.tray.classList.add('visible'), 10);
+            this.tray.classList.add('visible');
             localStorage.setItem('stickyNotesTrayOpen', 'true');
         }
 
         hide() {
             this.tray.classList.remove('visible');
-            setTimeout(() => {
-                this.tray.style.display = 'none';
-            }, 300);
+            this.tray.style.display = 'none';
             localStorage.setItem('stickyNotesTrayOpen', 'false');
         }
 
@@ -113,10 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkRestoreState() {
             const wasOpen = localStorage.getItem('stickyNotesTrayOpen') === 'true';
             if (wasOpen) {
-                // Small delay to ensure everything is loaded
-                setTimeout(() => {
-                    this.show();
-                }, 100);
+                this.show();
             }
         }
     }

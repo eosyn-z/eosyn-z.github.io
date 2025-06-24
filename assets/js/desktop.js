@@ -366,7 +366,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.desktopManager = new DesktopManager(desktopGrid);
     }
 
-    if (window.startMenu) {
+    // Ensure StartMenu is initialized and available globally
+    if (typeof StartMenu !== 'undefined') {
+        window.startMenu = new StartMenu();
         window.startMenu.populate();
     }
 
@@ -589,6 +591,115 @@ document.addEventListener('DOMContentLoaded', () => {
         // Fallback: attach on DOMContentLoaded
         document.addEventListener('DOMContentLoaded', attachIconContextMenus);
     }
+
+    // Add after DOMContentLoaded handler
+    function renderAllDesktopIcons() {
+        const grid = document.getElementById('desktop-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        // Render normal pages
+        (window.jekyllPages || []).forEach(page => {
+            if (page.title && page.url !== '/404.html' && page.url !== '/desktop/' && page.url !== '/games/') {
+                const icon = document.createElement('div');
+                icon.className = 'desktop-icon';
+                icon.id = `icon-${page.title.replace(/\s+/g, '-').toLowerCase()}`;
+                icon.dataset.appUrl = page.url;
+                icon.dataset.appTitle = page.title;
+                icon.innerHTML = `<div class="icon-image">${page.icon || '📄'}</div><div class="icon-label">${page.title}</div>`;
+                grid.appendChild(icon);
+            }
+        });
+        // Render games
+        (window.siteGames || window.gamesData || []).forEach(game => {
+            if (game.title && game.title !== 'Game Center') {
+                const icon = document.createElement('div');
+                icon.className = 'desktop-icon';
+                icon.id = `icon-${game.title.replace(/\s+/g, '-').toLowerCase()}`;
+                icon.dataset.appUrl = game.permalink || game.url;
+                icon.dataset.appTitle = game.title;
+                icon.innerHTML = `<div class="icon-image">${game.icon || '🎮'}</div><div class="icon-label">${game.title}</div>`;
+                grid.appendChild(icon);
+            }
+        });
+        // Render bookmarks (from Search page/bookmark_manager.js)
+        if (window.bookmarkManager && typeof window.bookmarkManager.getBookmarks === 'function') {
+            (window.bookmarkManager.getBookmarks() || []).forEach(bookmark => {
+                const icon = document.createElement('div');
+                icon.className = 'desktop-icon';
+                icon.id = `icon-${bookmark.title.replace(/\s+/g, '-').toLowerCase()}`;
+                icon.dataset.appUrl = bookmark.url || bookmark.permalink;
+                icon.dataset.appTitle = bookmark.title;
+                icon.innerHTML = `<div class="icon-image">${bookmark.icon || '🔖'}</div><div class="icon-label">${bookmark.title}</div>`;
+                grid.appendChild(icon);
+            });
+        }
+        // Re-initialize desktop manager for new icons
+        if (window.desktopManager) window.desktopManager.init();
+    }
+    // On DOMContentLoaded, render all icons and initialize desktop manager
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderAllDesktopIcons);
+    } else {
+        renderAllDesktopIcons();
+    }
+    // Sticky Notes: Make draggable, glass, always on top, and pin toggles movement
+    function makeStickyNoteDraggable(note) {
+        let isDragging = false, offsetX = 0, offsetY = 0;
+        const header = note.querySelector('.note-header');
+        if (!header) return;
+        header.addEventListener('mousedown', (e) => {
+            if (note.classList.contains('pinned')) return;
+            isDragging = true;
+            offsetX = e.clientX - note.offsetLeft;
+            offsetY = e.clientY - note.offsetTop;
+            note.style.zIndex = 99999;
+            document.body.style.userSelect = 'none';
+        });
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            note.style.left = (e.clientX - offsetX) + 'px';
+            note.style.top = (e.clientY - offsetY) + 'px';
+            note.style.position = 'fixed';
+            note.style.zIndex = 99999;
+        });
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                document.body.style.userSelect = '';
+                // Save position to localStorage
+                const id = note.dataset.noteId || note.id;
+                if (id) {
+                    const stickyPositions = JSON.parse(localStorage.getItem('stickyNotePositions') || '{}');
+                    stickyPositions[id] = { left: note.style.left, top: note.style.top };
+                    localStorage.setItem('stickyNotePositions', JSON.stringify(stickyPositions));
+                }
+            }
+        });
+        // Pin button toggles movement
+        const pinBtn = note.querySelector('.btn-pin');
+        if (pinBtn) {
+            pinBtn.addEventListener('click', () => {
+                note.classList.toggle('pinned');
+                pinBtn.textContent = note.classList.contains('pinned') ? '📌 (Pinned)' : '📌';
+            });
+        }
+        // Restore position if saved
+        const id = note.dataset.noteId || note.id;
+        if (id) {
+            const stickyPositions = JSON.parse(localStorage.getItem('stickyNotePositions') || '{}');
+            if (stickyPositions[id]) {
+                note.style.left = stickyPositions[id].left;
+                note.style.top = stickyPositions[id].top;
+                note.style.position = 'fixed';
+                note.style.zIndex = 99999;
+            }
+        }
+        // Glass theme
+        note.classList.add('glass-panel');
+        note.style.zIndex = 99999;
+    }
+    // After creating a sticky note, call makeStickyNoteDraggable(note)
+    // (You may need to patch your sticky note creation logic to call this)
 });
 
 class ViewManager {

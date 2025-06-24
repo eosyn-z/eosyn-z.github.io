@@ -13,7 +13,9 @@
       {{ content }}
     </main>
 
+    {%- if page.url == "/desktop/" -%}
     {%- include bottom_bar.html -%}
+    {%- endif -%}
 
     <div id="desktop-background"></div>
     <div id="window-container"></div>

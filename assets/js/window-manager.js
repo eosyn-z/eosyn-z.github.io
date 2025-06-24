@@ -236,73 +236,61 @@ class WindowManager {
         }
     }
 
-    // Make sticky note draggable with grid snapping
+    // Patch: Make sticky notes glass, draggable, always on top, pin toggles movement, save/restore position
     makeStickyNoteDraggable(note) {
-        let isDragging = false;
-        let startX, startY, startLeft, startTop;
-
+        let isDragging = false, offsetX = 0, offsetY = 0;
         const header = note.querySelector('.note-header');
         if (!header) return;
-
-        const onMouseDown = (e) => {
-            if (e.target.closest('.note-controls')) return; // Don't drag if clicking controls
-            
+        header.addEventListener('mousedown', (e) => {
+            if (note.classList.contains('pinned')) return;
             isDragging = true;
-            note.style.cursor = 'grabbing';
-            note.style.zIndex = '1000';
-            
-            startX = e.clientX;
-            startY = e.clientY;
-            startLeft = parseInt(note.style.left) || 0;
-            startTop = parseInt(note.style.top) || 0;
-            
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-        };
-
-        const onMouseMove = (e) => {
+            offsetX = e.clientX - note.offsetLeft;
+            offsetY = e.clientY - note.offsetTop;
+            note.style.zIndex = 99999;
+            document.body.style.userSelect = 'none';
+        });
+        document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            
-            const deltaX = e.clientX - startX;
-            const deltaY = e.clientY - startY;
-            
-            let newX = startLeft + deltaX;
-            let newY = startTop + deltaY;
-            
-            // Constrain to viewport
-            const maxX = window.innerWidth - note.offsetWidth;
-            const maxY = window.innerHeight - note.offsetHeight;
-            
-            newX = Math.max(0, Math.min(newX, maxX));
-            newY = Math.max(0, Math.min(newY, maxY));
-            
-            note.style.left = `${newX}px`;
-            note.style.top = `${newY}px`;
-        };
-
-        const onMouseUp = () => {
+            note.style.left = (e.clientX - offsetX) + 'px';
+            note.style.top = (e.clientY - offsetY) + 'px';
+            note.style.position = 'fixed';
+            note.style.zIndex = 99999;
+        });
+        document.addEventListener('mouseup', () => {
             if (isDragging) {
                 isDragging = false;
-                note.style.cursor = 'grab';
-                note.style.zIndex = 'auto';
-                
-                // Snap to grid
-                const currentX = parseInt(note.style.left) || 0;
-                const currentY = parseInt(note.style.top) || 0;
-                const snapped = this.snapToGrid(currentX, currentY);
-                
-                note.style.left = `${snapped.x}px`;
-                note.style.top = `${snapped.y}px`;
-                
-                // Save sticky notes
-                this.saveStickyNotes();
-                
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
+                document.body.style.userSelect = '';
+                // Save position to localStorage
+                const id = note.dataset.noteId || note.id;
+                if (id) {
+                    const stickyPositions = JSON.parse(localStorage.getItem('stickyNotePositions') || '{}');
+                    stickyPositions[id] = { left: note.style.left, top: note.style.top };
+                    localStorage.setItem('stickyNotePositions', JSON.stringify(stickyPositions));
+                }
             }
-        };
-
-        header.addEventListener('mousedown', onMouseDown);
+        });
+        // Pin button toggles movement
+        const pinBtn = note.querySelector('.btn-pin');
+        if (pinBtn) {
+            pinBtn.addEventListener('click', () => {
+                note.classList.toggle('pinned');
+                pinBtn.textContent = note.classList.contains('pinned') ? '📌 (Pinned)' : '📌';
+            });
+        }
+        // Restore position if saved
+        const id = note.dataset.noteId || note.id;
+        if (id) {
+            const stickyPositions = JSON.parse(localStorage.getItem('stickyNotePositions') || '{}');
+            if (stickyPositions[id]) {
+                note.style.left = stickyPositions[id].left;
+                note.style.top = stickyPositions[id].top;
+                note.style.position = 'fixed';
+                note.style.zIndex = 99999;
+            }
+        }
+        // Glass theme
+        note.classList.add('glass-panel');
+        note.style.zIndex = 99999;
     }
 
     // Make sticky note resizable
@@ -353,21 +341,62 @@ class WindowManager {
         resizeHandle.addEventListener('mousedown', onMouseDown);
     }
 
-    // Setup sticky note controls
+    // Patch: Call makeStickyNoteDraggable in addNewStickyNote and createStickyNote
+    addNewStickyNote() {
+        const stickyNotesContainer = document.querySelector('.sticky-notes-container');
+        if (stickyNotesContainer) {
+            const noteId = `note-${this.getNextWindowId()}`;
+            const newNote = document.createElement('div');
+            newNote.className = 'sticky-note';
+            newNote.dataset.noteId = noteId;
+            newNote.style.cssText = `
+                position: absolute;
+                top: ${Math.random() * 50}px;
+                left: ${Math.random() * 100}px;
+                transform: rotate(${(Math.random() - 0.5) * 4}deg);
+                width: 300px;
+                height: 250px;
+                pointer-events: auto;
+            `;
+            newNote.innerHTML = `
+                <div class="note-header">
+                    <span class="note-title">New Note</span>
+                    <div class="note-controls">
+                        <button class="note-btn btn-pin" title="Pin Note">📌</button>
+                        <button class="note-btn btn-close" title="Close Note">✕</button>
+                    </div>
+                </div>
+                <div class="note-content" contenteditable="true">
+                    <p>Click to edit this new note!</p>
+                </div>
+                <div class="resize-handle"></div>
+            `;
+            this.makeStickyNoteDraggable(newNote);
+            this.makeStickyNoteResizable(newNote);
+            this.setupStickyNoteControls(newNote);
+            stickyNotesContainer.appendChild(newNote);
+            if (newNote.querySelector('.note-content').innerHTML.includes('- [') || newNote.querySelector('.note-content').innerHTML.includes('- [x]')) {
+                this.setupTaskCheckboxes(newNote);
+            }
+            this.saveStickyNotes();
+        }
+    }
+
+    // Patch: In setupStickyNoteControls, update pin button to toggle dragging per-note
     setupStickyNoteControls(note) {
         const pinBtn = note.querySelector('.btn-pin');
         const closeBtn = note.querySelector('.btn-close');
         const content = note.querySelector('.note-content');
         const title = note.querySelector('.note-title');
-
         // Pin button
         if (pinBtn) {
+            pinBtn.onclick = null;
             pinBtn.addEventListener('click', () => {
                 note.classList.toggle('pinned');
+                pinBtn.textContent = note.classList.contains('pinned') ? '📌 (Pinned)' : '📌';
                 this.saveStickyNotes();
             });
         }
-
         // Close button
         if (closeBtn) {
             closeBtn.addEventListener('click', () => {
@@ -919,57 +948,6 @@ class WindowManager {
         `;
     }
 
-    addNewStickyNote() {
-        const stickyNotesContainer = document.querySelector('.sticky-notes-container');
-        if (stickyNotesContainer) {
-            const noteId = `note-${this.getNextWindowId()}`;
-            const newNote = document.createElement('div');
-            newNote.className = 'sticky-note';
-            newNote.dataset.noteId = noteId;
-            newNote.style.cssText = `
-                position: absolute;
-                top: ${Math.random() * 50}px;
-                left: ${Math.random() * 100}px;
-                transform: rotate(${(Math.random() - 0.5) * 4}deg);
-                width: 300px;
-                height: 250px;
-                pointer-events: auto;
-            `;
-            
-            newNote.innerHTML = `
-                <div class="note-header">
-                    <span class="note-title">New Note</span>
-                    <div class="note-controls">
-                        <button class="note-btn btn-pin" title="Pin Note">📌</button>
-                        <button class="note-btn btn-close" title="Close Note">✕</button>
-                    </div>
-                </div>
-                <div class="note-content" contenteditable="true">
-                    <p>Click to edit this new note!</p>
-                </div>
-                <div class="resize-handle"></div>
-            `;
-            
-            // Make note draggable and resizable
-            this.makeStickyNoteDraggable(newNote);
-            this.makeStickyNoteResizable(newNote);
-            this.setupStickyNoteControls(newNote);
-            
-            stickyNotesContainer.appendChild(newNote);
-            
-            // Setup checkboxes if content contains task lists
-            if (newNote.querySelector('.note-content').innerHTML.includes('- [') || newNote.querySelector('.note-content').innerHTML.includes('- [x]')) {
-                this.setupTaskCheckboxes(newNote);
-            }
-            
-            // Save sticky notes
-            this.saveStickyNotes();
-            
-            // Update counter
-            this.updateStickyNotesCounter();
-        }
-    }
-
     setupWindowEventListeners(windowData) {
         const windowEl = windowData.element;
         const header = windowEl.querySelector('.window-header');
@@ -1051,24 +1029,19 @@ class WindowManager {
     createStickyNote(title = 'New Note', content = '') {
         const stickyNotesContainer = document.querySelector('.sticky-notes-container');
         if (!stickyNotesContainer) {
-            // If no container exists, create a sticky notes window first
             this.createWindow('sticky-notes', 'Sticky Notes');
             setTimeout(() => {
                 this.createStickyNote(title, content);
             }, 200);
             return;
         }
-
         const noteId = `note-${this.getNextWindowId()}`;
         const newNote = document.createElement('div');
         newNote.className = 'sticky-note';
         newNote.dataset.noteId = noteId;
-        
-        // Check if this note should be globally visible (created from header tray)
         const isGlobalVisible = this.shouldStickyNoteBeGloballyVisible();
         if (isGlobalVisible) {
             newNote.dataset.globalVisible = 'true';
-            // Position the note so it's visible on the main page, not just in the window
             newNote.style.cssText = `
                 position: fixed;
                 top: ${Math.random() * 100 + 100}px;
@@ -1079,10 +1052,8 @@ class WindowManager {
                 pointer-events: auto;
                 z-index: 1000;
             `;
-            // Add to body instead of container for global visibility
             document.body.appendChild(newNote);
         } else {
-            // Normal positioning within the sticky notes container
             newNote.style.cssText = `
                 position: absolute;
                 top: ${Math.random() * 100 + 50}px;
@@ -1094,7 +1065,6 @@ class WindowManager {
             `;
             stickyNotesContainer.appendChild(newNote);
         }
-        
         newNote.innerHTML = `
             <div class="note-header">
                 <span class="note-title">${title}</span>
@@ -1108,24 +1078,13 @@ class WindowManager {
             </div>
             <div class="resize-handle"></div>
         `;
-        
-        // Make note draggable and resizable
         this.makeStickyNoteDraggable(newNote);
         this.makeStickyNoteResizable(newNote);
         this.setupStickyNoteControls(newNote);
-        
-        // Setup checkboxes if content contains task lists
-        if (content.includes('- [') || content.includes('- [x]')) {
+        if (newNote.querySelector('.note-content').innerHTML.includes('- [') || newNote.querySelector('.note-content').innerHTML.includes('- [x]')) {
             this.setupTaskCheckboxes(newNote);
         }
-        
-        // Save sticky notes
         this.saveStickyNotes();
-        
-        // Update counter if it exists
-        this.updateStickyNotesCounter();
-        
-        return newNote;
     }
 
     // Check if sticky notes should be globally visible by default

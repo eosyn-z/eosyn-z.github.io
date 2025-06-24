@@ -174,6 +174,7 @@
             <div class="games-header">
               <h2>🎮 Classic Game Launcher</h2>
               <p>Select a game to play</p>
+              <button id="refresh-games-btn" class="glass-button" style="margin-top: 1rem;">🔄 Refresh</button>
             </div>
             <div id="games-list">
               <!-- Games will be populated here by JavaScript -->
@@ -227,19 +228,27 @@
           btn.classList.remove('active');
         });
         buttonElement.classList.add('active');
-        
         currentGame = game;
-        
         const viewerContent = document.getElementById('game-viewer-content');
-        viewerContent.innerHTML = `
-          <div class="game-placeholder">
-            <h2>${game.icon || '🕹️'} ${game.title}</h2>
-            <p>${game.description || 'A classic game.'}</p>
-            <button class="launch-game-btn" onclick="launchGame('${game.id}')">
-              🎮 Launch ${game.title}
-            </button>
-          </div>
-        `;
+        if (game.permalink || game.url) {
+          viewerContent.innerHTML = `
+            <div class="game-placeholder">
+              <h2>${game.icon || '🕹️'} ${game.title}</h2>
+              <p>${game.description || 'A classic game.'}</p>
+              <iframe src="${game.permalink || game.url}" style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.15);background:white;"></iframe>
+            </div>
+          `;
+        } else {
+          viewerContent.innerHTML = `
+            <div class="game-placeholder">
+              <h2>${game.icon || '🕹️'} ${game.title}</h2>
+              <p>${game.description || 'A classic game.'}</p>
+              <button class="launch-game-btn" onclick="launchGame('${game.id}')">
+                🎮 Launch ${game.title}
+              </button>
+            </div>
+          `;
+        }
       }
 
       function launchGame(gameId) {
@@ -329,7 +338,14 @@
 
       document.addEventListener('DOMContentLoaded', () => {
         populateGamesList();
-        
+        const refreshBtn = document.getElementById('refresh-games-btn');
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', () => {
+            populateGamesList();
+            const firstGameButton = document.querySelector('.game-button');
+            if (firstGameButton) firstGameButton.click();
+          });
+        }
         if (window.gamesData && window.gamesData.length > 1) {
           const firstGameButton = document.querySelector('.game-button');
           if (firstGameButton) firstGameButton.click();
