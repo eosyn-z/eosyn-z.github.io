@@ -566,6 +566,12 @@ class NowPlaying {
         if (toggleBtn) {
             toggleBtn.classList.toggle('active', this.isVisible);
         }
+        
+        // Update system tray button state
+        const trayBtn = document.getElementById('music-player-button');
+        if (trayBtn) {
+            trayBtn.classList.toggle('active', this.isVisible);
+        }
     }
 
     togglePlayPause() {
@@ -613,6 +619,12 @@ class NowPlaying {
                 this.show();
             }
         }
+        
+        // Check if there's a default visibility setting
+        const defaultVisible = localStorage.getItem('musicPlayerDefaultVisible');
+        if (defaultVisible === 'true' && !this.isVisible && this.title !== 'Unknown Track') {
+            this.show();
+        }
     }
 
     // Public method to manually update track data
@@ -627,6 +639,16 @@ class NowPlaying {
         } else {
             this.hide();
         }
+    }
+
+    // Public method to set default visibility
+    setDefaultVisible(visible) {
+        localStorage.setItem('musicPlayerDefaultVisible', visible.toString());
+    }
+
+    // Public method to get default visibility
+    getDefaultVisible() {
+        return localStorage.getItem('musicPlayerDefaultVisible') === 'true';
     }
 }
 

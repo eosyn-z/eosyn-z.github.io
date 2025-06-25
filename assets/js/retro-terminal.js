@@ -25,7 +25,8 @@ class RetroTerminal {
             rainbow: this.rainbowText.bind(this),
             note: this.createNote.bind(this),
             pages: this.listPages.bind(this),
-            secret: this.secretEasterEgg.bind(this)
+            secret: this.secretEasterEgg.bind(this),
+            music: this.toggleMusicBar.bind(this)
         };
         
         this.init();
@@ -245,6 +246,7 @@ class RetroTerminal {
         this.print('  note     - Create a sticky note');
         this.print('  pages    - List all available pages');
         this.print('  secret   - 🎉 Easter egg!');
+        this.print('  music    - Toggle music bar (show|hide|toggle|default true|false)');
     }
 
     changeTheme(args) {
@@ -445,6 +447,36 @@ class RetroTerminal {
         this.print('   - neofetch (show system info)');
         this.print('🎮 The terminal and sticky notes persist across pages!');
         this.print('🚀 You can navigate anywhere and still use the terminal!');
+    }
+
+    toggleMusicBar(args) {
+        const action = args[0] || 'toggle';
+        
+        if (window.nowPlaying) {
+            switch (action.toLowerCase()) {
+                case 'show':
+                    window.nowPlaying.show();
+                    this.print('Music bar shown!');
+                    break;
+                case 'hide':
+                    window.nowPlaying.hide();
+                    this.print('Music bar hidden!');
+                    break;
+                case 'toggle':
+                    window.nowPlaying.toggleVisibility();
+                    this.print('Music bar toggled!');
+                    break;
+                case 'default':
+                    const setDefault = args[1] || 'true';
+                    window.nowPlaying.setDefaultVisible(setDefault === 'true');
+                    this.print(`Music bar default visibility set to: ${setDefault}`);
+                    break;
+                default:
+                    this.print('Usage: music [show|hide|toggle|default true|false]');
+            }
+        } else {
+            this.print('Music bar system not available');
+        }
     }
 
     open() {

@@ -2288,3 +2288,16 @@ body.desktop-mode .main-content {
 }
 
 /* ===== CORE GLASS EFFECT VARIABLES ===== */
+
+/* System tray icons like volume, network, etc. can go here */
+#discord-status-widget-tray {
+  display: flex;
+  align-items: center;
+}
+
+/* Music player button active state */
+#music-player-button.active {
+  background-color: var(--theme-accent);
+  color: var(--text-white);
+  box-shadow: 0 0 0 3px var(--theme-accent);
+}

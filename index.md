@@ -88,6 +88,36 @@ If this fails, rollback to:
   </div>
 </div>
 
+<!-- Blur overlay (should be before modals/popups) -->
+<div id="blurOverlay" style="display:none; position:fixed; z-index:9998; top:0; left:0; width:100vw; height:100vh; background:var(--glass-bg-heavy); backdrop-filter:var(--glass-blur-heavy); pointer-events:auto;"></div>
+
+<!-- Cookie Consent Modal (should be above blur) -->
+<div id="cookieConsent" style="display:none; position:fixed; z-index:10000; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy);">
+  <h2 style="margin-top:0; margin-bottom:1rem; color:var(--theme-text); font-size:1.5rem;">🍪 Cookie Consent</h2>
+  <p style="margin-bottom:1.5rem; color:var(--theme-text-secondary); line-height:1.5;">This site uses cookies to save your preferences and enhance your experience.<br>By continuing, you accept our use of cookies.</p>
+  <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+    <button class="glass-button" onclick="acceptCookies()" style="min-width:100px;">Accept</button>
+    <button class="glass-button" onclick="rejectCookies()" style="min-width:100px;">Reject</button>
+  </div>
+</div>
+
+<!-- Username Modal (should be above blur) -->
+<div id="usernameModal" style="display:none; position:fixed; z-index:10000; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy);">
+  <h2 style="margin-top:0; margin-bottom:1rem; color:var(--theme-text); font-size:1.5rem;">👤 Set Your Username</h2>
+  <p style="margin-bottom:1.5rem; color:var(--theme-text-secondary); line-height:1.5;">Enter a username for your personalized experience (optional).</p>
+  <input id="usernameInput" class="glass-input" type="text" maxlength="32" placeholder="Enter a username (optional)" style="margin-bottom:1.5rem; width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--glass-border-light); background:var(--glass-bg-light); color:var(--theme-text); box-sizing:border-box;">
+  <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+    <button class="glass-button" onclick="submitUsername()" style="min-width:100px;">Save</button>
+    <button class="glass-button" onclick="hideModal('usernameModal');hideBlur();" style="min-width:100px;">Skip</button>
+  </div>
+</div>
+
+<!-- Discord Status Indicator (add to top right of site) -->
+<div id="discord-status-indicator" style="position:fixed;top:18px;right:24px;z-index:2147483646;display:flex;align-items:center;gap:0.5em;font-size:1.1em;">
+  <span id="discord-status-dot" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#747f8d;"></span>
+  <span id="discord-status-label" style="font-weight:500;color:var(--theme-text, #fff);">Offline</span>
+</div>
+
 <script>
 // TPOT Sites Scrolling Carousel
 document.addEventListener('DOMContentLoaded', function() {
@@ -313,6 +343,10 @@ function initStepCarousel(totalSites) {
   function showModal(id) {
     const modal = document.getElementById(id);
     if (modal) modal.style.display = 'block';
+    // Always ensure modal is not blurred
+    modal.style.filter = 'none';
+    modal.style.pointerEvents = 'auto';
+    modal.style.zIndex = '2147483647';
   }
   function hideModal(id) {
     const modal = document.getElementById(id);
@@ -324,7 +358,6 @@ function initStepCarousel(totalSites) {
     setCookie('username', username, 365);
     hideModal('usernameModal');
     hideBlur();
-    // Optionally, update UI with username here
     if (window.setUsernameInStartMenu) window.setUsernameInStartMenu(username);
   };
   window.acceptCookies = function() {
@@ -336,20 +369,30 @@ function initStepCarousel(totalSites) {
     } else {
       hideBlur();
     }
+    // Never blur again after accepting
+    window.__onboardingComplete = true;
   };
   window.rejectCookies = function() {
     setCookie('cookie_consent', 'rejected', 365);
     hideModal('cookieConsent');
     hideBlur();
+    // Never blur again after rejecting
+    window.__onboardingComplete = true;
   };
   // On load, check cookies and show modals/blur as needed
   document.addEventListener('DOMContentLoaded', function() {
+    if (window.__onboardingComplete) {
+      hideBlur();
+      hideModal('cookieConsent');
+      hideModal('usernameModal');
+      return;
+    }
     const consent = getCookie('cookie_consent');
     const username = getCookie('username');
-    if (consent !== 'accepted') {
+    if (consent !== 'accepted' && consent !== 'rejected') {
       showBlur();
       showModal('cookieConsent');
-    } else if (!username) {
+    } else if (!username && consent === 'accepted') {
       showBlur();
       showModal('usernameModal');
     } else {
@@ -424,6 +467,31 @@ function initStepCarousel(totalSites) {
   const themeObserver = new MutationObserver(updateStickyThemeImage);
   themeObserver.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
 })();
+
+async function updateDiscordStatusIndicator() {
+  try {
+    const res = await fetch('https://api.lanyard.rest/v1/users/917811383876341820');
+    const data = (await res.json()).data;
+    const status = data.discord_status || 'offline';
+    const dot = document.getElementById('discord-status-dot');
+    const label = document.getElementById('discord-status-label');
+    let color = '#747f8d', text = 'Offline';
+    if (status === 'online') { color = '#43b581'; text = 'Online'; }
+    else if (status === 'idle') { color = '#faa61a'; text = 'Idle'; }
+    else if (status === 'dnd') { color = '#f04747'; text = 'Do Not Disturb'; }
+    else { color = '#747f8d'; text = 'Offline'; }
+    dot.style.background = color;
+    label.textContent = text;
+  } catch (e) {
+    // fallback to offline
+    const dot = document.getElementById('discord-status-dot');
+    const label = document.getElementById('discord-status-label');
+    dot.style.background = '#747f8d';
+    label.textContent = 'Offline';
+  }
+}
+updateDiscordStatusIndicator();
+setInterval(updateDiscordStatusIndicator, 15000);
 </script>
 
 <style>
@@ -571,4 +639,26 @@ function initStepCarousel(totalSites) {
 #welcome-sticky:active, #welcome-sticky:focus-within { box-shadow: 0 0 0 2px var(--theme-accent); }
 #welcome-sticky .sticky-header { cursor: grab; }
 #welcome-sticky .sticky-header:active { cursor: grabbing; }
+
+#blurOverlay {
+  pointer-events: auto;
+  z-index: 9998 !important;
+  background: var(--glass-bg-heavy) !important;
+  backdrop-filter: var(--glass-blur-heavy) !important;
+}
+#cookieConsent, #usernameModal {
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
+  filter: none !important;
+  position: fixed !important;
+  background: var(--glass-bg-heavy) !important;
+  border: 1px solid var(--glass-border-light) !important;
+  backdrop-filter: var(--glass-blur-heavy) !important;
+  box-shadow: var(--glass-shadow-heavy) !important;
+}
+body.blurred-for-onboarding > *:not(#blurOverlay):not(#cookieConsent):not(#usernameModal) {
+  filter: blur(6px) saturate(1.1);
+  pointer-events: none !important;
+  user-select: none !important;
+}
 </style>

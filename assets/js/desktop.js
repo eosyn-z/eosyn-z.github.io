@@ -455,6 +455,45 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </button>
                             </div>
                         </div>
+                        
+                        <div class="glass-card" style="padding: 1.5rem; background: var(--glass-bg-light); border-radius: 12px;">
+                            <h3 style="margin-top: 0; margin-bottom: 1rem;">🎵 Music Player</h3>
+                            <p style="margin-bottom: 1rem; color: var(--theme-text-secondary);">
+                                Control music player and status popup visibility.
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: margin-bottom: 1rem;">
+                                <button class="glass-button" onclick="window.nowPlaying && window.nowPlaying.show()">
+                                    Show Music Player
+                                </button>
+                                <button class="glass-button" onclick="window.nowPlaying && window.nowPlaying.hide()">
+                                    Hide Music Player
+                                </button>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                    <input type="checkbox" id="music-player-visible-toggle" style="width: 16px; height: 16px;">
+                                    <span>Music player visible by default</span>
+                                </label>
+                            </div>
+                            <script>
+                                // Initialize the music player toggle
+                                const musicToggle = document.getElementById('music-player-visible-toggle');
+                                if (musicToggle) {
+                                    // Set initial state based on default visibility setting
+                                    musicToggle.checked = window.nowPlaying ? window.nowPlaying.getDefaultVisible() : false;
+                                    
+                                    // Add change listener
+                                    musicToggle.addEventListener('change', function() {
+                                        if (window.nowPlaying) {
+                                            window.nowPlaying.setDefaultVisible(this.checked);
+                                            if (this.checked && !window.nowPlaying.isVisible) {
+                                                window.nowPlaying.show();
+                                            }
+                                        }
+                                    });
+                                }
+                            </script>
+                        </div>
                     </div>
                     
                     <div style="background: var(--glass-bg-medium); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
