@@ -16,7 +16,15 @@ class SparklesBackground {
             'n': ['#0ea5e9', '#0284c7', '#0369a1', '#075985', '#ffffff'],
             'custom': ['#6366f1', '#8b5cf6', '#06b6d4', '#0891b2', '#ffffff']
         };
-        
+        this.particleShapes = {
+            'c': 'star',
+            'a': 'star',
+            'r': 'star',
+            'z': 'star',
+            'e': 'star',
+            'n': 'star',
+            'custom': 'star'
+        };
         this.init();
     }
 
@@ -78,6 +86,11 @@ class SparklesBackground {
         return this.themeColors[currentTheme] || this.themeColors['c'];
     }
 
+    getCurrentThemeShape() {
+        const currentTheme = document.body.getAttribute('data-theme') || 'c';
+        return this.particleShapes[currentTheme] || 'star';
+    }
+
     updateSparkleColors() {
         const colors = this.getCurrentThemeColors();
         this.sparkles.forEach(sparkle => {
@@ -109,6 +122,7 @@ class SparklesBackground {
         if (!this.isActive) return;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const shape = this.getCurrentThemeShape();
 
         this.sparkles.forEach((sparkle, index) => {
             // Update position
@@ -144,53 +158,76 @@ class SparklesBackground {
                 sparkle.fadeDirection *= -1;
             }
 
-            // Draw sparkle
             this.ctx.save();
             this.ctx.globalAlpha = sparkle.opacity * (sparkle.life / sparkle.maxLife);
             this.ctx.translate(sparkle.x, sparkle.y);
             this.ctx.rotate(sparkle.rotation);
-            
-            // Create sparkle shape (4-pointed star)
             const size = sparkle.size;
             this.ctx.fillStyle = sparkle.color;
             this.ctx.strokeStyle = sparkle.color;
             this.ctx.lineWidth = 1;
-            
-            // Draw sparkle as a cross with dots
-            this.ctx.beginPath();
-            
-            // Vertical line
-            this.ctx.moveTo(0, -size);
-            this.ctx.lineTo(0, size);
-            
-            // Horizontal line
-            this.ctx.moveTo(-size, 0);
-            this.ctx.lineTo(size, 0);
-            
-            // Diagonal lines
-            this.ctx.moveTo(-size * 0.7, -size * 0.7);
-            this.ctx.lineTo(size * 0.7, size * 0.7);
-            this.ctx.moveTo(-size * 0.7, size * 0.7);
-            this.ctx.lineTo(size * 0.7, -size * 0.7);
-            
-            this.ctx.stroke();
-            
-            // Add center dot
-            this.ctx.beginPath();
-            this.ctx.arc(0, 0, size * 0.3, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            // Add glow effect
+
+            // Draw by shape
+            if (shape === 'star') {
+                // Draw sparkle as a cross with dots (existing)
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, -size);
+                this.ctx.lineTo(0, size);
+                this.ctx.moveTo(-size, 0);
+                this.ctx.lineTo(size, 0);
+                this.ctx.moveTo(-size * 0.7, -size * 0.7);
+                this.ctx.lineTo(size * 0.7, size * 0.7);
+                this.ctx.moveTo(-size * 0.7, size * 0.7);
+                this.ctx.lineTo(size * 0.7, -size * 0.7);
+                this.ctx.stroke();
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, size * 0.3, 0, Math.PI * 2);
+                this.ctx.fill();
+            } else if (shape === 'circle') {
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, size, 0, Math.PI * 2);
+                this.ctx.fill();
+            } else if (shape === 'triangle') {
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, -size);
+                this.ctx.lineTo(size, size);
+                this.ctx.lineTo(-size, size);
+                this.ctx.closePath();
+                this.ctx.fill();
+            } else if (shape === 'diamond') {
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, -size);
+                this.ctx.lineTo(size, 0);
+                this.ctx.lineTo(0, size);
+                this.ctx.lineTo(-size, 0);
+                this.ctx.closePath();
+                this.ctx.fill();
+            } else if (shape === 'hexagon') {
+                this.ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = Math.PI / 3 * i;
+                    const x = size * Math.cos(angle);
+                    const y = size * Math.sin(angle);
+                    if (i === 0) this.ctx.moveTo(x, y);
+                    else this.ctx.lineTo(x, y);
+                }
+                this.ctx.closePath();
+                this.ctx.fill();
+            } else if (shape === 'square') {
+                this.ctx.beginPath();
+                this.ctx.rect(-size, -size, size * 2, size * 2);
+                this.ctx.fill();
+            }
+
+            // Add glow effect (existing)
             const gradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, size * 2);
             gradient.addColorStop(0, sparkle.color + '40');
             gradient.addColorStop(0.5, sparkle.color + '20');
             gradient.addColorStop(1, sparkle.color + '00');
-            
             this.ctx.fillStyle = gradient;
             this.ctx.beginPath();
             this.ctx.arc(0, 0, size * 2, 0, Math.PI * 2);
             this.ctx.fill();
-            
             this.ctx.restore();
         });
 

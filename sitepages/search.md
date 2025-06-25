@@ -166,6 +166,28 @@ description: "Search for websites, filter content, and manage your bookmarks."
     text-align: center;
   }
 }
+
+.tray-content {
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-accent) var(--glass-bg-medium);
+}
+
+/* Chrome, Edge, Safari */
+.tray-content::-webkit-scrollbar {
+  height: 10px;
+  background: var(--glass-bg-medium);
+  border-radius: 8px;
+}
+.tray-content::-webkit-scrollbar-thumb {
+  background: var(--theme-accent);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.tray-content::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent-dark);
+}
 </style>
 
 <div class="main-content glass-container">

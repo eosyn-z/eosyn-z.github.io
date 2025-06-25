@@ -75,6 +75,19 @@ If this fails, rollback to:
   </div>
 </div>
 
+<!-- Draggable, resizable sticky note viewport -->
+<div id="welcome-sticky" class="sticky-note glass-card" style="position: absolute; top: 80px; left: 80px; min-width: 260px; min-height: 180px; width: 340px; height: 260px; z-index: 1002; resize: both; overflow: hidden; box-shadow: var(--glass-shadow-heavy);">
+  <div class="sticky-header" style="display: flex; align-items: center; padding: 0.5rem 1rem; cursor: move; background: var(--glass-bg-medium); border-bottom: 1px solid var(--glass-border-light);">
+    <span class="mac-btn mac-btn-red"></span>
+    <span class="mac-btn mac-btn-yellow"></span>
+    <span class="mac-btn mac-btn-green"></span>
+    <span style="flex:1; text-align:center; font-weight:600; color:var(--theme-text);">Welcome to eosyn's World</span>
+  </div>
+  <div class="sticky-content" style="width: 100%; height: calc(100% - 40px); display: flex; align-items: center; justify-content: center; background: var(--glass-bg-light);">
+    <img id="sticky-theme-image" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Theme GIF" style="max-width: 100%; max-height: 100%; border-radius: 10px; object-fit: contain; transition: box-shadow 0.2s; box-shadow: 0 2px 12px rgba(0,0,0,0.12);">
+  </div>
+</div>
+
 <script>
 // TPOT Sites Scrolling Carousel
 document.addEventListener('DOMContentLoaded', function() {
@@ -269,6 +282,148 @@ function initStepCarousel(totalSites) {
     }
   });
 }
+
+// Onboarding logic for cookie consent and username
+(function() {
+  function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/';
+  }
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+  }
+  function showBlur() {
+    const blur = document.getElementById('blurOverlay');
+    if (blur) blur.style.display = 'block';
+    document.body.classList.add('blurred-for-onboarding');
+  }
+  function hideBlur() {
+    const blur = document.getElementById('blurOverlay');
+    if (blur) blur.style.display = 'none';
+    document.body.classList.remove('blurred-for-onboarding');
+  }
+  function showModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.style.display = 'block';
+  }
+  function hideModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.style.display = 'none';
+  }
+  window.submitUsername = function() {
+    const input = document.getElementById('usernameInput');
+    const username = input ? input.value.trim() : '';
+    setCookie('username', username, 365);
+    hideModal('usernameModal');
+    hideBlur();
+    // Optionally, update UI with username here
+    if (window.setUsernameInStartMenu) window.setUsernameInStartMenu(username);
+  };
+  window.acceptCookies = function() {
+    setCookie('cookie_consent', 'accepted', 365);
+    hideModal('cookieConsent');
+    // Prompt for username if not set
+    if (!getCookie('username')) {
+      showModal('usernameModal');
+    } else {
+      hideBlur();
+    }
+  };
+  window.rejectCookies = function() {
+    setCookie('cookie_consent', 'rejected', 365);
+    hideModal('cookieConsent');
+    hideBlur();
+  };
+  // On load, check cookies and show modals/blur as needed
+  document.addEventListener('DOMContentLoaded', function() {
+    const consent = getCookie('cookie_consent');
+    const username = getCookie('username');
+    if (consent !== 'accepted') {
+      showBlur();
+      showModal('cookieConsent');
+    } else if (!username) {
+      showBlur();
+      showModal('usernameModal');
+    } else {
+      hideBlur();
+    }
+  });
+})();
+
+(function() {
+  // Make sticky note draggable - completely smooth, no grid snapping
+  const sticky = document.getElementById('welcome-sticky');
+  const header = sticky.querySelector('.sticky-header');
+  let offsetX, offsetY, isDragging = false;
+  
+  header.addEventListener('mousedown', function(e) {
+    e.preventDefault(); // Prevent text selection
+    isDragging = true;
+    offsetX = e.clientX - sticky.offsetLeft;
+    offsetY = e.clientY - sticky.offsetTop;
+    document.body.style.userSelect = 'none';
+    sticky.style.cursor = 'grabbing';
+    sticky.style.zIndex = '99999'; // Bring to front while dragging
+  });
+  
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    e.preventDefault(); // Prevent any default behavior
+    
+    // Smooth movement - no grid snapping at all
+    const newX = e.clientX - offsetX;
+    const newY = e.clientY - offsetY;
+    
+    // Keep within viewport bounds
+    const maxX = window.innerWidth - sticky.offsetWidth;
+    const maxY = window.innerHeight - sticky.offsetHeight;
+    
+    sticky.style.left = Math.max(0, Math.min(newX, maxX)) + 'px';
+    sticky.style.top = Math.max(0, Math.min(newY, maxY)) + 'px';
+  });
+  
+  document.addEventListener('mouseup', function() {
+    if (isDragging) {
+      isDragging = false;
+      document.body.style.userSelect = '';
+      sticky.style.cursor = 'grab';
+      sticky.style.zIndex = '1002'; // Return to normal z-index
+    }
+  });
+  
+  // Responsive image on resize
+  const observer = new ResizeObserver(() => {
+    const img = document.getElementById('sticky-theme-image');
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '100%';
+  });
+  observer.observe(sticky);
+  
+  // Update image to match current theme
+  function updateStickyThemeImage() {
+    const theme = document.body.getAttribute('data-theme') || 'c';
+    let src = '';
+    if (theme === 'c') src = 'https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif';
+    else if (theme === 'a') src = 'https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif';
+    else if (theme === 'e') src = 'https://i.pinimg.com/originals/74/8e/75/748e75ec3a7fe0b13bff7c282b458e3e.gif';
+    else if (theme === 'n') src = 'https://i.gifer.com/23dZ.gif';
+    else if (theme === 'z') src = 'https://i.pinimg.com/originals/74/cc/3c/74cc3cce7eb9c244e935b4a98b58d716.gif';
+    else if (theme === 'r') src = 'https://i.gifer.com/1Eqx.gif';
+    else src = 'https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif';
+    document.getElementById('sticky-theme-image').src = src;
+  }
+  updateStickyThemeImage();
+  const themeObserver = new MutationObserver(updateStickyThemeImage);
+  themeObserver.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
+})();
 </script>
 
 <style>
@@ -399,4 +554,21 @@ function initStepCarousel(totalSites) {
     scroll-snap-align: center;
   }
 }
+
+.mac-btn {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  border: 1.5px solid #fff3;
+  box-shadow: 0 1px 2px #0002;
+}
+.mac-btn-red { background: #ff5f56; }
+.mac-btn-yellow { background: #ffbd2e; }
+.mac-btn-green { background: #27c93f; }
+#welcome-sticky { user-select: none; }
+#welcome-sticky:active, #welcome-sticky:focus-within { box-shadow: 0 0 0 2px var(--theme-accent); }
+#welcome-sticky .sticky-header { cursor: grab; }
+#welcome-sticky .sticky-header:active { cursor: grabbing; }
 </style>

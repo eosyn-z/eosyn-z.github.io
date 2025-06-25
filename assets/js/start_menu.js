@@ -75,10 +75,17 @@ class StartMenu {
             if (list) list.innerHTML = '';
         });
 
-        // --- Add Built-in Utilities ---
-        this.addBuiltInUtility('🎨 Theme Editor', 'theme-editor', lists.utilities);
-        this.addBuiltInUtility('📝 Sticky Notes', 'sticky-notes', lists.utilities);
-        this.addBuiltInUtility('🖥️ Retro Terminal', 'retro-terminal', lists.utilities);
+        // --- Add Built-in Utilities only if not present as a page ---
+        const pageTitles = pages.map(p => p.title.replace(/^[^\w]+/, '').trim().toLowerCase());
+        if (!pageTitles.includes('theme editor')) {
+            this.addBuiltInUtility('🎨 Theme Editor', 'theme-editor', lists.utilities);
+        }
+        if (!pageTitles.includes('sticky notes')) {
+            this.addBuiltInUtility('📝 Sticky Notes', 'sticky-notes', lists.utilities);
+        }
+        if (!pageTitles.includes('retro terminal')) {
+            this.addBuiltInUtility('🖥️ Retro Terminal', 'retro-terminal', lists.utilities);
+        }
 
         // --- Categorize and Populate ---
 
@@ -93,9 +100,12 @@ class StartMenu {
 
         // 3. Populate Utilities and Social based on keywords
         pages.forEach(page => {
-            const pageTitleLower = page.title.toLowerCase();
+            const pageTitleLower = page.title.replace(/^[^\w]+/, '').trim().toLowerCase();
             if (utilityKeywords.some(kw => pageTitleLower.includes(kw))) {
-                this.addPageToList(page, lists.utilities);
+                // Avoid duplicate utilities
+                if (!['theme editor', 'sticky notes', 'retro terminal'].includes(pageTitleLower)) {
+                    this.addPageToList(page, lists.utilities);
+                }
             } else if (socialKeywords.some(kw => pageTitleLower.includes(kw))) {
                 this.addPageToList(page, lists.social);
             } else {

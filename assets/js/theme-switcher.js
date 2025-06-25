@@ -253,7 +253,6 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', async () => {
             const theme = button.getAttribute('data-theme');
             if (theme === 'custom') {
-                await setTheme(theme, true);
                 if (window.customThemeEditor) {
                     window.customThemeEditor.createThemeEditorWindow();
                 }

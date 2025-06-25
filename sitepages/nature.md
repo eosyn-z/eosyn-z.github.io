@@ -38,6 +38,27 @@ description: "Touch grass - nature imagery and filters."
   text-align: right;
 }
 
+/* Reset button styling */
+.reset-button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: var(--glass-bg-medium);
+  color: var(--theme-text);
+  border: 1px solid var(--glass-border-light);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  backdrop-filter: var(--glass-blur-medium);
+}
+
+.reset-button:hover {
+  background: var(--glass-bg-heavy);
+  transform: translateY(-1px);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .filter-group {
@@ -71,9 +92,19 @@ description: "Touch grass - nature imagery and filters."
   }
 }
 
-/* Add spacing between home bar and filter container */
+/* Hide the main nav bar/banner for this page */
+header.glass-nav,
+nav,
+.main-header,
+.page-header {
+  display: none !important;
+}
+
+/* Move filter panel upward */
 #filter-container {
-  margin-top: 3.5rem !important;
+  margin-top: 1.5rem !important;
+  position: relative;
+  padding-bottom: 60px;
 }
 
 /* Arrange Vibe, Weather, Time on a single row */
@@ -119,28 +150,25 @@ description: "Touch grass - nature imagery and filters."
     <div class="filter-multi-row">
       <div class="filter-group">
         <strong class="filter-label">Vibe:</strong>
-        <button class="glass-button active" data-filter-type="vibe" data-filter="all">All</button>
         <button class="glass-button" data-filter-type="vibe" data-filter="happy">Happy</button>
         <button class="glass-button" data-filter-type="vibe" data-filter="neutral">Neutral</button>
         <button class="glass-button" data-filter-type="vibe" data-filter="gloomy">Gloomy</button>
       </div>
       <div class="filter-group">
         <strong class="filter-label">Weather:</strong>
-        <button class="glass-button active" data-filter-type="weather" data-filter="all">All</button>
         <button class="glass-button" data-filter-type="weather" data-filter="clear">Clear</button>
         <button class="glass-button" data-filter-type="weather" data-filter="rainy">Rainy</button>
         <button class="glass-button" data-filter-type="weather" data-filter="mist">Mist</button>
       </div>
       <div class="filter-group">
         <strong class="filter-label">Time:</strong>
-        <button class="glass-button active" data-filter-type="time" data-filter="all">All</button>
-        <button class="glass-button" data-filter-type="time" data-filter="dawn">Dawn</button>
+        <button class="glass-button" data-filter-type="time" data-filter="daytime">Daytime</button>
         <button class="glass-button" data-filter-type="time" data-filter="noon">Noon</button>
-        <button class="glass-button" data-filter-type="time" data-filter="dusk">Dusk</button>
-        <button class="glass-button" data-filter-type="time" data-filter="sunrise">Sunrise</button>
-        <button class="glass-button" data-filter-type="time" data-filter="sunset">Sunset</button>
+        <button class="glass-button" data-filter-type="time" data-filter="nighttime">Nighttime</button>
+        <button class="glass-button" data-filter-type="time" data-filter="sunbeam">Sunbeam</button>
       </div>
     </div>
+    <button class="reset-button" onclick="resetFilters()">🔄 Reset</button>
 </div>
 
 <div id="imageContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #000; transition: background-image 1s ease-in-out;"></div>
@@ -163,10 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
 // Going to add types: forestImages, flowingWaterImages, oceanImages, mountainImages, cloudImages,
 // they will have the tags: happy, neutral, gloomy (this is based on vibe)
 //                          clear, rainy (this is based on weather)
-//                          dawn, noon, dusk (this is based on lighting)
-//                          also adding sunrise/sunset
-// dawn : general morning, noon: sun overhead, dusk: general night
-// sunrise/sunset are for clear morning or evening shots! vibes determine day/night again.
+//                          daytime, noon, nighttime (this is based on lighting)
+//                          also adding sunbeam
+// daytime : general morning, noon: sun overhead, nighttime: general night
+// sunbeam are for clear morning or evening shots! vibes determine day/night again.
 // added mist tag :)
 
 
@@ -221,17 +249,17 @@ const forestImages = [
 
   {
     url: 'https://mir-s3-cdn-cf.behance.net/project_modules/source/fb89fb35295351.56f1706fbafaa.gif',
-    tags: ['clear', 'gloomy', 'dawn']
+    tags: ['clear', 'gloomy', 'daytime']
   },
 
   {
     url: 'https://i.pinimg.com/originals/1e/b4/0e/1eb40e8f6c568d75f45bcb41ad97bdf9.gif',
-    tags: ['clear', 'happy', 'sunrise']
+    tags: ['clear', 'happy', 'sunbeam']
   }, 
 
   {
     url: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzBuc2xveWh2czNseG8wdHg3dmN4ZmdicHJuYW15dTFmeTN0aml1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUA7aRkZwuLP7YVSEw/giphy.gif',
-    tags: ['clear', 'happy', 'sunrise', 'mist']
+    tags: ['clear', 'happy', 'sunbeam', 'mist']
   }, 
 
   {
@@ -241,22 +269,22 @@ const forestImages = [
 
   {
     url: 'https://i.pinimg.com/originals/8d/8c/ac/8d8cacc7074eaeb9178a03b9cc4c788d.gif',
-    tags: ['clear', 'sunrise', 'neutral', 'mist']
+    tags: ['clear', 'sunbeam', 'neutral', 'mist']
   },
 
   {
     url: 'https://i.pinimg.com/originals/d3/e7/86/d3e7868d6e60c884145afb820857e583.gif',
-    tags: ['clear', 'sunset', 'neutral', 'mist']
+    tags: ['clear', 'sunbeam', 'neutral', 'mist']
   }, 
 
   {
     url: 'https://i.pinimg.com/originals/ea/ae/19/eaae197127169573df345cef728ddaf3.gif',
-    tags: ['clear', 'sunrise', 'neutral', 'mist']
+    tags: ['clear', 'sunbeam', 'neutral', 'mist']
   },
 
   {
     url: 'https://i.pinimg.com/originals/77/7d/21/777d210599820ce0321f8d1612f24720.gif',
-    tags: ['clear', 'sunrise', 'neutral', 'mist']
+    tags: ['clear', 'sunbeam', 'neutral', 'mist']
   },
 
   {
@@ -266,7 +294,7 @@ const forestImages = [
 
   {
     url: 'https://i.gifer.com/9KLe.mp4',
-    tags: ['gloomy', 'rainy', 'dusk', 'mist']
+    tags: ['gloomy', 'rainy', 'nighttime', 'mist']
   },
 
   {
@@ -297,7 +325,7 @@ const flowingWaterImages =[
 
 {
     url: 'https://phoneky.co.uk/thumbs/screensavers/down/new/places/-3_UISOlaSS.gif',
-    tags: ['happy', 'clear', 'dusk']
+    tags: ['happy', 'clear', 'nighttime']
 }, 
 
 {
@@ -347,7 +375,7 @@ const flowingWaterImages =[
 
 {
     url: 'https://i.gifer.com/1Eqx.gif',
-    tags: ['neutral', 'clear', 'dusk', 'mist']
+    tags: ['neutral', 'clear', 'nighttime', 'mist']
 },
 
 {
@@ -357,21 +385,21 @@ const flowingWaterImages =[
 
 {
     url: 'https://64.media.tumblr.com/cff581808fbb1b267944cb80dabfd617/6538f68c8d4d089f-db/s540x810/99c87e021b706adc1c567a1d0bc89e5a2f386b48.gif',
-    tags: ['gloomy', 'neutral', 'dusk', 'mist', 'cool', 'clear']
+    tags: ['gloomy', 'neutral', 'nighttime', 'mist', 'cool', 'clear']
 },
 
 {
     url: 'https://i.pinimg.com/originals/15/b1/58/15b158a4688d7e4b799520c5288f2ae9.gif',
-    tags: ['gloomy', 'dusk', 'mist', 'clear']
+    tags: ['gloomy', 'nighttime', 'mist', 'clear']
 },
 
 {
     url: 'https://i.pinimg.com/originals/4e/f2/13/4ef2131d142ca2a308ffaa878992291b.gif',
-    tags: ['neutral', 'happy', 'dusk', 'mist', 'clear']
+    tags: ['neutral', 'happy', 'nighttime', 'mist', 'clear']
 },
 {
     url: 'https://i.gifer.com/2qQ1.gif',
-    tags: ['gloomy', 'dusk', 'clear']
+    tags: ['gloomy', 'nighttime', 'clear']
 },
 
 {
@@ -412,22 +440,22 @@ const flowingWaterImages =[
 const mountainImages =[
     {
         url: 'https://33.media.tumblr.com/ef8cb843f59ef5d012d77ec4718b35ab/tumblr_nvnvatCOHU1sk6vtao1_400.gif',
-        tags: ['happy', 'clear', 'dusk']
+        tags: ['happy', 'clear', 'nighttime']
     }, 
 
     {
         url: 'https://i.pinimg.com/originals/23/6f/a9/236fa9c337f3db3f6eab41034f58d54b.gif',
-        tags: ['happy', 'clear', 'dusk']
+        tags: ['happy', 'clear', 'nighttime']
     }, 
 
     {
         url: 'https://stormandsky.com/gif/14.gif',
-        tags: ['neutral', 'clear', 'dawn']
+        tags: ['neutral', 'clear', 'daytime']
     },
 
     {
         url: 'https://mir-s3-cdn-cf.behance.net/project_modules/source/fb89fb35295351.56f1706fbafaa.gif',
-        tags: ['neutral', 'clear', 'dawn', 'mist']
+        tags: ['neutral', 'clear', 'daytime']
     },
 
     {
@@ -456,18 +484,18 @@ const cloudImages =[
 
     {
         url: 'https://twistedsifter.com/wp-content/uploads/2015/02/looping-gifs-of-supercell-thunderstorms-4.gif?w=800',
-        tags: ['neutral', 'clear', 'dawn']
+        tags: ['neutral', 'clear', 'daytime']
     }, 
 
 
     {
         url: 'https://i.gifer.com/fyMN.gif',
-        tags: ['happy', 'clear', 'dawn', 'sunrise']
+        tags: ['happy', 'clear', 'daytime', 'sunbeam']
     },
 
     {
         url: 'https://i.gifer.com/g2B1.mp4',
-        tags: ['gloomy', 'rainy', 'dusk']
+        tags: ['gloomy', 'rainy', 'nighttime']
     },
 
     {
@@ -501,17 +529,17 @@ const oceanImages = [
 const techImages = [
 {
     url: 'https://gifdb.com/images/high/cinemagraph-altered-carbon-1kmkhvyzciq4b6hk.webp',
-    tags: ['neutral', 'clear', 'dusk']
+    tags: ['neutral', 'clear', 'nighttime']
 },
 
 {
     url: 'https://gifdb.com/images/high/nyc-subway-cinemagraph-k38b2u4s8xfu73wt.webp',
-    tags: ['neutral', 'clear', 'dusk', 'dawn']
+    tags: ['neutral', 'clear', 'nighttime', 'daytime']
 },
 
 {
     url: 'https://gifdb.com/images/high/cinemagraph-rainy-night-lights-dpfxtm3egbohw6k9.webp',
-    tags: ['rainy', 'gloomy', 'dusk'] 
+    tags: ['rainy', 'gloomy', 'nighttime'] 
 },
 
 {
@@ -539,7 +567,7 @@ const techImages = [
 
 {
     url: 'https://i.gifer.com/IEVM.mp4',
-    tags: ['gloomy', 'dusk', 'clear']
+    tags: ['gloomy', 'nighttime', 'clear']
 }
 
 ];      
@@ -549,7 +577,7 @@ const techImages = [
 const animeImages = [
 {
     url: 'https://i.gifer.com/fzrN.mp4',
-    tags: ['gloomy', 'rainy', 'dusk']
+    tags: ['gloomy', 'rainy', 'nighttime']
 }
 ];
 
@@ -573,7 +601,7 @@ const imageGroups = {
     const imageCredits = document.getElementById('imageCredits');
     const filterContainer = document.getElementById('filter-container');
 
-    let currentFilters = { group: 'all', vibe: 'all', weather: 'all', time: 'all' };
+    let currentFilters = { group: 'all', vibe: null, weather: null, time: null };
 
     function filterAndDisplayImage() {
         let availableImages = [];
@@ -588,9 +616,9 @@ const imageGroups = {
 
         // 2. Filter the selected group by other tags
         const filtered = availableImages.filter(image => {
-            const vibeMatch = currentFilters.vibe === 'all' || image.tags.includes(currentFilters.vibe);
-            const weatherMatch = currentFilters.weather === 'all' || image.tags.includes(currentFilters.weather);
-            const timeMatch = currentFilters.time === 'all' || image.tags.includes(currentFilters.time);
+            const vibeMatch = !currentFilters.vibe || image.tags.includes(currentFilters.vibe);
+            const weatherMatch = !currentFilters.weather || image.tags.includes(currentFilters.weather);
+            const timeMatch = !currentFilters.time || image.tags.includes(currentFilters.time);
             return vibeMatch && weatherMatch && timeMatch;
         });
 
@@ -607,19 +635,65 @@ const imageGroups = {
         }
     }
 
+    function resetFilters() {
+        // Reset all filters to default state
+        currentFilters = { group: 'all', vibe: null, weather: null, time: null };
+        
+        // Update button states
+        document.querySelectorAll('.glass-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        // Set group "All" as active
+        const groupAllButton = document.querySelector('[data-filter-type="group"][data-filter="all"]');
+        if (groupAllButton) {
+            groupAllButton.classList.add('active');
+        }
+        
+        // Refresh the image
+        filterAndDisplayImage();
+    }
+
     filterContainer.addEventListener('click', function(e) {
         const button = e.target.closest('.glass-button');
         if (!button) return;
         const filterType = button.dataset.filterType;
         const filterValue = button.dataset.filter;
         if (filterType) {
-            currentFilters[filterType] = filterValue;
-            const parentGroup = button.parentElement;
-            parentGroup.querySelector('.glass-button.active')?.classList.remove('active');
-            button.classList.add('active');
+            // Handle group filter differently (can be 'all')
+            if (filterType === 'group') {
+                currentFilters[filterType] = filterValue;
+                // Remove active from all group buttons
+                document.querySelectorAll('[data-filter-type="group"]').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            } else {
+                // For vibe, weather, time - toggle the filter
+                if (currentFilters[filterType] === filterValue) {
+                    // If clicking the same filter, remove it
+                    currentFilters[filterType] = null;
+                    button.classList.remove('active');
+                } else {
+                    // Set new filter
+                    currentFilters[filterType] = filterValue;
+                    // Remove active from other buttons in same group
+                    const parentGroup = button.parentElement;
+                    parentGroup.querySelectorAll('.glass-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    button.classList.add('active');
+                }
+            }
+            
+            // If it's a group filter, always add active class
+            if (filterType === 'group') {
+                button.classList.add('active');
+            }
+            
             filterAndDisplayImage();
         }
     });
+    
     filterAndDisplayImage();
 });
 </script>
