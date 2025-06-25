@@ -251,6 +251,7 @@ class WindowManager {
         });
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
+            // Smooth movement - no grid snapping for sticky notes
             note.style.left = (e.clientX - offsetX) + 'px';
             note.style.top = (e.clientY - offsetY) + 'px';
             note.style.position = 'fixed';

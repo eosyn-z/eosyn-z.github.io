@@ -70,12 +70,40 @@ description: "Touch grass - nature imagery and filters."
     font-size: 0.75rem;
   }
 }
+
+/* Add spacing between home bar and filter container */
+#filter-container {
+  margin-top: 3.5rem !important;
+}
+
+/* Arrange Vibe, Weather, Time on a single row */
+.filter-multi-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.filter-multi-row .filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Ensure glass effect for all filter buttons */
+.glass-button {
+  background: var(--theme-button-gradient) !important;
+  color: var(--text-white) !important;
+  border: 1px solid var(--theme-accent) !important;
+  box-shadow: var(--glass-shadow-medium) !important;
+  backdrop-filter: var(--glass-blur-medium) !important;
+  opacity: 0.95;
+}
 </style>
 
 <a href="/" class="glass-button" style="position: fixed; top: 20px; left: 20px; z-index: 1005;">← Back to Home</a>
 
-<div id="filter-container" class="glass-panel" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; flex-direction: column; gap: 12px; padding: 12px 20px; max-width: 90vw; align-items: center;">
-    
+<div id="filter-container" class="glass-panel">
     <div class="filter-group">
         <strong class="filter-label">Group:</strong>
         <button class="glass-button active" data-filter-type="group" data-filter="all">All</button>
@@ -88,24 +116,22 @@ description: "Touch grass - nature imagery and filters."
         <button class="glass-button" data-filter-type="group" data-filter="tech">Tech</button>
         <button class="glass-button" data-filter-type="group" data-filter="anime">Anime</button>
     </div>
-
-    <div class="filter-group">
+    <div class="filter-multi-row">
+      <div class="filter-group">
         <strong class="filter-label">Vibe:</strong>
         <button class="glass-button active" data-filter-type="vibe" data-filter="all">All</button>
         <button class="glass-button" data-filter-type="vibe" data-filter="happy">Happy</button>
         <button class="glass-button" data-filter-type="vibe" data-filter="neutral">Neutral</button>
         <button class="glass-button" data-filter-type="vibe" data-filter="gloomy">Gloomy</button>
-    </div>
-
-    <div class="filter-group">
+      </div>
+      <div class="filter-group">
         <strong class="filter-label">Weather:</strong>
         <button class="glass-button active" data-filter-type="weather" data-filter="all">All</button>
         <button class="glass-button" data-filter-type="weather" data-filter="clear">Clear</button>
         <button class="glass-button" data-filter-type="weather" data-filter="rainy">Rainy</button>
         <button class="glass-button" data-filter-type="weather" data-filter="mist">Mist</button>
-    </div>
-
-    <div class="filter-group">
+      </div>
+      <div class="filter-group">
         <strong class="filter-label">Time:</strong>
         <button class="glass-button active" data-filter-type="time" data-filter="all">All</button>
         <button class="glass-button" data-filter-type="time" data-filter="dawn">Dawn</button>
@@ -113,6 +139,7 @@ description: "Touch grass - nature imagery and filters."
         <button class="glass-button" data-filter-type="time" data-filter="dusk">Dusk</button>
         <button class="glass-button" data-filter-type="time" data-filter="sunrise">Sunrise</button>
         <button class="glass-button" data-filter-type="time" data-filter="sunset">Sunset</button>
+      </div>
     </div>
 </div>
 
@@ -123,7 +150,7 @@ description: "Touch grass - nature imagery and filters."
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
-// HIIIIIIIIIIIIIIIIII IT'S EOSYN! I ACTUALLY STARTED WRITING THINGS HERE!
+// HIIIIIIIIIIIIIIIIIIII IT'S EOSYN! I ACTUALLY STARTED WRITING THINGS HERE!
 
 // * - * - * - * - * - * - * - * - *
 
@@ -597,5 +624,4 @@ const imageGroups = {
 });
 </script>
 
-</div>
 </div>

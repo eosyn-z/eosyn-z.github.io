@@ -39,24 +39,33 @@ description: "Search for websites, filter content, and manage your bookmarks."
   border-radius: 12px;
   padding: 1.5rem;
   position: relative;
-  /* Removed animations from base card */
+  transition: all 0.3s ease;
 }
+
+.website-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-heavy);
+}
+
 .website-card h4 a {
   color: var(--theme-accent);
   text-decoration: none;
   font-size: 1.2rem;
 }
+
 .website-card p {
   color: var(--text-secondary);
   font-size: 0.95rem;
   margin: 0.5rem 0 1rem;
 }
+
 .website-card .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
+
 .website-card .tags span {
   background: var(--glass-bg-medium);
   padding: 0.3rem 0.7rem;
@@ -110,11 +119,18 @@ description: "Search for websites, filter content, and manage your bookmarks."
 .star-button.bookmarked {
   color: #ffd700;
   background: var(--glass-bg-heavy);
+  animation: starPulse 0.3s ease;
 }
 
 .star-button.bookmarked:hover {
   color: #ffed4e;
   transform: scale(1.1);
+}
+
+@keyframes starPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 .star-button.disabled {
@@ -129,7 +145,7 @@ description: "Search for websites, filter content, and manage your bookmarks."
   color: var(--theme-text-secondary);
 }
 
-/* Responsive adjustments for search layout */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .social-forums-section {
     flex-direction: column;
@@ -664,35 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bookmarks = loadBookmarks();
     const filteredBookmarks = bookmarks.filter(b => b.url !== site.url);
     saveBookmarks(filteredBookmarks);
-    
-    // Also remove from desktop if it exists there
-    if (window.desktopManager) {
-      window.desktopManager.removeBookmarkFromDesktop(site.url);
-    }
-    
     return filteredBookmarks.length !== bookmarks.length;
-  }
-
-  // Add bookmark to desktop
-  function addToDesktop(site) {
-    if (window.desktopManager) {
-      window.desktopManager.addBookmarkToDesktop(site);
-      return true;
-    } else {
-      console.warn('Desktop manager not available');
-      return false;
-    }
-  }
-
-  // Remove bookmark from desktop
-  function removeFromDesktop(site) {
-    if (window.desktopManager) {
-      window.desktopManager.removeBookmarkFromDesktop(site.url);
-      return true;
-    } else {
-      console.warn('Desktop manager not available');
-      return false;
-    }
   }
 
   // Check if a site is bookmarked
@@ -700,70 +688,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const bookmarks = loadBookmarks();
     return bookmarks.some(b => b.url === site.url);
   }
-
-  // Check if a site is on desktop
-  function isOnDesktop(site) {
-    if (window.desktopManager) {
-      const iconId = `bookmark-${site.url.replace(/[^a-zA-Z0-9]/g, '')}`;
-      return document.getElementById(iconId) !== null;
-    }
-    return false;
-  }
-
-  // Check if cookies are accepted
-  function cookiesAccepted() {
-    const consent = getCookie('cookie_consent');
-    return consent === 'accepted';
-  }
-
-  // Show cookie consent message
-  function showCookieMessage() {
-    const message = document.createElement('div');
-    message.className = 'glass-card';
-    message.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 10000;
-      padding: 1rem;
-      background: var(--glass-bg-heavy);
-      border: 1px solid var(--glass-border-medium);
-      border-radius: 8px;
-      box-shadow: var(--glass-shadow-heavy);
-      max-width: 300px;
-      animation: slideIn 0.3s ease;
-    `;
-    message.innerHTML = `
-      <p style="margin: 0 0 0.5rem 0; color: var(--theme-text); font-weight: 600;">🍪 Cookie Required</p>
-      <p style="margin: 0; color: var(--theme-text-secondary); font-size: 0.9rem;">
-        Please accept cookies to use the bookmark feature.
-      </p>
-    `;
-    
-    document.body.appendChild(message);
-    
-    // Remove message after 3 seconds
-    setTimeout(() => {
-      if (message.parentNode) {
-        message.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => message.remove(), 300);
-      }
-    }, 3000);
-  }
-
-  // Add CSS animations for the message
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOut {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(100%); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
 
   function renderSites(filter = 'all', searchTerm = '') {
     console.log('renderSites called with:', { filter, searchTerm });
@@ -810,6 +734,17 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
+    // Sort sites: personal sites first, then alphabetically
+    filteredSites.sort((a, b) => {
+      const aIsPersonal = a.tags.includes('personal');
+      const bIsPersonal = b.tags.includes('personal');
+      
+      if (aIsPersonal && !bIsPersonal) return -1;
+      if (!aIsPersonal && bIsPersonal) return 1;
+      
+      return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+    });
+    
     // Group sites by tag
     let groups;
     if (filter === 'bookmark') {
@@ -817,13 +752,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'Bookmarked Sites': filteredSites
       };
     } else if (filter === 'all') {
-      // For 'all' filter, group by categories
+      // For 'all' filter, group by categories with personal sites first
       groups = {
         'Personal Sites': filteredSites.filter(s => s.tags.includes('personal')),
         'Tools & Resources': filteredSites.filter(s => s.tags.includes('tools') && !s.tags.includes('personal')),
         'Company & Platform': filteredSites.filter(s => s.tags.includes('company') && !s.tags.includes('tools') && !s.tags.includes('personal')),
-        'Bookmarked Sites': filteredSites.filter(s => isBookmarked(s) && !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
-        'Other Sites': filteredSites.filter(s => !isBookmarked(s) && !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
+        'Other Sites': filteredSites.filter(s => !s.tags.includes('personal') && !s.tags.includes('tools') && !s.tags.includes('company')),
       };
     } else {
       // For specific filters, just show all matching sites in one group
@@ -856,14 +790,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sitesInGroup.forEach(site => {
             const isBookmarked = isBookmarked(site);
-            const isOnDesktop = isOnDesktop(site);
-            const cookiesOk = cookiesAccepted();
             const card = document.createElement('div');
             card.className = 'website-card';
             card.innerHTML = `
-                <button class="star-button ${isBookmarked ? 'bookmarked' : ''} ${!cookiesOk ? 'disabled' : ''}" 
+                <button class="star-button ${isBookmarked ? 'bookmarked' : ''}" 
                         data-site='${JSON.stringify(site)}' 
-                        title="${cookiesOk ? (isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks') : 'Accept cookies to bookmark'}"
+                        title="${isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}"
                         onclick="handleStarClick(event, '${site.url}')">
                     ${isBookmarked ? '⭐' : '☆'}
                 </button>
@@ -871,16 +803,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>${site.description}</p>
                 <div class="tags">
                     ${site.tags.map(tag => `<span>${tag}</span>`).join('')}
-                </div>
-                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-                    <button class="bookmark-btn glass-button ${isBookmarked ? 'bookmarked' : ''}" data-site='${JSON.stringify(site)}'>
-                        ${isBookmarked ? '🔖 Unbookmark' : '🔖 Bookmark'}
-                    </button>
-                    ${isBookmarked ? `
-                        <button class="desktop-btn glass-button ${isOnDesktop ? 'on-desktop' : ''}" data-site='${JSON.stringify(site)}'>
-                            ${isOnDesktop ? '🖥️ Remove from Desktop' : '🖥️ Add to Desktop'}
-                        </button>
-                    ` : ''}
                 </div>
             `;
             groupGrid.appendChild(card);
@@ -910,55 +832,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Bookmark and desktop logic
-  grid.addEventListener('click', function(e) {
-      if (e.target.matches('.bookmark-btn')) {
-          const siteData = JSON.parse(e.target.dataset.site);
-          
-          if (isBookmarked(siteData)) {
-              // Remove bookmark
-              removeBookmark(siteData);
-              e.target.textContent = '🔖 Bookmark';
-              e.target.classList.remove('bookmarked');
-          } else {
-              // Add bookmark
-              addBookmark(siteData);
-              e.target.textContent = '🔖 Unbookmark';
-              e.target.classList.add('bookmarked');
-          }
-          
-          // If we're currently viewing bookmarks, re-render to update the list
-          if (activeFilter === 'bookmark') {
-              renderSites(activeFilter, searchBar.value);
-          }
-      }
-      
-      if (e.target.matches('.desktop-btn')) {
-          const siteData = JSON.parse(e.target.dataset.site);
-          
-          if (isOnDesktop(siteData)) {
-              // Remove from desktop
-              removeFromDesktop(siteData);
-              e.target.textContent = '🖥️ Add to Desktop';
-              e.target.classList.remove('on-desktop');
-          } else {
-              // Add to desktop
-              addToDesktop(siteData);
-              e.target.textContent = '🖥️ Remove from Desktop';
-              e.target.classList.add('on-desktop');
-          }
-      }
-  });
-
   // Handle star button clicks
   window.handleStarClick = function(event, siteUrl) {
     event.preventDefault();
     event.stopPropagation();
-    
-    if (!cookiesAccepted()) {
-      showCookieMessage();
-      return;
-    }
     
     const siteData = JSON.parse(event.target.dataset.site);
     
@@ -982,23 +859,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Add JS to sort all cards alphabetically by default and filter as user types
-  function sortAndFilterSites() {
-    const sites = document.querySelectorAll('.website-card');
-    const sortedSites = Array.from(sites).sort((a, b) => {
-      const titleA = a.querySelector('h4 a').textContent.toLowerCase();
-      const titleB = b.querySelector('h4 a').textContent.toLowerCase();
-      return titleA.localeCompare(titleB);
-    });
-    grid.innerHTML = '';
-    sortedSites.forEach(site => grid.appendChild(site));
-  }
-
-  sortAndFilterSites();
-
-  searchBar.addEventListener('input', sortAndFilterSites);
-
 });
 </script>
-
-</div>

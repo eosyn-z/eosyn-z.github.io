@@ -320,39 +320,52 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('desktopIconPositions', JSON.stringify(positions));
         }
         makeIconDraggable(icon) {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            const snapSize = 10; 
+            let isDragging = false;
+            let offsetX, offsetY;
+            const gridSize = 80; // Grid size for tiled movement
 
-            icon.onmousedown = (e) => {
-                if (e.button === 1) e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            };
-
-            const elementDrag = (e) => {
+            icon.addEventListener('mousedown', (e) => {
+                if (e.button !== 0) return;
                 e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
+                isDragging = true;
+                offsetX = e.clientX - icon.getBoundingClientRect().left;
+                offsetY = e.clientY - icon.getBoundingClientRect().top;
+                icon.style.zIndex = 1000;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const gridRect = this.grid.getBoundingClientRect();
+                let x = e.clientX - gridRect.left - offsetX;
+                let y = e.clientY - gridRect.top - offsetY;
+                x = Math.max(0, Math.min(x, gridRect.width - icon.offsetWidth));
+                y = Math.max(0, Math.min(y, gridRect.height - icon.offsetHeight));
+                icon.style.left = `${x}px`;
+                icon.style.top = `${y}px`;
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                icon.style.zIndex = 'auto';
                 
-                let newTop = icon.offsetTop - pos2;
-                let newLeft = icon.offsetLeft - pos1;
-
-                newTop = Math.round(newTop / snapSize) * snapSize;
-                newLeft = Math.round(newLeft / snapSize) * snapSize;
-
-                icon.style.top = newTop + "px";
-                icon.style.left = newLeft + "px";
-            };
-
-            const closeDragElement = () => {
+                // Snap to grid for tiled movement
+                const gridX = Math.round(parseFloat(icon.style.left) / gridSize) * gridSize;
+                const gridY = Math.round(parseFloat(icon.style.top) / gridSize) * gridSize;
+                icon.style.left = `${gridX}px`;
+                icon.style.top = `${gridY}px`;
+                
+                this.iconPositions[icon.id] = { gridX, gridY };
                 this.saveIconPositions();
-                document.onmouseup = null;
-                document.onmousemove = null;
-            };
+            });
+
+            icon.addEventListener('dblclick', () => {
+                const url = icon.dataset.appUrl;
+                const title = icon.dataset.appTitle;
+                if (url && window.windowManager) {
+                    window.windowManager.createWindow(url, title);
+                }
+            });
         }
     }
 
@@ -799,6 +812,7 @@ class DesktopManager {
     makeIconDraggable(icon) {
         let isDragging = false;
         let offsetX, offsetY;
+        const gridSize = 80; // Grid size for tiled movement
 
         icon.addEventListener('mousedown', (e) => {
             if (e.button !== 0) return;
@@ -824,10 +838,13 @@ class DesktopManager {
             if (!isDragging) return;
             isDragging = false;
             icon.style.zIndex = 'auto';
-            const gridX = Math.round(parseFloat(icon.style.left) / this.gridCellSize.width);
-            const gridY = Math.round(parseFloat(icon.style.top) / this.gridCellSize.height);
-            icon.style.left = `${gridX * this.gridCellSize.width}px`;
-            icon.style.top = `${gridY * this.gridCellSize.height}px`;
+            
+            // Snap to grid for tiled movement
+            const gridX = Math.round(parseFloat(icon.style.left) / gridSize) * gridSize;
+            const gridY = Math.round(parseFloat(icon.style.top) / gridSize) * gridSize;
+            icon.style.left = `${gridX}px`;
+            icon.style.top = `${gridY}px`;
+            
             this.iconPositions[icon.id] = { gridX, gridY };
             this.saveIconPositions();
         });

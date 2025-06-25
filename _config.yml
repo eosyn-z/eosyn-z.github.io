@@ -24,7 +24,7 @@ collections:
     output: true
   games:
     output: true
-    permalink: /games/:title/
+    permalink: /:title/
   sitepages:
     output: true
     # mark this collection as the source for nav pages
