@@ -36,7 +36,7 @@
         </button>
         <div class="start-menu-header">
             <div class="start-menu-avatar" alt="User">👤</div>
-            <span class="start-menu-username">User</span>
+            <span class="start-menu-username" id="startMenuUsername">User</span>
         </div>
         <nav class="start-menu-nav">
             <a href="#" class="start-menu-category-button active" data-category="programs">Programs</a>
@@ -53,4 +53,25 @@
             <ul class="start-menu-list social-list"></ul>
         </div>
     </div>
-</div> 
+</div>
+<script>
+// Update username in start menu from cookie
+function getCookie(name) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+  }
+  return null;
+}
+function setUsernameInStartMenu(username) {
+  const el = document.getElementById('startMenuUsername');
+  if (el) el.textContent = username || 'User';
+}
+document.addEventListener('DOMContentLoaded', function() {
+  setUsernameInStartMenu(getCookie('username'));
+  window.setUsernameInStartMenu = setUsernameInStartMenu;
+});
+</script> 

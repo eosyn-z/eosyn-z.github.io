@@ -246,7 +246,7 @@ class RetroTerminal {
         this.print('  note     - Create a sticky note');
         this.print('  pages    - List all available pages');
         this.print('  secret   - 🎉 Easter egg!');
-        this.print('  music    - Toggle music bar (show|hide|toggle|default true|false)');
+        this.print('  music    - Toggle music bar (show|hide|toggle|default true|false|status)');
     }
 
     changeTheme(args) {
@@ -456,26 +456,32 @@ class RetroTerminal {
             switch (action.toLowerCase()) {
                 case 'show':
                     window.nowPlaying.show();
-                    this.print('Music bar shown!');
+                    this.print('Music bar shown! 🎵');
                     break;
                 case 'hide':
                     window.nowPlaying.hide();
-                    this.print('Music bar hidden!');
+                    this.print('Music bar hidden! 🎵');
                     break;
                 case 'toggle':
                     window.nowPlaying.toggleVisibility();
-                    this.print('Music bar toggled!');
+                    this.print('Music bar toggled! 🎵');
                     break;
                 case 'default':
                     const setDefault = args[1] || 'true';
                     window.nowPlaying.setDefaultVisible(setDefault === 'true');
-                    this.print(`Music bar default visibility set to: ${setDefault}`);
+                    this.print(`Default visibility set to: ${setDefault === 'true' ? 'visible' : 'hidden'} 🎵`);
+                    break;
+                case 'status':
+                    const status = window.nowPlaying.isVisible ? 'visible' : 'hidden';
+                    const track = window.nowPlaying.title || 'No track';
+                    this.print(`Music bar: ${status} | Current: ${track} 🎵`);
                     break;
                 default:
-                    this.print('Usage: music [show|hide|toggle|default true|false]');
+                    this.print('Usage: music [show|hide|toggle|default true|false|status] 🎵');
+                    break;
             }
         } else {
-            this.print('Music bar system not available');
+            this.print('Music bar system not available - Rich Presence not initialized 🎵');
         }
     }
 

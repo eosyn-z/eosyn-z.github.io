@@ -132,43 +132,41 @@ nav,
 }
 </style>
 
-<a href="/" class="glass-button" style="position: fixed; top: 20px; left: 20px; z-index: 1005;">← Back to Home</a>
+<!-- Back to Home and Star Button at Top Left -->
+<div style="position: fixed; top: 20px; left: 20px; z-index: 1005; display: flex; gap: 10px; align-items: center;">
+  <a id="backToHomeBtn" href="/" class="glass-button">← Back to Home</a>
+  <button id="starToggleBtn" class="glass-button" title="Hide/Show UI" style="font-size: 1.3rem; padding: 0 18px;">⭐</button>
+</div>
 
-<div id="filter-container" class="glass-panel">
+<!-- Filter Menu at the Top (compact, reduced padding) -->
+<div id="filter-container" class="glass-panel" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; flex-direction: column; gap: 6px; padding: 4px 8px; max-width: 90vw; align-items: center;">
+  <div class="filter-group" style="margin-bottom: 0.5rem;">
+    <strong class="filter-label">Group:</strong>
+    <button class="glass-button active" data-filter-type="group" data-filter="all">All</button>
+    <button class="glass-button" data-filter-type="group" data-filter="plant">Plant</button>
+    <button class="glass-button" data-filter-type="group" data-filter="forest">Forest</button>
+    <button class="glass-button" data-filter-type="group" data-filter="mountain">Mountain</button>
+  </div>
+  <div class="filter-row" style="display: flex; gap: 6px;">
     <div class="filter-group">
-        <strong class="filter-label">Group:</strong>
-        <button class="glass-button active" data-filter-type="group" data-filter="all">All</button>
-        <button class="glass-button" data-filter-type="group" data-filter="plant">Plant</button>
-        <button class="glass-button" data-filter-type="group" data-filter="forest">Forest</button>
-        <button class="glass-button" data-filter-type="group" data-filter="flowingWater">Water</button>
-        <button class="glass-button" data-filter-type="group" data-filter="ocean">Ocean</button>
-        <button class="glass-button" data-filter-type="group" data-filter="mountains">Mountains</button>
-        <button class="glass-button" data-filter-type="group" data-filter="clouds">Clouds</button>
-        <button class="glass-button" data-filter-type="group" data-filter="tech">Tech</button>
-        <button class="glass-button" data-filter-type="group" data-filter="anime">Anime</button>
+      <strong class="filter-label">Vibe:</strong>
+      <button class="glass-button active" data-filter-type="vibe" data-filter="all">All</button>
+      <button class="glass-button" data-filter-type="vibe" data-filter="calm">Calm</button>
+      <button class="glass-button" data-filter-type="vibe" data-filter="adventure">Adventure</button>
     </div>
-    <div class="filter-multi-row">
-      <div class="filter-group">
-        <strong class="filter-label">Vibe:</strong>
-        <button class="glass-button" data-filter-type="vibe" data-filter="happy">Happy</button>
-        <button class="glass-button" data-filter-type="vibe" data-filter="neutral">Neutral</button>
-        <button class="glass-button" data-filter-type="vibe" data-filter="gloomy">Gloomy</button>
-      </div>
-      <div class="filter-group">
-        <strong class="filter-label">Weather:</strong>
-        <button class="glass-button" data-filter-type="weather" data-filter="clear">Clear</button>
-        <button class="glass-button" data-filter-type="weather" data-filter="rainy">Rainy</button>
-        <button class="glass-button" data-filter-type="weather" data-filter="mist">Mist</button>
-      </div>
-      <div class="filter-group">
-        <strong class="filter-label">Time:</strong>
-        <button class="glass-button" data-filter-type="time" data-filter="daytime">Daytime</button>
-        <button class="glass-button" data-filter-type="time" data-filter="noon">Noon</button>
-        <button class="glass-button" data-filter-type="time" data-filter="nighttime">Nighttime</button>
-        <button class="glass-button" data-filter-type="time" data-filter="sunbeam">Sunbeam</button>
-      </div>
+    <div class="filter-group">
+      <strong class="filter-label">Weather:</strong>
+      <button class="glass-button active" data-filter-type="weather" data-filter="all">All</button>
+      <button class="glass-button" data-filter-type="weather" data-filter="sunny">Sunny</button>
+      <button class="glass-button" data-filter-type="weather" data-filter="rainy">Rainy</button>
     </div>
-    <button class="reset-button" onclick="resetFilters()">🔄 Reset</button>
+    <div class="filter-group">
+      <strong class="filter-label">Time:</strong>
+      <button class="glass-button active" data-filter-type="time" data-filter="all">All</button>
+      <button class="glass-button" data-filter-type="time" data-filter="day">Day</button>
+      <button class="glass-button" data-filter-type="time" data-filter="night">Night</button>
+    </div>
+  </div>
 </div>
 
 <div id="imageContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #000; transition: background-image 1s ease-in-out;"></div>
@@ -695,6 +693,30 @@ const imageGroups = {
     });
     
     filterAndDisplayImage();
+
+    // Remove music popup on this page
+    if (window.nowPlaying && window.nowPlaying.hide) {
+        window.nowPlaying.hide();
+    }
+
+    // Star toggle logic
+    const starBtn = document.getElementById('starToggleBtn');
+    const backBtn = document.getElementById('backToHomeBtn');
+    let uiHidden = false;
+
+    starBtn.addEventListener('click', function() {
+        uiHidden = !uiHidden;
+        if (uiHidden) {
+            // Hide all filter/toggle buttons and back button, show only star
+            filterContainer.style.display = 'none';
+            if (backBtn) backBtn.style.display = 'none';
+            starBtn.textContent = '⭐ Show UI';
+        } else {
+            filterContainer.style.display = '';
+            if (backBtn) backBtn.style.display = '';
+            starBtn.textContent = '⭐';
+        }
+    });
 });
 </script>
 

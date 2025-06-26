@@ -1,0 +1,6 @@
+[
+  {"text": "EOSYN.NET V1.0 LIVE 7/1/25", "url": "https://eosyn.net"},
+  {"text": "Visit the portfolio!", "url": "/portfolio/"}
+]
+
+Games are now working!~ | Try the new desktop mode! | Customize your experience in Desktop Settings from the Start Menu. 

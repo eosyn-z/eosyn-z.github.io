@@ -86,6 +86,9 @@ class StartMenu {
         if (!pageTitles.includes('retro terminal')) {
             this.addBuiltInUtility('🖥️ Retro Terminal', 'retro-terminal', lists.utilities);
         }
+        if (!pageTitles.includes('desktop settings')) {
+            this.addBuiltInUtility('🖥️ Desktop Settings', 'desktop-settings', lists.utilities);
+        }
 
         // --- Categorize and Populate ---
 
@@ -201,7 +204,7 @@ class StartMenu {
 
             if (type === 'theme-editor') {
                 // Open theme editor as a window
-                if (window.windowManager) {
+                if (window.windowManager)
                     window.windowManager.createWindow('theme-editor', '🎨 Theme Editor', `
                         <div style="padding: 1rem; height: 100%; overflow-y: auto; color: var(--theme-text);">
                             <h2 style="margin-top: 0;">🎨 Theme Editor</h2>
@@ -229,24 +232,26 @@ class StartMenu {
                             </div>
                         </div>
                     `);
-                }
-            } else if (type === 'sticky-notes') {
-                // Open sticky notes as a window
-                if (window.windowManager) {
-                    window.windowManager.createWindow('sticky-notes', '📝 Sticky Notes', window.windowManager.createStickyNotesContent());
-                    // Initialize sticky notes in the window
-                    setTimeout(() => {
-                        if (window.windowManager && typeof window.windowManager.initializeStickyNotes === 'function') {
-                            window.windowManager.initializeStickyNotes();
-                        }
-                    }, 100);
-                }
+            }
+            // Open sticky notes as a window
+            if (window.windowManager && type === 'sticky-notes') {
+                window.windowManager.createWindow('sticky-notes', '📝 Sticky Notes', window.windowManager.createStickyNotesContent());
+                // Initialize sticky notes in the window
+                setTimeout(() => {
+                    if (window.windowManager && typeof window.windowManager.initializeStickyNotes === 'function') {
+                        window.windowManager.initializeStickyNotes();
+                    }
+                }, 100);
             } else if (type === 'retro-terminal') {
                 // Open retro terminal
                 if (window.retroTerminal) {
                     window.retroTerminal.open();
                 } else {
                     console.error('Retro Terminal not available');
+                }
+            } else if (type === 'desktop-settings') {
+                if (window.openSettingsWindow) {
+                    window.openSettingsWindow();
                 }
             }
             

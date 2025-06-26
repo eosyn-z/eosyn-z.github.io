@@ -257,7 +257,13 @@ document.addEventListener('DOMContentLoaded', () => {
             this.layoutIcons();
             this.icons.forEach(icon => {
                 this.makeIconDraggable(icon);
-                icon.ondblclick = () => window.openApp(icon.id, icon.dataset.appUrl, icon.dataset.appTitle);
+                icon.ondblclick = () => {
+                    const url = icon.dataset.appUrl;
+                    const title = icon.dataset.appTitle;
+                    if (url && window.windowManager) {
+                        window.windowManager.createWindow(url, title);
+                    }
+                };
                 icon.onclick = (e) => { e.preventDefault(); };
             });
         }
@@ -787,8 +793,14 @@ class DesktopManager {
         this.layoutIcons();
         this.icons.forEach(icon => {
             this.makeIconDraggable(icon);
-            icon.ondblclick = () => window.openApp(icon.id, icon.dataset.appUrl, icon.dataset.appTitle);
-            icon.onclick = (e) => { e.preventDefault(); }; // Prevent single-click actions
+            icon.ondblclick = () => {
+                const url = icon.dataset.appUrl;
+                const title = icon.dataset.appTitle;
+                if (url && window.windowManager) {
+                    window.windowManager.createWindow(url, title);
+                }
+            };
+            icon.onclick = (e) => { e.preventDefault(); };
         });
     }
 

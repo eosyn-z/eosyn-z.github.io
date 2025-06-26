@@ -88,11 +88,11 @@ If this fails, rollback to:
   </div>
 </div>
 
-<!-- Blur overlay (should be before modals/popups) -->
+<!-- Blur overlay (should be before modals/popups, but NOT a parent of them) -->
 <div id="blurOverlay" style="display:none; position:fixed; z-index:9998; top:0; left:0; width:100vw; height:100vh; background:var(--glass-bg-heavy); backdrop-filter:var(--glass-blur-heavy); pointer-events:auto;"></div>
 
-<!-- Cookie Consent Modal (should be above blur) -->
-<div id="cookieConsent" style="display:none; position:fixed; z-index:10000; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy);">
+<!-- Cookie Consent Modal (should be above blur, never blurred or hidden by filter) -->
+<div id="cookieConsent" style="display:none; position:fixed; z-index:2147483647; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy); filter:none !important; pointer-events:auto !important;">
   <h2 style="margin-top:0; margin-bottom:1rem; color:var(--theme-text); font-size:1.5rem;">🍪 Cookie Consent</h2>
   <p style="margin-bottom:1.5rem; color:var(--theme-text-secondary); line-height:1.5;">This site uses cookies to save your preferences and enhance your experience.<br>By continuing, you accept our use of cookies.</p>
   <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
@@ -101,8 +101,8 @@ If this fails, rollback to:
   </div>
 </div>
 
-<!-- Username Modal (should be above blur) -->
-<div id="usernameModal" style="display:none; position:fixed; z-index:10000; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy);">
+<!-- Username Modal (should be above blur, never blurred) -->
+<div id="usernameModal" style="display:none; position:fixed; z-index:2147483647; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy);">
   <h2 style="margin-top:0; margin-bottom:1rem; color:var(--theme-text); font-size:1.5rem;">👤 Set Your Username</h2>
   <p style="margin-bottom:1.5rem; color:var(--theme-text-secondary); line-height:1.5;">Enter a username for your personalized experience (optional).</p>
   <input id="usernameInput" class="glass-input" type="text" maxlength="32" placeholder="Enter a username (optional)" style="margin-bottom:1.5rem; width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--glass-border-light); background:var(--glass-bg-light); color:var(--theme-text); box-sizing:border-box;">
@@ -116,6 +116,11 @@ If this fails, rollback to:
 <div id="discord-status-indicator" style="position:fixed;top:18px;right:24px;z-index:2147483646;display:flex;align-items:center;gap:0.5em;font-size:1.1em;">
   <span id="discord-status-dot" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#747f8d;"></span>
   <span id="discord-status-label" style="font-weight:500;color:var(--theme-text, #fff);">Offline</span>
+</div>
+
+<!-- Themed Ticker Bar (fixed, only on main page) -->
+<div id="themed-ticker-bar" style="position:fixed;top:0;left:0;width:100vw;z-index:2147483645;display:flex;align-items:center;height:32px;background:var(--glass-bg-medium,rgba(30,34,44,0.85));backdrop-filter:var(--glass-blur-medium,blur(8px));border-bottom:1px solid var(--glass-border-light,#3a3a3a);color:var(--theme-text,#fff);font-size:0.95rem;letter-spacing:0.01em;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+  <div id="ticker-content" style="white-space:nowrap;will-change:transform;animation:none;"></div>
 </div>
 
 <script>
@@ -240,78 +245,89 @@ function initStepCarousel(totalSites) {
   const carousel = document.getElementById('tpotSitesCarousel');
   const buttons = carousel.querySelectorAll('.tpot-site-btn');
   let currentIndex = 0;
-  const displayTime = 4000; // 4 seconds per site for comfortable reading
-  
-  function showNextSite() {
-    // Remove active class from current button
-    buttons[currentIndex].classList.remove('active');
-    
-    // Move to next site
-    currentIndex = (currentIndex + 1) % totalSites;
-    
-    // Add active class to new button
-    buttons[currentIndex].classList.add('active');
-    
-    // Scroll to center the active button
-    const activeButton = buttons[currentIndex];
-    const containerWidth = carousel.offsetWidth;
-    const buttonWidth = activeButton.offsetWidth;
-    const buttonLeft = activeButton.offsetLeft;
-    const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
-    
-    carousel.scrollTo({
-      left: scrollLeft,
-      behavior: 'smooth'
+  const displayTime = 2000; // 2 seconds per site minimum
+  let interval = null;
+  let isPaused = false;
+
+  function showSite(index) {
+    buttons.forEach((btn, i) => {
+      btn.classList.toggle('active', i === index);
     });
+    buttons[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
   }
-  
-  // Start the carousel
-  const interval = setInterval(showNextSite, displayTime);
-  
+
+  function showNextSite() {
+    currentIndex = (currentIndex + 1) % totalSites;
+    showSite(currentIndex);
+  }
+
+  function startCarousel() {
+    if (interval) clearInterval(interval);
+    interval = setInterval(showNextSite, displayTime);
+  }
+
+  function stopCarousel() {
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+    }
+  }
+
+  // Initial display
+  showSite(currentIndex);
+  startCarousel();
+
   // Pause on hover
   carousel.addEventListener('mouseenter', () => {
-    clearInterval(interval);
+    isPaused = true;
+    stopCarousel();
   });
-  
-  // Resume on mouse leave
   carousel.addEventListener('mouseleave', () => {
-    clearInterval(interval);
-    setInterval(showNextSite, displayTime);
-  });
-  
-  // Manual navigation with arrow keys
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      currentIndex = (currentIndex - 1 + totalSites) % totalSites;
-      buttons.forEach((btn, i) => {
-        btn.classList.toggle('active', i === currentIndex);
-      });
-      const activeButton = buttons[currentIndex];
-      const containerWidth = carousel.offsetWidth;
-      const buttonWidth = activeButton.offsetWidth;
-      const buttonLeft = activeButton.offsetLeft;
-      const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
-      carousel.scrollTo({
-        left: scrollLeft,
-        behavior: 'smooth'
-      });
-    } else if (e.key === 'ArrowRight') {
-      currentIndex = (currentIndex + 1) % totalSites;
-      buttons.forEach((btn, i) => {
-        btn.classList.toggle('active', i === currentIndex);
-      });
-      const activeButton = buttons[currentIndex];
-      const containerWidth = carousel.offsetWidth;
-      const buttonWidth = activeButton.offsetWidth;
-      const buttonLeft = activeButton.offsetLeft;
-      const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
-      carousel.scrollTo({
-        left: scrollLeft,
-        behavior: 'smooth'
-      });
+    if (isPaused) {
+      isPaused = false;
+      startCarousel();
     }
   });
+
+  // Manual navigation with arrow keys
+  document.addEventListener('keydown', (e) => {
+    if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+    if (e.key === 'ArrowLeft') {
+      currentIndex = (currentIndex - 1 + totalSites) % totalSites;
+      showSite(currentIndex);
+      stopCarousel();
+      startCarousel();
+    } else if (e.key === 'ArrowRight') {
+      currentIndex = (currentIndex + 1) % totalSites;
+      showSite(currentIndex);
+      stopCarousel();
+      startCarousel();
+    }
+  });
+
+  // Click to select
+  buttons.forEach((btn, i) => {
+    btn.addEventListener('click', (e) => {
+      currentIndex = i;
+      showSite(currentIndex);
+      stopCarousel();
+      startCarousel();
+    });
+  });
 }
+
+// Add a subtle highlight animation to .active
+const style = document.createElement('style');
+style.textContent = `
+.tpot-site-btn.active {
+  animation: tpotActivePulse 1.2s cubic-bezier(0.4,0,0.2,1) infinite alternate;
+}
+@keyframes tpotActivePulse {
+  0% { box-shadow: 0 0 0 0 var(--theme-accent, #667eea); }
+  100% { box-shadow: 0 0 16px 4px var(--theme-accent, #667eea); }
+}
+`;
+document.head.appendChild(style);
 
 // Onboarding logic for cookie consent and username
 (function() {
@@ -342,11 +358,12 @@ function initStepCarousel(totalSites) {
   }
   function showModal(id) {
     const modal = document.getElementById(id);
-    if (modal) modal.style.display = 'block';
-    // Always ensure modal is not blurred
-    modal.style.filter = 'none';
-    modal.style.pointerEvents = 'auto';
-    modal.style.zIndex = '2147483647';
+    if (modal) {
+      modal.style.display = 'block';
+      modal.style.zIndex = '2147483647';
+      modal.style.filter = 'none';
+      modal.style.pointerEvents = 'auto';
+    }
   }
   function hideModal(id) {
     const modal = document.getElementById(id);
@@ -369,24 +386,13 @@ function initStepCarousel(totalSites) {
     } else {
       hideBlur();
     }
-    // Never blur again after accepting
-    window.__onboardingComplete = true;
   };
   window.rejectCookies = function() {
     setCookie('cookie_consent', 'rejected', 365);
     hideModal('cookieConsent');
     hideBlur();
-    // Never blur again after rejecting
-    window.__onboardingComplete = true;
   };
-  // On load, check cookies and show modals/blur as needed
   document.addEventListener('DOMContentLoaded', function() {
-    if (window.__onboardingComplete) {
-      hideBlur();
-      hideModal('cookieConsent');
-      hideModal('usernameModal');
-      return;
-    }
     const consent = getCookie('cookie_consent');
     const username = getCookie('username');
     if (consent !== 'accepted' && consent !== 'rejected') {
@@ -397,6 +403,7 @@ function initStepCarousel(totalSites) {
       showModal('usernameModal');
     } else {
       hideBlur();
+      hideModal('cookieConsent');
     }
   });
 })();
@@ -492,6 +499,54 @@ async function updateDiscordStatusIndicator() {
 }
 updateDiscordStatusIndicator();
 setInterval(updateDiscordStatusIndicator, 15000);
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Only run ticker on main page
+  fetch('tickertext.txt')
+    .then(r => r.text())
+    .then(raw => {
+      let messages;
+      try {
+        messages = JSON.parse(raw);
+      } catch (e) {
+        messages = [{ text: raw.trim() }];
+      }
+      if (!Array.isArray(messages)) messages = [messages];
+      const ticker = document.getElementById('ticker-content');
+      let current = 0;
+      function showMessage(idx) {
+        const msg = messages[idx];
+        ticker.innerHTML = '';
+        if (msg.url) {
+          const a = document.createElement('a');
+          a.href = msg.url;
+          a.textContent = msg.text;
+          a.target = '_blank';
+          a.style.color = 'inherit';
+          a.style.textDecoration = 'underline';
+          ticker.appendChild(a);
+        } else {
+          ticker.textContent = msg.text;
+        }
+        // Animation duration based on text length
+        const baseDuration = 24;
+        const charCount = msg.text.length;
+        const duration = Math.max(baseDuration, charCount * 0.18);
+        ticker.style.animation = 'none';
+        void ticker.offsetWidth; // force reflow
+        ticker.style.animation = `ticker-scroll ${duration}s linear 1`;
+        // When animation ends, show next message
+        ticker.onanimationend = () => {
+          current = (current + 1) % messages.length;
+          showMessage(current);
+        };
+      }
+      showMessage(current);
+    })
+    .catch(() => {
+      document.getElementById('ticker-content').textContent = 'Welcome!';
+    });
+});
 </script>
 
 <style>
@@ -655,10 +710,41 @@ setInterval(updateDiscordStatusIndicator, 15000);
   border: 1px solid var(--glass-border-light) !important;
   backdrop-filter: var(--glass-blur-heavy) !important;
   box-shadow: var(--glass-shadow-heavy) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+/* Ensure cookie consent is ALWAYS on top */
+#cookieConsent {
+  z-index: 2147483647 !important;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: auto !important;
+  filter: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 body.blurred-for-onboarding > *:not(#blurOverlay):not(#cookieConsent):not(#usernameModal) {
   filter: blur(6px) saturate(1.1);
   pointer-events: none !important;
   user-select: none !important;
+}
+
+#themed-ticker-bar {
+  font-family: var(--theme-font, 'Inter', 'Segoe UI', Arial, sans-serif);
+  user-select: none;
+}
+#themed-ticker-bar::-webkit-scrollbar { display: none; }
+#ticker-content {
+  display: inline-block;
+  padding-left: 100vw;
+  animation: ticker-scroll 24s linear infinite;
+  min-width: 100vw;
+}
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
 </style>

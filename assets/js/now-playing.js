@@ -409,6 +409,9 @@ class NowPlaying {
             // Fallback: check for any music-related browser tabs or simulate data
             this.checkBrowserMusicTabs();
         }
+        
+        // Update visibility based on rich presence state
+        this.updateVisibilityFromRichPresence();
     }
 
     updateFromDiscordRPC() {
@@ -649,6 +652,16 @@ class NowPlaying {
     // Public method to get default visibility
     getDefaultVisible() {
         return localStorage.getItem('musicPlayerDefaultVisible') === 'true';
+    }
+
+    updateVisibilityFromRichPresence() {
+        // If we have track data and the user hasn't explicitly hidden the widget,
+        // show it when rich presence detects music
+        if (this.title !== 'Unknown Track' && this.getDefaultVisible()) {
+            if (!this.isVisible) {
+                this.show();
+            }
+        }
     }
 }
 

@@ -1018,12 +1018,30 @@ class WindowManager {
     }
 
     closeAllWindows() {
-        this.windows.forEach(windowData => {
-            if (windowData.element && windowData.element.parentNode) {
-                windowData.element.remove();
+        this.windows = this.windows.filter(windowData => {
+            const title = (windowData.element.querySelector('.window-title')?.textContent || '').toLowerCase();
+            const id = (windowData.id || '').toLowerCase();
+            if (
+                title.includes('sticky note') ||
+                title.includes('terminal') ||
+                id.includes('sticky') ||
+                id.includes('terminal')
+            ) {
+                // Keep Sticky Notes and Terminal windows open
+                console.warn('Keeping window open:', title || id);
+                return true;
+            } else {
+                // Close all other windows
+                if (windowData.element && windowData.element.parentNode) {
+                    windowData.element.parentNode.removeChild(windowData.element);
+                }
+                return false;
             }
         });
-        this.windows = [];
+        this.saveWindowStates();
+        if (window.windowSwitcher) {
+            window.windowSwitcher.refresh();
+        }
     }
 
     // Global function to create sticky notes (for demo page)

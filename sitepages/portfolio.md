@@ -46,7 +46,7 @@ permalink: /portfolio/
           <div class="art-info">
             <h3>3D Modeling</h3>
             <p>Three-dimensional digital sculptures and models</p>
-            <span class="art-count">12 pieces</span>
+            <span class="art-count" data-art-category="3d">Loading...</span>
           </div>
         </div>
 
@@ -58,7 +58,7 @@ permalink: /portfolio/
           <div class="art-info">
             <h3>Digital Art</h3>
             <p>Digital paintings and illustrations</p>
-            <span class="art-count">24 pieces</span>
+            <span class="art-count" data-art-category="digital">Loading...</span>
           </div>
         </div>
 
@@ -70,7 +70,7 @@ permalink: /portfolio/
           <div class="art-info">
             <h3>Traditional Art</h3>
             <p>Classical techniques and mixed media</p>
-            <span class="art-count">18 pieces</span>
+            <span class="art-count" data-art-category="traditional">Loading...</span>
           </div>
         </div>
 
@@ -82,7 +82,7 @@ permalink: /portfolio/
           <div class="art-info">
             <h3>Oil & Acrylic</h3>
             <p>Canvas paintings with rich textures</p>
-            <span class="art-count">8 pieces</span>
+            <span class="art-count" data-art-category="oil-acrylic">Loading...</span>
           </div>
         </div>
 
@@ -94,7 +94,7 @@ permalink: /portfolio/
           <div class="art-info">
             <h3>Ink Art</h3>
             <p>Pen and ink illustrations</p>
-            <span class="art-count">15 pieces</span>
+            <span class="art-count" data-art-category="ink">Loading...</span>
           </div>
         </div>
 
@@ -106,7 +106,7 @@ permalink: /portfolio/
           <div class="art-info">
             <h3>Mixed Media</h3>
             <p>Combined techniques and materials</p>
-            <span class="art-count">9 pieces</span>
+            <span class="art-count" data-art-category="mixed-media">Loading...</span>
           </div>
         </div>
 
@@ -118,7 +118,7 @@ permalink: /portfolio/
           <div class="art-info">
             <h3>Sketches</h3>
             <p>Quick studies and concept drawings</p>
-            <span class="art-count">31 pieces</span>
+            <span class="art-count" data-art-category="sketch">Loading...</span>
           </div>
         </div>
 
@@ -130,7 +130,7 @@ permalink: /portfolio/
           <div class="art-info">
             <h3>Watercolor</h3>
             <p>Fluid and expressive watercolor paintings</p>
-            <span class="art-count">14 pieces</span>
+            <span class="art-count" data-art-category="watercolor">Loading...</span>
           </div>
         </div>
       </div>
@@ -201,6 +201,8 @@ permalink: /portfolio/
     </div>
   </div>
 </div>
+
+<script src="/assets/js/portfolio-count.js"></script>
 
 <style>
 .portfolio-intro {
