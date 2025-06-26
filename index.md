@@ -78,14 +78,14 @@ If this fails, rollback to:
 <!-- Blur overlay (should be before modals/popups, but NOT a parent of them) -->
 <div id="blurOverlay" style="display:none; position:fixed; z-index:9998; top:0; left:0; width:100vw; height:100vh; background:var(--glass-bg-heavy); backdrop-filter:var(--glass-blur-heavy); pointer-events:auto;"></div>
 
-<!-- Combined Cookie Consent & Username Modal -->
+<!-- Combined Cookie Consent & Username Modal (must be after blurOverlay in DOM for stacking) -->
 <div id="cookieConsent" style="display:none; position:fixed; z-index:2147483647; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy); filter:none !important; pointer-events:auto !important;">
   <h2 style="margin-top:0; margin-bottom:1rem; color:var(--theme-text); font-size:1.5rem;">🍪 Cookie Consent & Username</h2>
   <p style="margin-bottom:1.5rem; color:var(--theme-text-secondary); line-height:1.5;">This site uses cookies to save your preferences and enhance your experience.<br>By continuing, you accept our use of cookies. Enter a username for personalization (optional).</p>
   <input id="usernameInput" class="glass-input" type="text" maxlength="32" placeholder="Enter a username (optional)" style="margin-bottom:1.5rem; width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--glass-border-light); background:var(--glass-bg-light); color:var(--theme-text); box-sizing:border-box;">
   <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-    <button class="glass-button" onclick="rejectCookies()" style="min-width:100px;">Reject</button>
-    <button class="glass-button" onclick="acceptCookies()" style="min-width:100px;">Accept</button>
+    <button class="glass-button" style="min-width:100px;">Reject</button>
+    <button class="glass-button" style="min-width:100px;">Accept</button>
   </div>
 </div>
 
@@ -695,7 +695,7 @@ body.blurred-for-onboarding > *:not(#blurOverlay):not(#cookieConsent) {
 
 #themed-ticker-bar {
   position: fixed;
-  top: 56px;
+  top: calc(56px + min(2vw, 12px)); /* Add dynamic padding between top bar and ticker */
   left: 0;
   width: 100vw;
   z-index: 2147483645;

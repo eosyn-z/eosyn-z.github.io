@@ -132,10 +132,10 @@ nav,
 }
 </style>
 
-<!-- Back to Home and Star Button at Top Left -->
+<!-- Back and Star Button at Top Left -->
 <div style="position: fixed; top: 20px; left: 20px; z-index: 1005; display: flex; gap: 10px; align-items: center;">
-  <a id="backToHomeBtn" href="/" class="glass-button">← Back to Home</a>
-  <button id="starToggleBtn" class="glass-button" title="Hide/Show UI" style="font-size: 1.3rem; padding: 0 18px;">⭐</button>
+  <a id="backToHomeBtn" href="/" class="glass-button">Back</a>
+  <button id="starToggleBtn" class="glass-button" title="Hide/Show UI" style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; padding: 0; background: linear-gradient(135deg, #8b5cf6 0%, #67e8f9 100%); box-shadow: 0 2px 12px 0 rgba(80,40,120,0.10); border: 2px solid var(--theme-accent, #8b5cf6); color: #fff;">⭐</button>
 </div>
 
 <!-- Filter Menu at the Top (compact, reduced padding) -->
@@ -145,7 +145,12 @@ nav,
     <button class="glass-button active" data-filter-type="group" data-filter="all">All</button>
     <button class="glass-button" data-filter-type="group" data-filter="plant">Plant</button>
     <button class="glass-button" data-filter-type="group" data-filter="forest">Forest</button>
-    <button class="glass-button" data-filter-type="group" data-filter="mountain">Mountain</button>
+    <button class="glass-button" data-filter-type="group" data-filter="flowingWater">Water</button>
+    <button class="glass-button" data-filter-type="group" data-filter="ocean">Ocean</button>
+    <button class="glass-button" data-filter-type="group" data-filter="mountains">Mountains</button>
+    <button class="glass-button" data-filter-type="group" data-filter="clouds">Clouds</button>
+    <button class="glass-button" data-filter-type="group" data-filter="tech">Tech</button>
+    <button class="glass-button" data-filter-type="group" data-filter="anime">Anime</button>
   </div>
   <div class="filter-row" style="display: flex; gap: 6px;">
     <div class="filter-group">

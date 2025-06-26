@@ -282,74 +282,116 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Cookie consent logic
-    const cookieConsent = document.getElementById('cookieConsent');
-    
-    // Functions to set, get, and reject cookies
-    window.setCookie = (name, value, days) => {
-        let expires = "";
-        if (days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "") + expires + "; path=/";
-        console.log(`[Cookie] Set: ${name} = ${value} (expires in ${days} days)`);
-    };
+    // --- Unified Cookie Consent, Username, Blur, and Theme Logic ---
+    const blurOverlay = document.getElementById('blurOverlay');
+    const cookieConsentModal = document.getElementById('cookieConsent');
 
-    window.getCookie = (name) => {
+    function setCookie(name, value, days) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/';
+        console.log(`[Cookie] Set: ${name} = ${value} (expires in ${days} days)`);
+    }
+    function getCookie(name) {
         const nameEQ = name + "=";
         const ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
+        for(let i = 0; i < ca.length; i++) {
             let c = ca[i];
             while (c.charAt(0) === ' ') c = c.substring(1, c.length);
             if (c.indexOf(nameEQ) === 0) {
-                console.log(`[Cookie] Read: ${name} = ${c.substring(nameEQ.length, c.length)}`);
-                return c.substring(nameEQ.length, c.length);
+                console.log(`[Cookie] Read: ${name} = ${decodeURIComponent(c.substring(nameEQ.length, c.length))}`);
+                return decodeURIComponent(c.substring(nameEQ.length, c.length));
             }
         }
         console.log(`[Cookie] Not found: ${name}`);
         return null;
+    }
+    function showBlur() {
+        if (blurOverlay) blurOverlay.style.display = 'block';
+        document.body.classList.add('blurred-for-onboarding');
+    }
+    function hideBlur() {
+        if (blurOverlay) blurOverlay.style.display = 'none';
+        document.body.classList.remove('blurred-for-onboarding');
+    }
+    function showModal() {
+        if (cookieConsentModal) {
+            cookieConsentModal.style.display = 'block';
+            cookieConsentModal.style.zIndex = '2147483647';
+            cookieConsentModal.style.filter = 'none';
+            cookieConsentModal.style.pointerEvents = 'auto';
+        }
+    }
+    function hideModal() {
+        if (cookieConsentModal) cookieConsentModal.style.display = 'none';
+    }
+    window.acceptCookies = function() {
+        setCookie('cookie_consent', 'accepted', 3650); // 10 years
+        const input = document.getElementById('usernameInput');
+        const username = input ? input.value.trim() : '';
+        setCookie('username', username, 3650);
+        hideModal();
+        hideBlur();
+        if (window.setUsernameInStartMenu) window.setUsernameInStartMenu(username);
+        // Load theme from cookie if available
+        const savedTheme = getCookie('theme');
+        if (savedTheme) {
+            setTheme(savedTheme, false); // Don't re-save to cookie
+        }
+        console.log('[Cookie] User accepted cookies and set username:', username);
     };
-
-    window.acceptCookies = () => {
-        setCookie('cookie_consent', 'accepted', 3650); // Store for 10 years
-        cookieConsent.style.display = 'none';
-        // Apply saved theme after accepting (only on initial load)
-        if (isInitialLoad) {
-            const savedTheme = getCookie('theme');
-            if (savedTheme) {
-                setTheme(savedTheme, true);
+    window.rejectCookies = function() {
+        setCookie('cookie_consent', 'rejected', 3650); // 10 years
+        hideModal();
+        hideBlur();
+        console.log('[Cookie] User rejected cookies');
+    };
+    document.addEventListener('DOMContentLoaded', function() {
+        const consent = getCookie('cookie_consent');
+        console.log('[Cookie] Consent on load:', consent);
+        if (consent !== 'accepted' && consent !== 'rejected') {
+            showBlur();
+            showModal();
+            console.log('[Cookie] Consent modal shown');
+        } else {
+            hideBlur();
+            hideModal();
+            console.log('[Cookie] Consent modal hidden');
+            // If accepted, load theme from cookie
+            if (consent === 'accepted') {
+                const savedTheme = getCookie('theme');
+                if (savedTheme) {
+                    setTheme(savedTheme, false);
+                }
             }
         }
-    };
-
-    window.rejectCookies = () => {
-        cookieConsent.style.display = 'none';
-    };
+    });
 
     // Global function to save current theme
     window.saveCurrentTheme = saveCurrentTheme;
 
-    // Check cookie consent on load
-    if (getCookie('cookie_consent') === 'accepted') {
-        const savedTheme = getCookie('theme');
-        if (savedTheme && isInitialLoad) {
-            setTheme(savedTheme, true);
-            
-            // If custom theme is saved, load the custom theme settings
-            if (savedTheme === 'custom' && window.customThemeEditor) {
-                // Wait a bit for the custom theme editor to initialize
-                setTimeout(() => {
-                    window.customThemeEditor.loadSavedCustomThemeOnPageLoad();
-                }, 500);
-            }
-        }
+    // Attach event listeners to Accept/Reject buttons for cookie consent
+    const acceptBtn = document.querySelector('#cookieConsent .glass-button:last-child');
+    const rejectBtn = document.querySelector('#cookieConsent .glass-button:first-child');
+    if (acceptBtn) {
+        acceptBtn.onclick = function(e) {
+            e.preventDefault();
+            window.acceptCookies();
+        };
     }
-
-    // Show cookie consent if not already accepted
-    if (getCookie('cookie_consent') !== 'accepted' && cookieConsent) {
-        cookieConsent.style.display = 'block';
-        console.log('[Cookie] Consent prompt shown');
+    if (rejectBtn) {
+        rejectBtn.onclick = function(e) {
+            e.preventDefault();
+            window.rejectCookies();
+        };
+    }
+    // On load, if username is in cookie, set it in the input
+    const usernameInput = document.getElementById('usernameInput');
+    if (usernameInput) {
+        const savedUsername = getCookie('username');
+        if (savedUsername) {
+            usernameInput.value = savedUsername;
+            console.log('[Cookie] Username loaded into input:', savedUsername);
+        }
     }
 }); 

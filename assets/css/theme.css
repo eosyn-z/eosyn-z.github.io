@@ -954,7 +954,7 @@ p {
 }
 
 .submenu-item:hover {
-  background-color: var(--glass-bg-light);
+  background: var(--glass-bg-light);
   border-color: var(--theme-accent);
   transform: translateX(5px);
   color: var(--theme-text);
@@ -1967,15 +1967,45 @@ body.desktop-mode .main-content {
     min-width: clamp(200px, 50vw, 300px);
     max-width: clamp(250px, 60vw, 350px);
     padding: clamp(0.75rem, 2.5vw, 1rem);
+    background: var(--glass-bg-medium, rgba(255,255,255,0.15));
+    border-radius: var(--glass-border-radius, 18px);
+    border: 1px solid var(--glass-border-light, rgba(255,255,255,0.2));
+    box-shadow: var(--glass-shadow-medium, 0 8px 24px rgba(0,0,0,0.15));
+    backdrop-filter: var(--glass-blur-medium, blur(10px));
+    -webkit-backdrop-filter: var(--glass-blur-medium, blur(10px));
+    color: var(--theme-text, #222);
+    position: relative;
+    overflow: hidden;
   }
-  
   .sticky-note .note-header {
     padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    background: transparent;
+    border-bottom: 1px solid var(--glass-border-light, rgba(255,255,255,0.15));
+    border-radius: var(--glass-border-radius, 18px) var(--glass-border-radius, 18px) 0 0;
   }
-  
   .sticky-note .note-content {
     padding: clamp(0.5rem, 1.5vw, 0.75rem);
     font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+    background: transparent;
+    border: none;
+    color: inherit;
+  }
+  .sticky-note input[type="checkbox"],
+  .sticky-note input[type="checkbox"]:focus {
+    accent-color: var(--theme-accent, #6366f1);
+    box-shadow: none !important;
+    border: 1.5px solid var(--glass-border-light, rgba(255,255,255,0.2));
+    outline: none !important;
+    background: var(--glass-bg-light, rgba(255,255,255,0.1));
+    border-radius: 4px;
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 0.5em;
+    vertical-align: middle;
+  }
+  .sticky-note input[type="checkbox"]:checked {
+    background: var(--theme-accent, #6366f1);
+    border-color: var(--theme-accent, #6366f1);
   }
   
   /* Grid Layouts */

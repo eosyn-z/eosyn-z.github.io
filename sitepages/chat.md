@@ -66,6 +66,14 @@ description: "Join the conversation on IRC."
     </iframe>
   </div>
 </div>
+
+<!-- Loading Overlay -->
+<div id="chat-loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(20,20,30,0.55); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:rgba(40,40,60,0.95); color:#fff; padding:2rem 2.5rem; border-radius:18px; box-shadow:0 4px 32px #0008; font-size:1.3rem; font-weight:500; letter-spacing:0.02em; display:flex; flex-direction:column; align-items:center;">
+    <span style="margin-bottom:1rem; font-size:2.2rem;">💬</span>
+    Loading chat channel...
+  </div>
+</div>
 </div>
 
 <style>
@@ -118,17 +126,16 @@ description: "Join the conversation on IRC."
 <script src="{{ "/assets/js/irc-themer.js" | relative_url }}" defer></script>
 <script>
   function setChannel(channelName) {
+    // Show loading overlay
+    document.getElementById('chat-loading-overlay').style.display = 'flex';
     // The irc-themer.js script will handle the URL creation
     if (window.updateIrcTheme) {
       window.updateIrcTheme(channelName);
     } else {
-      console.error('IRC Themer is not available. Cannot switch channels.');
-      // Fallback for when themer is not loaded
       const iframe = document.getElementById('chatFrame');
       const server = 'irc.libera.chat';
       iframe.src = `https://kiwiirc.com/nextclient/#irc://${server}/#${channelName}`;
     }
-
     // Update active button
     document.querySelectorAll('.channel-btn').forEach(btn => {
       btn.classList.remove('active');
@@ -137,11 +144,20 @@ description: "Join the conversation on IRC."
     if (newActiveButton) {
       newActiveButton.classList.add('active');
     }
-    
     // Update channel title
     const titleElement = document.querySelector('.glass-card:last-child h3');
     if (titleElement) {
       titleElement.textContent = `#${channelName}`;
     }
   }
+  // Hide loading overlay when iframe loads
+  document.addEventListener('DOMContentLoaded', function() {
+    var chatFrame = document.getElementById('chatFrame');
+    var overlay = document.getElementById('chat-loading-overlay');
+    if (chatFrame && overlay) {
+      chatFrame.addEventListener('load', function() {
+        overlay.style.display = 'none';
+      });
+    }
+  });
 </script> 

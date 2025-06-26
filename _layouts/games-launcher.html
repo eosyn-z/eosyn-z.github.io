@@ -27,6 +27,8 @@
         overflow-y: auto;
         height: calc(100vh - 60px);
         margin-top: 60px;
+        border-radius: 18px 18px 18px 18px; /* Rounded on all sides */
+        box-shadow: 0 4px 24px rgba(0,0,0,0.10);
       }
       
       .games-viewer {
@@ -212,7 +214,7 @@
           gameButton.onclick = (event) => selectGame(game, event.currentTarget);
           
           gameButton.innerHTML = `
-            <div class="game-icon">${game.icon || '🕹️'}</div>
+            <div class="game-icon">${game.icon || '🎮'}</div>
             <div class="game-info">
               <div class="game-title">${game.title}</div>
               <div class="game-description">${game.description || 'A classic game.'}</div>
@@ -230,18 +232,14 @@
         buttonElement.classList.add('active');
         currentGame = game;
         const viewerContent = document.getElementById('game-viewer-content');
-        if (game.permalink || game.url) {
+        if (game.permalink) {
           viewerContent.innerHTML = `
-            <div class="game-placeholder">
-              <h2>${game.icon || '🕹️'} ${game.title}</h2>
-              <p>${game.description || 'A classic game.'}</p>
-              <iframe src="${game.permalink || game.url}" style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.15);background:white;"></iframe>
-            </div>
+            <iframe src="${game.permalink}" style="width:100%;height:70vh;border:none;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,0.15);background:white;"></iframe>
           `;
         } else {
           viewerContent.innerHTML = `
             <div class="game-placeholder">
-              <h2>${game.icon || '🕹️'} ${game.title}</h2>
+              <h2>${game.icon || '🎮'} ${game.title}</h2>
               <p>${game.description || 'A classic game.'}</p>
               <button class="launch-game-btn" onclick="launchGame('${game.id}')">
                 🎮 Launch ${game.title}

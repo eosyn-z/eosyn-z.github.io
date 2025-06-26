@@ -24,6 +24,7 @@ class RetroTerminal {
             matrix: this.matrixEffect.bind(this),
             rainbow: this.rainbowText.bind(this),
             note: this.createNote.bind(this),
+            setvar: this.setThemeVar.bind(this),
             pages: this.listPages.bind(this),
             secret: this.secretEasterEgg.bind(this),
             music: this.toggleMusicBar.bind(this)
@@ -214,6 +215,8 @@ class RetroTerminal {
 
         if (this.commands[cmd]) {
             this.commands[cmd](args);
+        } else if (this.isPageCommand(cmd)) {
+            this.openPageByName(cmd);
         } else {
             this.print(`Command not found: ${cmd}. Type "help" for available commands.`);
         }
@@ -231,6 +234,7 @@ class RetroTerminal {
         this.print('Available commands:');
         this.print('  help     - Show this help message');
         this.print('  theme    - Change theme (alice, celestial, rainbow, etc.)');
+        this.print('  setvar   - Set a CSS variable for the theme (setvar --theme-accent #ff00ff)');
         this.print('  pet      - Open the web pet');
         this.print('  fortune  - Show a random fortune');
         this.print('  launch   - Launch an app (games, paint, etc.)');
@@ -245,6 +249,7 @@ class RetroTerminal {
         this.print('  rainbow  - Rainbow text effect');
         this.print('  note     - Create a sticky note');
         this.print('  pages    - List all available pages');
+        this.print('  <page>   - Type the name of a page to open it (games, paint, search, etc.)');
         this.print('  secret   - 🎉 Easter egg!');
         this.print('  music    - Toggle music bar (show|hide|toggle|default true|false|status)');
     }
@@ -482,6 +487,38 @@ class RetroTerminal {
             }
         } else {
             this.print('Music bar system not available - Rich Presence not initialized 🎵');
+        }
+    }
+
+    setThemeVar(args) {
+        if (args.length < 2) {
+            this.print('Usage: setvar <css-variable> <value>');
+            return;
+        }
+        const variable = args[0];
+        const value = args.slice(1).join(' ');
+        document.documentElement.style.setProperty(variable, value);
+        this.print(`Set CSS variable ${variable} to ${value}`);
+    }
+
+    isPageCommand(cmd) {
+        // List of page names you want to support
+        const pages = ['games','paint','chat','search','desktop','sticky','home','about','contact','blog','projects'];
+        return pages.includes(cmd);
+    }
+
+    openPageByName(cmd) {
+        // You may want to map page names to URLs or windowManager logic
+        if (window.windowManager) {
+            let pageTitle = cmd.charAt(0).toUpperCase() + cmd.slice(1);
+            let pageId = cmd;
+            // Special cases
+            if (cmd === 'sticky') pageTitle = 'Sticky Notes';
+            if (cmd === 'home') pageTitle = 'Home';
+            window.windowManager.createWindow(pageId, pageTitle, window.windowManager.createStickyNotesContent ? window.windowManager.createStickyNotesContent() : '');
+            this.print(`Opened page: ${pageTitle}`);
+        } else {
+            this.print('Window manager not available.');
         }
     }
 
