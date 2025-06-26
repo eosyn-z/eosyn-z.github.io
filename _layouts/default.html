@@ -20,33 +20,6 @@
     <div id="desktop-background"></div>
     <div id="window-container"></div>
     
-    {%- if page.url == "/" or page.url == "/index.html" or page.url == "" or page.url == nil -%}
-    <!-- Cookie Consent -->
-    <div class="cookie-consent glass-card sparkle-bg" id="cookieConsent" style="display: none;">
-      <h3 style="margin: 0 0 10px 0; color: var(--theme-text-primary); font-size: 16px;">🍪 Cookie Notice</h3>
-      <p style="margin: 0 0 15px 0; color: var(--theme-text-secondary); font-size: 14px; line-height: 1.5;">
-        Username, journal content, sticky note content, and theme settings are saved in cookies.<br>
-        You can skip the username prompt if you wish. No tracking or analytics cookies are used.
-      </p>
-      <div class="cookie-buttons">
-        <button class="glass-button cookie-btn reject" onclick="rejectCookies()">Reject</button>
-        <button class="glass-button cookie-btn accept" onclick="acceptCookies()">Accept</button>
-      </div>
-    </div>
-    <!-- Username Modal (shown after accepting cookies) -->
-    <div class="username-modal glass-card sparkle-bg" id="usernameModal" style="display: none;">
-      <h3 style="margin: 0 0 10px 0; color: var(--theme-text-primary); font-size: 16px;">👤 Enter Your Username</h3>
-      <p style="margin: 0 0 15px 0; color: var(--theme-text-secondary); font-size: 14px; line-height: 1.5;">
-        This will be used for your start menu and personal features. You can leave it blank to skip.<br>
-        <span style="font-size: 12px; color: var(--theme-text-muted);">Username, journal content, sticky note content, and theme settings are saved in cookies.</span>
-      </p>
-      <input id="usernameInput" class="glass-input" type="text" maxlength="32" placeholder="Enter a username (optional)" style="width: 100%; margin-bottom: 1rem; padding: 0.7rem; border-radius: 8px; border: 1px solid var(--glass-border-light); background: var(--glass-bg-light); color: var(--theme-text);">
-      <div class="cookie-buttons">
-        <button class="glass-button cookie-btn accept" onclick="submitUsername()">OK</button>
-      </div>
-    </div>
-    <div id="blurOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9998; backdrop-filter: blur(12px) brightness(0.9); background: var(--glass-bg-heavy); pointer-events:all;"></div>
-    {%- endif -%}
     <script>
       // Pass the site's base URL to the JavaScript environment
       window.siteBaseUrl = "{{ site.baseurl | default: '' }}";
