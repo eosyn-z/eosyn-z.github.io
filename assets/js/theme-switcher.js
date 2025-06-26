@@ -265,13 +265,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add save theme functionality to custom theme button
     const customThemeBtn = document.querySelector('.theme-btn.custom-theme');
     if (customThemeBtn) {
-        customThemeBtn.addEventListener('dblclick', (e) => {
+        customThemeBtn.title = '🎨 Custom Theme Editor';
+        customThemeBtn.onclick = (e) => {
             e.preventDefault();
-            saveCurrentTheme();
-        });
-        
-        // Update tooltip to show double-click to save
-        customThemeBtn.title = '🎨 Custom Theme Editor (Double-click or Ctrl+S to save current theme)';
+            if (window.customThemeEditor) {
+                window.customThemeEditor.createThemeEditorWindow();
+            }
+        };
     }
 
     // Add keyboard shortcut to save theme
@@ -294,6 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
             expires = "; expires=" + date.toUTCString();
         }
         document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        console.log(`[Cookie] Set: ${name} = ${value} (expires in ${days} days)`);
     };
 
     window.getCookie = (name) => {
@@ -302,8 +303,12 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < ca.length; i++) {
             let c = ca[i];
             while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            if (c.indexOf(nameEQ) === 0) {
+                console.log(`[Cookie] Read: ${name} = ${c.substring(nameEQ.length, c.length)}`);
+                return c.substring(nameEQ.length, c.length);
+            }
         }
+        console.log(`[Cookie] Not found: ${name}`);
         return null;
     };
 
@@ -345,5 +350,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show cookie consent if not already accepted
     if (getCookie('cookie_consent') !== 'accepted' && cookieConsent) {
         cookieConsent.style.display = 'block';
+        console.log('[Cookie] Consent prompt shown');
     }
 }); 

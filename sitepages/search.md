@@ -218,39 +218,9 @@ description: "Search for websites, filter content, and manage your bookmarks."
     </div>
   </div>
 
-  <!-- Social & Forums Section -->
-  <div class="social-forums-section" style="display: flex; gap: 1.5rem; margin-bottom: 2rem;">
-    
-    <!-- Social Websites Container -->
-    <div class="glass-card" style="flex: 3; padding: 2rem;">
-      <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Social Websites</h3>
-      <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-        <a href="https://twitter.com" class="glass-button" target="_blank">Twitter</a>
-        <a href="https://discord.com" class="glass-button" target="_blank">Discord</a>
-        <a href="https://youtube.com" class="glass-button" target="_blank">YouTube</a>
-        <a href="https://twitch.tv" class="glass-button" target="_blank">Twitch</a>
-        <a href="https://github.com" class="glass-button" target="_blank">GitHub</a>
-        <a href="https://dev.to" class="glass-button" target="_blank">Dev.to</a>
-        <a href="https://dribbble.com" class="glass-button" target="_blank">Dribbble</a>
-        <a href="https://behance.net" class="glass-button" target="_blank">Behance</a>
-        <a href="https://pinterest.com" class="glass-button" target="_blank">Pinterest</a>
-        <a href="https://medium.com" class="glass-button" target="_blank">Medium</a>
-        <a href="https://hashnode.com" class="glass-button" target="_blank">Hashnode</a>
-      </div>
-    </div>
-    
-    <!-- Forums & Communities Container -->
-    <div class="glass-card" style="flex: 1; padding: 2rem;">
-      <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--theme-text);">Forums & Communities</h3>
-      <div class="link-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-        <a href="https://stackoverflow.com" class="glass-button" target="_blank">Stack Overflow</a>
-        <a href="https://reddit.com/r/art" class="glass-button" target="_blank">r/art</a>
-      </div>
-    </div>
-  </div>
-
+  <!-- Bottom container for site cards -->
   <div class="glass-card" style="padding: 2rem;">
-    <div class="website-grid" id="websiteGrid">
+    <div class="website-grid" id="websiteGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
       <!-- Websites will be populated here -->
     </div>
   </div>
@@ -814,6 +784,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const isBookmarked = isBookmarked(site);
             const card = document.createElement('div');
             card.className = 'website-card';
+            card.style.display = 'flex';
+            card.style.flexDirection = 'column';
+            card.style.alignItems = 'flex-start';
+            card.style.justifyContent = 'flex-start';
+            card.style.height = '100%';
             card.innerHTML = `
                 <button class="star-button ${isBookmarked ? 'bookmarked' : ''}" 
                         data-site='${JSON.stringify(site)}' 
@@ -821,10 +796,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         onclick="handleStarClick(event, '${site.url}')">
                     ${isBookmarked ? '⭐' : '☆'}
                 </button>
-                <h4><a href="${site.url}" target="_blank">${site.title}</a></h4>
-                <p>${site.description}</p>
-                <div class="tags">
-                    ${site.tags.map(tag => `<span>${tag}</span>`).join('')}
+                <div class="site-preview" style="width: 100%; height: 120px; background: var(--glass-bg-medium); border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                  <img src="https://www.google.com/s2/favicons?domain=${site.url}&sz=64" alt="Preview" style="width: 64px; height: 64px; object-fit: contain;" onerror="this.style.display='none'">
+                </div>
+                <h4 style="margin: 0 0 0.5rem 0;"><a href="${site.url}" target="_blank">${site.title}</a></h4>
+                <p style="margin: 0 0 0.5rem 0;">${site.description}</p>
+                <div class="tags" style="margin-top: auto;">
+                  ${site.tags.map(tag => `<span>${tag}</span>`).join('')}
                 </div>
             `;
             groupGrid.appendChild(card);

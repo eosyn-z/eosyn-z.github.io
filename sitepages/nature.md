@@ -152,7 +152,7 @@ nav,
       <strong class="filter-label">Vibe:</strong>
       <button class="glass-button active" data-filter-type="vibe" data-filter="all">All</button>
       <button class="glass-button" data-filter-type="vibe" data-filter="calm">Calm</button>
-      <button class="glass-button" data-filter-type="vibe" data-filter="adventure">Adventure</button>
+      <button class="glass-button" data-filter-type="vibe" data-filter="gloomy">Gloomy</button>
     </div>
     <div class="filter-group">
       <strong class="filter-label">Weather:</strong>
@@ -167,6 +167,7 @@ nav,
       <button class="glass-button" data-filter-type="time" data-filter="night">Night</button>
     </div>
   </div>
+  <button class="reset-button" onclick="resetFilters()">Reset Filters</button>
 </div>
 
 <div id="imageContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #000; transition: background-image 1s ease-in-out;"></div>
@@ -601,22 +602,56 @@ const imageGroups = {
 
     let currentFilters = { group: 'all', vibe: null, weather: null, time: null };
 
+    // Mapping from filter button values to actual tags in the image data
+    const filterTagMap = {
+        vibe: {
+            happy: ['happy'],
+            neutral: ['neutral'],
+            gloomy: ['gloomy'],
+            calm: ['calm']
+        },
+        weather: {
+            sunny: ['clear'],
+            clear: ['clear'],
+            rainy: ['rainy']
+        },
+        time: {
+            day: ['daytime', 'noon', 'day'],
+            night: ['nighttime', 'night']
+        }
+    };
+
     function filterAndDisplayImage() {
         let availableImages = [];
 
         // 1. Select images based on the chosen group
         if (currentFilters.group === 'all') {
-            // Flatten all groups into one array if 'all' is selected
             availableImages = Object.values(imageGroups).flat();
         } else {
             availableImages = imageGroups[currentFilters.group] || [];
         }
 
-        // 2. Filter the selected group by other tags
+        // Replace 'sunrise' and 'sunset' tags with 'sunbeam'
+        availableImages = availableImages.map(image => {
+            const newTags = image.tags.map(tag => (tag.toLowerCase() === 'sunrise' || tag.toLowerCase() === 'sunset') ? 'sunbeam' : tag);
+            return { ...image, tags: newTags };
+        });
+
+        // 2. Filter the selected group by other tags using the mapping
         const filtered = availableImages.filter(image => {
-            const vibeMatch = !currentFilters.vibe || image.tags.includes(currentFilters.vibe);
-            const weatherMatch = !currentFilters.weather || image.tags.includes(currentFilters.weather);
-            const timeMatch = !currentFilters.time || image.tags.includes(currentFilters.time);
+            let vibeMatch = true, weatherMatch = true, timeMatch = true;
+            if (currentFilters.vibe) {
+                const tags = filterTagMap.vibe[currentFilters.vibe] || [currentFilters.vibe];
+                vibeMatch = tags.some(tag => image.tags.includes(tag));
+            }
+            if (currentFilters.weather) {
+                const tags = filterTagMap.weather[currentFilters.weather] || [currentFilters.weather];
+                weatherMatch = tags.some(tag => image.tags.includes(tag));
+            }
+            if (currentFilters.time) {
+                const tags = filterTagMap.time[currentFilters.time] || [currentFilters.time];
+                timeMatch = tags.some(tag => image.tags.includes(tag));
+            }
             return vibeMatch && weatherMatch && timeMatch;
         });
 
@@ -711,13 +746,13 @@ const imageGroups = {
             filterContainer.style.display = 'none';
             if (backBtn) backBtn.style.display = 'none';
             starBtn.textContent = '⭐ Show UI';
+            if (imageCredits) imageCredits.style.display = 'none';
         } else {
             filterContainer.style.display = '';
             if (backBtn) backBtn.style.display = '';
             starBtn.textContent = '⭐';
+            if (imageCredits && imageCredits.textContent && imageCredits.textContent.trim() !== '') imageCredits.style.display = 'block';
         }
     });
 });
 </script>
-
-</div>

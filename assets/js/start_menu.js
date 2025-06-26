@@ -139,13 +139,13 @@ class StartMenu {
     addPageToList(page, listElement) {
         if (!listElement || !page.title) return;
 
+        // Only create one button per page, with icon and text
         const li = document.createElement('li');
         li.className = 'start-menu-item';
 
         const pageIcon = document.createElement('span');
         pageIcon.className = 'icon';
         pageIcon.innerHTML = page.icon || '📄';
-        
         const pageTitle = document.createElement('span');
         pageTitle.className = 'title';
         pageTitle.textContent = page.title;
@@ -158,9 +158,8 @@ class StartMenu {
             favoriteToggle.className = 'favorite-toggle';
             favoriteToggle.innerHTML = window.favoritesManager.isFavorite(page.url || page.permalink) ? '★' : '☆';
             favoriteToggle.title = 'Pin to taskbar';
-            
             favoriteToggle.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent the app from launching
+                e.stopPropagation();
                 window.favoritesManager.toggleFavorite(page);
                 favoriteToggle.innerHTML = window.favoritesManager.isFavorite(page.url || page.permalink) ? '★' : '☆';
             });
@@ -169,9 +168,7 @@ class StartMenu {
 
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('favorite-toggle')) return;
-
             if (window.windowManager) {
-                // Use permalink for games, url for pages
                 window.windowManager.createWindow(page.permalink || page.url, page.title);
                 this.toggleMenu(false);
             } else {

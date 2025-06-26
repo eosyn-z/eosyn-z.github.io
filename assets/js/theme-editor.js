@@ -9,14 +9,14 @@ class CustomThemeEditor {
     init() {
         const themeEditorButton = document.querySelector('.theme-btn[data-theme="custom"]');
         if (themeEditorButton) {
-            themeEditorButton.addEventListener('click', () => {
+            themeEditorButton.onclick = () => {
                 const tray = document.getElementById('theme-editor-tray');
                 if (tray && tray.classList.contains('active')) {
                     this.closeThemeEditorTray();
                 } else {
                     this.createThemeEditorWindow();
                 }
-            });
+            };
         }
     }
 

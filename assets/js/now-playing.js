@@ -462,8 +462,8 @@ class NowPlaying {
 
         this.updateUI();
         
-        // Show widget if we have track data and it's not visible
-        if (this.title !== 'Unknown Track' && !this.isVisible) {
+        // Only show widget if user hasn't closed it
+        if (this.title !== 'Unknown Track' && !this.isVisible && localStorage.getItem('nowPlayingUserClosed') !== 'true') {
             this.show();
         }
 
@@ -545,6 +545,8 @@ class NowPlaying {
             this.container.style.transform = 'translateX(0)';
         }, 10);
         this.updateToggleButton();
+        // User opened it, clear the closed flag
+        localStorage.removeItem('nowPlayingUserClosed');
     }
 
     hide() {
@@ -554,6 +556,8 @@ class NowPlaying {
             this.container.style.display = 'none';
         }, 300);
         this.updateToggleButton();
+        // Remember user closed it
+        localStorage.setItem('nowPlayingUserClosed', 'true');
     }
 
     toggleVisibility() {
@@ -618,14 +622,16 @@ class NowPlaying {
                 this.updateTrack(state.currentTrack);
             }
             
-            if (this.isVisible) {
+            if (this.isVisible && localStorage.getItem('nowPlayingUserClosed') !== 'true') {
                 this.show();
+            } else {
+                this.hide();
             }
         }
         
         // Check if there's a default visibility setting
         const defaultVisible = localStorage.getItem('musicPlayerDefaultVisible');
-        if (defaultVisible === 'true' && !this.isVisible && this.title !== 'Unknown Track') {
+        if (defaultVisible === 'true' && !this.isVisible && this.title !== 'Unknown Track' && localStorage.getItem('nowPlayingUserClosed') !== 'true') {
             this.show();
         }
     }

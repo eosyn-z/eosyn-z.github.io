@@ -32,13 +32,13 @@ If this fails, rollback to:
         <!-- Window Component -->
         <div class="window-container" data-theme="a">
           <div class="window" id="main-window">
-            <div class="window-header">
-              <div class="window-controls">
-                <span class="window-control minimize"></span>
-                <span class="window-control maximize"></span>
-                <span class="window-control close"></span>
+            <div class="window-header mac-extra" style="display: flex; align-items: center; padding: 0.75rem 1.5rem 0.75rem 1.25rem; border-top-left-radius: 18px; border-top-right-radius: 18px; background: linear-gradient(90deg, #e3c6e7 0%, #c9b6e7 100%); box-shadow: 0 2px 12px 0 rgba(80,40,120,0.10); position: relative;">
+              <div class="window-controls mac-controls" style="display: flex; gap: 0.5rem; margin-right: 1.25rem;">
+                <span class="window-control mac-close" style="width: 14px; height: 14px; border-radius: 50%; background: #ff5f56; border: 1.5px solid #e0443e; box-shadow: 0 1px 2px #0002; display: inline-block; position: relative;"></span>
+                <span class="window-control mac-minimize" style="width: 14px; height: 14px; border-radius: 50%; background: #ffbd2e; border: 1.5px solid #dea123; box-shadow: 0 1px 2px #0002; display: inline-block; position: relative;"></span>
+                <span class="window-control mac-maximize" style="width: 14px; height: 14px; border-radius: 50%; background: #27c93f; border: 1.5px solid #13a10e; box-shadow: 0 1px 2px #0002; display: inline-block; position: relative;"></span>
               </div>
-              <div class="window-title">Welcome to eosyn's World</div>
+              <div class="window-title mac-title" style="font-family: 'SF Pro Display', 'Segoe UI', Arial, sans-serif; font-size: 1.45rem; font-weight: 700; letter-spacing: 0.01em; color: #3d2a4d; text-shadow: 0 1px 0 #fff8, 0 2px 8px #c9b6e7cc; flex: 1; text-align: left;">Welcome to the eosystem</div>
             </div>
             <div class="window-content" style="display: flex; flex-direction: row; align-items: flex-start; gap: 2rem;">
               <div style="flex: 1; min-width: 220px;">
@@ -72,19 +72,6 @@ If this fails, rollback to:
         <p>
           this site is under construction.<br>if you know about this already, you're probably one of my friends.<br>thank you for checking it out so early! 
           <3</p>
-  </div>
-</div>
-
-<!-- Draggable, resizable sticky note viewport -->
-<div id="welcome-sticky" class="sticky-note glass-card" style="position: absolute; top: 80px; left: 80px; min-width: 260px; min-height: 180px; width: 340px; height: 260px; z-index: 1002; resize: both; overflow: hidden; box-shadow: var(--glass-shadow-heavy);">
-  <div class="sticky-header" style="display: flex; align-items: center; padding: 0.5rem 1rem; cursor: move; background: var(--glass-bg-medium); border-bottom: 1px solid var(--glass-border-light);">
-    <span class="mac-btn mac-btn-red"></span>
-    <span class="mac-btn mac-btn-yellow"></span>
-    <span class="mac-btn mac-btn-green"></span>
-    <span style="flex:1; text-align:center; font-weight:600; color:var(--theme-text);">Welcome to eosyn's World</span>
-  </div>
-  <div class="sticky-content" style="width: 100%; height: calc(100% - 40px); display: flex; align-items: center; justify-content: center; background: var(--glass-bg-light);">
-    <img id="sticky-theme-image" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif" alt="Theme GIF" style="max-width: 100%; max-height: 100%; border-radius: 10px; object-fit: contain; transition: box-shadow 0.2s; box-shadow: 0 2px 12px rgba(0,0,0,0.12);">
   </div>
 </div>
 
@@ -325,6 +312,7 @@ document.head.appendChild(style);
     const expires = new Date();
     expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
     document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/';
+    console.log(`[Cookie] Set: ${name} = ${value} (expires in ${days} days)`);
   }
   function getCookie(name) {
     const nameEQ = name + "=";
@@ -332,8 +320,12 @@ document.head.appendChild(style);
     for(let i = 0; i < ca.length; i++) {
       let c = ca[i];
       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+      if (c.indexOf(nameEQ) === 0) {
+        console.log(`[Cookie] Read: ${name} = ${decodeURIComponent(c.substring(nameEQ.length, c.length))}`);
+        return decodeURIComponent(c.substring(nameEQ.length, c.length));
+      }
     }
+    console.log(`[Cookie] Not found: ${name}`);
     return null;
   }
   function showBlur() {
@@ -360,27 +352,32 @@ document.head.appendChild(style);
     if (modal) modal.style.display = 'none';
   }
   window.acceptCookies = function() {
-    setCookie('cookie_consent', 'accepted', 365);
+    setCookie('cookie_consent', 'accepted', 3650); // 10 years
     const input = document.getElementById('usernameInput');
     const username = input ? input.value.trim() : '';
-    setCookie('username', username, 365);
+    setCookie('username', username, 3650);
     hideModal('cookieConsent');
     hideBlur();
     if (window.setUsernameInStartMenu) window.setUsernameInStartMenu(username);
+    console.log('[Cookie] User accepted cookies and set username:', username);
   };
   window.rejectCookies = function() {
-    setCookie('cookie_consent', 'rejected', 365);
+    setCookie('cookie_consent', 'rejected', 3650); // 10 years
     hideModal('cookieConsent');
     hideBlur();
+    console.log('[Cookie] User rejected cookies');
   };
   document.addEventListener('DOMContentLoaded', function() {
     const consent = getCookie('cookie_consent');
+    console.log('[Cookie] Consent on load:', consent);
     if (consent !== 'accepted' && consent !== 'rejected') {
       showBlur();
       showModal('cookieConsent');
+      console.log('[Cookie] Consent modal shown');
     } else {
       hideBlur();
       hideModal('cookieConsent');
+      console.log('[Cookie] Consent modal hidden');
     }
   });
 })();
@@ -698,27 +695,29 @@ body.blurred-for-onboarding > *:not(#blurOverlay):not(#cookieConsent) {
 
 #themed-ticker-bar {
   position: fixed;
-  top: 56px; /* Move below the home bar/buttons, adjust as needed */
+  top: 56px;
   left: 0;
   width: 100vw;
   z-index: 2147483645;
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 40px;
   background: var(--glass-bg-medium,rgba(30,34,44,0.85));
   backdrop-filter: var(--glass-blur-medium,blur(8px));
   border-bottom: 1px solid var(--glass-border-light,#3a3a3a);
   color: var(--theme-text,#fff);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   letter-spacing: 0.01em;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 0.5rem 2.5rem 0.5rem 2.5rem;
 }
 #ticker-content {
   white-space: nowrap;
   will-change: transform;
   animation: none;
-  padding-left: 100vw;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
   min-width: 100vw;
 }
 @keyframes ticker-scroll {
