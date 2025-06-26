@@ -91,24 +91,14 @@ If this fails, rollback to:
 <!-- Blur overlay (should be before modals/popups, but NOT a parent of them) -->
 <div id="blurOverlay" style="display:none; position:fixed; z-index:9998; top:0; left:0; width:100vw; height:100vh; background:var(--glass-bg-heavy); backdrop-filter:var(--glass-blur-heavy); pointer-events:auto;"></div>
 
-<!-- Cookie Consent Modal (should be above blur, never blurred or hidden by filter) -->
+<!-- Combined Cookie Consent & Username Modal -->
 <div id="cookieConsent" style="display:none; position:fixed; z-index:2147483647; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy); filter:none !important; pointer-events:auto !important;">
-  <h2 style="margin-top:0; margin-bottom:1rem; color:var(--theme-text); font-size:1.5rem;">🍪 Cookie Consent</h2>
-  <p style="margin-bottom:1.5rem; color:var(--theme-text-secondary); line-height:1.5;">This site uses cookies to save your preferences and enhance your experience.<br>By continuing, you accept our use of cookies.</p>
-  <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-    <button class="glass-button" onclick="acceptCookies()" style="min-width:100px;">Accept</button>
-    <button class="glass-button" onclick="rejectCookies()" style="min-width:100px;">Reject</button>
-  </div>
-</div>
-
-<!-- Username Modal (should be above blur, never blurred) -->
-<div id="usernameModal" style="display:none; position:fixed; z-index:2147483647; top:50%; left:50%; transform:translate(-50%,-50%); min-width:320px; max-width:90vw; background:var(--glass-bg-heavy); border:1px solid var(--glass-border-light); border-radius:18px; box-shadow:var(--glass-shadow-heavy); padding:2.5rem 2rem 2rem 2rem; text-align:center; color:var(--theme-text); backdrop-filter:var(--glass-blur-heavy);">
-  <h2 style="margin-top:0; margin-bottom:1rem; color:var(--theme-text); font-size:1.5rem;">👤 Set Your Username</h2>
-  <p style="margin-bottom:1.5rem; color:var(--theme-text-secondary); line-height:1.5;">Enter a username for your personalized experience (optional).</p>
+  <h2 style="margin-top:0; margin-bottom:1rem; color:var(--theme-text); font-size:1.5rem;">🍪 Cookie Consent & Username</h2>
+  <p style="margin-bottom:1.5rem; color:var(--theme-text-secondary); line-height:1.5;">This site uses cookies to save your preferences and enhance your experience.<br>By continuing, you accept our use of cookies. Enter a username for personalization (optional).</p>
   <input id="usernameInput" class="glass-input" type="text" maxlength="32" placeholder="Enter a username (optional)" style="margin-bottom:1.5rem; width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--glass-border-light); background:var(--glass-bg-light); color:var(--theme-text); box-sizing:border-box;">
   <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-    <button class="glass-button" onclick="submitUsername()" style="min-width:100px;">Save</button>
-    <button class="glass-button" onclick="hideModal('usernameModal');hideBlur();" style="min-width:100px;">Skip</button>
+    <button class="glass-button" onclick="rejectCookies()" style="min-width:100px;">Reject</button>
+    <button class="glass-button" onclick="acceptCookies()" style="min-width:100px;">Accept</button>
   </div>
 </div>
 
@@ -119,8 +109,8 @@ If this fails, rollback to:
 </div>
 
 <!-- Themed Ticker Bar (fixed, only on main page) -->
-<div id="themed-ticker-bar" style="position:fixed;top:0;left:0;width:100vw;z-index:2147483645;display:flex;align-items:center;height:32px;background:var(--glass-bg-medium,rgba(30,34,44,0.85));backdrop-filter:var(--glass-blur-medium,blur(8px));border-bottom:1px solid var(--glass-border-light,#3a3a3a);color:var(--theme-text,#fff);font-size:0.95rem;letter-spacing:0.01em;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-  <div id="ticker-content" style="white-space:nowrap;will-change:transform;animation:none;"></div>
+<div id="themed-ticker-bar">
+  <div id="ticker-content"></div>
 </div>
 
 <script>
@@ -369,23 +359,14 @@ document.head.appendChild(style);
     const modal = document.getElementById(id);
     if (modal) modal.style.display = 'none';
   }
-  window.submitUsername = function() {
+  window.acceptCookies = function() {
+    setCookie('cookie_consent', 'accepted', 365);
     const input = document.getElementById('usernameInput');
     const username = input ? input.value.trim() : '';
     setCookie('username', username, 365);
-    hideModal('usernameModal');
+    hideModal('cookieConsent');
     hideBlur();
     if (window.setUsernameInStartMenu) window.setUsernameInStartMenu(username);
-  };
-  window.acceptCookies = function() {
-    setCookie('cookie_consent', 'accepted', 365);
-    hideModal('cookieConsent');
-    // Prompt for username if not set
-    if (!getCookie('username')) {
-      showModal('usernameModal');
-    } else {
-      hideBlur();
-    }
   };
   window.rejectCookies = function() {
     setCookie('cookie_consent', 'rejected', 365);
@@ -394,13 +375,9 @@ document.head.appendChild(style);
   };
   document.addEventListener('DOMContentLoaded', function() {
     const consent = getCookie('cookie_consent');
-    const username = getCookie('username');
     if (consent !== 'accepted' && consent !== 'rejected') {
       showBlur();
       showModal('cookieConsent');
-    } else if (!username && consent === 'accepted') {
-      showBlur();
-      showModal('usernameModal');
     } else {
       hideBlur();
       hideModal('cookieConsent');
@@ -701,20 +678,6 @@ document.addEventListener('DOMContentLoaded', function() {
   background: var(--glass-bg-heavy) !important;
   backdrop-filter: var(--glass-blur-heavy) !important;
 }
-#cookieConsent, #usernameModal {
-  z-index: 2147483647 !important;
-  pointer-events: auto !important;
-  filter: none !important;
-  position: fixed !important;
-  background: var(--glass-bg-heavy) !important;
-  border: 1px solid var(--glass-border-light) !important;
-  backdrop-filter: var(--glass-blur-heavy) !important;
-  box-shadow: var(--glass-shadow-heavy) !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  display: block !important;
-}
-/* Ensure cookie consent is ALWAYS on top */
 #cookieConsent {
   z-index: 2147483647 !important;
   position: fixed !important;
@@ -725,26 +688,45 @@ document.addEventListener('DOMContentLoaded', function() {
   filter: none !important;
   visibility: visible !important;
   opacity: 1 !important;
+  display: block !important;
 }
-body.blurred-for-onboarding > *:not(#blurOverlay):not(#cookieConsent):not(#usernameModal) {
+body.blurred-for-onboarding > *:not(#blurOverlay):not(#cookieConsent) {
   filter: blur(6px) saturate(1.1);
   pointer-events: none !important;
   user-select: none !important;
 }
 
 #themed-ticker-bar {
-  font-family: var(--theme-font, 'Inter', 'Segoe UI', Arial, sans-serif);
-  user-select: none;
+  position: fixed;
+  top: 56px; /* Move below the home bar/buttons, adjust as needed */
+  left: 0;
+  width: 100vw;
+  z-index: 2147483645;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  background: var(--glass-bg-medium,rgba(30,34,44,0.85));
+  backdrop-filter: var(--glass-blur-medium,blur(8px));
+  border-bottom: 1px solid var(--glass-border-light,#3a3a3a);
+  color: var(--theme-text,#fff);
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
-#themed-ticker-bar::-webkit-scrollbar { display: none; }
 #ticker-content {
-  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  animation: none;
   padding-left: 100vw;
-  animation: ticker-scroll 24s linear infinite;
   min-width: 100vw;
 }
 @keyframes ticker-scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
+}
+/* Remove margin-top from .main-content if present */
+.main-content {
+  margin-top: 0;
 }
 </style>
