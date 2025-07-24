@@ -4,21 +4,23 @@
   {%- include head.html -%} 
 
   <body data-theme="c">
+    {%- unless page.layout == "desktop" or page.url == "/desktop/" -%}
     <header class="glass-nav top-nav">
       <div class="nav-container">
         {%- include navigation.html -%}
       </div>
     </header>
+    {%- endunless -%}
+    
     <main class="main-content">
       {{ content }}
     </main>
 
     {%- if page.url == "/desktop/" -%}
-    {%- include bottom_bar.html -%}
+      {%- include bottom_bar.html -%}
+      <div id="desktop-background"></div>
+      <div id="window-container"></div>
     {%- endif -%}
-
-    <div id="desktop-background"></div>
-    <div id="window-container"></div>
     
     <script>
       // Pass the site's base URL to the JavaScript environment
@@ -26,13 +28,20 @@
       // Load all site pages into a global variable for scripts to use
       window.jekyllPages = {% include all_pages_json.html %};
     </script>
+    
+    {%- unless page.layout == "nature" -%}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
-    <script src="{{ "/assets/js/app-window.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/theme-switcher.js" | relative_url }}"></script>
+    {%- endunless -%}
+    
+    {%- if page.url == "/desktop/" or page.layout == "desktop" -%}
+    <script src="{{ "/assets/js/app-window.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/desktop.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/favorites.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/theme-editor.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/sticky_notes_manager.js" | relative_url }}"></script>
+    {%- endif -%}
+    
     <script>
       // Set initial view state class on body
       const desktopUrl = '{{ "/desktop" | relative_url }}';
@@ -42,4 +51,4 @@
     </script>
   </body>
 
-</html> 
+</html>
