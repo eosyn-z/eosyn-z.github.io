@@ -3,157 +3,159 @@
   <head>
     {%- include head.html -%}
     <style>
-      .game-launch-container {
-        text-align: center;
-        padding: 2rem;
-        background: var(--glass-bg-medium);
-        border-radius: 15px;
-        margin-bottom: 2rem;
-        border: 1px solid var(--glass-border-light);
-        max-width: 800px;
-        margin: 2rem auto;
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg-primary);
+        overflow: hidden;
       }
       
-      .launch-btn {
-        background: var(--theme-accent);
-        color: var(--text-white);
-        border: none;
-        padding: 1rem 2rem;
+      .desktop-back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 20000;
+        background: var(--glass-bg-heavy);
+        border: 1px solid var(--glass-border-light);
         border-radius: 8px;
-        font-size: 1.1rem;
+        padding: 0.5rem 1.2rem;
+        color: var(--theme-text);
         font-weight: 600;
+        font-size: 1rem;
         cursor: pointer;
+        box-shadow: var(--glass-shadow-medium);
         transition: all 0.2s ease;
-        margin: 1rem;
+        text-decoration: none;
+        display: inline-block;
       }
       
-      .launch-btn:hover {
-        background: var(--theme-accent-dark);
-        transform: translateY(-2px);
-      }
-      
-      .game-info {
-        margin-bottom: 1rem;
-        color: var(--theme-text-secondary);
-      }
-      
-      .game-info h2 {
-        color: var(--theme-text);
-        margin-bottom: 1rem;
-      }
-      
-      .game-content {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-      }
-      
-      /* 2048 specific styles */
-      .game-container-2048 {
-        width: 400px;
-        background: var(--glass-bg-dark);
-        border-radius: 10px;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        margin: 0 auto;
-      }
-      
-      .header-2048 {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      
-      .score-container {
-        background-color: var(--glass-bg-medium);
-        color: var(--theme-text);
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-align: center;
-      }
-      
-      .score-title {
-        font-size: 0.8rem;
-        text-transform: uppercase;
-      }
-      
-      #score {
-        font-size: 1.5rem;
-        font-weight: bold;
-      }
-      
-      #result {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: bold;
-        color: var(--theme-accent);
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .grid {
-        display: flex;
-        flex-wrap: wrap;
-        width: 400px;
-        height: 400px;
-        background-color: var(--glass-bg-medium);
-        border-radius: 10px;
-        margin: 0 auto;
-      }
-      
-      .grid div {
-        width: 100px;
-        height: 100px;
-        border-radius: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 2rem;
-        font-weight: bold;
-        color: var(--text-white);
-        background: var(--glass-bg-light);
-        margin: 1px;
-        box-sizing: border-box;
-      }
-      
-      /* Game controls */
-      .game-controls {
-        text-align: center;
-        margin: 1rem 0;
-      }
-      
-      .control-btn {
-        background: var(--glass-bg-medium);
-        color: var(--theme-text);
-        border: 1px solid var(--glass-border-light);
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
-        cursor: pointer;
-        margin: 0 0.5rem;
-        transition: all 0.2s ease;
-      }
-      
-      .control-btn:hover {
+      .desktop-back-btn:hover {
         background: var(--theme-accent);
         color: white;
+        text-decoration: none;
       }
       
-      /* Instructions */
-      .game-instructions {
-        background: var(--glass-bg-light);
-        border: 1px solid var(--glass-border-light);
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 1rem 0;
-        color: var(--theme-text-secondary);
-        font-size: 0.9rem;
+      .desktop-window-area {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+      }
+      
+      /* Desktop-specific navigation styling */
+      .nav-links-desktop {
+        display: flex !important;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 20000;
+        gap: 1rem;
+      }
+      
+      /* Hide regular navigation elements in desktop mode */
+      body.desktop-mode .nav-links-header,
+      body.desktop-mode .header-controls .theme-buttons,
+      body.desktop-mode .header-controls .view-toggle-container,
+      body.desktop-mode #discord-status-widget,
+      body.desktop-mode .top-nav {
+        display: none !important;
+      }
+      
+      /* Ensure desktop controls are visible */
+      body.desktop-mode .nav-links-desktop,
+      body.desktop-mode #create-note-btn {
+        display: flex !important;
+      }
+      
+      /* Desktop background and window container */
+      #desktop-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background: var(--bg-primary);
+      }
+      
+      #window-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        pointer-events: none;
+      }
+      
+      #window-container > * {
+        pointer-events: auto;
       }
     </style>
   </head>
-  <body>
-    <header class="glass-nav top-nav">
-      <div class
+  <body class="desktop-mode">
+    <!-- Desktop navigation -->
+    <div class="nav-links-desktop">
+      <a href="{{ '/' | relative_url }}" class="desktop-back-btn">
+        ← Back to Website
+      </a>
+    </div>
+    
+    <!-- Desktop window area -->
+    <div class="desktop-window-area">
+      {{ content }}
+    </div>
+
+    <!-- Desktop background -->
+    <div id="desktop-background"></div>
+    
+    <!-- Window container for app windows -->
+    <div id="window-container"></div>
+    
+    <!-- Bottom taskbar -->
+    {%- include bottom_bar_new.html -%}
+    
+    <script>
+      // Set up desktop mode immediately
+      document.body.classList.add('desktop-mode');
+      
+      // Pass site configuration to JavaScript
+      window.siteBaseUrl = "{{ site.baseurl | default: '' }}";
+      window.jekyllPages = {% include all_pages_json.html %};
+      
+      // Initialize desktop environment
+      document.addEventListener('DOMContentLoaded', function() {
+        // Hide any remaining regular navigation
+        const elements = document.querySelectorAll('.top-nav, .page-header, nav:not(.nav-links-desktop)');
+        elements.forEach(el => el.style.display = 'none');
+        
+        // Initialize sticky notes if available
+        if (window.stickyNotesTray) {
+          const createNoteBtn = document.getElementById('create-note-btn');
+          if (createNoteBtn) {
+            createNoteBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              window.stickyNotesTray.show();
+            });
+          }
+        }
+        
+        // Set desktop view state
+        document.body.classList.add('desktop-view-active');
+      });
+    </script>
+    
+    <!-- Load desktop scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+    <script src="{{ '/assets/js/app-window.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/desktop.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/bookmark_manager.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/favorites.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/start_menu.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/theme-editor.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/sticky_notes_manager.js' | relative_url }}"></script>
+  </body>
+</html>
