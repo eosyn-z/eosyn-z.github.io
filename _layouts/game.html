@@ -10,6 +10,8 @@
         border-radius: 15px;
         margin-bottom: 2rem;
         border: 1px solid var(--glass-border-light);
+        max-width: 800px;
+        margin: 2rem auto;
       }
       
       .launch-btn {
@@ -34,93 +36,124 @@
         margin-bottom: 1rem;
         color: var(--theme-text-secondary);
       }
-    </style>
-    <style>
-        .game-container-2048 {
-            width: 400px;
-            background: var(--glass-bg-dark);
-            border-radius: 10px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .header-2048 {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .score-container {
-            background-color: var(--glass-bg-medium);
-            color: var(--theme-text);
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .score-title {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-        #score {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        #result {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--theme-accent);
-            height: 3rem;
-        }
-        .grid {
-            display: flex;
-            flex-wrap: wrap;
-            width: 400px;
-            height: 400px;
-            background-color: var(--glass-bg-medium);
-            border-radius: 10px;
-        }
-        .grid div {
-            width: 100px;
-            height: 100px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--text-white);
-        }
+      
+      .game-info h2 {
+        color: var(--theme-text);
+        margin-bottom: 1rem;
+      }
+      
+      .game-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      
+      /* 2048 specific styles */
+      .game-container-2048 {
+        width: 400px;
+        background: var(--glass-bg-dark);
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin: 0 auto;
+      }
+      
+      .header-2048 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .score-container {
+        background-color: var(--glass-bg-medium);
+        color: var(--theme-text);
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-align: center;
+      }
+      
+      .score-title {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+      }
+      
+      #score {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      
+      #result {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--theme-accent);
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        width: 400px;
+        height: 400px;
+        background-color: var(--glass-bg-medium);
+        border-radius: 10px;
+        margin: 0 auto;
+      }
+      
+      .grid div {
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--text-white);
+        background: var(--glass-bg-light);
+        margin: 1px;
+        box-sizing: border-box;
+      }
+      
+      /* Game controls */
+      .game-controls {
+        text-align: center;
+        margin: 1rem 0;
+      }
+      
+      .control-btn {
+        background: var(--glass-bg-medium);
+        color: var(--theme-text);
+        border: 1px solid var(--glass-border-light);
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 0 0.5rem;
+        transition: all 0.2s ease;
+      }
+      
+      .control-btn:hover {
+        background: var(--theme-accent);
+        color: white;
+      }
+      
+      /* Instructions */
+      .game-instructions {
+        background: var(--glass-bg-light);
+        border: 1px solid var(--glass-border-light);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+        color: var(--theme-text-secondary);
+        font-size: 0.9rem;
+      }
     </style>
   </head>
   <body>
     <header class="glass-nav top-nav">
-      <div class="nav-container">
-        {%- include navigation.html -%}
-      </div>
-    </header>
-    
-    <div class="game-launch-container">
-      <div class="game-info">
-        <h2>{{ page.title }}</h2>
-        <p>Click the button below to launch this game in a window</p>
-      </div>
-      <button class="launch-btn" onclick="launchGameInWindow('{{ page.name | remove: '.md' }}', '{{ page.title }}')">
-        🎮 Launch {{ page.title }} in Window
-      </button>
-    </div>
-
-    {{ content }}
-
-    <script>
-      function launchGameInWindow(gameId, gameTitle) {
-        if (window.windowManager) {
-          window.windowManager.createWindow(gameId, gameTitle);
-        } else {
-          // Fallback: try to navigate to the game page
-          window.location.href = '/{{ page.name | remove: '.md' }}/';
-        }
-      }
-    </script>
-  </body>
-</html> 
+      <div class
