@@ -156,4 +156,135 @@
   </head>
   <body>
     <header class="glass-nav top-nav">
-      <div class
+      <div class="nav-container">
+        {%- include navigation.html -%}
+      </div>
+    </header>
+    
+    <main class="main-content">
+      <div class="game-content">
+        <div class="game-launch-container">
+          <div class="game-info">
+            <h2>{{ page.title }}</h2>
+            <p>Click the button below to launch this game in a window or play it directly</p>
+          </div>
+          
+          <button class="launch-btn" onclick="launchGameInWindow('{{ page.name | remove: '.md' }}', '{{ page.title }}')">
+            🎮 Launch {{ page.title }} in Window
+          </button>
+          
+          <button class="launch-btn" onclick="playGameHere()">
+            ▶️ Play Here
+          </button>
+        </div>
+
+        <div id="game-container" style="display: none;">
+          {{ content }}
+        </div>
+        
+        {% if page.instructions %}
+        <div class="game-instructions">
+          <h3>How to Play:</h3>
+          {{ page.instructions | markdownify }}
+        </div>
+        {% endif %}
+      </div>
+    </main>
+
+    <script>
+      function launchGameInWindow(gameId, gameTitle) {
+        // Check if we're in desktop mode with window manager
+        if (window.windowManager) {
+          const gameUrl = window.location.pathname;
+          window.windowManager.createWindow(gameId, gameTitle, gameUrl);
+        } else {
+          // Fallback: try to navigate to desktop mode
+          const desktopUrl = '{{ "/desktop/" | relative_url }}';
+          window.location.href = desktopUrl;
+        }
+      }
+      
+      function playGameHere() {
+        const container = document.getElementById('game-container');
+        const launchContainer = document.querySelector('.game-launch-container');
+        
+        if (container && launchContainer) {
+          // Hide launch buttons and show game
+          launchContainer.style.display = 'none';
+          container.style.display = 'block';
+          
+          // Initialize the game
+          const gameId = '{{ page.name | remove: ".md" }}';
+          initializeGameById(gameId);
+        }
+      }
+      
+      function initializeGameById(gameId) {
+        // Try to load and initialize the game script
+        const scriptPath = `/assets/js/${gameId}-game.js`;
+        
+        // Remove any existing game script
+        const oldScript = document.getElementById('active-game-script');
+        if (oldScript) oldScript.remove();
+        
+        // Load new script
+        const script = document.createElement('script');
+        script.id = 'active-game-script';
+        script.src = scriptPath;
+        
+        script.onload = function() {
+          // Try various initialization function names
+          const initFunctionNames = [
+            `initialize${gameId.charAt(0).toUpperCase() + gameId.slice(1)}Game`,
+            `init${gameId.charAt(0).toUpperCase() + gameId.slice(1)}`,
+            gameId === '2048' ? 'initialize2048Game' : null,
+            'initGame',
+            'startGame'
+          ].filter(Boolean);
+          
+          let initialized = false;
+          for (const funcName of initFunctionNames) {
+            if (typeof window[funcName] === 'function') {
+              try {
+                console.log(`Initializing ${gameId} with ${funcName}`);
+                window[funcName]();
+                initialized = true;
+                break;
+              } catch (err) {
+                console.error(`Error initializing ${gameId}:`, err);
+              }
+            }
+          }
+          
+          if (!initialized) {
+            console.warn(`No initialization function found for ${gameId}`);
+            // Game might auto-initialize
+          }
+        };
+        
+        script.onerror = function() {
+          console.error(`Could not load game script: ${scriptPath}`);
+          document.getElementById('game-container').innerHTML = `
+            <div style="text-align: center; padding: 2rem;">
+              <h3>Game script not found</h3>
+              <p>Could not load: ${scriptPath}</p>
+            </div>
+          `;
+        };
+        
+        document.head.appendChild(script);
+      }
+      
+      // Auto-play if this is a direct game page load
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check if this is being loaded in a window or if user wants direct play
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('autoplay') === 'true') {
+          playGameHere();
+        }
+      });
+    </script>
+    
+    <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
+  </body>
+</html>
