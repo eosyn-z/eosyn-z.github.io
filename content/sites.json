@@ -1,0 +1,1039 @@
+{
+  "sites": [
+    {
+      "url": "haruu.me",
+      "name": "Haru's Portfolio",
+      "description": "Personal portfolio for Haru, CS student interested in competitive programming, ML, art, and chess. Building Solana wallet in Rust, gamified Japanese learning site, privacy-focused chat app, bookmark storage platform.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "ai-ml",
+        "crypto-web3",
+        "design-art",
+        "developer",
+        "personal",
+        "portfolio",
+        "programming",
+        "security",
+        "startup"
+      ],
+      "contact": "kawkoi@proton.me"
+    },
+    {
+      "url": "liminallogs.bearblog.dev",
+      "name": "Liminal Logs",
+      "description": "Personal blog with posts on digital tools, mathematics, philosophy ('A Rebel, A Religion, A Roadway'), and technology contemplation",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "mathematics",
+        "personal",
+        "writing"
+      ]
+    },
+    {
+      "url": "nodes.tools",
+      "name": "nodespaghetti's Blender Resources",
+      "description": "Blender resources site hosting addons, Python scripts, and Mantis component pack. Supports via Gumroad/Patreon/Locals. GitLab repo available. YouTube channel for tutorials.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "design-art",
+        "developer",
+        "education",
+        "personal",
+        "programming",
+        "tools"
+      ]
+    },
+    {
+      "url": "strwb.com",
+      "name": "Strawberry Micro-Projects",
+      "description": "Playful strawberry-themed micro-project collection. Features: /tools (indie tech spotlight), /canvas (infinite canvas), /breathe (relaxation), /dvd (bouncing emojis), /wikipedia (random articles), /swearjar, /confetti, /reaction (reflex test). Philosophy: 'simple projects that drive growth'",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "design-art",
+        "developer",
+        "fun",
+        "personal",
+        "tools"
+      ]
+    },
+    {
+      "url": "virpy.dev",
+      "name": "Virpy's InfoSec Portfolio",
+      "description": "Personal portfolio for infosec analyst interested in reverse engineering, malware analysis, and security auditing. Building @joinbrag and @usefenced projects.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "personal",
+        "portfolio",
+        "security"
+      ]
+    },
+    {
+      "url": "0x0001.cc",
+      "name": "Madmeg's Technical Blog",
+      "description": "Technical blog covering engineering best practices, low-level programming languages, mathematical problem-solving (Advent of Code with formulas), geometry enthusiasm. Includes collaborative circle-drawing tool.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "mathematics",
+        "personal",
+        "programming",
+        "writing"
+      ]
+    },
+    {
+      "url": "swagsilver.github.io",
+      "name": "SwagZo Terminal",
+      "description": "Terminal-style personal page with links to GitHub, Twitter (X), Lidraughts, Monkeytype, and Discord. Minimalist aesthetic with command-line interface design.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "cli",
+        "developer",
+        "personal",
+        "portfolio"
+      ]
+    },
+    {
+      "url": "bohemianhacks.github.io",
+      "name": "BohemianHacks",
+      "description": "GitHub portfolio: 'Practical Engineering for Impractical Ideas'. 70 repositories including swarm intelligence (ESP32/TensorFlow), PodGet (podcast grabber), programming coursework. Collaborative cryptocurrency projects.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "crypto-web3",
+        "developer",
+        "hardware",
+        "personal",
+        "portfolio"
+      ]
+    },
+    {
+      "url": "shunyaresearch.github.io",
+      "name": "Shunya Research Lab",
+      "description": "Student-led research lab. Cognita: Transformer-alternate AI architectures using bio-mimicry. Mantis: EEG-based brain-computer interfaces for cybernetic prosthetics, ADHD applications, affordable BCI for Indian market.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "ai-ml",
+        "developer",
+        "education",
+        "hardware",
+        "personal"
+      ]
+    },
+    {
+      "url": "sakurajimalover.dev",
+      "name": "Matthew's Dev Portfolio",
+      "description": "Junior web developer in Philippines. Projects: Mailify (YouTube extension), Seiyuufind (voice actor search), Romanilyzer. Tech stack: HTML/CSS/JS, learning React/Node/MongoDB/Python.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "personal",
+        "portfolio",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "resorcinolworks.tech",
+      "name": "Resorcinol's Portfolio",
+      "description": "Minimal portfolio for Ayush Raghuvanshi, pre-final year CS student. Specializes in algorithm thinking and backend development.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "education",
+        "personal",
+        "portfolio",
+        "programming",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "itsk3v.in",
+      "name": "Kevin Roosey Portfolio",
+      "description": "Design-focused frontend engineer specializing in AI-native interfaces (artifacts, streaming UI, tools). Loves running and cycling for exploration. Open to full-time in-person roles in SF/NYC/Chicago/Seattle.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "ai-ml",
+        "design-art",
+        "developer",
+        "personal",
+        "portfolio",
+        "web-dev"
+      ],
+      "contact": "kevin@itsk3v.in"
+    },
+    {
+      "url": "kreyon.in",
+      "name": "Kreyon's Projects",
+      "description": "3rd year BCA student, fullstack developer. Projects: RAG-based CLI for PDF chat, Zomato clone, Discord bot, 100xDevs Rich Presence, meme social platform, AI cover letter generator, Tic Tac Toe, passport photo checker, Eatopia app.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "ai-ml",
+        "cli",
+        "developer",
+        "education",
+        "personal",
+        "portfolio",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "shank03.com",
+      "name": "Shashank Verma Portfolio",
+      "description": "CSE grad, systems programmer. Experience: SDE at Konrad Group, Full Stack at SuperAlign, Security at Expedia. Languages: C, C++, Go, Rust, Swift, Java, Kotlin. AOSP maintainer. Projects: XOR Cryptor, StatsBar, Claw Vault, MotiClubs, Rubik's Cube Solver.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "android",
+        "developer",
+        "personal",
+        "portfolio",
+        "programming",
+        "security"
+      ]
+    },
+    {
+      "url": "projects.priyavkaneria.com",
+      "name": "Priyav's Project Showcase",
+      "description": "Massive project showcase: ātmán (neural network mimicking brain), Conway's Game of Life, password manager, song analysis, location chat, SuperAlign.ai startup, campus RPG, GitHub analyzer, COVID RPG, collaborative paint, disaster donations platform, Game automation, 20-20-20 reminder, CTF challenges, Rust/WASM implementations.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "ai-ml",
+        "developer",
+        "fun",
+        "personal",
+        "portfolio",
+        "programming",
+        "startup"
+      ]
+    },
+    {
+      "url": "compiledthoughts.pages.dev",
+      "name": "Compiled Thoughts iOS",
+      "description": "iOS app portfolio. Featured: 'App of the Dead: Afterlife' - gamified learning about world religions' afterlife beliefs using local MLX LLM technology, offline AI, XP/achievements system.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "ai-ml",
+        "developer",
+        "education",
+        "fun",
+        "ios",
+        "mobile",
+        "personal"
+      ]
+    },
+    {
+      "url": "daelon.dev",
+      "name": "Daelon's Technical Blog",
+      "description": "Technical blog covering Python decorators, NiceGUI (social previews, dialog lifecycles), embedded systems (firmware configuration), Git worktrees workflow tips. Focus on elegant code organization.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "hardware",
+        "personal",
+        "programming",
+        "writing"
+      ]
+    },
+    {
+      "url": "0x45o.com",
+      "name": "Will AI Take My Job?",
+      "description": "Check our generator and see if AI will take your job!",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "personal",
+        "portfolio"
+      ]
+    },
+    {
+      "url": "https://graykevin.dev/",
+      "name": "Kevin's Portfolio",
+      "description": "Personal portfolio for Kevin Gray, who has an interest in cloud infrastructure, data science, and machine learning algorithms.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "personal",
+        "portfolio"
+      ]
+    },
+    {
+      "url": "dustinbrett.com",
+      "name": "daedalOS",
+      "description": "Fully functional Windows 10 clone desktop environment in browser. Built with React/Next.js. Features: start menu, dynamic wallpapers, terminal, video player, 3D Breakout, file management. 12k+ GitHub stars.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "personal",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "johnconnection.neocities.org",
+      "name": "John Connection",
+      "description": "Personal Neocities page. C programmer working on jcwm (custom window manager using Xlib). Interests: coding, working out, cars.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "personal",
+        "programming"
+      ],
+      "contact": "johnconnection@keemail.me"
+    },
+    {
+      "url": "paveldogreat.github.io/WebGL-Fluid-Simulation/",
+      "name": "WebGL Fluid Simulation",
+      "description": "Interactive WebGL-based real-time fluid dynamics simulation in browser. Advanced computational fluid dynamics visualization with mouse/touch interaction. GPU-accelerated physics simulation.",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "design-art",
+        "developer",
+        "fun",
+        "personal"
+      ]
+    },
+    {
+      "url": "github.com/vibe-meister/DIM-Mathematics-Implied-Magnetism-",
+      "name": "DIM Mathematics Research",
+      "description": "Mathematics/magnetism research project",
+      "category": "TPOT Spotlight",
+      "tags": [
+        "developer",
+        "education",
+        "mathematics",
+        "personal"
+      ]
+    },
+    {
+      "url": "not.life",
+      "name": "Not Life",
+      "description": "Suspended by owner: 'nothing here anymore, babes. no more time left for personal projects, inundated by work contract. maybe sometime in the future when I'm retired I'll let this resource live again.'",
+      "category": "Other Personal",
+      "tags": [
+        "personal"
+      ]
+    },
+    {
+      "url": "alexanderrob.com",
+      "name": "Alexander Rob",
+      "description": "Fantasy author portfolio. Books: 'Land of the Ill-Imagined' (thoughtlings in purgatory), 'There Will be Thousands' (bandit sold into slavery), 'When The King Was Born' (princes defying king).",
+      "category": "Other Personal",
+      "tags": [
+        "personal",
+        "portfolio",
+        "writing"
+      ]
+    },
+    {
+      "url": "Beckettoliphant.com",
+      "name": "Beckett Oliphant",
+      "description": "Personal website with cool content. Unable to access due to robots.txt blocking.",
+      "category": "Other Personal",
+      "tags": [
+        "personal"
+      ]
+    },
+    {
+      "url": "Bravoapps.dev",
+      "name": "Bravo Apps",
+      "description": "Shopify app development focused on merchant solutions. Building powerful tools for e-commerce, particularly shoppable blog posts with AI-powered suggestions, product embedding, and SEO optimization.",
+      "category": "Professional/Business",
+      "tags": [
+        "ai-ml",
+        "business",
+        "programming"
+      ]
+    },
+    {
+      "url": "tsotchke.net",
+      "name": "TSOTCHKE CORPORATION",
+      "description": "Retro Windows 98-styled website with desktop interface. Features: Corporate X account, README, Computer, Quantum Encyclopedia, Research Papers, Chat Room, Quantum RNG, Winamp player. Mascot: Tsotchke-chan.",
+      "category": "Professional/Business",
+      "tags": [
+        "business",
+        "fun"
+      ]
+    },
+    {
+      "url": "wisk.cc",
+      "name": "Wisk",
+      "description": "Open-source Notion alternative: 'Your Workspace, Built Your Way'. Features: flexible block system, Neo AI assistant, charts/LaTeX/graphs, 40+ themes, real-time collaboration, tasks/calendars/kanban via plugins.",
+      "category": "Professional/Business",
+      "tags": [
+        "ai-ml",
+        "business",
+        "open-source"
+      ]
+    },
+    {
+      "url": "meteora.ag",
+      "name": "Meteora",
+      "description": "Solana DeFi protocol. Dynamic liquidity infrastructure: DLMM (Dynamic Liquidity Market Maker), Dynamic AMM Pools, Alpha Vault, multi-token stable pools. Native MET token. Integrates with Jupiter, Kamino, Hubble.",
+      "category": "Professional/Business",
+      "tags": [
+        "business",
+        "crypto-web3"
+      ]
+    },
+    {
+      "url": "linktr.ee/SOL_Decoder",
+      "name": "SOL Decoder",
+      "description": "Solana NFT trading tools suite. Platform with React frontend and Node.js backend. Features: NFT discovery, hype tracking, wallet functionality, Magiceden.io integration. 4,000 NFT supply at 1.9 SOL mint.",
+      "category": "Professional/Business",
+      "tags": [
+        "business",
+        "crypto-web3",
+        "tools"
+      ]
+    },
+    {
+      "url": "dioxuslabs.com",
+      "name": "Dioxus Labs",
+      "description": "Rust-based fullstack crossplatform app framework. Better alternative to Electron and React Native for building native apps (mobile, desktop, web).",
+      "category": "Professional/Business",
+      "tags": [
+        "business",
+        "framework",
+        "mobile",
+        "programming"
+      ]
+    },
+    {
+      "url": "v2.tauri.app",
+      "name": "Tauri",
+      "description": "Native app framework for desktop/mobile using web technologies. Security-focused, smaller bundle sizes, Rust backend.",
+      "category": "Professional/Business",
+      "tags": [
+        "business",
+        "framework",
+        "mobile",
+        "programming",
+        "security"
+      ]
+    },
+    {
+      "url": "ircnow.org",
+      "name": "IRC Now",
+      "description": "IRC network community",
+      "category": "Social/Community",
+      "tags": []
+    },
+    {
+      "url": "CAMERONSWORLD",
+      "name": "Cameron's World",
+      "description": "Archived geocities-style website (Wayback Machine)",
+      "category": "Wayback Machine Gems",
+      "tags": []
+    },
+    {
+      "url": "FRIGHT.COM",
+      "name": "Fright.com",
+      "description": "Archived horror website (Wayback Machine)",
+      "category": "Wayback Machine Gems",
+      "tags": []
+    },
+    {
+      "url": "watching-grass-grow.com",
+      "name": "Watching Grass Grow",
+      "description": "Novelty site (likely exactly what it sounds like)",
+      "category": "Random/Fun",
+      "tags": [
+        "fun"
+      ]
+    },
+    {
+      "url": "thebestdinosaur.com",
+      "name": "The Best Dinosaur",
+      "description": "Novelty site",
+      "category": "Random/Fun",
+      "tags": [
+        "fun"
+      ]
+    },
+    {
+      "url": "iamawesome.com",
+      "name": "I Am Awesome",
+      "description": "Affirmation/novelty site",
+      "category": "Random/Fun",
+      "tags": [
+        "fun"
+      ]
+    },
+    {
+      "url": "hasthelargehadroncolliderdestroyedtheworldyet.com",
+      "name": "Has the LHC Destroyed the World Yet?",
+      "description": "Humorous CERN/LHC status checker",
+      "category": "Random/Fun",
+      "tags": [
+        "fun",
+        "science"
+      ]
+    },
+    {
+      "url": "pointerpointer.com",
+      "name": "Pointer Pointer",
+      "description": "Interactive site that finds images of people pointing at your cursor",
+      "category": "Random/Fun",
+      "tags": [
+        "design-art",
+        "fun"
+      ]
+    },
+    {
+      "url": "cat-bounce.com",
+      "name": "Cat Bounce",
+      "description": "Physics toy with bouncing cats",
+      "category": "Random/Fun",
+      "tags": [
+        "fun"
+      ]
+    },
+    {
+      "url": "brandsnag.com/social-media-handle-checker",
+      "name": "BrandSnag",
+      "description": "Tool for checking social media handle availability across platforms",
+      "category": "Useful Tools",
+      "tags": [
+        "programming",
+        "tools"
+      ]
+    },
+    {
+      "url": "dnschecker.org",
+      "name": "DNS Checker",
+      "description": "DNS propagation checker and troubleshooting tool. Example usage: checking A records for domains",
+      "category": "Useful Tools",
+      "tags": [
+        "programming",
+        "tools"
+      ]
+    },
+    {
+      "url": "x-graphs.com",
+      "name": "X Graphs",
+      "description": "Twitter/X analytics and graphing tool",
+      "category": "Useful Tools",
+      "tags": [
+        "data-science",
+        "tools"
+      ]
+    },
+    {
+      "url": "opensourcephysics.github.io/tracker-online/",
+      "name": "Tracker",
+      "description": "Free JavaScript-based video analysis and modeling tool. Features: object tracking with position/velocity/acceleration overlays, video filters, line profiles for spectra analysis, dynamic particle models.",
+      "category": "Educational/Analysis Tools",
+      "tags": [
+        "education",
+        "open-source",
+        "science",
+        "tools"
+      ]
+    },
+    {
+      "url": "regex101.com",
+      "name": "Regex101",
+      "description": "Real-time regex explanation and testing. Supports: PCRE2, PCRE, ECMAScript, Python, Golang, Java 8, .NET 7.0, Rust.",
+      "category": "Educational/Analysis Tools",
+      "tags": [
+        "education",
+        "programming",
+        "tools"
+      ]
+    },
+    {
+      "url": "windy.com/-Waves-waves",
+      "name": "Windy",
+      "description": "Advanced weather visualization focusing on waves, wind patterns, precipitation, temperature. Interactive global map.",
+      "category": "Global Monitoring",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "flightradar24.com/data",
+      "name": "FlightRadar24",
+      "description": "Real-time flight tracking with aircraft positions, routes, and flight data worldwide.",
+      "category": "Global Monitoring",
+      "tags": [
+        "tools"
+      ]
+    },
+    {
+      "url": "RAWGraphs",
+      "name": "RAWGraphs",
+      "description": "Open-source, browser-based data viz framework using D3.js (SVG export, customizable)",
+      "category": "Data Visualization",
+      "tags": [
+        "design-art",
+        "open-source",
+        "tools"
+      ]
+    },
+    {
+      "url": "Argo Lite",
+      "name": "Argo Lite",
+      "description": "In-browser graph explorer for interactive network analysis",
+      "category": "Data Visualization",
+      "tags": [
+        "design-art",
+        "fun",
+        "tools"
+      ]
+    },
+    {
+      "url": "DataMap",
+      "name": "DataMap",
+      "description": "Browser-based tool for PCA, t-SNE, heatmaps; generates reproducible R code",
+      "category": "Data Visualization",
+      "tags": [
+        "data-science",
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "BioFabric",
+      "name": "BioFabric",
+      "description": "Visualize large networks with nodes as lines, edges as columns",
+      "category": "Data Visualization",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "Voyant Tools",
+      "name": "Voyant Tools",
+      "description": "Text-analysis suite: word frequencies, context, embedding panels in sites",
+      "category": "Data Visualization",
+      "tags": [
+        "design-art",
+        "education",
+        "tools"
+      ]
+    },
+    {
+      "url": "Autoplot",
+      "name": "Autoplot",
+      "description": "Web-based plotting of heliophysics and Earth science datasets",
+      "category": "Data Visualization",
+      "tags": [
+        "design-art",
+        "science",
+        "tools"
+      ]
+    },
+    {
+      "url": "Crossfilter",
+      "name": "Crossfilter",
+      "description": "JS library for real-time filtering on multi-dimensional datasets",
+      "category": "Data Visualization",
+      "tags": [
+        "data-science",
+        "design-art",
+        "tools",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "Tangle",
+      "name": "Tangle",
+      "description": "Interactive live computation charts; tweak values, see updates",
+      "category": "Data Visualization",
+      "tags": [
+        "design-art",
+        "fun",
+        "tools"
+      ]
+    },
+    {
+      "url": "Timeline.js",
+      "name": "Timeline.js",
+      "description": "Open-source timeline creation pulling media from social feeds",
+      "category": "Data Visualization",
+      "tags": [
+        "design-art",
+        "open-source",
+        "tools"
+      ]
+    },
+    {
+      "url": "Datawrapper",
+      "name": "Datawrapper",
+      "description": "Free plan for clean newsroom-style charts/maps",
+      "category": "Data Visualization",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "GDELT",
+      "name": "GDELT",
+      "description": "Massive global events/demographics/open dataset with visualizations",
+      "category": "Open Data Platforms",
+      "tags": [
+        "api",
+        "data-science"
+      ]
+    },
+    {
+      "url": "Libraries.io",
+      "name": "Libraries.io",
+      "description": "Dataset of 25M+ repos and 85M+ dependencies in open source",
+      "category": "Open Data Platforms",
+      "tags": [
+        "api",
+        "data-science",
+        "open-source"
+      ]
+    },
+    {
+      "url": "UCI ML Repository",
+      "name": "UCI ML Repository",
+      "description": "Hundreds of classic datasets (wine, forest, car, etc.)",
+      "category": "Open Data Platforms",
+      "tags": [
+        "ai-ml",
+        "data-science",
+        "education"
+      ]
+    },
+    {
+      "url": "Data is Plural",
+      "name": "Data is Plural",
+      "description": "Weekly curated spreadsheet of obscure yet useful datasets",
+      "category": "Open Data Platforms",
+      "tags": [
+        "data-science",
+        "tools"
+      ]
+    },
+    {
+      "url": "Data.world",
+      "name": "Data.world",
+      "description": "Social dataset collaboration platform with cataloging & insights",
+      "category": "Open Data Platforms",
+      "tags": [
+        "data-science"
+      ]
+    },
+    {
+      "url": "Open Data Network",
+      "name": "Open Data Network",
+      "description": "Aggregates government datasets with simple search UI",
+      "category": "Open Data Platforms",
+      "tags": [
+        "api",
+        "data-science"
+      ]
+    },
+    {
+      "url": "Enigma Public Datasets",
+      "name": "Enigma Public Datasets",
+      "description": "Clean interface over public data with visualization tools",
+      "category": "Open Data Platforms",
+      "tags": [
+        "api",
+        "data-science",
+        "design-art"
+      ]
+    },
+    {
+      "url": "Webknossos",
+      "name": "Webknossos",
+      "description": "Browser platform for annotating large 3D neuroscience/EM datasets",
+      "category": "Specialized Tools",
+      "tags": [
+        "design-art",
+        "education",
+        "tools"
+      ]
+    },
+    {
+      "url": "PathVisio",
+      "name": "PathVisio",
+      "description": "Java-based biological pathway editor & analysis tool",
+      "category": "Specialized Tools",
+      "tags": [
+        "design-art",
+        "education",
+        "programming",
+        "tools"
+      ]
+    },
+    {
+      "url": "Tropes Zoom",
+      "name": "Tropes Zoom",
+      "description": "Semantic desktop engine for thematic text grouping (1994)",
+      "category": "Specialized Tools",
+      "tags": [
+        "tools"
+      ]
+    },
+    {
+      "url": "BetterWorldFlux",
+      "name": "BetterWorldFlux",
+      "description": "Interactive UN data viz platform (MDG indicators)",
+      "category": "Specialized Tools",
+      "tags": [
+        "data-science",
+        "design-art",
+        "programming",
+        "tools"
+      ]
+    },
+    {
+      "url": "Wikirank",
+      "name": "Wikirank",
+      "description": "Tracks Wikipedia pageview trends, comparatives over time",
+      "category": "Specialized Tools",
+      "tags": [
+        "data-science",
+        "tools"
+      ]
+    },
+    {
+      "url": "FreeDive",
+      "name": "FreeDive",
+      "description": "Turn Google Sheets into interactive, filterable web databases",
+      "category": "Specialized Tools",
+      "tags": [
+        "fun",
+        "tools",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "Tag Crowd",
+      "name": "Tag Crowd",
+      "description": "Tag-cloud generation tool",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "Wordle Cloud",
+      "name": "Wordle Cloud",
+      "description": "Word cloud generation tool",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "Visualizing.org",
+      "name": "Visualizing.org",
+      "description": "Playground for data visualization, community-submitted plots",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "DivineComedy.digital",
+      "name": "Divine Comedy Digital",
+      "description": "Scrollable Dante visual art meets poetic data viz",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "fun",
+        "writing"
+      ]
+    },
+    {
+      "url": "Vuvox",
+      "name": "Vuvox",
+      "description": "Create multimedia data slideshows (images, audio, video)",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "Newsmap",
+      "name": "Newsmap",
+      "description": "Real-time news visualized in customizable mosaic",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "WeFeelFine",
+      "name": "We Feel Fine",
+      "description": "Emotional data captured live from personal blogs",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art"
+      ]
+    },
+    {
+      "url": "Zoetrope Project",
+      "name": "Zoetrope Project",
+      "description": "Archive + interactively compare past web element versions",
+      "category": "Creative Tools",
+      "tags": [
+        "tools",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "InMaps",
+      "name": "InMaps",
+      "description": "Visualize LinkedIn networks",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "Touchgraph",
+      "name": "Touchgraph",
+      "description": "Visualize website link networks",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "tools",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "Many Eyes",
+      "name": "Many Eyes",
+      "description": "IBM's experimental public data viz environment",
+      "category": "Creative Tools",
+      "tags": [
+        "design-art",
+        "tools"
+      ]
+    },
+    {
+      "url": "Modest Maps",
+      "name": "Modest Maps",
+      "description": "Lightweight JavaScript mapping library",
+      "category": "Mapping Libraries",
+      "tags": [
+        "programming",
+        "tools",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "Leaflet",
+      "name": "Leaflet",
+      "description": "Popular open-source JavaScript mapping library",
+      "category": "Mapping Libraries",
+      "tags": [
+        "open-source",
+        "programming",
+        "tools",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "Polymaps",
+      "name": "Polymaps",
+      "description": "JavaScript mapping library for vector and raster maps",
+      "category": "Mapping Libraries",
+      "tags": [
+        "programming",
+        "tools",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "OpenLayers",
+      "name": "OpenLayers",
+      "description": "Full-featured JavaScript mapping library",
+      "category": "Mapping Libraries",
+      "tags": [
+        "programming",
+        "tools",
+        "web-dev"
+      ]
+    },
+    {
+      "url": "Kartograph",
+      "name": "Kartograph",
+      "description": "Framework for creating interactive vector maps",
+      "category": "Mapping Libraries",
+      "tags": [
+        "programming",
+        "tools",
+        "web-dev"
+      ]
+    }
+  ],
+  "categories": [
+    "TPOT Spotlight",
+    "Other Personal",
+    "Professional/Business",
+    "Social/Community",
+    "Wayback Machine Gems",
+    "Random/Fun",
+    "Useful Tools",
+    "Educational/Analysis Tools",
+    "Global Monitoring",
+    "Data Visualization",
+    "Open Data Platforms",
+    "Specialized Tools",
+    "Creative Tools",
+    "Mapping Libraries"
+  ],
+  "allTags": [
+    "personal",
+    "developer",
+    "portfolio",
+    "blog",
+    "tools",
+    "business",
+    "social",
+    "fun",
+    "archive",
+    "data",
+    "visualization",
+    "open-source",
+    "javascript",
+    "python",
+    "rust",
+    "ai",
+    "ml",
+    "security",
+    "crypto",
+    "blockchain",
+    "solana",
+    "education",
+    "research",
+    "science",
+    "maps",
+    "networking",
+    "framework",
+    "mobile",
+    "desktop",
+    "web",
+    "ios",
+    "android",
+    "games",
+    "interactive",
+    "nostalgia",
+    "retro",
+    "art",
+    "creative",
+    "humor",
+    "novelty",
+    "monitoring",
+    "real-time",
+    "analytics",
+    "api",
+    "library",
+    "development",
+    "programming"
+  ]
+}

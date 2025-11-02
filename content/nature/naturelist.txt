@@ -1,0 +1,22 @@
+# Nature Gallery Image List
+# Format: URL | group | vibe | weather | time | credit
+# Use "null" for n/a values
+
+https://64.media.tumblr.com/53338321e155f8a508b719153332f3d5/tumblr_pbkaglO6lB1qan9upo1_r3_640.gif | water | neutral | clear | day | Tumblr
+https://33.media.tumblr.com/ef8cb843f59ef5d012d77ec4718b35ab/tumblr_nvnvatCOHU1sk6vtao1_400.gif | mountains | happy | clear | day | Tumblr
+https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif | clouds | happy | clear | day | Pinterest
+https://i.pinimg.com/originals/d1/bc/be/d1bcbe5854709126d6ce90dbdf28bac1.gif | ocean | happy | sunny | day | Pinterest
+https://gifdb.com/images/high/cinemagraph-altered-carbon-1kmkhvyzciq4b6hk.webp | tech | neutral | clear | night | GifDB
+https://64.media.tumblr.com/tumblr_m34iy6Qdqy1qc4uvwo1_500.gif | forest | happy | sunny | day | Tumblr
+https://64.media.tumblr.com/0a8f10473d5242f17fe5e2852a6038ed/tumblr_ojkdz7oU4B1sk6vtao1_500.gif | water | neutral | clear | day | Tumblr
+https://64.media.tumblr.com/c9a4e6f8653e0be9b9f5e7e22f75f74d/tumblr_o1v8iwOqBv1sk6vtao1_500.gif | forest | neutral | clear | day | Tumblr
+https://i.pinimg.com/originals/c5/12/28/c51228f631f13e8e6ba93f8c8c52e6bc.gif | clouds | gloomy | rainy | day | Pinterest
+https://64.media.tumblr.com/5c9ec1e276538bcdc62c3d8f2e2a72d3/tumblr_p2ukqkA4c01sk6vtao1_500.gif | mountains | neutral | clear | night | Tumblr
+
+# To add more images:
+# 1. Add a new line with the format above
+# 2. Run the rebuild script (if you create one) or manually update images.json
+# 3. Available groups: forest, water, ocean, clouds, mountains, tech, anime, plants
+# 4. Available vibes: happy, neutral, gloomy
+# 5. Available weather: sunny, clear, rainy
+# 6. Available time: day, night

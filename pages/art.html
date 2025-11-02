@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Gallery - EOSYN.NET</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .art-gallery {
+            padding: 0.5rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-header {
+            padding: 0.25rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-header h1 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            display: inline;
+            margin-right: 0.75rem;
+        }
+
+        .gallery-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: inline;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+            padding: 0;
+        }
+
+        .art-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .art-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            border-color: var(--accent-primary);
+        }
+
+        .art-image {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            display: block;
+            background: var(--bg-secondary);
+        }
+
+        .art-info {
+            padding: 0.75rem;
+        }
+
+        .art-title {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .art-description {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.2;
+            margin-bottom: 0.4rem;
+        }
+
+        .art-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .art-tag {
+            background: var(--bg-tertiary);
+            color: var(--accent-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* NSFW Content Filtering */
+        .art-card.nsfw .art-image {
+            filter: blur(20px);
+            transition: filter 0.3s ease;
+        }
+
+        .art-card.nsfw.revealed .art-image {
+            filter: none;
+        }
+
+        .art-card.nsfw {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nsfw-warning {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+            border: 2px solid #ff5555;
+        }
+
+        .art-card.nsfw.revealed .nsfw-warning {
+            display: none;
+        }
+
+        .nsfw-warning h4 {
+            margin: 0 0 0.5rem 0;
+            color: #ff5555;
+            font-size: 1.1rem;
+        }
+
+        .nsfw-warning p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .art-tag.nsfw {
+            background: #ff5555;
+            color: white;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state h2 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Alice theme glass effect */
+        body[data-theme="alice"] .art-card {
+            background: rgba(255, 232, 245, 0.75) !important;
+            backdrop-filter: blur(8px);
+        }
+
+        @media (max-width: 768px) {
+            .art-gallery {
+                padding: 1rem;
+            }
+
+            .gallery-header h1 {
+                font-size: 2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <img src="../assets/images/eosynnet.png" alt="EOSYN.NET" class="site-logo">
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-container">
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                    
+                </ul>
+                <div class="nav-actions">
+                    <div class="search-container">
+                        <input type="text" id="search-input" class="search-input" placeholder="Search articles...">
+                    </div>
+                    <select id="theme-select" class="theme-select-nav" onchange="applyTheme(this.value)" title="Theme">
+                        <option value="dracula">Dracula</option>
+                        <option value="light">Light</option>
+                        <option value="nord">Nord</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="alice">Alice</option>
+                        <option value="gruvbox">Gruvbox Dark</option>
+                        <option value="catppuccin">Catppuccin Mocha</option>
+                        <option value="synthwave">Synthwave</option>
+                    </select>
+                    <button class="nav-action-btn" onclick="showFavorites()" title="My Favorites">
+                        <span></span>
+                    </button>
+                    <button class="nav-action-btn" onclick="toggleUnifiedPanel('favorites')" title="Notes">
+                        <span class="nav-action-label">☆ Notes</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="ticker-container">
+            <div class="ticker-content" id="ticker-content">
+                <span class="ticker-item">Loading ticker...</span>
+            </div>
+        </div>
+
+        <div class="art-gallery">
+            <div class="gallery-header">
+                <h1>Art Gallery:</h1>
+                <p>random works of mine</p>
+            </div>
+
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="empty-state">
+                    <h2>Loading...</h2>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 EOSYN.NET. Built with  and markdown.</p>
+        </footer>
+    </div>
+
+    <script src="../assets/js/core/themes.js"></script>
+    <script src="../assets/js/core/alice-background.js"></script>
+    <script src="../assets/js/core/script.js"></script>
+    <script>
+        // Initialize theme
+        if (typeof initializeTheme === 'function') {
+            initializeTheme();
+        }
+
+        let artworks = [];
+
+        // Load artworks from gallery
+        async function loadArtworks() {
+            try {
+                const response = await fetch('../gallery/images.json');
+                const data = await response.json();
+                artworks = data.art || [];
+
+                renderGallery();
+            } catch (error) {
+                console.error('Error loading artworks:', error);
+                document.getElementById('galleryGrid').innerHTML = `
+                    <div class="empty-state">
+                        <h2>Error Loading Gallery</h2>
+                        <p>Could not load artworks. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+
+            if (artworks.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No Artworks Yet</h2>
+                        <p>Add images to the content/art/ folder and run <code>node build.js</code></p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = '';
+
+            artworks.forEach(artwork => {
+                const card = document.createElement('div');
+                card.className = artwork.nsfw ? 'art-card nsfw' : 'art-card';
+
+                const imageUrl = artwork.filename.startsWith('http')
+                    ? artwork.filename
+                    : `../content/art/${artwork.filename}`;
+
+                const title = artwork.title || 'Untitled';
+                const description = artwork.description || artwork.dateFormatted || '';
+                const tags = artwork.tags || [];
+
+                card.innerHTML = `
+                    ${artwork.nsfw ? `
+                        <div class="nsfw-warning">
+                            <h4>⚠️ NSFW Content</h4>
+                            <p>Click to reveal</p>
+                        </div>
+                    ` : ''}
+                    <img src="${imageUrl}" alt="${title}" class="art-image">
+                    <div class="art-info">
+                        <div class="art-title">${title}</div>
+                        ${description ? `<div class="art-description">${description}</div>` : ''}
+                        ${tags.includes('nsfw') ? `
+                            <div class="art-tags">
+                                <span class="art-tag nsfw">NSFW</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+
+                // Add click handler for NSFW content
+                if (artwork.nsfw) {
+                    card.addEventListener('click', function() {
+                        this.classList.toggle('revealed');
+                    });
+                }
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Load artworks on page load
+        loadArtworks();
+    </script>
+    <script src="../assets/js/utils/ticker.js"></script>
+</body>
+</html>

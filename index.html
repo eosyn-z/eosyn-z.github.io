@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EOSYN.NET</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://api.lanyard.rest">
+
+    <!-- Critical CSS first -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Font and syntax highlighting can load async -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
+    <!-- Prefetch common pages for instant navigation -->
+    <link rel="prefetch" href="pages/art.html">
+    <link rel="prefetch" href="pages/dev.html">
+    <link rel="prefetch" href="pages/games.html">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <img src="assets/images/eosynnet.png" alt="EOSYN.NET" class="site-logo">
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-container">
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
+                    
+                </ul>
+                <div class="nav-actions">
+                    <div class="search-container">
+                        <input type="text" id="search-input" class="search-input" placeholder="Search articles...">
+                    </div>
+                    <select id="theme-select" class="theme-select-nav" onchange="applyTheme(this.value)" title="Theme">
+                        <option value="dracula">Dracula</option>
+                        <option value="light">Light</option>
+                        <option value="nord">Nord</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="alice">Alice</option>
+                        <option value="gruvbox">Gruvbox Dark</option>
+                        <option value="catppuccin">Catppuccin Mocha</option>
+                        <option value="synthwave">Synthwave</option>
+                    </select>
+                    <button class="nav-action-btn" onclick="showFavorites()" title="My Favorites">
+                        <span></span>
+                    </button>
+                    <button class="nav-action-btn" onclick="toggleUnifiedPanel('favorites')" title="Notes">
+                        <span class="nav-action-label">☆ Notes</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="ticker-container">
+            <div class="ticker-content" id="ticker-content">
+                <span class="ticker-item">ONLINE</span>
+                <span class="ticker-item" id="ticker-motd">Loading...</span>
+                <span class="ticker-item" id="ticker-recent">Most recent: Loading...</span>
+            </div>
+        </div>
+
+        <main class="main-content">
+            <div class="content-layout">
+                
+                <aside id="toc-sidebar" class="toc-sidebar">
+                    <div class="toc-content">
+                        <h3 class="toc-title">Table of Contents</h3>
+                        <nav id="toc-nav" class="toc-nav">
+                            
+                        </nav>
+                    </div>
+
+                    <div id="article-notes" class="article-notes">
+                        <div class="notes-header">
+                            <h3 class="notes-title">Article Notes</h3>
+                            <button id="toggle-article-notes" class="toggle-notes-btn" title="Toggle Notes"></button>
+                        </div>
+                        <div id="article-notes-content" class="notes-content collapsed">
+                            <textarea id="article-notes-editor" class="notes-editor" placeholder="Notes for this article..."></textarea>
+                            <div class="notes-footer">
+                                <button id="save-article-note" class="save-note-btn">Save</button>
+                                <span id="article-note-status" class="note-status"></span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="content-wrapper">
+                    <section id="home" class="content-section">
+
+                    </section>
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 EOSYN.NET.</p>
+        </footer>
+    </div>
+
+    <!-- External libraries - load async where possible -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- Three.js for background - can load async -->
+    <script async src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+
+    <!-- Core functionality - needs to load in order but can be deferred -->
+    <script defer src="assets/js/core/themes.js"></script>
+    <script defer src="assets/js/utils/performance.js"></script>
+    <script defer src="assets/js/utils/desktop-mode.js"></script>
+    <script defer src="assets/js/utils/unified-panel.js"></script>
+    <script defer src="games/confetti.js"></script>
+    <script defer src="assets/js/core/alice-background.js"></script>
+    <script defer src="assets/js/core/script.js"></script>
+</body>
+</html>

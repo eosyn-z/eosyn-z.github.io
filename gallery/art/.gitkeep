@@ -1,0 +1,8 @@
+# Art Gallery
+
+Drop your art files here (.jpg, .jpeg, .png, .gif, .webp).
+
+The filename format is: `title_tag1_tag2_category_description.ext`
+Example: `Sunset_landscape_nature_photography_beautiful-sunset-over-mountains.jpg`
+
+Then run: `node build.js` to update the gallery.

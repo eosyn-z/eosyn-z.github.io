@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature's Window</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nature-gallery {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .background-image.hidden {
+            opacity: 0;
+        }
+
+        .filter-panel {
+            position: fixed;
+            top: 50%;
+            left: 2rem;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 300px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .filter-panel.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-group h3 {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+
+        .reset-btn {
+            width: 100%;
+            background: var(--accent-secondary);
+            border: 1px solid var(--accent-secondary);
+            color: var(--bg-primary);
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .reset-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .toggle-ui {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-ui:hover {
+            background: var(--accent-primary);
+            transform: scale(1.1);
+        }
+
+        .toggle-ui::before {
+            content: '';
+            font-size: 1.5rem;
+        }
+
+        .image-credit {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .image-credit.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .back-home {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            z-index: 101;
+            transition: all 0.2s ease;
+        }
+
+        .back-home:hover {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Alice theme glass effect */
+        body[data-theme="alice"] .filter-panel,
+        body[data-theme="alice"] .image-credit,
+        body[data-theme="alice"] .back-home,
+        body[data-theme="alice"] .toggle-ui {
+            background: rgba(255, 232, 245, 0.75) !important;
+            backdrop-filter: blur(8px);
+        }
+
+        @media (max-width: 768px) {
+            .filter-panel {
+                left: 1rem;
+                right: 1rem;
+                max-width: none;
+                padding: 1.5rem;
+            }
+
+            .back-home {
+                left: 1rem;
+                top: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .toggle-ui {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .image-credit {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nature-gallery">
+        <div class="background-image" id="background"></div>
+
+        <a href="../index.html" class="back-home">← Back to Home</a>
+
+        <div class="toggle-ui" id="toggleUI" title="Toggle UI"></div>
+
+        <div class="filter-panel" id="filterPanel">
+            <div class="filter-group">
+                <h3>Group</h3>
+                <div class="filter-buttons" id="groupFilters"></div>
+            </div>
+
+            <div class="filter-group">
+                <h3>Vibe</h3>
+                <div class="filter-buttons" id="vibeFilters"></div>
+            </div>
+
+            <div class="filter-group">
+                <h3>Weather</h3>
+                <div class="filter-buttons" id="weatherFilters"></div>
+            </div>
+
+            <div class="filter-group">
+                <h3>Time</h3>
+                <div class="filter-buttons" id="timeFilters"></div>
+            </div>
+
+            <button class="reset-btn" id="resetBtn">Reset Filters</button>
+        </div>
+
+        <div class="image-credit" id="imageCredit"></div>
+    </div>
+
+    <script>
+        let images = [];
+        let currentFilters = {
+            group: null,
+            vibe: null,
+            weather: null,
+            time: null
+        };
+
+        // Load images from gallery
+        async function loadImages() {
+            try {
+                const response = await fetch('../gallery/images.json');
+                const data = await response.json();
+                images = data.nature || [];
+
+                if (images.length === 0) {
+                    console.error('No nature images found');
+                    return;
+                }
+
+                initializeFilters();
+                updateImage();
+            } catch (error) {
+                console.error('Error loading images:', error);
+            }
+        }
+
+        function initializeFilters() {
+            // Extract unique values for each filter category
+            const groups = [...new Set(images.map(img => img.group))];
+            const vibes = [...new Set(images.map(img => img.vibe))];
+            const weathers = [...new Set(images.map(img => img.weather))];
+            const times = [...new Set(images.map(img => img.time))];
+
+            // Create filter buttons
+            createFilterButtons('groupFilters', groups, 'group');
+            createFilterButtons('vibeFilters', vibes, 'vibe');
+            createFilterButtons('weatherFilters', weathers, 'weather');
+            createFilterButtons('timeFilters', times, 'time');
+        }
+
+        function createFilterButtons(containerId, values, filterType) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            values.forEach(value => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.textContent = value;
+                btn.onclick = () => toggleFilter(filterType, value, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function toggleFilter(type, value, button) {
+            // Toggle filter
+            if (currentFilters[type] === value) {
+                currentFilters[type] = null;
+                button.classList.remove('active');
+            } else {
+                // Remove active from other buttons in same category
+                button.parentElement.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                currentFilters[type] = value;
+                button.classList.add('active');
+            }
+
+            updateImage();
+        }
+
+        function updateImage() {
+            // Filter images based on current filters
+            let filtered = images.filter(img => {
+                if (currentFilters.group && img.group !== currentFilters.group) return false;
+                if (currentFilters.vibe && img.vibe !== currentFilters.vibe) return false;
+                if (currentFilters.weather && img.weather !== currentFilters.weather) return false;
+                if (currentFilters.time && img.time !== currentFilters.time) return false;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                filtered = images; // Fallback to all images if no matches
+            }
+
+            // Pick random image from filtered set
+            const randomImage = filtered[Math.floor(Math.random() * filtered.length)];
+
+            // Update background
+            const bg = document.getElementById('background');
+            // Check if filename is a URL or a local path
+            const imageUrl = randomImage.filename.startsWith('http')
+                ? randomImage.filename
+                : `content/nature/${randomImage.filename}`;
+            bg.style.backgroundImage = `url('${imageUrl}')`;
+
+            // Update credit
+            const credit = document.getElementById('imageCredit');
+            credit.textContent = randomImage.credit || 'Unknown';
+        }
+
+        // Reset filters
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            currentFilters = {
+                group: null,
+                vibe: null,
+                weather: null,
+                time: null
+            };
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            updateImage();
+        });
+
+        // Toggle UI
+        let uiVisible = true;
+        document.getElementById('toggleUI').addEventListener('click', () => {
+            uiVisible = !uiVisible;
+            document.getElementById('filterPanel').classList.toggle('hidden', !uiVisible);
+            document.getElementById('imageCredit').classList.toggle('hidden', !uiVisible);
+        });
+
+        // Load images on page load
+        loadImages();
+    </script>
+
+    <script src="../assets/js/core/themes.js"></script>
+    <script src="../assets/js/core/alice-background.js"></script>
+    <script>
+        // Initialize theme
+        if (typeof initializeTheme === 'function') {
+            initializeTheme();
+        }
+    </script>
+</body>
+</html>

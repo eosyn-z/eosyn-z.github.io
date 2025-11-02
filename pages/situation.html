@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Situation - EOSYN.NET</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../assets/css/situation-dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <img src="../assets/images/eosynnet.png" alt="EOSYN.NET" class="site-logo">
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-container">
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                    
+                </ul>
+                <div class="nav-actions">
+                    <div class="search-container">
+                        <input type="text" id="search-input" class="search-input" placeholder="Search articles...">
+                    </div>
+                    <select id="theme-select" class="theme-select-nav" onchange="applyTheme(this.value)" title="Theme">
+                        <option value="dracula">Dracula</option>
+                        <option value="light">Light</option>
+                        <option value="nord">Nord</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="alice">Alice</option>
+                        <option value="gruvbox">Gruvbox Dark</option>
+                        <option value="catppuccin">Catppuccin Mocha</option>
+                        <option value="synthwave">Synthwave</option>
+                    </select>
+                    <button class="nav-action-btn" onclick="showFavorites()" title="My Favorites">
+                        <span></span>
+                    </button>
+                    <button class="nav-action-btn" onclick="toggleUnifiedPanel('favorites')" title="Notes">
+                        <span class="nav-action-label">☆ Notes</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="ticker-container">
+            <div class="ticker-content" id="ticker-content">
+                <span class="ticker-item">Loading ticker...</span>
+            </div>
+        </div>
+
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <input type="text" id="location-input" class="location-quick-input" placeholder="Enter location..." onkeypress="if(event.key==='Enter')updateLocation()">
+                <button class="dashboard-btn" onclick="updateLocation()">Update</button>
+                <button class="dashboard-btn" onclick="detectUserLocation()">Auto</button>
+                <div class="dashboard-actions">
+                    <button class="dashboard-btn" id="lock-btn" onclick="toggleLockMode()">Lock</button>
+                    <button class="dashboard-btn" onclick="toggleSettings()">Settings</button>
+                    <button class="dashboard-btn" onclick="resetToDefault()">Reset</button>
+                </div>
+            </div>
+
+            <div class="widget-grid" id="widget-grid"></div>
+        </div>
+
+        <div class="settings-panel" id="settings-panel">
+            <div class="settings-header">
+                <h2>Dashboard Settings</h2>
+                <button class="settings-close" onclick="toggleSettings()">✕</button>
+            </div>
+
+            <div class="settings-content">
+                
+                <div class="settings-section">
+                    <h3>📍 Location</h3>
+                    <div class="location-selector">
+                        <div id="location-status" class="location-current">
+                            📍 New York (40.71, -74.01)
+                        </div>
+                        <button id="detect-location-btn" class="location-detect-btn" onclick="detectUserLocation()">
+                            📍 Use My Location
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3> Add Widgets</h3>
+                    <div class="widget-gallery">
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('discord-status')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Discord Status</div>
+                                <div class="description">Your presence & activity</div>
+                            </div>
+                            <div class="size-badge">5×4</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('local-weather')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Local Weather</div>
+                                <div class="description">Current conditions</div>
+                            </div>
+                            <div class="size-badge">3×3</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('iss-tracker')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">ISS Tracker</div>
+                                <div class="description">Space station location</div>
+                            </div>
+                            <div class="size-badge">3×2</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('earthquake-tracker')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Earthquakes</div>
+                                <div class="description">Recent seismic activity</div>
+                            </div>
+                            <div class="size-badge">3×3</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('weather-radar')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Weather Radar</div>
+                                <div class="description">Live precipitation</div>
+                            </div>
+                            <div class="size-badge">6×5</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('flight-tracker')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Flight Tracker</div>
+                                <div class="description">Real-time flights</div>
+                            </div>
+                            <div class="size-badge">6×5</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('air-quality')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Air Quality</div>
+                                <div class="description">AQI index</div>
+                            </div>
+                            <div class="size-badge">2×2</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('github-status')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">GitHub Status</div>
+                                <div class="description">Service status</div>
+                            </div>
+                            <div class="size-badge">2×2</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('service-status')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Service Status Grid</div>
+                                <div class="description">8 major services</div>
+                            </div>
+                            <div class="size-badge">4×3</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('crypto-panic')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Crypto Fear & Greed</div>
+                                <div class="description">Market sentiment</div>
+                            </div>
+                            <div class="size-badge">2×2</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('downdetector')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Down Detector</div>
+                                <div class="description">Outage tracker</div>
+                            </div>
+                            <div class="size-badge">6×4</div>
+                        </div>
+
+                        <div class="widget-gallery-item" onclick="addWidgetFromGallery('pentagon-pizza')">
+                            <div class="icon"></div>
+                            <div class="info">
+                                <div class="name">Pentagon Pizza Tracker</div>
+                                <div class="description">DEFCON PIZZA threat level</div>
+                            </div>
+                            <div class="size-badge">2×2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3> Layout Presets</h3>
+                    <div class="preset-list">
+                        <div class="preset-item" onclick="loadPresetLayout('default')">
+                            <span>Default</span>
+                            <span style="font-size: 0.75rem; color: var(--text-tertiary);">5 widgets</span>
+                        </div>
+                        <div class="preset-item" onclick="loadPresetLayout('weather')">
+                            <span>Weather Focus</span>
+                            <span style="font-size: 0.75rem; color: var(--text-tertiary);">4 widgets</span>
+                        </div>
+                        <div class="preset-item" onclick="loadPresetLayout('internet')">
+                            <span>Internet Health</span>
+                            <span style="font-size: 0.75rem; color: var(--text-tertiary);">4 widgets</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 EOSYN.NET. Built with  and markdown.</p>
+        </footer>
+    </div>
+
+    <script src="../assets/js/core/themes.js"></script>
+    <script src="../assets/js/core/alice-background.js"></script>
+    <script src="../assets/js/core/script.js"></script>
+    <script src="../games/confetti.js"></script>
+    <script src="../assets/js/situation-dashboard.js"></script>
+    <script>
+        // Initialize dashboard when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSituationDashboard);
+        } else {
+            initSituationDashboard();
+        }
+    </script>
+    <script src="../assets/js/utils/ticker.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+# Site Configuration
+# Change these values to customize your site
+
+SITE_TITLE=My Portfolio
+MOTD=welcome to the first version of eosyn.net, add me on discord @eosyn! adding some more pages soon
+DEFAULT_THEME=alice
+
+# Terminal Settings
+# Customize the terminal widget on the home page
+TERMINAL_PATH=~/eosyn
+TERMINAL_USERNAME=eosyn
+
+# Discord Settings
+# OPTIONAL: Show your Discord presence on the site
+#
+# How to find your Discord User ID:
+# 1. Open Discord and go to Settings
+# 2. Go to Advanced and enable "Developer Mode"
+# 3. Close settings, right-click on your username anywhere
+# 4. Click "Copy User ID"
+# 5. Paste the ID below (should be a long number like: 917811383876341820)
+#
+# Leave blank or use the example below if you don't want Discord integration
+
+DISCORD_USER_ID=917811383876341820
+
+# OPTIONAL: Discord Banner Override
+# If Lanyard API doesn't fetch your banner, you can manually specify it here
+# Use the full URL to your banner image (GIF or PNG)
+DISCORD_BANNER_URL=https://upload.wikimedia.org/wikipedia/commons/e/e4/StarfieldSimulation.gif
+
+# Feature Flags
+# Enable/disable features by setting to true or false
+
+# Desktop Mode - Window-based OS-style interface
+DESKTOP_MODE_ENABLED=true
+
+# Nature Gallery - Multi-filter background image gallery
+NATURE_GALLERY_ENABLED=true
+
+# Art Gallery Card - Carousel card on home page (uses gallery/art/ folder)
+ART_GALLERY_CARD_ENABLED=true
+
+# ==================== NATURE GALLERY IMAGES ====================
+# OPTIONAL: Add animated background images for the nature gallery page
+#
+# Format: NATURE_IMAGE=url|group|vibe|weather|time|credit
+#
+# Available categories:
+#   Groups: forest, water, ocean, clouds, mountains, tech, anime, plants
+#   Vibes: happy, neutral, gloomy
+#   Weather: sunny, clear, rainy
+#   Time: day, night
+#
+# HOW TO ADD IMAGES:
+# 1. Find an animated GIF or WebP image URL
+# 2. Copy the line below and add your own image
+# 3. Fill in the categories separated by | (pipe character)
+# 4. Add as many images as you want!
+#
+# Example images (replace these with your own):
+
+NATURE_IMAGE=https://64.media.tumblr.com/tumblr_m34iy6Qdqy1qc4uvwo1_500.gif|forest|happy|sunny|day|Tumblr
+NATURE_IMAGE=https://i.pinimg.com/originals/60/ad/28/60ad28e7dfa78920e0bbf782053b040a.gif|clouds|happy|clear|day|Pinterest
+NATURE_IMAGE=https://i.pinimg.com/originals/d1/bc/be/d1bcbe5854709126d6ce90dbdf28bac1.gif|ocean|happy|sunny|day|Pinterest

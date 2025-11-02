@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confetti Configuration - EOSYN.NET</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script async src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+    <style>
+        .confetti-page {
+            padding: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .config-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+        }
+
+        .config-section h2 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-primary);
+            padding-bottom: 0.25rem;
+        }
+
+        .config-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .config-item label {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+        }
+
+        .config-item input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-tertiary);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .config-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+        }
+
+        .config-item input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+            border: none;
+        }
+
+        .config-value {
+            display: inline-block;
+            margin-left: 0.5rem;
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .test-area {
+            background: var(--bg-secondary);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .test-area:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .test-area h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .test-area p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .reset-btn {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .reset-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1100px) {
+            .config-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <img src="../assets/images/eosynnet.png" alt="EOSYN.NET" class="site-logo">
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-container">
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <select id="theme-select" class="theme-select-nav" onchange="applyTheme(this.value)" title="Theme">
+                        <option value="dracula">Dracula</option>
+                        <option value="light">Light</option>
+                        <option value="nord">Nord</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="alice">Alice</option>
+                        <option value="gruvbox">Gruvbox Dark</option>
+                        <option value="catppuccin">Catppuccin Mocha</option>
+                        <option value="synthwave">Synthwave</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+
+        <div class="ticker-container">
+            <div class="ticker-content" id="ticker-content">
+                <span class="ticker-item">Click anywhere to test confetti!</span>
+            </div>
+        </div>
+
+        <div class="confetti-page">
+            <h1 class="page-title">✨ Confetti Configuration</h1>
+            <p class="page-subtitle">Customize the adorable click confetti effects that appear across the site</p>
+
+            <div class="test-area" id="testArea">
+                <h3>Click Here to Test!</h3>
+                <p>Or click anywhere on the page to see your confetti settings</p>
+            </div>
+
+            <div class="config-grid">
+                <div class="config-section">
+                    <h2>🌟 Big Puffy Stars</h2>
+
+                    <div class="config-item">
+                        <label>Count: <span class="config-value" id="bigStarCount">0-3</span></label>
+                        <input type="range" id="bigStarCountRange" min="0" max="10" value="3" step="1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Upward Velocity: <span class="config-value" id="bigStarUpward">0-1.5</span></label>
+                        <input type="range" id="bigStarUpwardRange" min="0" max="5" value="1" step="0.1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Gravity: <span class="config-value" id="bigStarGravity">0.003</span></label>
+                        <input type="range" id="bigStarGravityRange" min="0" max="0.02" value="0.003" step="0.0001">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Size Scale: <span class="config-value" id="bigStarScale">1.0-1.5</span></label>
+                        <input type="range" id="bigStarScaleRange" min="0" max="5" value="1.25" step="0.1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Color Scheme:</label>
+                        <select id="bigStarColor" style="width: 100%; padding: 0.5rem; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 0.5rem;">
+                            <option value="gold">Gold</option>
+                            <option value="silver">Silver</option>
+                            <option value="colorful">Colorful</option>
+                            <option value="custom">Custom Color</option>
+                        </select>
+                        <input type="color" id="bigStarCustomColor" value="#ffd700" style="width: 100%; height: 40px; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; display: none;">
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h2>⭐ Hollow Stars</h2>
+
+                    <div class="config-item">
+                        <label>Count: <span class="config-value" id="hollowStarCount">0-25</span></label>
+                        <input type="range" id="hollowStarCountRange" min="0" max="100" value="20" step="1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Upward Velocity: <span class="config-value" id="hollowStarUpward">0-1.1</span></label>
+                        <input type="range" id="hollowStarUpwardRange" min="0" max="5" value="0.7" step="0.1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Gravity: <span class="config-value" id="hollowStarGravity">0.004</span></label>
+                        <input type="range" id="hollowStarGravityRange" min="0" max="0.02" value="0.004" step="0.0001">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Size Scale: <span class="config-value" id="hollowStarScale">0-1.0</span></label>
+                        <input type="range" id="hollowStarScaleRange" min="0" max="5" value="0.7" step="0.1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Color Scheme:</label>
+                        <select id="hollowStarColor" style="width: 100%; padding: 0.5rem; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 0.5rem;">
+                            <option value="gold">Gold</option>
+                            <option value="silver">Silver</option>
+                            <option value="colorful" selected>Colorful</option>
+                            <option value="custom">Custom Color</option>
+                        </select>
+                        <input type="color" id="hollowStarCustomColor" value="#ffb3ba" style="width: 100%; height: 40px; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; display: none;">
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h2>✨ Glitter Particles</h2>
+
+                    <div class="config-item">
+                        <label>Count: <span class="config-value" id="glitterCount">0-35</span></label>
+                        <input type="range" id="glitterCountRange" min="0" max="200" value="27" step="1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Upward Velocity: <span class="config-value" id="glitterUpward">0-2.0</span></label>
+                        <input type="range" id="glitterUpwardRange" min="0" max="5" value="1.4" step="0.1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Gravity: <span class="config-value" id="glitterGravity">0.0025</span></label>
+                        <input type="range" id="glitterGravityRange" min="0" max="0.02" value="0.0025" step="0.0001">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Size Scale: <span class="config-value" id="glitterScale">0-0.7</span></label>
+                        <input type="range" id="glitterScaleRange" min="0" max="5" value="0.5" step="0.1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Color Scheme:</label>
+                        <select id="glitterColor" style="width: 100%; padding: 0.5rem; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 0.5rem;">
+                            <option value="gold">Gold</option>
+                            <option value="silver">Silver</option>
+                            <option value="colorful" selected>Colorful</option>
+                            <option value="custom">Custom Color</option>
+                        </select>
+                        <input type="color" id="glitterCustomColor" value="#b3d9ff" style="width: 100%; height: 40px; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; display: none;">
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h2>⚙️ Global Settings</h2>
+
+                    <div class="config-item">
+                        <label>Horizontal Spread: <span class="config-value" id="horizontalSpread">1.0</span></label>
+                        <input type="range" id="horizontalSpreadRange" min="0" max="5" value="1" step="0.1">
+                    </div>
+
+                    <div class="config-item">
+                        <label>Particle Lifetime (ms): <span class="config-value" id="lifetime">2000</span></label>
+                        <input type="range" id="lifetimeRange" min="0" max="10000" value="2000" step="100">
+                    </div>
+
+                    <button class="reset-btn" id="resetBtn">Reset to Defaults</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2025 EOSYN.NET.</p>
+        </footer>
+    </div>
+
+    <script src="../assets/js/core/themes.js"></script>
+    <script src="../assets/js/core/alice-background.js"></script>
+    <script src="../assets/js/core/script.js"></script>
+
+    <script>
+        // Default configuration
+        const defaultConfig = {
+            bigStar: { count: 3, upward: 1, gravity: 0.003, scale: 1.25, color: 'gold', customColor: '#ffd700' },
+            hollowStar: { count: 20, upward: 0.7, gravity: 0.004, scale: 0.7, color: 'colorful', customColor: '#ffb3ba' },
+            glitter: { count: 27, upward: 1.4, gravity: 0.0025, scale: 0.5, color: 'colorful', customColor: '#b3d9ff' },
+            global: { horizontalSpread: 1, lifetime: 2000 }
+        };
+
+        // Load config from localStorage or use defaults
+        let confettiConfig = JSON.parse(localStorage.getItem('confettiConfig')) || JSON.parse(JSON.stringify(defaultConfig));
+
+        // Save config to localStorage
+        function saveConfig() {
+            localStorage.setItem('confettiConfig', JSON.stringify(confettiConfig));
+            window.confettiConfig = confettiConfig;
+        }
+
+        // Toggle color picker visibility
+        function toggleColorPicker(type, show) {
+            const picker = document.getElementById(type + 'CustomColor');
+            picker.style.display = show ? 'block' : 'none';
+        }
+
+        // Load UI from config
+        function loadUIFromConfig() {
+            document.getElementById('bigStarCountRange').value = confettiConfig.bigStar.count;
+            document.getElementById('bigStarUpwardRange').value = confettiConfig.bigStar.upward;
+            document.getElementById('bigStarGravityRange').value = confettiConfig.bigStar.gravity;
+            document.getElementById('bigStarScaleRange').value = confettiConfig.bigStar.scale;
+            document.getElementById('bigStarColor').value = confettiConfig.bigStar.color || 'gold';
+            document.getElementById('bigStarCustomColor').value = confettiConfig.bigStar.customColor || '#ffd700';
+            toggleColorPicker('bigStar', confettiConfig.bigStar.color === 'custom');
+
+            document.getElementById('hollowStarCountRange').value = confettiConfig.hollowStar.count;
+            document.getElementById('hollowStarUpwardRange').value = confettiConfig.hollowStar.upward;
+            document.getElementById('hollowStarGravityRange').value = confettiConfig.hollowStar.gravity;
+            document.getElementById('hollowStarScaleRange').value = confettiConfig.hollowStar.scale;
+            document.getElementById('hollowStarColor').value = confettiConfig.hollowStar.color || 'colorful';
+            document.getElementById('hollowStarCustomColor').value = confettiConfig.hollowStar.customColor || '#ffb3ba';
+            toggleColorPicker('hollowStar', confettiConfig.hollowStar.color === 'custom');
+
+            document.getElementById('glitterCountRange').value = confettiConfig.glitter.count;
+            document.getElementById('glitterUpwardRange').value = confettiConfig.glitter.upward;
+            document.getElementById('glitterGravityRange').value = confettiConfig.glitter.gravity;
+            document.getElementById('glitterScaleRange').value = confettiConfig.glitter.scale;
+            document.getElementById('glitterColor').value = confettiConfig.glitter.color || 'colorful';
+            document.getElementById('glitterCustomColor').value = confettiConfig.glitter.customColor || '#b3d9ff';
+            toggleColorPicker('glitter', confettiConfig.glitter.color === 'custom');
+
+            document.getElementById('horizontalSpreadRange').value = confettiConfig.global.horizontalSpread;
+            document.getElementById('lifetimeRange').value = confettiConfig.global.lifetime;
+        }
+
+        // Update display values
+        function updateDisplays() {
+            document.getElementById('bigStarCount').textContent = `0-${confettiConfig.bigStar.count}`;
+            document.getElementById('bigStarUpward').textContent = `0-${confettiConfig.bigStar.upward.toFixed(1)}`;
+            document.getElementById('bigStarGravity').textContent = confettiConfig.bigStar.gravity.toFixed(4);
+            document.getElementById('bigStarScale').textContent = `0-${confettiConfig.bigStar.scale.toFixed(1)}`;
+
+            document.getElementById('hollowStarCount').textContent = `0-${confettiConfig.hollowStar.count}`;
+            document.getElementById('hollowStarUpward').textContent = `0-${confettiConfig.hollowStar.upward.toFixed(1)}`;
+            document.getElementById('hollowStarGravity').textContent = confettiConfig.hollowStar.gravity.toFixed(4);
+            document.getElementById('hollowStarScale').textContent = `0-${confettiConfig.hollowStar.scale.toFixed(1)}`;
+
+            document.getElementById('glitterCount').textContent = `0-${confettiConfig.glitter.count}`;
+            document.getElementById('glitterUpward').textContent = `0-${confettiConfig.glitter.upward.toFixed(1)}`;
+            document.getElementById('glitterGravity').textContent = confettiConfig.glitter.gravity.toFixed(4);
+            document.getElementById('glitterScale').textContent = `0-${confettiConfig.glitter.scale.toFixed(1)}`;
+
+            document.getElementById('horizontalSpread').textContent = confettiConfig.global.horizontalSpread.toFixed(1);
+            document.getElementById('lifetime').textContent = confettiConfig.global.lifetime;
+        }
+
+        // Wire up sliders
+        document.getElementById('bigStarCountRange').addEventListener('input', e => {
+            confettiConfig.bigStar.count = parseInt(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('bigStarUpwardRange').addEventListener('input', e => {
+            confettiConfig.bigStar.upward = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('bigStarGravityRange').addEventListener('input', e => {
+            confettiConfig.bigStar.gravity = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('bigStarScaleRange').addEventListener('input', e => {
+            confettiConfig.bigStar.scale = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('hollowStarCountRange').addEventListener('input', e => {
+            confettiConfig.hollowStar.count = parseInt(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('hollowStarUpwardRange').addEventListener('input', e => {
+            confettiConfig.hollowStar.upward = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('hollowStarGravityRange').addEventListener('input', e => {
+            confettiConfig.hollowStar.gravity = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('hollowStarScaleRange').addEventListener('input', e => {
+            confettiConfig.hollowStar.scale = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('glitterCountRange').addEventListener('input', e => {
+            confettiConfig.glitter.count = parseInt(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('glitterUpwardRange').addEventListener('input', e => {
+            confettiConfig.glitter.upward = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('glitterGravityRange').addEventListener('input', e => {
+            confettiConfig.glitter.gravity = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('glitterScaleRange').addEventListener('input', e => {
+            confettiConfig.glitter.scale = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('horizontalSpreadRange').addEventListener('input', e => {
+            confettiConfig.global.horizontalSpread = parseFloat(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        document.getElementById('lifetimeRange').addEventListener('input', e => {
+            confettiConfig.global.lifetime = parseInt(e.target.value);
+            updateDisplays();
+            saveConfig();
+        });
+
+        // Color scheme event listeners
+        document.getElementById('bigStarColor').addEventListener('change', e => {
+            confettiConfig.bigStar.color = e.target.value;
+            toggleColorPicker('bigStar', e.target.value === 'custom');
+            saveConfig();
+        });
+
+        document.getElementById('bigStarCustomColor').addEventListener('input', e => {
+            confettiConfig.bigStar.customColor = e.target.value;
+            saveConfig();
+        });
+
+        document.getElementById('hollowStarColor').addEventListener('change', e => {
+            confettiConfig.hollowStar.color = e.target.value;
+            toggleColorPicker('hollowStar', e.target.value === 'custom');
+            saveConfig();
+        });
+
+        document.getElementById('hollowStarCustomColor').addEventListener('input', e => {
+            confettiConfig.hollowStar.customColor = e.target.value;
+            saveConfig();
+        });
+
+        document.getElementById('glitterColor').addEventListener('change', e => {
+            confettiConfig.glitter.color = e.target.value;
+            toggleColorPicker('glitter', e.target.value === 'custom');
+            saveConfig();
+        });
+
+        document.getElementById('glitterCustomColor').addEventListener('input', e => {
+            confettiConfig.glitter.customColor = e.target.value;
+            saveConfig();
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            confettiConfig = JSON.parse(JSON.stringify(defaultConfig));
+            loadUIFromConfig();
+            updateDisplays();
+            saveConfig();
+        });
+
+        // Initialize
+        loadUIFromConfig();
+        updateDisplays();
+        saveConfig();
+    </script>
+</body>
+</html>

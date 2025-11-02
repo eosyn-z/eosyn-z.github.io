@@ -1,0 +1,30 @@
+{
+  "name": "personal-portfolio-template",
+  "version": "1.0.0",
+  "description": "Fast, customizable personal portfolio template with knowledge management, recommended sites, and bookmarks. No frameworks - vanilla HTML/CSS/JS with Node.js build system.",
+  "keywords": [
+    "portfolio",
+    "knowledge-base",
+    "personal-website",
+    "static-site",
+    "markdown",
+    "bookmarks",
+    "digital-garden"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/your-repo.git"
+  },
+  "scripts": {
+    "build": "node assets/js/build/build.js",
+    "watch": "nodemon assets/js/build/build.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun - EOSYN.NET</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .media-page {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .media-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .media-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-secondary);
+        }
+
+        .media-card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .media-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .media-card-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <img src="../assets/images/eosynnet.png" alt="EOSYN.NET" class="site-logo">
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-container">
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                    
+                </ul>
+                <div class="nav-actions">
+                    <div class="search-container">
+                        <input type="text" id="search-input" class="search-input" placeholder="Search articles...">
+                    </div>
+                    <select id="theme-select" class="theme-select-nav" onchange="applyTheme(this.value)" title="Theme">
+                        <option value="dracula">Dracula</option>
+                        <option value="light">Light</option>
+                        <option value="nord">Nord</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="alice">Alice</option>
+                        <option value="gruvbox">Gruvbox Dark</option>
+                        <option value="catppuccin">Catppuccin Mocha</option>
+                        <option value="synthwave">Synthwave</option>
+                    </select>
+                    <button class="nav-action-btn" onclick="showFavorites()" title="My Favorites">
+                        <span></span>
+                    </button>
+                    <button class="nav-action-btn" onclick="toggleUnifiedPanel('favorites')" title="Notes">
+                        <span class="nav-action-label">☆ Notes</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="ticker-container">
+            <div class="ticker-content" id="ticker-content">
+                <span class="ticker-item">Loading ticker...</span>
+            </div>
+        </div>
+
+    <div class="media-page">
+        <h1 class="page-title">Fun</h1>
+        <p class="page-subtitle">Confetti effects, nature photography, watchlist, music, and cool stuff around the web</p>
+
+        <div class="media-grid">
+            <a href="confetti.html" class="media-card">
+                <span class="media-card-icon">✨</span>
+                <h2 class="media-card-title">Confetti</h2>
+                <p class="media-card-description">Configure and play with the click confetti effects</p>
+            </a>
+
+            <a href="nature.html" class="media-card">
+                <span class="media-card-icon">🌿</span>
+                <h2 class="media-card-title">Nature</h2>
+                <p class="media-card-description">A curated gallery of nature photography and outdoor adventures</p>
+            </a>
+
+            <a href="watchlist.html" class="media-card">
+                <span class="media-card-icon"></span>
+                <h2 class="media-card-title">Watchlist</h2>
+                <p class="media-card-description">Movies, shows, and videos I'm watching or want to watch</p>
+            </a>
+
+            <a href="music.html" class="media-card">
+                <span class="media-card-icon"></span>
+                <h2 class="media-card-title">Music</h2>
+                <p class="media-card-description">Current playlists, favorite tracks, and musical discoveries</p>
+            </a>
+
+        </div>
+    </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 EOSYN.NET. Built with  and markdown.</p>
+        </footer>
+    </div>
+
+    <script src="../assets/js/core/themes.js"></script>
+    <script src="../assets/js/core/alice-background.js"></script>
+    <script src="../assets/js/core/script.js"></script>

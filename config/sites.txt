@@ -1,0 +1,14 @@
+# Recommended Sites
+# Add your favorite websites here - they'll appear in the search page
+#
+# Format: SITE=Title|URL|Description|tags,separated,by,commas
+#
+# Available tags: Tool, Social, Business, Under Construction, Personal, Fun, Game, Portfolio, Learning
+#
+# Example sites below - replace with your own!
+
+SITE=GitHub|https://github.com|Software development platform and version control|Tool,Business,Learning
+SITE=Stack Overflow|https://stackoverflow.com|Developer Q&A community|Tool,Social,Learning
+SITE=MDN Web Docs|https://developer.mozilla.org|Comprehensive web development documentation|Tool,Learning
+SITE=CSS-Tricks|https://css-tricks.com|CSS tips, tricks, and tutorials|Tool,Learning,Personal
+SITE=Dev.to|https://dev.to|Community of software developers|Social,Learning

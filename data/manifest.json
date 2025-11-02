@@ -1,0 +1,163 @@
+{
+  "pages": [
+    {
+      "id": "projects/making eosyn.net",
+      "section": "projects",
+      "slug": "making eosyn.net",
+      "title": "Making EOSYN.NET",
+      "excerpt": "I've been working on this little personal site for a month or two ish, passively, since I both wasn't sure what to put on here and wasn't sure how I w...",
+      "date": "2025-11-02",
+      "tags": [],
+      "sources": [],
+      "wikiLinks": [
+        {
+          "target": "Zen-Craft Season 2 is Out Now",
+          "display": "Zen-Craft Season 2 is Out Now"
+        }
+      ],
+      "filename": "Making EOSYN.NET.md",
+      "path": "content/projects/Making EOSYN.NET.md"
+    },
+    {
+      "id": "projects/polymir documentation",
+      "section": "projects",
+      "slug": "polymir documentation",
+      "title": "POLYMIR: Development Retrospective",
+      "excerpt": "If you're reading this, that means my game actually ended up being something close to what I'd hoped it'd be. I'm thankful to the support of everyone,...",
+      "date": "2025-11-02",
+      "tags": [],
+      "sources": [],
+      "wikiLinks": [
+        {
+          "target": "Roadmap to Polymir",
+          "display": "Roadmap to Polymir"
+        }
+      ],
+      "filename": "Polymir Documentation.md",
+      "path": "content/projects/Polymir Documentation.md"
+    },
+    {
+      "id": "projects/roadmap to polymir",
+      "section": "projects",
+      "slug": "roadmap to polymir",
+      "title": "POLYMIR ROADMAP",
+      "excerpt": "POLYMIR ROADMAP **Last Updated:** November 1, 2025 **Alpha Target:** November 11, 2025   **Multiplayer Beta Target:** January 11, 2026 -- Core Archite...",
+      "date": "2025-11-02",
+      "tags": [],
+      "sources": [],
+      "wikiLinks": [],
+      "filename": "Roadmap to Polymir.md",
+      "path": "content/projects/Roadmap to Polymir.md"
+    },
+    {
+      "id": "projects/zen-craft season 2 is out now",
+      "section": "projects",
+      "slug": "zen-craft season 2 is out now",
+      "title": "What's the server about?",
+      "excerpt": "Join : zen-craft.apexmc.co / 98.142.5.204:25565 What's the server about? This server is meant to be a \"nearly vanilla\" but not quite server that conta...",
+      "date": "2025-11-02",
+      "tags": [],
+      "sources": [],
+      "wikiLinks": [
+        {
+          "target": "What happened with Season 1 of Zen-Craft",
+          "display": "What happened with Season 1 of Zen-Craft"
+        }
+      ],
+      "filename": "Zen-Craft Season 2 is Out Now.md",
+      "path": "content/projects/Zen-Craft Season 2 is Out Now.md"
+    },
+    {
+      "id": "thoughts/what happened with season 1 of zen-craft",
+      "section": "thoughts",
+      "slug": "what happened with season 1 of zen-craft",
+      "title": "Zen-Craft Season 1",
+      "excerpt": "Zen-Craft Season 1 First creation Originally I ran this server with a player called Kyg0z, someone who I used to play a modded server with some number...",
+      "date": "2025-11-02",
+      "tags": [],
+      "sources": [],
+      "wikiLinks": [],
+      "filename": "What happened with Season 1 of Zen-Craft.md",
+      "path": "content/thoughts/What happened with Season 1 of Zen-Craft.md"
+    },
+    {
+      "id": "archive/readme",
+      "section": "archive",
+      "slug": "readme",
+      "title": "Archive - Obsidian Vault",
+      "excerpt": "Archive - Obsidian Vault\r \r This directory supports **recursive folder structures** for organizing your Obsidian vault or any markdown knowledge base....",
+      "date": "2025-11-02",
+      "tags": [],
+      "sources": [],
+      "wikiLinks": [
+        {
+          "target": "Other Note",
+          "display": "Other Note"
+        }
+      ],
+      "filename": "README.md",
+      "path": "content/archive/README.md"
+    }
+  ],
+  "citationIndex": {
+    "byType": {},
+    "byPage": {},
+    "stats": {}
+  },
+  "knowledgeGraph": {
+    "nodes": [
+      {
+        "id": "projects/making eosyn.net",
+        "title": "Making EOSYN.NET",
+        "section": "projects",
+        "slug": "making eosyn.net",
+        "excerpt": "I've been working on this little personal site for a month or two ish, passively, since I both wasn't sure what to put on here and wasn't sure how I w..."
+      },
+      {
+        "id": "projects/polymir documentation",
+        "title": "POLYMIR: Development Retrospective",
+        "section": "projects",
+        "slug": "polymir documentation",
+        "excerpt": "If you're reading this, that means my game actually ended up being something close to what I'd hoped it'd be. I'm thankful to the support of everyone,..."
+      },
+      {
+        "id": "projects/roadmap to polymir",
+        "title": "POLYMIR ROADMAP",
+        "section": "projects",
+        "slug": "roadmap to polymir",
+        "excerpt": "POLYMIR ROADMAP **Last Updated:** November 1, 2025 **Alpha Target:** November 11, 2025   **Multiplayer Beta Target:** January 11, 2026 -- Core Archite..."
+      },
+      {
+        "id": "projects/zen-craft season 2 is out now",
+        "title": "What's the server about?",
+        "section": "projects",
+        "slug": "zen-craft season 2 is out now",
+        "excerpt": "Join : zen-craft.apexmc.co / 98.142.5.204:25565 What's the server about? This server is meant to be a \"nearly vanilla\" but not quite server that conta..."
+      },
+      {
+        "id": "thoughts/what happened with season 1 of zen-craft",
+        "title": "Zen-Craft Season 1",
+        "section": "thoughts",
+        "slug": "what happened with season 1 of zen-craft",
+        "excerpt": "Zen-Craft Season 1 First creation Originally I ran this server with a player called Kyg0z, someone who I used to play a modded server with some number..."
+      },
+      {
+        "id": "archive/readme",
+        "title": "Archive - Obsidian Vault",
+        "section": "archive",
+        "slug": "readme",
+        "excerpt": "Archive - Obsidian Vault\r \r This directory supports **recursive folder structures** for organizing your Obsidian vault or any markdown knowledge base...."
+      }
+    ],
+    "links": [],
+    "backlinks": {
+      "projects/making eosyn.net": [],
+      "projects/polymir documentation": [],
+      "projects/roadmap to polymir": [],
+      "projects/zen-craft season 2 is out now": [],
+      "thoughts/what happened with season 1 of zen-craft": [],
+      "archive/readme": []
+    }
+  },
+  "buildTime": "2025-11-02T08:37:40.377Z"
+}

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sites - EOSYN.NET</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .sites-page {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: var(--accent-secondary);
+            border-bottom-color: var(--accent-secondary);
+        }
+
+        .search-box {
+            margin-bottom: 2rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-secondary);
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .site-card {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .site-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .site-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+        }
+
+        .site-card h3 a {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .site-card h3 a:hover {
+            color: var(--accent-secondary);
+        }
+
+        .site-card p {
+            margin: 0 0 1rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .site-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-radius: 4px;
+        }
+
+        .bookmark-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            color: var(--border-color);
+        }
+
+        .bookmark-btn:hover {
+            color: var(--accent-secondary);
+            transform: scale(1.2);
+        }
+
+        .bookmark-btn.bookmarked {
+            color: var(--accent-orange);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state h2 {
+            margin: 0 0 1rem 0;
+        }
+
+        .stats {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .tag-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tag-filter {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tag-filter:hover {
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
+        }
+
+        .tag-filter.active {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+            color: var(--bg-primary);
+        }
+
+        /* Alice Theme - Glass Effect */
+        body[data-theme="alice"] .site-card {
+            background: rgba(255, 232, 245, 0.75) !important;
+            backdrop-filter: blur(8px);
+            position: relative;
+            z-index: 1;
+        }
+
+        body[data-theme="alice"] .site-card:hover {
+            box-shadow: 0 4px 12px rgba(255, 192, 203, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <img src="../assets/images/eosynnet.png" alt="EOSYN.NET" class="site-logo">
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-container">
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                    
+                </ul>
+                <div class="nav-actions">
+                    <div class="search-container">
+                        <input type="text" id="search-input" class="search-input" placeholder="Search articles...">
+                    </div>
+                    <select id="theme-select" class="theme-select-nav" onchange="applyTheme(this.value)" title="Theme">
+                        <option value="dracula">Dracula</option>
+                        <option value="light">Light</option>
+                        <option value="nord">Nord</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="alice">Alice</option>
+                        <option value="gruvbox">Gruvbox Dark</option>
+                        <option value="catppuccin">Catppuccin Mocha</option>
+                        <option value="synthwave">Synthwave</option>
+                    </select>
+                    <button class="nav-action-btn" onclick="showFavorites()" title="My Favorites">
+                        <span></span>
+                    </button>
+                    <button class="nav-action-btn" onclick="toggleUnifiedPanel('favorites')" title="Notes">
+                        <span class="nav-action-label">☆ Notes</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="ticker-container">
+            <div class="ticker-content" id="ticker-content">
+                <span class="ticker-item">Loading ticker...</span>
+            </div>
+        </div>
+
+    <div class="sites-page">
+
+        <div class="tabs">
+            <button class="tab active" data-tab="recommended" onclick="switchTab('recommended')">
+                Recommended (<span id="recommendedCount">0</span>)
+            </button>
+            <button class="tab" data-tab="bookmarks" onclick="switchTab('bookmarks')">
+                My Bookmarks (<span id="bookmarkCount">0</span>)
+            </button>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search sites..." oninput="performSearch()">
+        </div>
+
+        <div class="filter-section">
+            <h4 style="margin: 0 0 0.5rem 0; color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;">Categories</h4>
+            <div class="tag-filters" id="categoryFilters"></div>
+        </div>
+
+        <div class="filter-section">
+            <h4 style="margin: 1rem 0 0.5rem 0; color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;">Tags</h4>
+            <div class="tag-filters" id="tagFilters"></div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="sites-grid" id="sitesGrid"></div>
+    </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 EOSYN.NET. Built with  and markdown.</p>
+        </footer>
+    </div>
+
+    <script src="../assets/js/core/themes.js"></script>
+    <script src="../assets/js/core/alice-background.js"></script>
+    <script src="../assets/js/core/script.js"></script>
+    <script src="../assets/js/utils/bookmark-manager.js"></script>
+    <script>
+        // Override CONFIG to adjust paths for sites page
+        if (typeof CONFIG !== 'undefined') {
+            CONFIG.contentFolders = CONFIG.contentFolders.map(folder => ({
+                ...folder,
+                path: '../' + folder.path
+            }));
+        }
+
+        let allSites = [];
+        let currentTab = 'recommended';
+        let activeTagFilters = [];
+        let activeCategoryFilters = [];
+
+        // Load sites data
+        async function loadSites() {
+            try {
+                const response = await fetch('../content/sites.json');
+                const data = await response.json();
+                allSites = data.sites || [];
+                renderCategoryFilters();
+                renderTagFilters();
+                renderSites();
+            } catch (error) {
+                console.error('Failed to load sites:', error);
+                document.getElementById('sitesGrid').innerHTML = `
+                    <div class="empty-state">
+                        <h2>No sites configured</h2>
+                        <p>Add sites to config/sites.txt and run npm run build</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Switch between tabs
+        function switchTab(tab) {
+            currentTab = tab;
+
+            // Update tab UI
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+            // Clear search and filters
+            document.getElementById('searchInput').value = '';
+            activeTagFilters = [];
+            activeCategoryFilters = [];
+
+            renderCategoryFilters();
+            renderTagFilters();
+            renderSites();
+        }
+
+        // Render category filters
+        function renderCategoryFilters() {
+            // Extract all unique categories from sites
+            let sitesToExtractFrom = currentTab === 'recommended' ? allSites : window.bookmarkManager.getAll();
+            const categorySet = new Set();
+
+            sitesToExtractFrom.forEach(site => {
+                if (site.category) {
+                    categorySet.add(site.category);
+                }
+            });
+
+            // Convert to array and sort alphabetically
+            const allCategories = Array.from(categorySet).sort((a, b) => a.localeCompare(b));
+            const filtersContainer = document.getElementById('categoryFilters');
+
+            if (allCategories.length === 0) {
+                filtersContainer.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem;">No categories available</p>';
+                return;
+            }
+
+            filtersContainer.innerHTML = allCategories.map(category => `
+                <button class="tag-filter ${activeCategoryFilters.includes(category) ? 'active' : ''}"
+                        onclick="toggleCategoryFilter('${category.replace(/'/g, "\\'")}')">
+                    ${category}
+                </button>
+            `).join('');
+        }
+
+        // Toggle category filter
+        function toggleCategoryFilter(category) {
+            const index = activeCategoryFilters.indexOf(category);
+            if (index > -1) {
+                activeCategoryFilters.splice(index, 1);
+            } else {
+                activeCategoryFilters.push(category);
+            }
+
+            renderCategoryFilters();
+            renderSites(document.getElementById('searchInput').value);
+        }
+
+        // Render tag filters
+        function renderTagFilters() {
+            // Extract all unique tags from sites based on current tab
+            let sitesToExtractFrom = currentTab === 'recommended' ? allSites : window.bookmarkManager.getAll();
+            const tagSet = new Set();
+
+            sitesToExtractFrom.forEach(site => {
+                if (site.tags && Array.isArray(site.tags)) {
+                    site.tags.forEach(tag => tagSet.add(tag));
+                }
+            });
+
+            // Convert to array and sort alphabetically
+            const allTags = Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+            const filtersContainer = document.getElementById('tagFilters');
+
+            if (allTags.length === 0) {
+                filtersContainer.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem;">No tags available</p>';
+                return;
+            }
+
+            filtersContainer.innerHTML = allTags.map(tag => `
+                <button class="tag-filter ${activeTagFilters.includes(tag) ? 'active' : ''}"
+                        onclick="toggleTagFilter('${tag}')">
+                    ${tag}
+                </button>
+            `).join('');
+        }
+
+        // Toggle tag filter
+        function toggleTagFilter(tag) {
+            const index = activeTagFilters.indexOf(tag);
+            if (index > -1) {
+                activeTagFilters.splice(index, 1);
+            } else {
+                activeTagFilters.push(tag);
+            }
+
+            renderTagFilters();
+            renderSites(document.getElementById('searchInput').value);
+        }
+
+        // Perform search
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            renderSites(query);
+        }
+
+        // Render sites
+        function renderSites(searchQuery = '') {
+            const grid = document.getElementById('sitesGrid');
+            let sitesToShow = [];
+
+            if (currentTab === 'recommended') {
+                sitesToShow = allSites;
+            } else {
+                sitesToShow = window.bookmarkManager.getAll();
+            }
+
+            // Filter by category filters
+            if (activeCategoryFilters.length > 0) {
+                sitesToShow = sitesToShow.filter(site =>
+                    site.category && activeCategoryFilters.includes(site.category)
+                );
+            }
+
+            // Filter by tag filters
+            if (activeTagFilters.length > 0) {
+                sitesToShow = sitesToShow.filter(site =>
+                    site.tags && activeTagFilters.some(filterTag => site.tags.includes(filterTag))
+                );
+            }
+
+            // Filter by search query
+            if (searchQuery) {
+                sitesToShow = sitesToShow.filter(site => {
+                    const siteName = site.name || site.title || '';
+                    return siteName.toLowerCase().includes(searchQuery) ||
+                        site.description.toLowerCase().includes(searchQuery) ||
+                        (site.tags && site.tags.some(tag => tag.toLowerCase().includes(searchQuery)));
+                });
+            }
+
+            // Update counts
+            document.getElementById('recommendedCount').textContent = allSites.length;
+            document.getElementById('bookmarkCount').textContent = window.bookmarkManager.count();
+
+            // Update stats
+            const statsEl = document.getElementById('stats');
+            if (searchQuery) {
+                statsEl.textContent = `Showing ${sitesToShow.length} result${sitesToShow.length !== 1 ? 's' : ''} for "${searchQuery}"`;
+            } else {
+                statsEl.textContent = `${sitesToShow.length} site${sitesToShow.length !== 1 ? 's' : ''}`;
+            }
+
+            // Render cards
+            if (sitesToShow.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No sites found</h2>
+                        <p>${currentTab === 'bookmarks' ? 'Start bookmarking sites from the Recommended tab!' : 'Try a different search term'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = sitesToShow.map(site => {
+                const isBookmarked = window.bookmarkManager.isBookmarked(site.url);
+                const siteName = site.name || site.title || site.url;
+                const siteUrl = site.url.startsWith('http') ? site.url : `https://${site.url}`;
+                return `
+                    <div class="site-card">
+                        <button class="bookmark-btn ${isBookmarked ? 'bookmarked' : ''}"
+                                onclick="toggleBookmark(event, ${JSON.stringify(site).replace(/"/g, '&quot;')})"
+                                title="${isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}">
+                            ${isBookmarked ? '★' : '☆'}
+                        </button>
+                        <h3><a href="${siteUrl}" target="_blank" rel="noopener noreferrer">${siteName}</a></h3>
+                        <p>${site.description}</p>
+                        ${site.tags && site.tags.length ? `
+                            <div class="site-tags">
+                                ${site.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Toggle bookmark
+        function toggleBookmark(event, site) {
+            event.stopPropagation();
+
+            const isBookmarked = window.bookmarkManager.isBookmarked(site.url);
+
+            if (isBookmarked) {
+                window.bookmarkManager.remove(site.url);
+            } else {
+                window.bookmarkManager.add(site);
+            }
+
+            renderSites(document.getElementById('searchInput').value);
+        }
+
+        // Initialize
+        loadSites();
+    </script>
+    <script src="../assets/js/utils/ticker.js"></script>
+</body>
+</html>

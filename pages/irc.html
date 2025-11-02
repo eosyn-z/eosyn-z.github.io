@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRC - EOSYN.NET</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .irc-container {
+            padding: 1rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .irc-info {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .irc-info h2 {
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .irc-info p {
+            color: var(--text-secondary);
+            margin: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+
+        .irc-info code {
+            background: var(--bg-tertiary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--accent-primary);
+        }
+
+        .irc-embed {
+            width: 100%;
+            height: calc(100vh - 300px);
+            min-height: 600px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+        }
+
+        .channel-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .channel-tab {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .channel-tab:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
+
+        .channel-tab.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <img src="../assets/images/eosynnet.png" alt="EOSYN.NET" class="site-logo">
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-container">
+                <button class="nav-toggle" id="navToggle">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                    
+                </ul>
+                <div class="nav-actions">
+                    <div class="search-container">
+                        <input type="text" id="search-input" class="search-input" placeholder="Search articles...">
+                    </div>
+                    <select id="theme-select" class="theme-select-nav" onchange="applyTheme(this.value)" title="Theme">
+                        <option value="dracula">Dracula</option>
+                        <option value="light">Light</option>
+                        <option value="nord">Nord</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="alice">Alice</option>
+                        <option value="gruvbox">Gruvbox Dark</option>
+                        <option value="catppuccin">Catppuccin Mocha</option>
+                        <option value="synthwave">Synthwave</option>
+                    </select>
+                    <button class="nav-action-btn" onclick="showFavorites()" title="My Favorites">
+                        <span></span>
+                    </button>
+                    <button class="nav-action-btn" onclick="toggleUnifiedPanel('favorites')" title="Notes">
+                        <span class="nav-action-label">☆ Notes</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="ticker-container">
+            <div class="ticker-content" id="ticker-content">
+                <span class="ticker-item">Loading ticker...</span>
+            </div>
+        </div>
+
+        <div class="irc-container">
+            <div class="irc-info">
+                <h2> EOSYN IRC Chat</h2>
+                <p>Connect to <code>irc.libera.chat</code> and join <code>#eosyn</code></p>
+                <p>Or use the web client below!</p>
+            </div>
+
+            <div class="channel-tabs">
+                <button class="channel-tab active" onclick="switchChannel('#eosyn')">#eosyn</button>
+                <button class="channel-tab" onclick="switchChannel('#eosyn-dev')">#eosyn-dev</button>
+                <button class="channel-tab" onclick="switchChannel('#eosyn-offtopic')">#eosyn-offtopic</button>
+            </div>
+
+            <iframe id="irc-frame" class="irc-embed"
+                    src="https://kiwiirc.com/nextclient/irc.libera.chat/#eosyn"
+                    frameborder="0"
+                    allow="microphone; camera">
+            </iframe>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 EOSYN.NET. Built with  and markdown.</p>
+        </footer>
+    </div>
+
+    <script src="../assets/js/core/themes.js"></script>
+    <script src="../assets/js/core/alice-background.js"></script>
+    <script src="../assets/js/core/script.js"></script>
+    <script>
+        function switchChannel(channel) {
+            // Update iframe to new channel
+            const iframe = document.getElementById('irc-frame');
+            iframe.src = `https://kiwiirc.com/nextclient/irc.libera.chat/${channel}`;
+
+            // Update active tab
+            document.querySelectorAll('.channel-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update ticker
+            const ticker = document.getElementById('ticker-content');
+            ticker.innerHTML = `
+                <span class="ticker-item">IRC CHAT</span>
+                <span class="ticker-item">Server: irc.libera.chat</span>
+                <span class="ticker-item">Channel: ${channel}</span>
+                <span class="ticker-item">Join the conversation!</span>
+            `;
+        }
+    </script>
+    <script src="../assets/js/utils/ticker.js"></script>
+</body>
+</html>

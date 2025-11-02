@@ -1,0 +1,29 @@
+{
+  "user_id": "917811383876341820",
+  "discord": {
+    "id": "917811383876341820",
+    "username": "eosyn",
+    "avatar": null,
+    "discriminator": "0",
+    "display_name": "EOSYN",
+    "avatar_decoration": null,
+    "public_flags": 0
+  },
+  "activities": [
+    {
+      "id": "custom",
+      "name": "Custom Status",
+      "type": 4,
+      "state": "Building something cool",
+      "emoji": {
+        "name": ""
+      }
+    }
+  ],
+  "spotify": null,
+  "listening_to_spotify": false,
+  "active_on_discord_desktop": false,
+  "active_on_discord_mobile": false,
+  "active_on_discord_web": true,
+  "success": true
+}

@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-11-02",
+  "sites": [
+    {
+      "title": "GitHub",
+      "url": "https://github.com",
+      "description": "Software development platform and version control",
+      "tags": [
+        "Tool",
+        "Business",
+        "Learning"
+      ]
+    },
+    {
+      "title": "Stack Overflow",
+      "url": "https://stackoverflow.com",
+      "description": "Developer Q&A community",
+      "tags": [
+        "Tool",
+        "Social",
+        "Learning"
+      ]
+    },
+    {
+      "title": "MDN Web Docs",
+      "url": "https://developer.mozilla.org",
+      "description": "Comprehensive web development documentation",
+      "tags": [
+        "Tool",
+        "Learning"
+      ]
+    },
+    {
+      "title": "CSS-Tricks",
+      "url": "https://css-tricks.com",
+      "description": "CSS tips, tricks, and tutorials",
+      "tags": [
+        "Tool",
+        "Learning",
+        "Personal"
+      ]
+    },
+    {
+      "title": "Dev.to",
+      "url": "https://dev.to",
+      "description": "Community of software developers",
+      "tags": [
+        "Social",
+        "Learning"
+      ]
+    }
+  ]
+}

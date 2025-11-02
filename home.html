@@ -1,0 +1,1301 @@
+<div class="lu-home">
+    <div class="main-layout">
+        
+        <div class="terminal-section">
+            <div id="discord-presence" class="discord-presence-card">
+                
+            </div>
+            <div class="terminal-window">
+                <div class="terminal-bar">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">~/eosyn</span>
+                </div>
+                <div class="terminal-content">
+                    
+                    <div id="terminal-history">
+                        
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">$</span> <span>status</span>
+                        </div>
+                        <div class="terminal-status">
+                            Documents: <span class="status-val" id="totalPages">0</span> Concepts: <span class="status-val" id="totalSections">0</span> Words: <span class="status-val" id="totalWords">0</span> System:<br>
+                            Desktop: <span class="status-val" style="color: #ff5555;">Ryzen 7 3700x / 3070 / 64GB RAM </span><br>
+                            Framework: <span class="status-val" style="color: #ff5555;">Ryzen AI 9 HX 370 / RTX 5070 / 32GB DDR5 </span>
+                        </div>
+
+                        <div class="terminal-line" style="margin-top: 0.5rem;">
+                            <span class="terminal-prompt">$</span> <span>whoami</span>
+                        </div>
+                        <div class="terminal-output">
+                            <span class="bright">EOSYN</span>
+                        </div>
+
+                        <div class="terminal-line" style="margin-top: 0.5rem;">
+                            <span class="terminal-prompt">$</span> <span>ls</span>
+                        </div>
+                        <div class="terminal-commands">
+                            <div><span class="cmd-shortcut p">[p]</span> projects/</div>
+                            <div><span class="cmd-shortcut t">[t]</span> thoughts/</div>
+                            <div><span class="cmd-shortcut l">[l]</span> learning/</div>
+                            <div><span class="cmd-shortcut r">[r]</span> resources/</div>
+                        </div>
+                    </div>
+
+                    <div class="terminal-input-line" style="margin-top: 0.5rem;">
+                        <span class="terminal-prompt">$</span>
+                        <input type="text"
+                               id="terminal-input"
+                               class="terminal-input"
+                               placeholder=""
+                               autocomplete="off"
+                               spellcheck="false">
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote-section">
+                <div class="quote-text" id="random-quote">
+                    "The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise." — Dijkstra
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-section">
+            
+            <div class="research-card art-gallery" id="art-gallery-card" style="display: none;">
+                <div class="card-header" style="background: var(--bg-tertiary); padding: 0.35rem 0.5rem; border-radius: 4px 4px 0 0;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+                    <span style="margin-left: auto; color: var(--text-secondary); font-size: 0.65rem;">Gallery</span>
+                </div>
+                <div class="card-content">
+                    <div class="gallery-carousel">
+                        <button class="carousel-btn prev" onclick="window.artGalleryPrev()">‹</button>
+                        <div class="carousel-track" id="art-carousel">
+                            <div class="loading-notes">Loading gallery...</div>
+                        </div>
+                        <button class="carousel-btn next" onclick="window.artGalleryNext()">›</button>
+                    </div>
+                    <div class="gallery-info" style="display: none;">
+                        <div class="gallery-title" id="gallery-title">Gallery</div>
+                        <div class="gallery-tags" id="gallery-tags"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TPOT Sites Carousel -->
+            <div class="research-card tpot-sites" id="tpot-carousel-card">
+                <div class="card-header" style="background: var(--bg-tertiary); padding: 0.35rem 0.5rem; border-radius: 4px 4px 0 0;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+                    <span style="margin-left: auto; color: var(--text-secondary); font-size: 0.65rem;">TPOT Sites</span>
+                </div>
+                <div class="card-content">
+                    <div class="tpot-carousel-container" id="tpot-carousel">
+                        <div class="loading-notes">Loading sites...</div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn prev" onclick="window.tpotCarouselPrev()">‹</button>
+                        <div class="carousel-dots" id="tpot-dots"></div>
+                        <button class="carousel-btn next" onclick="window.tpotCarouselNext()">›</button>
+                    </div>
+                    <a href="pages/sites.html" class="view-all-link" style="display: block; text-align: center; margin-top: 0.5rem; color: var(--accent-primary); font-size: 0.75rem;">View all sites →</a>
+                </div>
+            </div>
+
+            <div class="research-card pubmed">
+                <div class="card-header" style="background: var(--bg-tertiary); padding: 0.35rem 0.5rem; border-radius: 4px 4px 0 0;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+                    <span style="margin-left: auto; color: var(--text-secondary); font-size: 0.65rem;">Projects</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-links-grid-three">
+                        <div class="sources-column">
+                            <h4>Recent Reading</h4>
+                            <ul id="pubmed-sources">
+                                <li class="loading-notes">Scanning...</li>
+                            </ul>
+                        </div>
+                        <div class="writeups-column">
+                            <h4>Writeups</h4>
+                            <ul id="pubmed-writeups" class="auto-linked-notes">
+                                <li class="loading-notes">Scanning...</li>
+                            </ul>
+                        </div>
+                        <div class="notes-column">
+                            <h4>My Notes</h4>
+                            <ul id="pubmed-notes" class="user-notes">
+                                <li class="no-notes">No notes yet!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="research-card nlab">
+                <div class="card-header" style="background: var(--bg-tertiary); padding: 0.35rem 0.5rem; border-radius: 4px 4px 0 0;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+                    <span style="margin-left: auto; color: var(--text-secondary); font-size: 0.65rem;">Thoughts</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-links-grid-three">
+                        <div class="sources-column">
+                            <h4>Recent Reading</h4>
+                            <ul id="nlab-sources">
+                                <li class="loading-notes">Scanning...</li>
+                            </ul>
+                        </div>
+                        <div class="writeups-column">
+                            <h4>Writeups</h4>
+                            <ul id="nlab-writeups" class="auto-linked-notes">
+                                <li class="loading-notes">Scanning...</li>
+                            </ul>
+                        </div>
+                        <div class="notes-column">
+                            <h4>My Notes</h4>
+                            <ul id="nlab-notes" class="user-notes">
+                                <li class="no-notes">No notes yet!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="research-card arxiv">
+                <div class="card-header" style="background: var(--bg-tertiary); padding: 0.35rem 0.5rem; border-radius: 4px 4px 0 0;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+                    <span style="margin-left: auto; color: var(--text-secondary); font-size: 0.65rem;">Learning</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-links-grid-three">
+                        <div class="sources-column">
+                            <h4>Recent Reading</h4>
+                            <ul id="arxiv-sources">
+                                <li class="loading-notes">Scanning...</li>
+                            </ul>
+                        </div>
+                        <div class="writeups-column">
+                            <h4>Writeups</h4>
+                            <ul id="arxiv-writeups" class="auto-linked-notes">
+                                <li class="loading-notes">Scanning...</li>
+                            </ul>
+                        </div>
+                        <div class="notes-column">
+                            <h4>My Notes</h4>
+                            <ul id="arxiv-notes" class="user-notes">
+                                <li class="no-notes">No notes yet!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Main container */
+.lu-home {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.75rem;
+}
+
+/* Main layout - grid */
+.main-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    max-width: 100%;
+}
+
+.terminal-section {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.discord-presence-card {
+    width: 100%;
+}
+
+.discord-presence-card .discord-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.cards-section {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.social-links {
+    /* Already inside terminal-section, no grid positioning needed */
+}
+
+.quote-section {
+    /* Already inside terminal-section, no grid positioning needed */
+}
+
+/* Terminal window */
+.terminal-window {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.terminal-window:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.terminal-bar {
+    background: var(--bg-tertiary);
+    padding: 0.35rem 0.5rem;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.terminal-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+
+.terminal-title {
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-size: 0.65rem;
+}
+
+.terminal-content {
+    padding: 0.5rem;
+    color: var(--accent-primary);
+    font-size: 0.7rem;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+}
+
+.terminal-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.terminal-line {
+    margin-bottom: 0.25rem;
+}
+
+.terminal-prompt {
+    color: var(--accent-secondary);
+}
+
+.typing-text {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+.terminal-output {
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.terminal-output .dim {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Terminal status output */
+.terminal-status {
+    color: var(--text-secondary);
+    margin: 0.25rem 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.status-val {
+    color: var(--accent-secondary);
+    font-weight: bold;
+    margin: 0 1rem 0 0.25rem;
+}
+
+.bright {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Terminal commands */
+.terminal-commands {
+    margin: 0.25rem 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.25rem;
+    line-height: 1.4;
+}
+
+.cmd-shortcut {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.cmd-shortcut.p { color: #ff79c6; }
+.cmd-shortcut.t { color: #8be9fd; }
+.cmd-shortcut.l { color: #f1fa8c; }
+.cmd-shortcut.r { color: #bd93f9; }
+
+/* Terminal input */
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+}
+
+.terminal-input {
+    background: transparent;
+    border: none;
+    color: #4af626;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    flex: 1;
+    margin-left: 0.5rem;
+    caret-color: #4af626;
+}
+
+.terminal-input::after {
+    content: '▊';
+    animation: cursor-blink 1s infinite;
+    color: #4af626;
+    margin-left: 2px;
+}
+
+/* Blinking cursor */
+.terminal-cursor {
+    animation: cursor-blink 1s infinite;
+    color: #4af626;
+    display: inline-block;
+}
+
+@keyframes cursor-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+/* Research cards - now stacked vertically */
+.research-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.research-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-content {
+    padding: 1rem;
+}
+
+.card-icon {
+    font-size: 1.2rem;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #f8f8f2;
+    font-size: 0.95rem;
+}
+
+.card-subtitle {
+    color: #999;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+}
+
+/* Card links grid layout - side by side */
+.card-links-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.75rem;
+}
+
+.favorites-column, .notes-column {
+    min-width: 0;
+}
+
+.card-links-grid h4 {
+    color: #f8f8f2;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0 0 0.35rem 0;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid #444;
+}
+
+.card-links-grid ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-links-grid li {
+    margin: 0.25rem 0;
+    font-size: 0.7rem;
+    position: relative;
+    padding-left: 0.75rem;
+}
+
+.card-links-grid li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #666;
+}
+
+.card-links-grid li[data-ref] {
+    position: relative;
+}
+
+/* Highlight associated items */
+.card-links-grid li.associated {
+    background: rgba(80, 250, 123, 0.1);
+    margin-left: -0.25rem;
+    padding-left: 1rem;
+    border-radius: 3px;
+}
+
+.card-links-grid a {
+    color: #8be9fd;
+    text-decoration: none;
+    font-size: 0.7rem;
+    transition: all 0.2s ease;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.favorites-column a {
+    color: #8be9fd;
+}
+
+.notes-column a {
+    color: #f1fa8c;
+}
+
+.card-links-grid a:hover {
+    color: #ff79c6;
+    text-decoration: underline;
+}
+
+.loading-notes {
+    color: #666;
+    font-style: italic;
+}
+
+.loading-notes::before {
+    content: '⟳';
+    margin-right: 0.25rem;
+    animation: spin 1s linear infinite;
+}
+
+/* Connection lines for associated items */
+.card-links-grid li.connected::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -0.5rem;
+    width: 1rem;
+    height: 1px;
+    background: linear-gradient(90deg, #50fa7b, transparent);
+}
+
+/* Social links */
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-start;
+}
+
+.social-links-icons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.social-icon-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.social-icon-btn.twitter:hover {
+    border-color: #1DA1F2;
+    color: #1DA1F2;
+    background: rgba(29, 161, 242, 0.1);
+}
+
+.social-icon-btn.discord:hover {
+    border-color: #5865F2;
+    color: #5865F2;
+    background: rgba(88, 101, 242, 0.1);
+}
+
+.social-icon-btn.github:hover {
+    border-color: #50fa7b;
+    color: #50fa7b;
+    background: rgba(80, 250, 123, 0.1);
+}
+
+.social-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: #2d2d2d;
+    border: 1px solid #444;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #999;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.social-badge:hover {
+    background: #444;
+    color: #f8f8f2;
+    border-color: #666;
+    transform: translateY(-2px);
+}
+
+.social-badge.twitter:hover {
+    border-color: #1DA1F2;
+    color: #1DA1F2;
+}
+
+.social-badge.github:hover {
+    border-color: #50fa7b;
+    color: #50fa7b;
+}
+
+.social-badge.discord:hover {
+    border-color: #5865F2;
+    color: #5865F2;
+}
+
+.social-icon {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Quote section */
+.quote-section {
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--accent-primary);
+    border-radius: 4px;
+    max-width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.quote-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    border-left-color: var(--accent-secondary);
+}
+
+.quote-text {
+    color: var(--text-primary);
+    font-style: italic;
+    line-height: 1.4;
+    font-size: 0.75rem;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 968px) {
+    .lu-home {
+        padding: 1rem;
+    }
+
+    .main-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .terminal-section {
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 100%;
+    }
+
+    .terminal-window {
+        max-width: 100%;
+    }
+
+    .social-links {
+        grid-column: 1;
+        grid-row: 2;
+        margin-top: 1rem;
+    }
+
+    .cards-section {
+        grid-column: 1;
+        grid-row: 3;
+        width: 100%;
+    }
+
+    .quote-section {
+        grid-column: 1;
+        grid-row: 4;
+        margin-top: 1rem;
+    }
+
+    .terminal-commands {
+        grid-template-columns: 1fr;
+        gap: 0.15rem;
+    }
+
+    .card-links-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .research-card {
+        padding: 0.75rem;
+    }
+
+    .social-badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .terminal-content {
+        font-size: 0.85rem;
+        padding: 0.75rem;
+    }
+
+    .card-links-grid h4 {
+        font-size: 0.7rem;
+    }
+
+    .card-links-grid a {
+        font-size: 0.65rem;
+    }
+
+    .quote-text {
+        font-size: 0.75rem;
+    }
+}
+
+/* Art Gallery Card - make it span full width for more images */
+.research-card.art-gallery {
+    grid-column: 1 / -1;  /* Span full width of grid */
+    max-width: 100%;
+}
+
+/* Gallery Carousel */
+.gallery-carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.carousel-track {
+    flex: 1;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--bg-tertiary);
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+    justify-content: space-evenly; /* Better distribution for 7-8 images */
+    padding: 0.4rem;
+    min-height: 90px;
+}
+
+.carousel-track img {
+    height: 75px;  /* Slightly smaller to fit more images */
+    width: auto;
+    max-width: 75px;  /* Ensure consistent sizing */
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.carousel-track img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.carousel-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.carousel-btn:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--accent-primary);
+}
+
+/* TPOT Carousel - Card Grid Layout */
+.tpot-carousel-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.tpot-site-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.tpot-site-card:hover {
+    border-color: var(--accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tpot-site-name {
+    margin: 0 0 0.35rem 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.tpot-site-name a {
+    color: var(--accent-primary);
+    text-decoration: none;
+}
+
+.tpot-site-name a:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+}
+
+.tpot-site-description {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+    margin: 0 0 0.35rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* TPOT Modal Popup */
+.tpot-modal-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--accent-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 600px;
+    width: 90vw;
+}
+
+.tpot-modal-name {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.tpot-modal-name a {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.tpot-modal-name a:hover {
+    color: var(--accent-primary);
+    text-decoration: underline;
+}
+
+.tpot-modal-description {
+    font-size: 0.9rem;
+    color: var(--accent-secondary);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+}
+
+.tpot-modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tpot-modal-tags .tpot-tag {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+    border: none;
+}
+
+.tpot-modal-contact {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    border-left: 3px solid var(--accent-primary);
+}
+
+.tpot-site-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+}
+
+.tpot-tag {
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+    padding: 0.1rem 0.35rem;
+    border-radius: 8px;
+    font-size: 0.55rem;
+    font-weight: 500;
+    border: 1px solid var(--border-color);
+}
+
+.carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .tpot-carousel-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Fullsize Image Modal */
+.fullsize-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+}
+
+.fullsize-modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.fullsize-modal-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.fullsize-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.fullsize-close:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    transform: rotate(90deg);
+}
+
+.fullsize-title {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    background: var(--bg-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.gallery-info {
+    padding: 0.5rem 0;
+}
+
+.gallery-title {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.gallery-tag {
+    background: var(--bg-tertiary);
+    color: var(--accent-primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    border: 1px solid var(--border-color);
+}
+</style>
+
+<script>
+// Note: Terminal initialization is handled by script.js
+// Page load time is tracked in script.js
+
+// Rotate quotes
+const quotes = [
+    '"The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise." — Dijkstra',
+    '"In mathematics you don\'t understand things. You just get used to them." — von Neumann',
+    '"Category theory is the subject that formalizes mathematical analogies." — Baez',
+    '"Programs must be written for people to read, and only incidentally for machines to execute." — Abelson & Sussman',
+    '"The question of whether machines can think is about as relevant as the question of whether submarines can swim." — Dijkstra',
+    '"Mathematics is the art of giving the same name to different things." — Poincaré'
+];
+
+let quoteIndex = 0;
+setInterval(() => {
+    quoteIndex = (quoteIndex + 1) % quotes.length;
+    const quoteEl = document.getElementById('random-quote');
+    if (quoteEl) {
+        quoteEl.style.opacity = '0';
+        setTimeout(() => {
+            quoteEl.textContent = quotes[quoteIndex];
+            quoteEl.style.opacity = '1';
+        }, 300);
+    }
+}, 10000);
+
+// Update Discord tag when presence loads
+setTimeout(() => {
+    const discordInfo = document.querySelector('.discord-username');
+    if (discordInfo) {
+        const discordTag = document.querySelector('.discord-tag');
+        if (discordTag) {
+            discordTag.textContent = discordInfo.textContent;
+        }
+    }
+}, 2000);
+
+// Auto-link notes based on references
+function scanAndLinkNotes() {
+    // Define reference patterns to look for in markdown
+    const referencePatterns = {
+        arxiv: [
+            { pattern: /arxiv\.org\/abs\/[\w\.\/]+/gi, type: 'arxiv' },
+            { pattern: /arXiv:[\d\.]+/gi, type: 'arxiv' },
+            { pattern: /Higher Topos Theory/gi, ref: 'lurie-htt' },
+            { pattern: /HoTT|Homotopy Type Theory/gi, ref: 'hott-book' },
+            { pattern: /Physics.*Topology|Topology.*Physics/gi, ref: 'physics-topology' }
+        ],
+        pubmed: [
+            { pattern: /pubmed\.ncbi\.nlm\.nih\.gov\/\d+/gi, type: 'pubmed' },
+            { pattern: /PMID:\s*\d+/gi, type: 'pubmed' },
+            { pattern: /Mathematical Biology/gi, ref: 'math-bio' },
+            { pattern: /Systems Theory|Systems Biology/gi, ref: 'systems-theory' },
+            { pattern: /Network Biology/gi, ref: 'network-bio' }
+        ],
+        nlab: [
+            { pattern: /ncatlab\.org/gi, type: 'nlab' },
+            { pattern: /nLab:/gi, type: 'nlab' },
+            { pattern: /Higher Category|∞-category/gi, ref: 'higher-cat' },
+            { pattern: /Topos Theory|topos/gi, ref: 'topos' },
+            { pattern: /∞-groupoid|infinity.groupoid/gi, ref: 'infinity-groupoid' }
+        ]
+    };
+
+    // Simulate scanning markdown files and finding associations
+    // In real implementation, this would scan actual markdown content
+    setTimeout(() => {
+        // Example associations (in real app, these would come from markdown scanning)
+        const mockAssociations = {
+            arxiv: [
+                { title: 'Category Theory Notes', url: '#learning/category-theory', refs: ['lurie-htt', 'hott-book'] },
+                { title: 'HoTT Explorations', url: '#projects/hott-exploration', refs: ['hott-book'] },
+                { title: 'Topology in Physics', url: '#thoughts/topology-physics', refs: ['physics-topology'] }
+            ],
+            pubmed: [
+                { title: 'Two Cultures Bridge', url: '#thoughts/two-cultures', refs: ['math-bio'] },
+                { title: 'Biology as Computation', url: '#thoughts/biology-computation', refs: ['systems-theory', 'network-bio'] },
+                { title: 'Complex Systems Notes', url: '#learning/complex-systems', refs: ['systems-theory'] }
+            ],
+            nlab: [
+                { title: 'Topos Study Notes', url: '#learning/topos-notes', refs: ['topos', 'higher-cat'] },
+                { title: 'nLab Favorites', url: '#resources/nlab-favorites', refs: ['higher-cat', 'topos', 'infinity-groupoid'] },
+                { title: '∞-Categories Exploration', url: '#projects/infinity-cats', refs: ['higher-cat', 'infinity-groupoid'] }
+            ]
+        };
+
+        // Update ArXiv notes
+        updateNotesColumn('arxiv-notes', mockAssociations.arxiv, 'arxiv-favorites');
+
+        // Update PubMed notes
+        updateNotesColumn('pubmed-notes', mockAssociations.pubmed, 'pubmed-favorites');
+
+        // Update nLab notes
+        updateNotesColumn('nlab-notes', mockAssociations.nlab, 'nlab-favorites');
+    }, 1000);
+}
+
+function updateNotesColumn(notesId, associations, favoritesId) {
+    const notesEl = document.getElementById(notesId);
+    if (!notesEl) return;
+
+    notesEl.innerHTML = '';
+
+    if (associations.length === 0) {
+        notesEl.innerHTML = '<li class="no-notes">No related notes yet</li>';
+        return;
+    }
+
+    associations.forEach(note => {
+        const li = document.createElement('li');
+
+        // Check if this note references any favorites
+        const hasRefs = note.refs && note.refs.length > 0;
+        if (hasRefs) {
+            li.className = 'has-refs';
+            // Highlight corresponding favorites
+            note.refs.forEach(ref => {
+                const favItem = document.querySelector(`#${favoritesId} li[data-ref="${ref}"]`);
+                if (favItem) {
+                    favItem.classList.add('connected');
+                }
+            });
+        }
+
+        const link = document.createElement('a');
+        link.href = note.url;
+        link.textContent = note.title;
+        link.className = 'internal-link';
+
+        // Add reference indicators
+        if (hasRefs) {
+            const refIndicator = document.createElement('span');
+            refIndicator.className = 'ref-count';
+            refIndicator.textContent = ` [${note.refs.length}]`;
+            refIndicator.style.color = '#50fa7b';
+            refIndicator.style.fontSize = '0.65rem';
+            link.appendChild(refIndicator);
+        }
+
+        li.appendChild(link);
+        notesEl.appendChild(li);
+    });
+}
+
+// Call this when the page loads
+scanAndLinkNotes();
+
+// Terminal command system is now handled in script.js via initializeTerminal()
+
+// Art Gallery Carousel
+const artGallery = {
+    images: [],
+    currentIndex: 0,
+
+    async init() {
+        console.log('Art gallery init called');
+        console.log('Settings:', window.siteSettings);
+
+        // Check if art gallery is enabled
+        if (!window.siteSettings || !window.siteSettings.ART_GALLERY_CARD_ENABLED) {
+            console.log('Art gallery disabled or settings not loaded');
+            return;
+        }
+
+        console.log('Art gallery enabled, loading images...');
+
+        // Load images
+        try {
+            const response = await fetch('gallery/images.json');
+            const data = await response.json();
+            this.images = data.art || [];
+
+            console.log('Art images loaded:', this.images.length);
+
+            if (this.images.length > 0) {
+                // Show the art gallery card only if we have images
+                const card = document.getElementById('art-gallery-card');
+                console.log('Card element:', card);
+                if (card) {
+                    card.style.display = 'block';
+                    console.log('Card displayed!');
+                }
+                this.render();
+            } else {
+                console.log('No art images found');
+            }
+        } catch (error) {
+            console.error('Error loading art gallery:', error);
+        }
+    },
+
+    render() {
+        const track = document.getElementById('art-carousel');
+        const titleEl = document.getElementById('gallery-title');
+        const tagsEl = document.getElementById('gallery-tags');
+
+        if (!track || this.images.length === 0) return;
+
+        const image = this.images[this.currentIndex];
+
+        // Update image
+        // Check if filename is a URL or a local path
+        const imageUrl = image.filename.startsWith('http')
+            ? image.filename
+            : `gallery/art/${image.filename}`;
+        track.innerHTML = `<img src="${imageUrl}" alt="${image.title || 'Artwork'}">`;
+
+        // Update title
+        if (titleEl) {
+            titleEl.textContent = image.title || 'Artwork';
+        }
+
+        // Update tags
+        if (tagsEl && image.tags) {
+            tagsEl.innerHTML = image.tags.map(tag =>
+                `<span class="gallery-tag">${tag}</span>`
+            ).join('');
+        }
+    },
+
+    next() {
+        this.currentIndex = (this.currentIndex + 1) % this.images.length;
+        this.render();
+    },
+
+    prev() {
+        this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+        this.render();
+    }
+};
+
+// Initialize art gallery when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => artGallery.init(), 500);
+    });
+} else {
+    setTimeout(() => artGallery.init(), 500);
+}
+</script>
