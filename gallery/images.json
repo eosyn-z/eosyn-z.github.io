@@ -120,6 +120,19 @@
       "nsfw": false
     },
     {
+      "filename": "NSFW__Chromatic_Aberration_Brush_Test.jpg",
+      "title": "Chromatic Aberration Brush Test",
+      "date": null,
+      "dateFormatted": null,
+      "tags": [
+        "art",
+        "nsfw"
+      ],
+      "category": "misc",
+      "description": null,
+      "nsfw": true
+    },
+    {
       "filename": "iridescent_hair.png",
       "title": "Iridescent Hair",
       "date": null,
@@ -142,19 +155,6 @@
       "category": "misc",
       "description": null,
       "nsfw": false
-    },
-    {
-      "filename": "NSFW__Chromatic_Aberration_Brush_Test.jpg",
-      "title": "Chromatic Aberration Brush Test",
-      "date": null,
-      "dateFormatted": null,
-      "tags": [
-        "art",
-        "nsfw"
-      ],
-      "category": "misc",
-      "description": null,
-      "nsfw": true
     },
     {
       "filename": "skin_practice.jpg",
